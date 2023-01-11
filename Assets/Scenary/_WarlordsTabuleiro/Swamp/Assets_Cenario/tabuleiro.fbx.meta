@@ -1,0 +1,175 @@
+fileFormatVersion: 2
+guid: 5847d77f6edff4543897f7cb428c256a
+timeCreated: 1454349881
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Mirra busto
+    100002: peca_deadGrass
+    100004: peca_frozenEarth
+    100006: peca_groundGlacial
+    100008: peca_iceCrack
+    100010: peca_neveCrack
+    100012: peca_neveDunas
+    100014: peca_snowTundra
+    100016: peca_Swamp
+    100018: pecaBase_cliff
+    100020: pecaBase_cliff.001
+    100022: pecaBase_iceWall
+    100024: pecaBase_iceWall.001
+    100026: pecaBase_iceWall.002
+    100028: pecaBase_mossyRoots
+    100030: pecaBase_mossyRoots.001
+    100032: pecaBase_mossyRoots.002
+    100034: //RootNode
+    400000: Mirra busto
+    400002: peca_deadGrass
+    400004: peca_frozenEarth
+    400006: peca_groundGlacial
+    400008: peca_iceCrack
+    400010: peca_neveCrack
+    400012: peca_neveDunas
+    400014: peca_snowTundra
+    400016: peca_Swamp
+    400018: pecaBase_cliff
+    400020: pecaBase_cliff.001
+    400022: pecaBase_iceWall
+    400024: pecaBase_iceWall.001
+    400026: pecaBase_iceWall.002
+    400028: pecaBase_mossyRoots
+    400030: pecaBase_mossyRoots.001
+    400032: pecaBase_mossyRoots.002
+    400034: //RootNode
+    2300000: Mirra busto
+    2300002: peca_deadGrass
+    2300004: peca_frozenEarth
+    2300006: peca_groundGlacial
+    2300008: peca_iceCrack
+    2300010: peca_neveCrack
+    2300012: peca_neveDunas
+    2300014: peca_snowTundra
+    2300016: peca_Swamp
+    2300018: pecaBase_cliff
+    2300020: pecaBase_cliff.001
+    2300022: pecaBase_iceWall
+    2300024: pecaBase_iceWall.001
+    2300026: pecaBase_iceWall.002
+    2300028: pecaBase_mossyRoots
+    2300030: pecaBase_mossyRoots.001
+    2300032: pecaBase_mossyRoots.002
+    3300000: Mirra busto
+    3300002: peca_deadGrass
+    3300004: peca_frozenEarth
+    3300006: peca_groundGlacial
+    3300008: peca_iceCrack
+    3300010: peca_neveCrack
+    3300012: peca_neveDunas
+    3300014: peca_snowTundra
+    3300016: peca_Swamp
+    3300018: pecaBase_cliff
+    3300020: pecaBase_cliff.001
+    3300022: pecaBase_iceWall
+    3300024: pecaBase_iceWall.001
+    3300026: pecaBase_iceWall.002
+    3300028: pecaBase_mossyRoots
+    3300030: pecaBase_mossyRoots.001
+    3300032: pecaBase_mossyRoots.002
+    4300000: peca_groundGlacial
+    4300002: pecaBase_iceWall.002
+    4300004: peca_iceCrack
+    4300006: pecaBase_iceWall.001
+    4300008: peca_frozenEarth
+    4300010: pecaBase_mossyRoots
+    4300012: peca_deadGrass
+    4300014: pecaBase_mossyRoots.001
+    4300016: peca_snowTundra
+    4300018: pecaBase_cliff.001
+    4300020: peca_Swamp
+    4300022: pecaBase_mossyRoots.002
+    4300024: peca_neveCrack
+    4300026: pecaBase_iceWall
+    4300028: peca_neveDunas
+    4300030: pecaBase_cliff
+    4300032: Mirra busto
+    6400000: Mirra busto
+    6400002: peca_deadGrass
+    6400004: peca_frozenEarth
+    6400006: peca_groundGlacial
+    6400008: peca_iceCrack
+    6400010: peca_neveCrack
+    6400012: peca_neveDunas
+    6400014: peca_snowTundra
+    6400016: peca_Swamp
+    6400018: pecaBase_cliff
+    6400020: pecaBase_cliff.001
+    6400022: pecaBase_iceWall
+    6400024: pecaBase_iceWall.001
+    6400026: pecaBase_iceWall.002
+    6400028: pecaBase_mossyRoots
+    6400030: pecaBase_mossyRoots.001
+    6400032: pecaBase_mossyRoots.002
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

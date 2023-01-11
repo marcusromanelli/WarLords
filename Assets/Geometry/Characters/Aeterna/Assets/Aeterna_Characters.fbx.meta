@@ -1,0 +1,148 @@
+fileFormatVersion: 2
+guid: b85aec817cf52bb40a7387aca2129bed
+timeCreated: 1478674781
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Anita
+    100004: Daires
+    100006: Dominic
+    100008: Esopo
+    100010: Evangeline
+    100012: Hanek
+    100014: Jacob
+    100016: Jeremiah
+    100018: Kaiser
+    100020: Lauren
+    100022: Nataleph
+    100024: Nikaella
+    100026: Rafiel
+    100028: Thea
+    100030: Zephyr
+    400000: //RootNode
+    400002: Anita
+    400004: Daires
+    400006: Dominic
+    400008: Esopo
+    400010: Evangeline
+    400012: Hanek
+    400014: Jacob
+    400016: Jeremiah
+    400018: Kaiser
+    400020: Lauren
+    400022: Nataleph
+    400024: Nikaella
+    400026: Rafiel
+    400028: Thea
+    400030: Zephyr
+    2300000: Anita
+    2300002: Daires
+    2300004: Dominic
+    2300006: Esopo
+    2300008: Evangeline
+    2300010: Hanek
+    2300012: Jacob
+    2300014: Jeremiah
+    2300016: Kaiser
+    2300018: Lauren
+    2300020: Nataleph
+    2300022: Nikaella
+    2300024: Rafiel
+    2300026: Thea
+    2300028: Zephyr
+    3300000: Anita
+    3300002: Daires
+    3300004: Dominic
+    3300006: Esopo
+    3300008: Evangeline
+    3300010: Hanek
+    3300012: Jacob
+    3300014: Jeremiah
+    3300016: Kaiser
+    3300018: Lauren
+    3300020: Nataleph
+    3300022: Nikaella
+    3300024: Rafiel
+    3300026: Thea
+    3300028: Zephyr
+    4300000: Zephyr
+    4300002: Thea
+    4300004: Rafiel
+    4300006: Nikaella
+    4300008: Nataleph
+    4300010: Lauren
+    4300012: Kaiser
+    4300014: Jeremiah
+    4300016: Jacob
+    4300018: Evangeline
+    4300020: Anita
+    4300022: Dominic
+    4300024: Esopo
+    4300026: Daires
+    4300028: Hanek
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

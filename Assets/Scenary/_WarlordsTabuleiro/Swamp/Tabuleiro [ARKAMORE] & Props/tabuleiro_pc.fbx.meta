@@ -1,0 +1,113 @@
+fileFormatVersion: 2
+guid: aec7c5c06210b1c4caa356faa94dcd0d
+timeCreated: 1455838507
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Group1.001
+    100002: Mirra busto
+    100004: peca_deadGrass
+    100006: peca_groundGlacial
+    100008: peca_neveCrack
+    100010: peca_neveDunas
+    100012: peca_snowTundra
+    100014: peca_Swamp
+    100016: //RootNode
+    400000: Group1.001
+    400002: Mirra busto
+    400004: peca_deadGrass
+    400006: peca_groundGlacial
+    400008: peca_neveCrack
+    400010: peca_neveDunas
+    400012: peca_snowTundra
+    400014: peca_Swamp
+    400016: //RootNode
+    2300000: Group1.001
+    2300002: Mirra busto
+    2300004: peca_deadGrass
+    2300006: peca_groundGlacial
+    2300008: peca_neveCrack
+    2300010: peca_neveDunas
+    2300012: peca_snowTundra
+    2300014: peca_Swamp
+    3300000: Group1.001
+    3300002: Mirra busto
+    3300004: peca_deadGrass
+    3300006: peca_groundGlacial
+    3300008: peca_neveCrack
+    3300010: peca_neveDunas
+    3300012: peca_snowTundra
+    3300014: peca_Swamp
+    4300000: peca_snowTundra
+    4300002: peca_groundGlacial
+    4300004: peca_deadGrass
+    4300006: peca_Swamp
+    4300008: peca_neveDunas
+    4300010: peca_neveCrack
+    4300012: Mirra busto
+    4300014: Group1.001
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

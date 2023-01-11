@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: df91a7fbc036cdc42aa28365f4db9fd8
+timeCreated: 1478515551
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 500
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Warnock Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0d9794700f9943240b650244b270e303, type: 3}
+  - {fileID: 12800000, guid: 937be0e4ea034f441a23ceff038c01b7, type: 3}
+  - {fileID: 12800000, guid: 098d3ecd437fe4a4f8b0fbe1df729bb0, type: 3}
+  - {fileID: 12800000, guid: dac9f92e584b9be4fb8b4c5e4a711cac, type: 3}
+  - {fileID: 12800000, guid: 492a5e3e86ca9be47a875f7158981099, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

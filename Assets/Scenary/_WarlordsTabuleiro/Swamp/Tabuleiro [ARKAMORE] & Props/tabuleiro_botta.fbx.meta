@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 1ea6882b598217c47b0cae3b09fbdfaa
+timeCreated: 1455838506
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: peca_Earth_a
+    100002: peca_Earth_b
+    100004: peca_Earth_c
+    100006: peca_Earth_d
+    100008: peca_Earth_e
+    100010: peca_Grass_a
+    100012: peca_Grass_b
+    100014: peca_Grass_c
+    100016: peca_Grass_d
+    100018: peca_Grass_e
+    100020: peca_Grass_f
+    100022: peca_Grass_g
+    100024: peca_Grass_h
+    100026: peca_Grass_i
+    100028: peca_Grass_j
+    100030: peca_Ice_a
+    100032: peca_Ice_b
+    100034: peca_Ice_c
+    100036: peca_Ice_d
+    100038: peca_Ice_e
+    100040: //RootNode
+    400000: peca_Earth_a
+    400002: peca_Earth_b
+    400004: peca_Earth_c
+    400006: peca_Earth_d
+    400008: peca_Earth_e
+    400010: peca_Grass_a
+    400012: peca_Grass_b
+    400014: peca_Grass_c
+    400016: peca_Grass_d
+    400018: peca_Grass_e
+    400020: peca_Grass_f
+    400022: peca_Grass_g
+    400024: peca_Grass_h
+    400026: peca_Grass_i
+    400028: peca_Grass_j
+    400030: peca_Ice_a
+    400032: peca_Ice_b
+    400034: peca_Ice_c
+    400036: peca_Ice_d
+    400038: peca_Ice_e
+    400040: //RootNode
+    2300000: peca_Earth_a
+    2300002: peca_Earth_b
+    2300004: peca_Earth_c
+    2300006: peca_Earth_d
+    2300008: peca_Earth_e
+    2300010: peca_Grass_a
+    2300012: peca_Grass_b
+    2300014: peca_Grass_c
+    2300016: peca_Grass_d
+    2300018: peca_Grass_e
+    2300020: peca_Grass_f
+    2300022: peca_Grass_g
+    2300024: peca_Grass_h
+    2300026: peca_Grass_i
+    2300028: peca_Grass_j
+    2300030: peca_Ice_a
+    2300032: peca_Ice_b
+    2300034: peca_Ice_c
+    2300036: peca_Ice_d
+    2300038: peca_Ice_e
+    3300000: peca_Earth_a
+    3300002: peca_Earth_b
+    3300004: peca_Earth_c
+    3300006: peca_Earth_d
+    3300008: peca_Earth_e
+    3300010: peca_Grass_a
+    3300012: peca_Grass_b
+    3300014: peca_Grass_c
+    3300016: peca_Grass_d
+    3300018: peca_Grass_e
+    3300020: peca_Grass_f
+    3300022: peca_Grass_g
+    3300024: peca_Grass_h
+    3300026: peca_Grass_i
+    3300028: peca_Grass_j
+    3300030: peca_Ice_a
+    3300032: peca_Ice_b
+    3300034: peca_Ice_c
+    3300036: peca_Ice_d
+    3300038: peca_Ice_e
+    4300000: peca_Ice_e
+    4300002: peca_Ice_d
+    4300004: peca_Ice_c
+    4300006: peca_Ice_b
+    4300008: peca_Ice_a
+    4300010: peca_Earth_e
+    4300012: peca_Earth_d
+    4300014: peca_Earth_c
+    4300016: peca_Earth_b
+    4300018: peca_Earth_a
+    4300020: peca_Grass_j
+    4300022: peca_Grass_i
+    4300024: peca_Grass_h
+    4300026: peca_Grass_g
+    4300028: peca_Grass_f
+    4300030: peca_Grass_e
+    4300032: peca_Grass_d
+    4300034: peca_Grass_c
+    4300036: peca_Grass_b
+    4300038: peca_Grass_a
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,133 @@
+fileFormatVersion: 2
+guid: f3dacbd871f4c4b4eb1d3cf12d3a95b2
+timeCreated: 1455838507
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: decal_Blood_a
+    100002: decal_Blood_b
+    100004: decal_Blood_c
+    100006: decal_BonePile
+    100008: decal_CampFire
+    100010: decal_Leaf
+    100012: decal_LilyLeaf_a
+    100014: decal_LilyLeaf_b
+    100016: decal_Planks
+    100018: decal_Rope
+    100020: decal_Straw
+    100022: decal_TundraStones
+    100024: //RootNode
+    400000: decal_Blood_a
+    400002: decal_Blood_b
+    400004: decal_Blood_c
+    400006: decal_BonePile
+    400008: decal_CampFire
+    400010: decal_Leaf
+    400012: decal_LilyLeaf_a
+    400014: decal_LilyLeaf_b
+    400016: decal_Planks
+    400018: decal_Rope
+    400020: decal_Straw
+    400022: decal_TundraStones
+    400024: //RootNode
+    2300000: decal_Blood_a
+    2300002: decal_Blood_b
+    2300004: decal_Blood_c
+    2300006: decal_BonePile
+    2300008: decal_CampFire
+    2300010: decal_Leaf
+    2300012: decal_LilyLeaf_a
+    2300014: decal_LilyLeaf_b
+    2300016: decal_Planks
+    2300018: decal_Rope
+    2300020: decal_Straw
+    2300022: decal_TundraStones
+    3300000: decal_Blood_a
+    3300002: decal_Blood_b
+    3300004: decal_Blood_c
+    3300006: decal_BonePile
+    3300008: decal_CampFire
+    3300010: decal_Leaf
+    3300012: decal_LilyLeaf_a
+    3300014: decal_LilyLeaf_b
+    3300016: decal_Planks
+    3300018: decal_Rope
+    3300020: decal_Straw
+    3300022: decal_TundraStones
+    4300000: decal_LilyLeaf_b
+    4300002: decal_LilyLeaf_a
+    4300004: decal_CampFire
+    4300006: decal_Planks
+    4300008: decal_TundraStones
+    4300010: decal_Rope
+    4300012: decal_Straw
+    4300014: decal_BonePile
+    4300016: decal_Blood_c
+    4300018: decal_Blood_b
+    4300020: decal_Blood_a
+    4300022: decal_Leaf
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

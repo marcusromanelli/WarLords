@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CardCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Cards>
+    <Card>
+      <CardID>1</CardID>
+      <PlayID>-1</PlayID>
+      <name>Anitta Ashervind</name>
+      <manaCost>2</manaCost>
+      <attack>3</attack>
+      <life>3</life>
+      <Skills>
+        <Skill>
+          <manaCost>0</manaCost>
+          <skillLevel>0</skillLevel>
+          <macroType>Invader</macroType>
+        </Skill>
+        <Skill>
+          <manaCost>0</manaCost>
+          <skillLevel>0</skillLevel>
+          <macroType>Collision</macroType>
+        </Skill>
+      </Skills>
+      <currentLife>0</currentLife>
+    </Card>
+  </Cards>
+</CardCollection>

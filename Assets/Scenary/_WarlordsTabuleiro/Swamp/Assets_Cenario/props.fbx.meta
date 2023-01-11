@@ -1,0 +1,133 @@
+fileFormatVersion: 2
+guid: 2724e25d7c6ecd8428f9e78f734860bb
+timeCreated: 1454349880
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: branch
+    100002: cerca_Horin
+    100004: cerca_Vert
+    100006: fallen_Tree
+    100008: Log01_SoilBase
+    100010: //RootNode
+    100012: props_cotoco
+    100014: rock_A
+    100016: rock_B
+    100018: rock_C
+    100020: rock_C.001
+    100022: rock_D
+    100024: Skull
+    400000: branch
+    400002: cerca_Horin
+    400004: cerca_Vert
+    400006: fallen_Tree
+    400008: Log01_SoilBase
+    400010: //RootNode
+    400012: props_cotoco
+    400014: rock_A
+    400016: rock_B
+    400018: rock_C
+    400020: rock_C.001
+    400022: rock_D
+    400024: Skull
+    2300000: branch
+    2300002: cerca_Horin
+    2300004: cerca_Vert
+    2300006: fallen_Tree
+    2300008: Log01_SoilBase
+    2300010: props_cotoco
+    2300012: rock_A
+    2300014: rock_B
+    2300016: rock_C
+    2300018: rock_C.001
+    2300020: rock_D
+    2300022: Skull
+    3300000: branch
+    3300002: cerca_Horin
+    3300004: cerca_Vert
+    3300006: fallen_Tree
+    3300008: Log01_SoilBase
+    3300010: props_cotoco
+    3300012: rock_A
+    3300014: rock_B
+    3300016: rock_C
+    3300018: rock_C.001
+    3300020: rock_D
+    3300022: Skull
+    4300000: rock_C
+    4300002: rock_B
+    4300004: rock_D
+    4300006: rock_A
+    4300008: rock_C.001
+    4300010: cerca_Horin
+    4300012: cerca_Vert
+    4300014: fallen_Tree
+    4300016: Log01_SoilBase
+    4300018: props_cotoco
+    4300020: branch
+    4300022: Skull
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
