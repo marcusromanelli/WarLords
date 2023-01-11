@@ -7,7 +7,7 @@ public class Condition : MonoBehaviour {
 	public ConditionType Type;
 	public bool isChecking;
 	public float targetQuantity;
-	public float originalQuantity;
+	public float originalStoredValue;
 
 	void Awake () {
 		player = GetComponent<Player> ();
@@ -16,33 +16,49 @@ public class Condition : MonoBehaviour {
 	
 
 	void Update () {
-		if (isChecking) {
-			switch (Type) {
+		CheckConditions();
+	}
+
+	void CheckConditions()
+	{
+		if (!isChecking)
+			return;
+
+		var playerHandNumber = player.GetCurrentHandNumber();
+		var playerManaPoolNumber = player.GetCurrentManaPoolCount();
+
+		switch (Type)
+		{
 			case ConditionType.DiscartCard:
-				if (player.Hand.Count == originalQuantity - targetQuantity) {
-					player.removeCondition (this);
-					Destroy (this);
+				if (playerHandNumber == originalStoredValue - targetQuantity)
+				{
+					player.removeCondition(this);
+					Destroy(this);
 				}
 				break;
 			case ConditionType.DrawCard:
-				if (player.Hand.Count == originalQuantity + targetQuantity) {
-					player.removeCondition (this);
-					Destroy (this);
+				if (playerHandNumber == originalStoredValue + targetQuantity)
+				{
+					player.removeCondition(this);
+					Destroy(this);
 				}
 				break;
 			case ConditionType.SendCardToManaPool:
-				if (player.Hand.Count<=0 || player.ManaPool.Count == originalQuantity + targetQuantity || player.ManaPool.Count >= GameConfiguration.maxNumberOfCardsInManaPool) {
-					player.removeCondition (this);
-					Destroy (this);
+				if (playerHandNumber <= 0 || playerManaPoolNumber == originalStoredValue + targetQuantity || playerManaPoolNumber >= GameConfiguration.maxNumberOfCardsInManaPool)
+				{
+					player.removeCondition(this);
+					Destroy(this);
 				}
 				break;
 			case ConditionType.PickSpawnArea:
-				if (player.Battlefield.FindAll(a => a.Character == null).Count<=0) {
-					player.removeCondition (this);
-					Destroy (this);
+				var playerEmptyBattleFieldNumber = player.GetEmptyBattleFieldNumber();
+
+				if (playerEmptyBattleFieldNumber <= 0)
+				{
+					player.removeCondition(this);
+					Destroy(this);
 				}
 				break;
-			}
 		}
 	}
 
@@ -56,15 +72,17 @@ public class Condition : MonoBehaviour {
 	}
 		
 	public string getDescription(){
+		var originalQuantityNumber = player.GetCurrentHandNumber() - originalStoredValue;
+
 		switch (Type) {
 		default:
 			return "Error.";
 		case ConditionType.DiscartCard:
-			return "You have to discart " + Mathf.Abs(((player.Hand.Count - originalQuantity)))  + " cards.";
+			return "You have to discart " + Mathf.Abs(originalQuantityNumber)  + " cards.";
 		case ConditionType.DrawCard:
-			return "You have to draw " + Mathf.Abs(((player.Hand.Count - originalQuantity) - targetQuantity))  + " cards.";
+			return "You have to draw " + Mathf.Abs(originalQuantityNumber - targetQuantity) + " cards.";
 		case ConditionType.SendCardToManaPool:
-			return "You have to send " +  Mathf.Abs(((player.ManaPool.Count - originalQuantity) - targetQuantity))  + " cards to the mana pool.";
+			return "You have to send " +  Mathf.Abs(originalQuantityNumber - targetQuantity) + " cards to the mana pool.";
 		case ConditionType.PickSpawnArea:
 			return "You have to pick an spawn area for a recently summoned hero.";
 		}
@@ -74,13 +92,11 @@ public class Condition : MonoBehaviour {
 		isChecking = true;
 		switch (Type) {
 		case ConditionType.DiscartCard:
-			originalQuantity = player.Hand.Count;
-			break;
 		case ConditionType.DrawCard:
-			originalQuantity = player.Hand.Count;
+			originalStoredValue = player.GetCurrentHandNumber();
 			break;
 		case ConditionType.SendCardToManaPool:
-			originalQuantity = player.ManaPool.Count;
+			originalStoredValue = player.GetCurrentManaPoolCount();
 			break;
 		}
 	}

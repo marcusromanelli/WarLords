@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
 public class GraveyardController : MonoBehaviour {
@@ -15,26 +14,44 @@ public class GraveyardController : MonoBehaviour {
 	void Start(){
 		GraveyardCards = new Stack<GameObject> ();
 		player = GetComponentInParent<Player> ();
-		coverTemplate = Resources.Load<GameObject> ("Prefabs/CardBackCover"+((int)player.civilization));
+		coverTemplate = Resources.Load<GameObject> ("Prefabs/CardBackCover"+((int)player.GetCivilization()));
 	}
 		
 	GameObject aux;
 	void Update () {
-		if (player.Graveyard != null) {
-			if (player.Graveyard.Count < GraveyardCards.Count) {
-				Destroy (GraveyardCards.Pop ().gameObject);
-			} else if (player.Graveyard.Count > GraveyardCards.Count) {
-				(aux = (GameObject)Instantiate (coverTemplate, Vector3.zero, Quaternion.Euler (90, 270, 0))).transform.position = transform.position + Vector3.up * (distanceBetweenCards * GraveyardCards.Count);
-				GraveyardCards.Push (aux);
-				aux.transform.SetParent (transform, true);
-			}
-		}
+		SyncPlayerCards();
 
+		CheckMouseOver();
+	}
+
+	void SyncPlayerCards()
+    {
+		//TODO FIX THIS
+		var playerCount = player.GetCurrentGraveyardCount();
+
+		if (playerCount < GraveyardCards.Count)
+		{
+			Destroy(GraveyardCards.Pop().gameObject);
+		}
+		else if (playerCount > GraveyardCards.Count)
+		{
+			(aux = (GameObject)Instantiate(coverTemplate, Vector3.zero, Quaternion.Euler(90, 270, 0))).transform.position = transform.position + Vector3.up * (distanceBetweenCards * GraveyardCards.Count);
+			GraveyardCards.Push(aux);
+			aux.transform.SetParent(transform, true);
+		}
+	}
+
+	void CheckMouseOver()
+    {
+		//TODO FIX THIS ALSO
 		layerMask = 1 << gameObject.layer;
-		results = Physics.RaycastAll (Camera.main.ScreenPointToRay (Input.mousePosition), 1000, layerMask);
-		if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count>0) {
+		results = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1000, layerMask);
+		if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count > 0)
+		{
 			isMouseOver = true;
-		}else{
+		}
+		else
+		{
 			isMouseOver = false;
 		}
 	}
@@ -48,6 +65,6 @@ public class GraveyardController : MonoBehaviour {
 	}
 
 	public Vector3 getTopScale(){
-		return Vector3.one;// coverTemplate.transform.localScale;
+		return Vector3.one;
 	}
 }

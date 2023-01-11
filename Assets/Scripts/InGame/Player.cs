@@ -7,49 +7,42 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
 
-	public List<int> RemainingCards;
-	public List<int> Deck;
+	[SerializeField] List<int> RemainingCards;
+	[SerializeField] List<int> Deck;
 
 
 	//In Game ONLY
-	public Civilization civilization;
-	public int life;
-	public bool isRemotePlayer;
-	public Stack<Card> PlayDeck;
-	public Stack<Card> Graveyard;
-	public List<Card> Hand;
-	public List<Card> Field;
-	public List<Card> ManaPool;
-	public List<CardObject> Battlefield;
-	public List<Condition> Conditions;
+	[SerializeField] Civilization civilization;
+	[SerializeField] int life;
+	[SerializeField] bool isRemotePlayer;
+	[SerializeField] Stack<Card> PlayDeck;
+	[SerializeField] Stack<Card> Graveyard;
+	[SerializeField] List<Card> Hand;
+	[SerializeField] List<Card> Field;
+	[SerializeField] List<Card> ManaPool;
+	[SerializeField] List<CardObject> Battlefield;
+	[SerializeField] List<Condition> Conditions;
 
 
-	public HandController HandObject;
-	public DeckController DeckController;
-	public ManaPoolController ManaPoolController;
-	public GraveyardController GraveyardController;
-	public BattlefieldController BattlefieldController;
-	public LifePointsController LifePointsController;
+	[SerializeField] HandController HandObject;
+	[SerializeField] DeckController DeckController;
+	[SerializeField] ManaPoolController ManaPoolController;
+	[SerializeField] GraveyardController GraveyardController;
+	[SerializeField] BattlefieldController BattlefieldController;
+	[SerializeField] LifePointsController LifePointsController;
 
 	//Toss 1 card to draw 2
 	//or
 	//1 card = 1 mana
-	public bool hasUsedHability;
-	public bool hasDrawnCard;
-	public bool isSelectingCard;
-	public bool isDrawing;
+	[SerializeField] bool hasUsedHability;
+	[SerializeField] bool hasDrawnCard;
+	[SerializeField] bool isSelectingCard;
+	[SerializeField] bool isDrawing;
 
 	Action auxiliarAction;
 
 	void Awake(){
 		civilization = Civilization.DoNotApply;
-
-		DeckController = GetComponentInChildren<DeckController> ();
-		ManaPoolController = GetComponentInChildren<ManaPoolController> ();
-		GraveyardController = GetComponentInChildren<GraveyardController> ();
-		BattlefieldController = GetComponentInChildren<BattlefieldController> ();
-		LifePointsController = GetComponentInChildren<LifePointsController> ();
-
 
 		PlayDeck = new Stack<Card> ();
 		Graveyard = new Stack<Card> ();
@@ -59,11 +52,6 @@ public class Player : MonoBehaviour {
 		life = GameConfiguration.startLife;
 		Battlefield = new List<CardObject> ();
 
-		if (!isRemotePlayer) {
-			HandObject = GameObject.FindObjectOfType<LocalHand> ();
-		} else {
-			HandObject = GameObject.FindObjectOfType<RemoteHand> ();
-		}
 		HandObject.setPlayer(this);
 	}
 
@@ -437,6 +425,47 @@ public class Player : MonoBehaviour {
 	public string getName(){
 		return civilization.ToString ();
 	}
+
+	public void SetCivilization(Civilization civilization)
+	{
+		this.civilization = civilization;
+	}
+
+	public Civilization GetCivilization()
+	{
+		return civilization;
+	}
+
+	public int GetCurrentHandNumber()
+    {
+		return Hand.Count;
+	}
+
+	public int GetCurrentManaPoolCount()
+    {
+		return ManaPool.Count;
+	}
+
+	public int GetEmptyBattleFieldNumber()
+	{
+		return Battlefield.FindAll(a => a.Character == null).Count;
+	}
+
+	public int GetCurrentGraveyardCount()
+	{
+		return Graveyard.Count;
+	}
+
+	public bool IsDeckFull()
+	{
+		return DeckController.getNumberOfCards() != PlayDeck.Count;
+	}
+
+	public int GetCurrentLife()
+	{
+		return life;
+	}
+
 
 	void OnGUI(){
 		if (GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == ((int)civilization) && !isRemotePlayer && GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPhase == Phase.Action) {
