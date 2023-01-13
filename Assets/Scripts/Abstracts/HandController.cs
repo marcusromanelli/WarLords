@@ -4,6 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class HandController : MonoBehaviour{
+
+	[SerializeField] DeckController deckController;
+
+
 	public float cardFoldSpeed = 600f;
 	protected CardObject cardTemplate;
 	public List<CardObject> cards;
@@ -23,7 +27,7 @@ public abstract class HandController : MonoBehaviour{
 				aux = card.transform.rotation.eulerAngles;
 				aux.y = getAngleByCardNumber (c);
 				if (!card.isBeingHeld && !card.isBeingVisualized) {
-					if(player.isRemotePlayer){
+					if(player.GetPlayerType() == PlayerType.Remote){
 						aux.z = -180;
 						aux.x = 90;
 					}else{
@@ -32,10 +36,8 @@ public abstract class HandController : MonoBehaviour{
 					}
 
 					card.transform.localRotation = Quaternion.RotateTowards (card.transform.localRotation, Quaternion.Euler (aux), Time.deltaTime * cardFoldSpeed); 
-					//if(Vector3.Distance(card.transform.localPosition, calculatePosition(c))>0.1f){
-					//-	Debug.Log(card.transform.localPosition+ " - "+ calculatePosition(c));
-						card.transform.localPosition = Vector3.MoveTowards (card.transform.localPosition, calculatePosition(c), Time.deltaTime * cardFoldSpeed/50); 
-					//}
+
+					card.transform.localPosition = Vector3.MoveTowards (card.transform.localPosition, calculatePosition(c), Time.deltaTime * cardFoldSpeed/50); 
 				}
 				c++;
 			}
@@ -46,24 +48,17 @@ public abstract class HandController : MonoBehaviour{
 
 	Vector3 aux2;
 	public void AddCard(Card card){
-		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, player.DeckController.getTopPosition(), player.DeckController.getTopRotation());
+		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.getTopPosition(), deckController.getTopRotation());
 		aux.transform.SetParent(transform, true);
-		//aux.transform.localPosition = Vector3.zero + Vector3.up * (0.05f * cards.Count);
-		//aux.transform.localRotation = Quaternion.Euler (Vector3.right*270);
-		if(player.isRemotePlayer){
-			//Destroy(aux.GetComponent<Collider>());
-			//aux2 = aux.transform.localScale;
-			//aux2.z*=-1;
-			//aux.transform.localScale = aux2;
-		}
 
-		aux.GetComponent<CardObject> ().setCard (card.CardID, card.PlayID, player);
+
+		aux.GetComponent<CardObject> ().Setup (card.CardID, card.PlayID, player);
 		aux.GetComponent<CardObject> ().originalPosition = aux.transform.localPosition;
 		updateCardList ();
 	}
 
 	public void RemoveCard(int PlayID){
-		CardObject cd = cards.Find (a => a.card.PlayID == PlayID);
+		CardObject cd = cards.Find (a => a.cardData.PlayID == PlayID);
 		if (cd!=null) {
 			cd.becameMana ();
 			cards.Remove (cd);

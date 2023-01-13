@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	//In Game ONLY
 	[SerializeField] Civilization civilization;
 	[SerializeField] int life;
-	[SerializeField] bool isRemotePlayer;
+	[SerializeField] PlayerType playerType;
 	[SerializeField] Stack<Card> PlayDeck;
 	[SerializeField] Stack<Card> Graveyard;
 	[SerializeField] List<Card> Hand;
@@ -331,9 +331,9 @@ public class Player : MonoBehaviour {
 	}
 
 	public bool Summon(CardObject card, Vector3 position){
-		int value = card.card.calculateCost();
+		int value = card.cardData.calculateCost();
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.card.CardID != card.card.CardID);
+		heroes.RemoveAll(a => a.card.CardID != card.cardData.CardID);
 		if(heroes.Count<=0){
 			if (canSpendMana (value)) {
 				SpendMana (value);
@@ -341,7 +341,7 @@ public class Player : MonoBehaviour {
 				card.SummonType = SummonType.Monster;
 				BattlefieldController.Summon (card, position);
 				Battlefield.Add (card);
-				Hand.Remove (card.card);
+				Hand.Remove (card.cardData);
 
 				Debug.Log (GetFormatedName () + " is summoning " + card.name);
 				return true;
@@ -355,9 +355,9 @@ public class Player : MonoBehaviour {
 		return false;
 	}
 	public bool Summon(CardObject card){
-		int value = card.card.calculateCost();
+		int value = card.cardData.calculateCost();
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.card.CardID != card.card.CardID);
+		heroes.RemoveAll(a => a.card.CardID != card.cardData.CardID);
 		if(heroes.Count<=0){
 			if (canSpendMana (value)) {
 				SpendMana (value);
@@ -365,9 +365,9 @@ public class Player : MonoBehaviour {
 				card.SummonType = SummonType.Monster;
 				BattlefieldController.Summon (card);
 				Battlefield.Add (card);
-				Hand.Remove (card.card);
+				Hand.Remove (card.cardData);
 
-				Debug.Log (GetFormatedName () + " is summoning " + card.card.name);
+				Debug.Log (GetFormatedName () + " is summoning " + card.cardData.name);
 				return true;
 			} else {
 				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
@@ -400,7 +400,7 @@ public class Player : MonoBehaviour {
 	public void killCard(CardObject card){
 		BattlefieldController.Kill (card);
 		Battlefield.Remove (card);
-		Graveyard.Push (card.card);
+		Graveyard.Push (card.cardData);
 	}
 
 	public int getNumberOfHeroes(){
@@ -455,6 +455,10 @@ public class Player : MonoBehaviour {
 	{
 		return Graveyard.Count;
 	}
+	public int GetCurrentPlayDeckCount()
+	{
+		return PlayDeck.Count;
+	}
 
 	public bool IsDeckFull()
 	{
@@ -466,12 +470,68 @@ public class Player : MonoBehaviour {
 		return life;
 	}
 
+	public PlayerType GetPlayerType()
+	{
+		return playerType;
+	}
 
-	void OnGUI(){
-		if (GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == ((int)civilization) && !isRemotePlayer && GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPhase == Phase.Action) {
-			//if (GUI.Button (new Rect (Screen.width / 2 - 200, 0, 400, 50), "Próxima Fase")) {
-			//	EndPhase ();
-			//}
-		}
+	public bool HasDrawnCard()
+	{
+		return hasDrawnCard;
+	}
+
+	public void SetDrawnCard(bool value)
+	{
+		hasDrawnCard = value;
+	}
+
+	public List<Condition> GetConditionList()
+	{
+		return Conditions;
+	}
+
+	public bool IsDrawing()
+	{
+		return isDrawing;
+	}
+
+	public bool HasUsedHability()
+	{
+		return hasUsedHability;
+	}
+
+	public HandController GetHandObject()
+	{
+		return HandObject;
+	}
+
+	public DeckController GetDeckController()
+	{
+		return DeckController;
+	}
+
+	public BattlefieldController GetBattlefieldController()
+	{
+		return BattlefieldController;
+	}
+
+	public ManaPoolController GetManaPoolController()
+	{
+		return ManaPoolController;
+	}
+
+	public GraveyardController GetGraveyardController()
+	{
+		return GraveyardController;
+	}
+
+	public List<Card> GetHand()
+	{
+		return Hand;
+	}
+
+	public List<CardObject> GetBattlefieldList()
+	{
+		return Battlefield;
 	}
 }

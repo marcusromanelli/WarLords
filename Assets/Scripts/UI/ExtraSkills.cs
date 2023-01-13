@@ -19,12 +19,12 @@ public class ExtraSkills : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(card.card.Skills.Count>2){
+		if(card.cardData.Skills.Count>2){
 			int found=0;
-			for(int i=2;i<card.card.Skills.Count;i++){
+			for(int i=2;i<card.cardData.Skills.Count;i++){
 				if(text[i-2].transform.parent.gameObject.activeSelf==false){
 					text[i-2].transform.parent.gameObject.SetActive(true);
-					text[i-2].text = card.card.Skills[i].name+" - "+card.card.Skills[i].description;
+					text[i-2].text = card.cardData.Skills[i].name+" - "+card.cardData.Skills[i].description;
 					found++;
 				}
 			}

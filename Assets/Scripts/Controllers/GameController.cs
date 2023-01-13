@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
 	public List<Player> Players;
 	protected List<MacroComponent> Macros;
 
-	public int currentPlayer = -1;
+	public int currentPlayerNumber = -1;
 	public Phase currentPhase;
 	public bool MatchHasStarted;
 	public static bool isExecutingMacro;
@@ -78,16 +78,6 @@ public class GameController : MonoBehaviour
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-		}
-		if (waitingForStart && allPlayersOk() < 0)
-		{
-			StartGame();
-			waitingForStart = false;
-		}
-
 		if (MatchHasStarted && Players[0].enabled)
 		{
 			//TODO ARRRRG
@@ -128,66 +118,66 @@ public class GameController : MonoBehaviour
 	void nextTurn(Phase phase = Phase.Draw)
 	{
 		currentPhase = phase;
-		if (currentPlayer == -1)
+		if (currentPlayerNumber == -1)
 		{
-			currentPlayer = 1;//UnityEngine.Random.Range (0, 1);
-			Players[currentPlayer].hasDrawnCard = true;
+			currentPlayerNumber = 1;
+			Players[currentPlayerNumber].SetDrawnCard(true);
 		}
 		else
 		{
-			currentPlayer = (currentPlayer == 1) ? 0 : 1;
+			currentPlayerNumber = (currentPlayerNumber == 1) ? 0 : 1;
 		}
-		Players[currentPlayer].StartTurn();
-		Debug.Log("Turno do jogador: " + (currentPlayer + 1) + " começando na fase: " + currentPhase.ToString());
+		Players[currentPlayerNumber].StartTurn();
+		Debug.Log("Turno do jogador: " + (currentPlayerNumber + 1) + " começando na fase: " + currentPhase.ToString());
 	}
 	Phase next;
 	bool isChangingPhase;
 	public void nextPhase()
 	{
-		if (!isChangingPhase)
+		if (isChangingPhase)
+			return;
+
+		if (currentPhase == Phase.End)
 		{
-			if (currentPhase == Phase.End)
+			var currentPlayer = Players[currentPlayerNumber];
+
+			if (currentPlayer.GetCurrentHandNumber() > GameConfiguration.maxNumberOfCardsInHand)
 			{
-				if (Players[currentPlayer].Hand.Count > GameConfiguration.maxNumberOfCardsInHand)
+				if (!currentPlayer.hasCondition(ConditionType.DiscartCard))
 				{
-					if (!Players[currentPlayer].hasCondition(ConditionType.DiscartCard))
-					{
-						Players[currentPlayer].addCondition(ConditionType.DiscartCard, (Players[currentPlayer].Hand.Count - GameConfiguration.maxNumberOfCardsInHand));
-					}
-					Debug.LogWarning("Player " + currentPlayer + " have " + Players[currentPlayer].Hand.Count + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
-					return;
+					currentPlayer.addCondition(ConditionType.DiscartCard, (currentPlayer.GetCurrentHandNumber() - GameConfiguration.maxNumberOfCardsInHand));
+				}
+				Debug.LogWarning("Player " + currentPlayerNumber + " have " + currentPlayer.GetCurrentHandNumber() + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
+				return;
+			}
+			else
+			{
+				nextTurn();
+			}
+		}
+		else
+		{
+
+			int player = allPlayersOk();
+			if (player < 0)
+			{
+				next = (Phase)((int)currentPhase) + 1;
+				if (Enum.GetNames(typeof(Phase)).Length < ((int)currentPhase + 2))
+				{
+					nextTurn();
 				}
 				else
 				{
-					nextTurn();
+					if (!isChangingPhase)
+					{
+						StartCoroutine("startChangingPhases");
+					}
 				}
 			}
 			else
 			{
-
-				//if (((int)playerNumber) == currentPlayer) {
-				int player = allPlayersOk();
-				if (player < 0)
-				{
-					next = (Phase)((int)currentPhase) + 1;
-					if (Enum.GetNames(typeof(Phase)).Length < ((int)currentPhase + 2))
-					{
-						nextTurn();
-					}
-					else
-					{
-						if (!isChangingPhase)
-						{
-							StartCoroutine("startChangingPhases");
-						}
-					}
-				}
-				else
-				{
-					Debug.LogWarning("Cannot change phase. Waiting for Player " + player + " to finish it's conditions");
-				}
+				Debug.LogWarning("Cannot change phase. Waiting for Player " + player + " to finish it's conditions");
 			}
-			//}
 		}
 	}
 
@@ -198,7 +188,7 @@ public class GameController : MonoBehaviour
 		{
 			if (player.hasConditions())
 			{
-				return (int)player.civilization;
+				return (int)player.GetCivilization();
 			}
 		}
 		return val;
@@ -206,7 +196,7 @@ public class GameController : MonoBehaviour
 
 	public void goToPhase(Phase phase, Civilization playerNumber)
 	{
-		if (currentPlayer == ((int)playerNumber))
+		if (currentPlayerNumber == ((int)playerNumber))
 		{
 			next = phase;
 			StartCoroutine("startChangingPhases");
@@ -217,7 +207,7 @@ public class GameController : MonoBehaviour
 	{
 		if (MatchHasStarted)
 		{
-			return Players[currentPlayer];
+			return Players[currentPlayerNumber];
 		}
 		return null;
 	}
@@ -264,7 +254,7 @@ public class GameController : MonoBehaviour
 		});
 
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.player != Players[currentPlayer]);
+		heroes.RemoveAll(a => a.player != Players[currentPlayerNumber]);
 		foreach (Hero hero in heroes)
 		{
 			if (hero != null)
@@ -300,7 +290,7 @@ public class GameController : MonoBehaviour
 
 	public void AttackPlayer(int damage)
 	{
-		switch (currentPlayer)
+		switch (currentPlayerNumber)
 		{
 			case 0:
 				Players[1].doDamage(damage);
@@ -309,7 +299,7 @@ public class GameController : MonoBehaviour
 				Players[0].doDamage(damage);
 				break;
 		}
-		if (Players[currentPlayer].isRemotePlayer)
+		if (Players[currentPlayerNumber].GetPlayerType() == PlayerType.Remote)
 		{
 			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));
 		}
@@ -317,8 +307,8 @@ public class GameController : MonoBehaviour
 
 	public static void SetTriggerType(TriggerType trigger, CardObject hero)
 	{
-		List<Skill> aux = hero.card.hasSkillType(trigger);
-		List<Skill> aux2 = hero.card.hasSkillType(TriggerType.Passive);
+		List<Skill> aux = hero.cardData.hasSkillType(trigger);
+		List<Skill> aux2 = hero.cardData.hasSkillType(TriggerType.Passive);
 
 		foreach (Skill auxs in aux)
 		{
@@ -355,7 +345,7 @@ public class GameController : MonoBehaviour
 
 	public static bool IsMacroActive(CardObject card, Skill skill)
 	{
-		return (GameController.Singleton.Macros.FindAll(a => a.originalCard.card.PlayID == card.card.PlayID && a.Skill.triggerType == skill.triggerType).Count > 0);
+		return (GameController.Singleton.Macros.FindAll(a => a.originalCard.cardData.PlayID == card.cardData.PlayID && a.Skill.triggerType == skill.triggerType).Count > 0);
 	}
 
 	public static void RemoveMacro(MacroComponent condition)
@@ -368,19 +358,19 @@ public class GameController : MonoBehaviour
 
 	public static Player getOpponent(Player player)
 	{
-		if (player.civilization == Civilization.Aeterna)
+		if (player.GetCivilization() == Civilization.Aeterna)
 		{
-			return GameController.Singleton.Players.Find(a => a.civilization == Civilization.Arkamore);
+			return GameController.Singleton.Players.Find(a => a.GetCivilization() == Civilization.Arkamore);
 		}
 		else
 		{
-			return GameController.Singleton.Players.Find(a => a.civilization == Civilization.Aeterna);
+			return GameController.Singleton.Players.Find(a => a.GetCivilization() == Civilization.Aeterna);
 		}
 	}
 
 	public static Player GetLocalPlayer()
 	{
-		return Singleton.Players.Find(a => a.isRemotePlayer == false);
+		return Singleton.Players.Find(a => a.GetPlayerType() == PlayerType.Local);
 	}
 
 	void OnGUI()
@@ -400,7 +390,7 @@ public class GameController : MonoBehaviour
 		{
 			if (paux.hasConditions())
 			{
-				if (paux.isRemotePlayer)
+				if (paux.GetPlayerType() == PlayerType.Remote)
 				{
 					final += "-----Remote Player:";
 				}
@@ -410,7 +400,9 @@ public class GameController : MonoBehaviour
 				}
 				final += "\n";
 
-				foreach (Condition cond in paux.Conditions)
+				var conditions = paux.GetConditionList();
+
+				foreach (Condition cond in conditions)
 				{
 					final += cond.getDescription() + "\n";
 				}

@@ -112,4 +112,9 @@ public struct Card{
 		return base.GetHashCode ();
 	}
 
+	public bool Initialized()
+    {
+		return CardID > 0;
+
+	}
 }

@@ -14,8 +14,8 @@ public class IA : MonoBehaviour {
 
 
 	void solvePhase(){
-		if (!player.hasConditions () && !player.isDrawing && GameController.Singleton.MatchHasStarted) {
-			if (GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == ((int)player.civilization)) {
+		if (!player.hasConditions () && !player.IsDrawing() && GameController.Singleton.MatchHasStarted) {
+			if (GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayerNumber == ((int)player.GetCivilization())) {
 				switch (GameController.Singleton.currentPhase) {
 				case Phase.Draw:
 					//if(!player.hasDrawnCard){
@@ -23,8 +23,8 @@ public class IA : MonoBehaviour {
 					//}
 					break;
 				case Phase.Action:
-					if (!player.hasUsedHability) {
-						if (player.Hand.Count <= 2) {
+					if (!player.HasUsedHability()) {
+						if (player.GetCurrentHandNumber() <= 2) {
 							player.DiscartCardToDrawTwo (getRandomCardFromHand ());
 						} else {
 							player.SendCardToManaPool (getRandomCardFromHand ());
@@ -33,11 +33,14 @@ public class IA : MonoBehaviour {
 
 					Card cd = getRandomCardFromHand ();
 					int cost = cd.calculateCost ();
+
 					if (player.canSpendMana (cost)) {
 						List<SpawnArea> test = GameObject.FindObjectsOfType<SpawnArea> ().ToList ();
 						test.RemoveAll (a => a.LocalPlayer == true || a.doesHaveHero);
-						CardObject cad = player.HandObject.cards.Find (a => a.card.PlayID == cd.PlayID);
+
+						CardObject cad = player.GetHandObject().cards.Find (a => a.cardData.PlayID == cd.PlayID);
 						Vector3 pos = test [Random.Range (0, test.Count)].transform.position;
+
 						player.Summon (cad, pos);
 					}
 
@@ -49,23 +52,27 @@ public class IA : MonoBehaviour {
 	}
 
 	void solveCondition(){
-		if (player.hasConditions() && !player.isDrawing) {
-			Condition condition = player.Conditions [0];
-			switch (condition.Type) {
+		if (!player.hasConditions() || player.IsDrawing())
+			return;
+
+		Condition condition = player.GetConditionList().First ();
+
+		switch (condition.Type) {
 			case ConditionType.DrawCard:
 				player.DrawCard ();
 				break;
 			case ConditionType.DiscartCard:
-				player.DiscartCard (player.Hand [Random.Range (0, player.Hand.Count - 1)]);
+				player.DiscartCard (getRandomCardFromHand());
 				break;
 			case ConditionType.SendCardToManaPool:
 				player.SendCardToManaPool (getRandomCardFromHand());
 				break;
-			}
 		}
 	}
 
-	Card getRandomCardFromHand(){
-		return player.Hand [Random.Range (0, player.Hand.Count - 1)];
+	Card getRandomCardFromHand()
+	{
+		var hand = player.GetHand();
+		return hand[Random.Range(0, hand.Count - 1)];
 	}
 }

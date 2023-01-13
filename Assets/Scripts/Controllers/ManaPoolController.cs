@@ -15,7 +15,6 @@ public class ManaPoolController : MonoBehaviour {
 	RaycastHit[] results;
 	int layerMask;
 	GameObject aux;
-	List<Card> playerManaPoolUnused;
 
 
 	void Start () {
@@ -28,16 +27,15 @@ public class ManaPoolController : MonoBehaviour {
 	}
 		
 	void Update () {
-		if (player.ManaPool != null) {
-			playerManaPoolUnused = player.ManaPool;
-			if(ManaPoolCards==null) ManaPoolCards = new List<CardObject> ();
+		var playerManaPoolUnused = player.GetCurrentManaPoolCount();
 
-			if (playerManaPoolUnused.Count < ManaPoolCards.Count) {
-				Destroy (ManaPoolCards [ManaPoolCards.Count - 1].gameObject);
-				ManaPoolCards.RemoveAt (ManaPoolCards.Count - 1);
-			} else if (playerManaPoolUnused.Count > ManaPoolCards.Count) {
-				addCard ();
-			}
+		if(ManaPoolCards==null) ManaPoolCards = new List<CardObject> ();
+
+		if (playerManaPoolUnused < ManaPoolCards.Count) {
+			Destroy (ManaPoolCards [ManaPoolCards.Count - 1].gameObject);
+			ManaPoolCards.RemoveAt (ManaPoolCards.Count - 1);
+		} else if (playerManaPoolUnused > ManaPoolCards.Count) {
+			addCard ();
 		}
 
 		layerMask = 1 << gameObject.layer;
@@ -52,8 +50,8 @@ public class ManaPoolController : MonoBehaviour {
 	public void spendMana(int number){
 		int c = 0;
 		for (int i = 0; i < ManaPoolCards.Count; i++) {
-			if (ManaPoolCards [i].card.manaStatus == ManaStatus.Active && c != number) {
-				ManaPoolCards [i].card.manaStatus = ManaStatus.Used;
+			if (ManaPoolCards [i].cardData.manaStatus == ManaStatus.Active && c != number) {
+				ManaPoolCards [i].cardData.manaStatus = ManaStatus.Used;
 				c++;
 			}
 		}
@@ -61,13 +59,13 @@ public class ManaPoolController : MonoBehaviour {
 
 	public void previewMana(int number){
 		for (int i = 0; i < ManaPoolCards.Count; i++) {
-			switch (ManaPoolCards [i].card.manaStatus) {
+			switch (ManaPoolCards [i].cardData.manaStatus) {
 			case ManaStatus.Active:
 			case ManaStatus.Preview:
 				if (i < number) {
-					ManaPoolCards [i].card.manaStatus = ManaStatus.Preview;
+					ManaPoolCards [i].cardData.manaStatus = ManaStatus.Preview;
 				} else {
-					ManaPoolCards [i].card.manaStatus = ManaStatus.Active;
+					ManaPoolCards [i].cardData.manaStatus = ManaStatus.Active;
 				}
 				break;
 			}
@@ -76,8 +74,8 @@ public class ManaPoolController : MonoBehaviour {
 
 	public void recoverPreviewMana(){
 		for (int i = 0; i < ManaPoolCards.Count; i++) {
-			if (ManaPoolCards [i].card.manaStatus == ManaStatus.Preview) {
-				ManaPoolCards [i].card.manaStatus = ManaStatus.Active;
+			if (ManaPoolCards [i].cardData.manaStatus == ManaStatus.Preview) {
+				ManaPoolCards [i].cardData.manaStatus = ManaStatus.Active;
 			}
 		}
 	}
@@ -85,8 +83,8 @@ public class ManaPoolController : MonoBehaviour {
 	public void recoverMana(int number){
 		int c = 0;
 		foreach (CardObject card in ManaPoolCards) {
-			if (card.card.manaStatus == ManaStatus.Used && c != number) {
-				card.card.manaStatus = ManaStatus.Active;
+			if (card.cardData.manaStatus == ManaStatus.Used && c != number) {
+				card.cardData.manaStatus = ManaStatus.Active;
 				c++;
 			}
 		}

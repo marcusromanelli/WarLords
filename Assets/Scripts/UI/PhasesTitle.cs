@@ -2,15 +2,22 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class PhasesTitle : MonoBehaviour {
+public class PhasesTitle : MonoBehaviour
+{
 
 	private static PhasesTitle __singleton;
-	public static PhasesTitle Singleton{
-		get{
-			if(__singleton==null){
-				if(GameObject.FindObjectOfType<PhasesTitle>()){
-					__singleton = GameObject.FindObjectOfType<PhasesTitle> ();
-				}else{
+	public static PhasesTitle Singleton
+	{
+		get
+		{
+			if (__singleton == null)
+			{
+				if (GameObject.FindObjectOfType<PhasesTitle>())
+				{
+					__singleton = GameObject.FindObjectOfType<PhasesTitle>();
+				}
+				else
+				{
 					GameObject aux = new GameObject();
 					aux.name = "-(Phases Tile Controller)-";
 					__singleton = aux.AddComponent<PhasesTitle>();
@@ -27,7 +34,8 @@ public class PhasesTitle : MonoBehaviour {
 	public static bool isFading;
 	bool finish;
 
-	void Start () {
+	void Start()
+	{
 		aux = Color.white;
 		aux.a = 0;
 
@@ -35,19 +43,26 @@ public class PhasesTitle : MonoBehaviour {
 		image.color = aux;
 	}
 
-	void Update(){
-		if(isFading){
+	void Update()
+	{
+		if (isFading)
+		{
 			aux.a = alpha;
 			image.color = aux;
 		}
 	}
 
 
-	public static void setWinner(Player player){
-		if(!Singleton.finish){
-			if(player.civilization == GameController.GetLocalPlayer().civilization){
+	public static void setWinner(Player player)
+	{
+		if (!Singleton.finish)
+		{
+			if (player.GetCivilization() == GameController.GetLocalPlayer().GetCivilization())
+			{
 				Singleton.image.sprite = Singleton.Win;
-			}else{
+			}
+			else
+			{
 				Singleton.image.sprite = Singleton.Lose;
 			}
 			Singleton.finish = true;
@@ -55,54 +70,70 @@ public class PhasesTitle : MonoBehaviour {
 		}
 	}
 
-	public static void ChangePhase(Phase next){
-		if(!Singleton.finish){
+	public static void ChangePhase(Phase next)
+	{
+		if (!Singleton.finish)
+		{
 			Singleton.updateImage(next);
 			Singleton.StartCoroutine("fade");
 		}
 	}
 
-	IEnumerator fade(){
+	IEnumerator fade()
+	{
 		isFading = true;
-		if(image.sprite!=null){
+		if (image.sprite != null)
+		{
 			alpha = 0;
-			while(alpha<1){
-				alpha +=0.05f;
+			while (alpha < 1)
+			{
+				alpha += 0.05f;
 				yield return null;
 			}
 			yield return new WaitForSeconds(1f);
 
-			if(!finish){
-				while(alpha>0){
-					alpha -=0.05f;
+			if (!finish)
+			{
+				while (alpha > 0)
+				{
+					alpha -= 0.05f;
 					yield return null;
 				}
 			}
 			isFading = false;
-		}else{
+		}
+		else
+		{
 			isFading = false;
 			yield return null;
 		}
 	}
 
-	void updateImage(Phase next){
-		switch(next){
-		case Phase.Action:
-			if(GameController.Singleton.Players[GameController.Singleton.currentPlayer].isRemotePlayer){
-				image.sprite = Singleton.Enemy;
-			}else{
-				image.sprite = Singleton.Your;
-			}
-			break;
-		case Phase.Movement:
-			image.sprite = Movement;
-			break;
-		case Phase.Attack:
-			image.sprite = Combat;
-			break;
-		default:
-			image.sprite = null;;
-			break;
+	void updateImage(Phase next)
+	{
+		switch (next)
+		{
+			case Phase.Action:
+				var currentPlayer = GameController.Singleton.Players[GameController.Singleton.currentPlayerNumber];
+
+				if (currentPlayer.GetPlayerType() == PlayerType.Remote)
+				{
+					image.sprite = Singleton.Enemy;
+				}
+				else
+				{
+					image.sprite = Singleton.Your;
+				}
+				break;
+			case Phase.Movement:
+				image.sprite = Movement;
+				break;
+			case Phase.Attack:
+				image.sprite = Combat;
+				break;
+			default:
+				image.sprite = null; ;
+				break;
 		}
 	}
 }

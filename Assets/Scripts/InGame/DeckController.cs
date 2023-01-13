@@ -17,35 +17,37 @@ public class DeckController : MonoBehaviour {
 	RaycastHit[] results;
 	int layerMask;
 
+	Civilization currentCivilization;
+
 	void Start(){
+
 		DeckCards = new Stack<GameObject> ();
 		player = GetComponentInParent<Player> ();
-		coverTemplate = Resources.Load<GameObject> ("Prefabs/CardBackCover"+((int)player.civilization));
+		currentCivilization = player.GetCivilization();
+
+		coverTemplate = Resources.Load<GameObject> ("Prefabs/CardBackCover"+((int)currentCivilization));
 
 		Counter = transform.GetComponentInChildren<TextMesh> ();
 	}
 	void Update () {
-		if (player.PlayDeck != null) {
-			if (player.PlayDeck.Count < getNumberOfCards()) {
-				Destroy (DeckCards.Pop ().gameObject);
-			} else if (player.PlayDeck.Count > getNumberOfCards()) {
-				(aux = (GameObject)Instantiate (coverTemplate, Vector3.zero, Quaternion.Euler (90, 0, 0))).transform.position = transform.position + Vector3.up * (distanceBetweenCards * DeckCards.Count);
-				DeckCards.Push (aux);
-				aux.transform.SetParent (transform, true);
-			}
-			value = getNumberOfCards();
-		} else {
-			value = 0;
+		if (player.GetCurrentPlayDeckCount() < getNumberOfCards()) {
+			Destroy (DeckCards.Pop ().gameObject);
+		} else if (player.GetCurrentPlayDeckCount() > getNumberOfCards()) {
+			(aux = (GameObject)Instantiate (coverTemplate, Vector3.zero, Quaternion.Euler (90, 0, 0))).transform.position = transform.position + Vector3.up * (distanceBetweenCards * DeckCards.Count);
+			DeckCards.Push (aux);
+			aux.transform.SetParent (transform, true);
 		}
+		value = getNumberOfCards();
+
 		Counter.text = value + "\n"+((value>1)?"Cards":"Card");
 
 		if (isMouseOver && Input.GetMouseButtonDown (0)) {
-			if (GameController.Singleton.currentPhase == Phase.Draw && GameController.Singleton.currentPlayer == ((int)player.civilization)) {
-				if (!player.hasDrawnCard) {				
-					player.hasDrawnCard = true;
+			if (GameController.Singleton.currentPhase == Phase.Draw && GameController.Singleton.currentPlayerNumber == ((int)currentCivilization)) {
+				if (!player.HasDrawnCard()) {				
+					player.SetDrawnCard(true);
 					player.DrawCard ();
 
-					GameController.Singleton.goToPhase (Phase.Action, player.civilization);
+					GameController.Singleton.goToPhase (Phase.Action, player.GetCivilization());
 				} else {
 					if(!player.hasCondition(ConditionType.DrawCard) && !Application.isEditor){
 						Debug.LogWarning ("You already drawn your card this turn");

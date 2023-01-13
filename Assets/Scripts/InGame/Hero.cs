@@ -119,7 +119,7 @@ public class Hero : MonoBehaviour {
 	public void Initialize(CardObject card){
 		this.cardObject = card;
 
-		this.card = cardObject.card;
+		this.card = cardObject.cardData;
 		player = cardObject.player;
 
 
@@ -168,7 +168,7 @@ public class Hero : MonoBehaviour {
 			GameController.SetTriggerType(TriggerType.OnBeginAttack, cardObject);
 			Hero hero = checkForEnemiesInFront ();
 			if (hero == null) {
-				if ((player.isRemotePlayer && gridPosition.y == 0) || (!player.isRemotePlayer && gridPosition.y == Grid.numberOfSquares - 1)) {
+				if ((player.GetPlayerType() == PlayerType.Remote && gridPosition.y == 0) || (player.GetPlayerType() == PlayerType.Local && gridPosition.y == Grid.numberOfSquares - 1)) {
 					Debug.LogWarning ("Attacked player with " + calculateAttackPower () + " damage");
 					LogController.Log (Action.AttackPlayer, calculateAttackPower(), player, GameController.getOpponent(player));
 					GameController.Singleton.AttackPlayer (calculateAttackPower ());
@@ -292,7 +292,8 @@ public class Hero : MonoBehaviour {
 	}
 
 	int movementDirection(){
-		if(player.isRemotePlayer){
+		if(player.GetPlayerType() == PlayerType.Remote)
+		{
 			return -1;
 		}else{
 			return 1;
