@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
 using System;
 
 public class PlaceableCard : MonoBehaviour
@@ -25,13 +24,13 @@ public class PlaceableCard : MonoBehaviour
 
 	protected virtual void Update()
     {
-		CheckMouseOver(true);
+		isMouseOver = CheckMouseOver(true);
     }
 
-	protected virtual void CheckMouseOver(bool needsMouseClick)
+	protected virtual bool CheckMouseOver(bool needsMouseClick)
 	{
 		if (needsMouseClick && !Input.GetMouseButton(0))
-			return;
+			return false;
 
 		string layerMask = LayerMask.LayerToName(this.gameObject.layer);
 		int layerMaskFinal = LayerMask.GetMask(layerMask);
@@ -43,11 +42,11 @@ public class PlaceableCard : MonoBehaviour
 
 		if (finalResults.FindAll(a => a.collider.gameObject == this.gameObject).Count > 0)
 		{
-			isMouseOver = true;
+			return true;
 		}
 		else
 		{
-			isMouseOver = false;
+			return false;
 		}
 	}
 

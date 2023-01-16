@@ -74,12 +74,14 @@ public class StackableCardController : PlaceableCard {
 
 		deckCounter.text = currentDeckSize + "\n" + ((currentDeckSize > 1) ? "Cards" : "Card");
 	}
-	protected override void CheckMouseOver(bool needsMouseClick)
+	protected override bool CheckMouseOver(bool needsMouseClick)
 	{
-		base.CheckMouseOver(needsMouseClick);
+		isMouseOver = base.CheckMouseOver(needsMouseClick);
 
 		if(isMouseOver && Input.GetMouseButtonDown(0) && CanClick())
 			OnClick();
+
+		return isMouseOver;
 	}
 	protected virtual void OnClick()
     {

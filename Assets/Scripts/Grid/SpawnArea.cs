@@ -7,81 +7,92 @@ public class SpawnArea : PlaceableCard {
 
 	public static SpawnArea selected;
 
-	Player player;
 	public bool LocalPlayer;
 	public bool canBeUsedToSpawn;
 	public bool doesHaveHero;
 
-	Color defaul = Color.grey;
+	Color @default = Color.grey;
 	Color max = Color.black;
 	new Renderer renderer;
-	bool OnMouseOver;
-	int layerMask;
-	RaycastHit[] results;
-	bool isMouseOver;
 
 	void Start () {
 		renderer = GetComponent<Renderer>();
-		defaul = new Color (0.66f, 0.66f, 0.66f, 1);
-		renderer = GetComponent<Renderer> ();
-		renderer.material.color = defaul;
+		@default = new Color (0.66f, 0.66f, 0.66f, 1);
+
+		renderer.material.color = @default;
 	}
 
 
-	protected void Update () {
+	protected void Update ()
+	{
 
-		if (GameController.Singleton.currentPhase == Phase.Action) {
-			doesHaveHero = Physics.CheckSphere (transform.position, 0.3f, 1 << LayerMask.NameToLayer ("Hero"));
+		if (GameController.Singleton.currentPhase == Phase.Action)
+		{
+			doesHaveHero = Physics.CheckSphere(transform.position, 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 		}
 
 		if (!GameController.Singleton.MatchHasStarted)
-        {
-			renderer.material.color = defaul;
+		{
+			renderer.material.color = @default;
 			return;
 		}
 
+		player = GameController.Singleton.currentPlayer;
 
-		player = GameController.Singleton.GetCurrentPlayer ();
-
-		if (!player.hasCondition(ConditionType.PickSpawnArea))
-			return;
-
-		base.CheckMouseOver(false);
-
-
-
-		if (isMouseOver)
+		if (player.hasCondition(ConditionType.PickSpawnArea))
 		{
-			Debug.Log("Over spawn area");
-			selected = this;
-		}
-		else if (selected == this)
-				selected = null;
+			var isLocal = player.GetPlayerType() == PlayerType.Local;
 
-		if (player.GetPlayerType() == PlayerType.Remote || (player.GetPlayerType() == PlayerType.Local && canBeUsedToSpawn))
-		{
-			layerMask = 1 << gameObject.layer;
-			results = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1000, layerMask);
-			if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count > 0)
+			if (isLocal || canBeUsedToSpawn)
 			{
-				if (!Physics.CheckSphere(transform.position, 0.3f, 1 << LayerMask.NameToLayer("Hero")))
+				isMouseOver = base.CheckMouseOver(false);
+
+				if (isMouseOver && !Physics.CheckSphere(transform.position, 0.3f, 1 << LayerMask.NameToLayer("Hero"))) 
 				{
 					renderer.material.color = max;
+				}
+				else
+				{
+					renderer.material.color = @default;
 				}
 			}
 			else
 			{
-				renderer.material.color = defaul;
+				renderer.material.color = @default;
 			}
 		}
 		else
 		{
-			renderer.material.color = defaul;
+
+			CheckMouse();
+
+			renderer.material.color = @default;
 		}
 	}
 
+	protected void CheckMouse()
+    {
+		isMouseOver = base.CheckMouseOver(true);
 
-	public override Vector3 GetTopPosition(){
+
+		if (isMouseOver && !Physics.CheckSphere(transform.position, 0.3f, 1 << LayerMask.NameToLayer("Hero")))
+		{ 
+			isMouseOver = true;
+
+			selected = this;
+		}
+		else
+		{
+			isMouseOver = false;
+
+			if (selected == this)
+			{
+				selected = null;
+			}
+		}
+	}
+
+    public override Vector3 GetTopPosition(){
 		Vector3 aux = transform.position;
 		aux.z-=renderer.bounds.size.z/2.5f;
 		aux.y+=0.1f;
