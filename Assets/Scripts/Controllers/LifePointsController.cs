@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class LifePointsController : MonoBehaviour {
@@ -83,15 +84,13 @@ public class LifePointsController : MonoBehaviour {
 	}
 
 	void Update () {
-        if (ROTATE)
-        {
-			SetLife(currentLife - 1);
-
-			ROTATE = false;
-		}
-
 		RotateChip();
 	}
 
+	[Button("Force Rotate Chip", EButtonEnableMode.Playmode)]
+	void ForceRotateChip()
+	{
+		SetLife(currentLife - 1);
+	}
 
 }

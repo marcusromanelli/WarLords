@@ -1200,7 +1200,7 @@ GameObject:
   - component: {fileID: 4012045369102082044}
   - component: {fileID: 4001779447091471936}
   m_Layer: 0
-  m_Name: HUD_LifeBar
+  m_Name: Life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,6 +1422,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4023595362930403968}
     m_Modifications:
+    - target: {fileID: 100000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
+      propertyPath: m_Name
+      value: LifePointsCoin
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
       propertyPath: m_RootOrder
       value: 0
