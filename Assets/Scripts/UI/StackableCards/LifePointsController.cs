@@ -1,26 +1,38 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-[ExecuteInEditMode]
+
 public class LifePointsController : MonoBehaviour {
 
 	[SerializeField] TextMesh sideA;
 	[SerializeField] TextMesh sideB;
 	[SerializeField] float rotationSpeed = 350;
-	[SerializeField] bool ROTATE;
 	[SerializeField] Side currentSide;
 
 	private int startLife;
 	private int currentLife;
 	private bool hasInitialized = false;
-	private Quaternion sideARotation = Quaternion.Euler(new Vector3(0, 180, 0));
-	private Quaternion sideBRotation = Quaternion.Euler(new Vector3(0, 180, 180));
+	private int sideBRotationAngle = 180;
+	private Quaternion sideARotation;
+	private Quaternion sideBRotation;
 
-		private enum Side{ A, B }
+	private enum Side{ A, B }
 	
 
-	void Start(){
+	void Awake(){
 		currentSide = Side.A;
+
+
+		SetupRotations();
+	}
+
+	void SetupRotations()
+    {
+		var currentRotation = transform.rotation.eulerAngles;
+		sideARotation = Quaternion.Euler(currentRotation);
+
+		currentRotation.z = sideBRotationAngle;
+		sideBRotation = Quaternion.Euler(currentRotation);
 	}
 
 	public void Setup(int startLife)

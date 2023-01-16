@@ -30,16 +30,17 @@ public class GameController : MonoBehaviour
 	}
 
 
-
-	bool waitingForStart;
-
 	public List<Player> Players;
 	protected List<MacroComponent> Macros;
 
-	public int currentPlayerNumber = -1;
+	public Player currentPlayer;
 	public Phase currentPhase;
 	public bool MatchHasStarted;
 	public static bool isExecutingMacro;
+
+
+	private Phase nextPhase;
+	private bool isChangingPhase;
 
 
 
@@ -67,38 +68,61 @@ public class GameController : MonoBehaviour
 			yield return null;
 		}
 
+
+		while (!player1.IsDeckFull() && !player2.IsDeckFull())
+		{
+			yield return null;
+		}
+
 		foreach (Player player in Players)
 		{
 			player.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
-			player.addCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+			player.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 		}
 
-		waitingForStart = true;
+		var hasConditions = true;
+        while (hasConditions)
+        {
+			yield return null;
+			hasConditions = player1.hasConditions() || player2.hasConditions();
+		}
+
+		StartGame();
 	}
 	void Update()
 	{
-		if (MatchHasStarted && Players[0].enabled)
+		WatchExitGame();
+
+		WatchEndGame();
+	}
+	void WatchEndGame()
+    {
+		if (!MatchHasStarted)
+			return;
+		
+		//TODO ARRRRG
+		if (Players[0].GetCurrentLife() <= 0)
 		{
-			//TODO ARRRRG
-			if (Players[0].GetCurrentLife() <= 0)
-			{
-				PhasesTitle.setWinner(Players[1]);
-				Players[0].enabled = false;
-				Players[1].enabled = false;
-			}
-			else if (Players[1].GetCurrentLife() <= 0)
-			{
-				PhasesTitle.setWinner(Players[0]);
-				Players[0].enabled = false;
-				Players[1].enabled = false;
-			}
+			PhasesTitle.setWinner(Players[1]);
+			Players[0].enabled = false;
+			Players[1].enabled = false;
+		}
+		else if (Players[1].GetCurrentLife() <= 0)
+		{
+			PhasesTitle.setWinner(Players[0]);
+			Players[0].enabled = false;
+			Players[1].enabled = false;
 		}
 	}
-
+	void WatchExitGame()
+    {
+		if (Input.GetKeyDown(KeyCode.Escape))
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
 	void StartGame()
 	{
 		MatchHasStarted = true;
-		nextTurn(Phase.Draw);
+		NextTurn(Phase.Draw);
 	}
 
 	void initializeList()
@@ -114,44 +138,43 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	void nextTurn(Phase phase = Phase.Draw)
+	void NextTurn(Phase phase = Phase.Draw)
 	{
 		currentPhase = phase;
-		if (currentPlayerNumber == -1)
+		if (currentPlayer == null)
 		{
-			currentPlayerNumber = 1;
-			Players[currentPlayerNumber].SetDrawnCard(true);
+			currentPlayer = Players[0];
+			currentPlayer.SetDrawnCard(true);
 		}
 		else
 		{
-			currentPlayerNumber = (currentPlayerNumber == 1) ? 0 : 1;
+			currentPlayer = (Players[1]) ? Players[0] : Players[1];
 		}
-		Players[currentPlayerNumber].StartTurn();
-		Debug.Log("Turno do jogador: " + (currentPlayerNumber + 1) + " começando na fase: " + currentPhase.ToString());
+
+		currentPlayer.StartTurn();
+
+		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());
 	}
-	Phase next;
-	bool isChangingPhase;
-	public void nextPhase()
+	public void NextPhase()
 	{
 		if (isChangingPhase)
 			return;
 
 		if (currentPhase == Phase.End)
 		{
-			var currentPlayer = Players[currentPlayerNumber];
 
 			if (currentPlayer.GetCurrentHandNumber() > GameConfiguration.maxNumberOfCardsInHand)
 			{
 				if (!currentPlayer.hasCondition(ConditionType.DiscartCard))
 				{
-					currentPlayer.addCondition(ConditionType.DiscartCard, (currentPlayer.GetCurrentHandNumber() - GameConfiguration.maxNumberOfCardsInHand));
+					currentPlayer.AddCondition(ConditionType.DiscartCard, (currentPlayer.GetCurrentHandNumber() - GameConfiguration.maxNumberOfCardsInHand));
 				}
-				Debug.LogWarning("Player " + currentPlayerNumber + " have " + currentPlayer.GetCurrentHandNumber() + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
+				Debug.LogWarning("Player " + currentPlayer + " have " + currentPlayer.GetCurrentHandNumber() + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
 				return;
 			}
 			else
 			{
-				nextTurn();
+				NextTurn();
 			}
 		}
 		else
@@ -160,10 +183,10 @@ public class GameController : MonoBehaviour
 			int player = allPlayersOk();
 			if (player < 0)
 			{
-				next = (Phase)((int)currentPhase) + 1;
+				nextPhase = (Phase)((int)currentPhase) + 1;
 				if (Enum.GetNames(typeof(Phase)).Length < ((int)currentPhase + 2))
 				{
-					nextTurn();
+					NextTurn();
 				}
 				else
 				{
@@ -193,35 +216,34 @@ public class GameController : MonoBehaviour
 		return val;
 	}
 
-	public void goToPhase(Phase phase, Civilization playerNumber)
+	public void GoToPhase(Phase phase, Player player)
 	{
-		if (currentPlayerNumber == ((int)playerNumber))
-		{
-			next = phase;
-			StartCoroutine("startChangingPhases");
-		}
+		if (currentPlayer != player)
+			return;
+
+		nextPhase = phase;
+		StartCoroutine("startChangingPhases");
 	}
 
 	public Player GetCurrentPlayer()
 	{
 		if (MatchHasStarted)
-		{
-			return Players[currentPlayerNumber];
-		}
+			return currentPlayer;
+
 		return null;
 	}
 	IEnumerator startChangingPhases()
 	{
 		isChangingPhase = true;
-		PhasesTitle.ChangePhase(next);
+		PhasesTitle.ChangePhase(nextPhase);
 
 		while (PhasesTitle.isFading)
 		{
 			yield return null;
 		}
 
-		Debug.LogWarning("New Phase: " + next.ToString());
-		currentPhase = next;
+		Debug.LogWarning("New Phase: " + nextPhase.ToString());
+		currentPhase = nextPhase;
 		isChangingPhase = false;
 		finishChangeingPhases();
 	}
@@ -241,7 +263,7 @@ public class GameController : MonoBehaviour
 				break;
 			case Phase.End:
 				Debug.LogError("Troca Fase 1");
-				nextPhase();
+				NextPhase();
 				break;
 		}
 	}
@@ -253,7 +275,8 @@ public class GameController : MonoBehaviour
 		});
 
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.player != Players[currentPlayerNumber]);
+		heroes.RemoveAll(a => a.player != currentPlayer);
+
 		foreach (Hero hero in heroes)
 		{
 			if (hero != null)
@@ -284,24 +307,24 @@ public class GameController : MonoBehaviour
 		});
 
 		yield return new WaitForSeconds(1);
-		nextPhase();
+		NextPhase();
 	}
 
 	public void AttackPlayer(int damage)
 	{
-		switch (currentPlayerNumber)
-		{
-			case 0:
-				Players[1].doDamage(damage);
-				break;
-			case 1:
-				Players[0].doDamage(damage);
-				break;
-		}
-		if (Players[currentPlayerNumber].GetPlayerType() == PlayerType.Remote)
-		{
+		Player target;
+
+		//TODO arg
+		if (currentPlayer == Players[0])
+			target = Players[1];
+		else
+			target = Players[0];
+
+
+		target.TakeDamage(damage);
+
+		if (currentPlayer.GetPlayerType() == PlayerType.Remote)
 			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));
-		}
 	}
 
 	public static void SetTriggerType(TriggerType trigger, CardObject hero)
@@ -389,14 +412,8 @@ public class GameController : MonoBehaviour
 		{
 			if (paux.hasConditions())
 			{
-				if (paux.GetPlayerType() == PlayerType.Remote)
-				{
-					final += "-----Remote Player:";
-				}
-				else
-				{
-					final += "-----You:";
-				}
+				final += paux.GetPlayerType().ToString();
+
 				final += "\n";
 
 				var conditions = paux.GetConditionList();

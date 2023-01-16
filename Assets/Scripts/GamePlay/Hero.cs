@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Hero : MonoBehaviour {
+public class Hero : PlaceableCard {
 
 	public bool doMoveForward;
 	public bool activateSkill1;
@@ -279,7 +279,7 @@ public class Hero : MonoBehaviour {
 		return gridPos;
 	}
 
-	public Vector3 getTopPosition(){
+	public override Vector3 GetTopPosition(){
 		return pivot.transform.position;
 	}
 

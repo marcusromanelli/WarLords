@@ -114,7 +114,7 @@ public class PhasesTitle : MonoBehaviour
 		switch (next)
 		{
 			case Phase.Action:
-				var currentPlayer = GameController.Singleton.Players[GameController.Singleton.currentPlayerNumber];
+				var currentPlayer = GameController.Singleton.currentPlayer;
 
 				if (currentPlayer.GetPlayerType() == PlayerType.Remote)
 				{

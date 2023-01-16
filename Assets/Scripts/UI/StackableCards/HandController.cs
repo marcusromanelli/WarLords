@@ -48,7 +48,7 @@ public abstract class HandController : MonoBehaviour{
 
 	Vector3 aux2;
 	public void AddCard(Card card){
-		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.getTopPosition(), deckController.getTopRotation());
+		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
 		aux.transform.SetParent(transform, true);
 
 

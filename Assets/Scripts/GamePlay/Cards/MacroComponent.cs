@@ -45,7 +45,7 @@ public class MacroComponent : MonoBehaviour {
 				auxiliarInt = currentPlayer.getNumberOfHeroes () + GameController.getOpponent(currentPlayer).getNumberOfHeroes();
 				if (auxiliarInt > auxiliarInt2) {
 					for (int i = 0; i < (auxiliarInt - auxiliarInt2); i++) {
-						GameController.getOpponent (originalCard.player).doDamage (Skill.skillLevel);	
+						GameController.getOpponent (originalCard.player).TakeDamage (Skill.skillLevel);	
 					}
 					auxiliarInt2 = auxiliarInt;
 				} else if (auxiliarInt2 > auxiliarInt) {
@@ -156,7 +156,7 @@ public class MacroComponent : MonoBehaviour {
 				RemoveMacro ();
 				break;
 			case MacroType.DirectDamage:
-				GameController.getOpponent (currentPlayer).doDamage (Skill.skillLevel);
+				GameController.getOpponent (currentPlayer).TakeDamage (Skill.skillLevel);
 				RemoveMacro ();
 				break;
 			case MacroType.BloodBrothers:
@@ -196,7 +196,7 @@ public class MacroComponent : MonoBehaviour {
 				break;
 			case MacroType.Sift:
 				originalCard.player.GetRandomCardFromDeck (Skill.skillLevel);
-				originalCard.player.addCondition (ConditionType.DiscartCard, 5);
+				originalCard.player.AddCondition (ConditionType.DiscartCard, 5);
 				RemoveMacro ();
 				break;
 			case MacroType.TripleStrike:
@@ -225,7 +225,7 @@ public class MacroComponent : MonoBehaviour {
 				foreach (Hero lol in derp) {
 					lol.Die ();
 				}
-				originalCard.player.doDamage (damage);
+				originalCard.player.TakeDamage (damage);
 				RemoveMacro ();
 				break;
 			case MacroType.Science:

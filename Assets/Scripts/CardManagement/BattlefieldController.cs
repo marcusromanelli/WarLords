@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
-public class BattlefieldController : MonoBehaviour {
+public class BattlefieldController : PlaceableCard {
 
 	CardObject cardWaitingForSpawn;
 	Player player;
@@ -44,7 +43,7 @@ public class BattlefieldController : MonoBehaviour {
 
 	public void Summon(CardObject hero){
 		hero.transform.SetParent(transform);
-		player.addCondition (ConditionType.PickSpawnArea);
+		player.AddCondition (ConditionType.PickSpawnArea);
 		GameController.SetTriggerType (TriggerType.OnBeforeSpawn, hero);
 		waitingForSpawnPoint = true;
 		cardWaitingForSpawn = hero;

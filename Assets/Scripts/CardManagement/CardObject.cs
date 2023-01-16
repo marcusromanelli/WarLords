@@ -193,9 +193,8 @@ public class CardObject : MonoBehaviour
 				{
 					hideSkillTree();
 					hideSummonButtons();
-					transform.position = Vector3.MoveTowards(transform.position, battlefieldController.getTopPosition(), Time.deltaTime * cardMovementSpeed);
-					transform.rotation = Quaternion.RotateTowards(transform.rotation, battlefieldController.getTopRotation(), Time.deltaTime * 600f);
-					transform.localScale = Vector3.MoveTowards(transform.localScale, battlefieldController.getTopScale(), Time.deltaTime * 15f);
+					transform.position = Vector3.MoveTowards(transform.position, battlefieldController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+					transform.rotation = Quaternion.RotateTowards(transform.rotation, battlefieldController.GetTopRotation(), Time.deltaTime * 600f);
 					hideSummonButtons();
 				}
 
@@ -222,37 +221,32 @@ public class CardObject : MonoBehaviour
 							{
 								hideSummonButtons();
 								offset.z = offset.x = 0;
-								if (GameController.Singleton.currentPlayerNumber == ((int)player.GetCivilization()) || player.hasCondition(ConditionType.DiscartCard) || player.hasCondition(ConditionType.DrawCard) || player.hasCondition(ConditionType.SendCardToManaPool))
+								if (GameController.Singleton.currentPlayer == player || player.hasCondition(ConditionType.DiscartCard) || player.hasCondition(ConditionType.DrawCard) || player.hasCondition(ConditionType.SendCardToManaPool))
 								{
-									if (deckController.isMouseOver)
+									if (deckController.IsMouseOver)
 									{
-										transform.position = Vector3.MoveTowards(transform.position, deckController.getTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.getTopRotation(), Time.deltaTime * 600f);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, deckController.getTopScale(), Time.deltaTime * 15f);
+										transform.position = Vector3.MoveTowards(transform.position, deckController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.GetTopRotation(), Time.deltaTime * 600f);
 									}
-									else if (manaPoolController.isMouseOver)
+									else if (manaPoolController.IsMouseOver)
 									{
-										transform.position = Vector3.MoveTowards(transform.position, manaPoolController.getBasePosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, manaPoolController.getTopRotation(), Time.deltaTime * 600f);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, manaPoolController.getTopScale(), Time.deltaTime * 15f);
+										transform.position = Vector3.MoveTowards(transform.position, manaPoolController.GetBasePosition(), Time.deltaTime * cardMovementSpeed);
+										transform.rotation = Quaternion.RotateTowards(transform.rotation, manaPoolController.GetTopRotation(), Time.deltaTime * 600f);
 									}
-									else if (graveyardController.isMouseOver)
+									else if (graveyardController.IsMouseOver)
 									{
-										transform.position = Vector3.MoveTowards(transform.position, graveyardController.getTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, graveyardController.getTopRotation(), Time.deltaTime * 600f);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, graveyardController.getTopScale(), Time.deltaTime * 15f);
+										transform.position = Vector3.MoveTowards(transform.position, graveyardController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+										transform.rotation = Quaternion.RotateTowards(transform.rotation, graveyardController.GetTopRotation(), Time.deltaTime * 600f);
 									}
 									else if (Hero.selectedHero != null)
 									{
-										transform.position = Vector3.MoveTowards(transform.position, Hero.selectedHero.getTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.getTopRotation(), Time.deltaTime * 600f);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, deckController.getTopScale(), Time.deltaTime * 15f);
+										transform.position = Vector3.MoveTowards(transform.position, Hero.selectedHero.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.GetTopRotation(), Time.deltaTime * 600f);
 									}
 									else if (SpawnArea.selected != null && SpawnArea.selected.LocalPlayer)
 									{
-										transform.position = Vector3.MoveTowards(transform.position, SpawnArea.selected.getTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, SpawnArea.selected.getTopRotation(), Time.deltaTime * 600f);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, SpawnArea.selected.getTopScale(), Time.deltaTime * 15f);
+										transform.position = Vector3.MoveTowards(transform.position, SpawnArea.selected.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+										transform.rotation = Quaternion.RotateTowards(transform.rotation, SpawnArea.selected.GetTopRotation(), Time.deltaTime * 600f);
 									}
 									else
 									{
@@ -349,16 +343,15 @@ public class CardObject : MonoBehaviour
 		isMouseDown = false;
 		if (SummonType == SummonType.DoNotApply)
 		{
-			if (deckController.isMouseOver)
+			if (deckController.IsMouseOver)
 			{
 				if (GameController.Singleton.currentPhase != Phase.Attack && GameController.Singleton.currentPhase != Phase.End && GameController.Singleton.currentPhase != Phase.Movement && GameController.Singleton.MatchHasStarted)
 				{
 					if (!player.HasUsedHability())
 					{
 						destiny = ActionType.CardToDeck;
-						destinyPosition = deckController.getTopPosition();
-						destinyRotation = deckController.getTopRotation();
-						destinyScale = deckController.getTopScale();
+						destinyPosition = deckController.GetTopPosition();
+						destinyRotation = deckController.GetTopRotation();
 						return;
 					}
 					else
@@ -373,7 +366,7 @@ public class CardObject : MonoBehaviour
 					Debug.LogWarning("This movement is not allowed now.");
 				}
 			}
-			else if (manaPoolController.isMouseOver)
+			else if (manaPoolController.IsMouseOver)
 			{
 				if (GameController.Singleton.MatchHasStarted)
 				{
@@ -382,9 +375,8 @@ public class CardObject : MonoBehaviour
 						if (!player.HasUsedHability())
 						{
 							destiny = ActionType.CardToManaPool;
-							destinyPosition = manaPoolController.getBasePosition();
-							destinyRotation = manaPoolController.getTopRotation();
-							destinyScale = manaPoolController.getTopScale();
+							destinyPosition = manaPoolController.GetBasePosition();
+							destinyRotation = manaPoolController.GetTopRotation();
 							return;
 						}
 						else
@@ -409,14 +401,13 @@ public class CardObject : MonoBehaviour
 					else
 					{
 						destiny = ActionType.CardToManaPool;
-						destinyPosition = manaPoolController.getBasePosition();
-						destinyRotation = manaPoolController.getTopRotation();
-						destinyScale = manaPoolController.getTopScale();
+						destinyPosition = manaPoolController.GetBasePosition();
+						destinyRotation = manaPoolController.GetTopRotation();
 						return;
 					}
 				}
 			}
-			else if (graveyardController.isMouseOver)
+			else if (graveyardController.IsMouseOver)
 			{
 				if (!player.hasCondition(ConditionType.DiscartCard) && !Application.isEditor)
 				{
@@ -426,9 +417,8 @@ public class CardObject : MonoBehaviour
 				else
 				{
 					destiny = ActionType.DiscartCard;
-					destinyPosition = graveyardController.getTopPosition();
-					destinyRotation = graveyardController.getTopRotation();
-					destinyScale = graveyardController.getTopScale();
+					destinyPosition = graveyardController.GetTopPosition();
+					destinyRotation = graveyardController.GetTopRotation();
 					return;
 				}
 			}
@@ -443,8 +433,7 @@ public class CardObject : MonoBehaviour
 						destiny = ActionType.BuffHero;
 
 						destinyPosition = target.pivot.transform.position;
-						destinyRotation = deckController.getTopRotation();
-						destinyScale = deckController.getTopScale();
+						destinyRotation = deckController.GetTopRotation();
 						return;
 					}
 				}
@@ -462,9 +451,8 @@ public class CardObject : MonoBehaviour
 					{
 						destiny = ActionType.SummonHero;
 
-						destinyPosition = SpawnArea.selected.getTopPosition();
-						destinyRotation = SpawnArea.selected.getTopRotation();
-						destinyScale = SpawnArea.selected.getTopScale();
+						destinyPosition = SpawnArea.selected.GetTopPosition();
+						destinyRotation = SpawnArea.selected.GetTopRotation();
 						return;
 					}
 					else

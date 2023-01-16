@@ -44,7 +44,7 @@ public class Condition : MonoBehaviour {
 				}
 				break;
 			case ConditionType.SendCardToManaPool:
-				if (playerHandNumber <= 0 || playerManaPoolNumber == originalStoredValue + targetQuantity || playerManaPoolNumber >= GameConfiguration.maxNumberOfCardsInManaPool)
+				if (/*playerHandNumber <= 0 || */playerManaPoolNumber == originalStoredValue + targetQuantity || playerManaPoolNumber >= GameConfiguration.maxNumberOfCardsInManaPool)
 				{
 					player.removeCondition(this);
 					Destroy(this);
@@ -80,9 +80,9 @@ public class Condition : MonoBehaviour {
 		case ConditionType.DiscartCard:
 			return "You have to discart " + Mathf.Abs(originalQuantityNumber)  + " cards.";
 		case ConditionType.DrawCard:
-			return "You have to draw " + Mathf.Abs(originalQuantityNumber - targetQuantity) + " cards.";
+			return "You have to draw " + targetQuantity + " cards.";
 		case ConditionType.SendCardToManaPool:
-			return "You have to send " +  Mathf.Abs(originalQuantityNumber - targetQuantity) + " cards to the mana pool.";
+			return "You have to send " + targetQuantity + " cards to the mana pool.";
 		case ConditionType.PickSpawnArea:
 			return "You have to pick an spawn area for a recently summoned hero.";
 		}
