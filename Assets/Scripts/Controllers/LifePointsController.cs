@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 
 [ExecuteInEditMode]
 public class LifePointsController : MonoBehaviour {
@@ -15,9 +12,11 @@ public class LifePointsController : MonoBehaviour {
 	private int startLife;
 	private int currentLife;
 	private bool hasInitialized = false;
+	private Quaternion sideARotation = Quaternion.Euler(new Vector3(0, 180, 0));
+	private Quaternion sideBRotation = Quaternion.Euler(new Vector3(0, 180, 180));
 
-	enum Side{ A, B }
-	bool doDamage;
+		private enum Side{ A, B }
+	
 
 	void Start(){
 		currentSide = Side.A;
@@ -66,16 +65,21 @@ public class LifePointsController : MonoBehaviour {
 
 	void RotateChip()
     {
+		Quaternion targetRotation;
 
 		switch (currentSide)
 		{
+			default:
 			case Side.A:
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 180, 0)), rotationSpeed * Time.deltaTime);
+				targetRotation = sideARotation;
 				break;
 			case Side.B:
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 180, 180)), rotationSpeed * Time.deltaTime);
+				targetRotation = sideBRotation;
 				break;
 		}
+
+		if(transform.rotation != targetRotation)
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 	}
 
 	void Update () {
