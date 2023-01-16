@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 4024137066351524924}
   - component: {fileID: 4024137066351524923}
   m_Layer: 0
-  m_Name: Life1
+  m_Name: SideA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 4024137066588675848}
   - component: {fileID: 4024137066588675847}
   m_Layer: 0
-  m_Name: Life2
+  m_Name: SideB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -566,7 +566,7 @@ MonoBehaviour:
   Deck: 
   civilization: 0
   life: 0
-  isRemotePlayer: 0
+  playerType: 0
   Hand:
   - CardID: 0
     PlayID: 0
@@ -588,7 +588,7 @@ MonoBehaviour:
   ManaPool: []
   Battlefield: []
   Conditions: []
-  HandObject: {fileID: 0}
+  HandObject: {fileID: 3912952149233179356}
   DeckController: {fileID: 3912952147278033878}
   ManaPoolController: {fileID: 3912952147446061438}
   GraveyardController: {fileID: 3912952149214902654}
@@ -645,7 +645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4a3f366b3af9f4797c6f0d013f0288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceBetweenCards: 0.01
+  deckCounter: {fileID: 3941488803416849020}
   isMouseOver: 0
 --- !u!65 &3980749401068479098
 BoxCollider:
@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f29b345b71cfd44aacaedded4169a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckController: {fileID: 3912952147278033878}
   cardFoldSpeed: 600
   cards: []
 --- !u!1 &4024835804514363286
@@ -1409,9 +1410,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5924bf7495994bf499d6d2d7bdce0e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 350
-  side: 0
-  doDamage: 0
+  sideA: {fileID: 4024137066351524923}
+  sideB: {fileID: 4024137066588675847}
+  rotationSpeed: 1200
+  ROTATE: 0
+  currentSide: 0
 --- !u!1001 &7551983596032461071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1453,15 +1456,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.00000004371139
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

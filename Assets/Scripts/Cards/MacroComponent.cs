@@ -17,7 +17,7 @@ public class MacroComponent : MonoBehaviour {
 
 	void Awake () {
 		isChecking = false;
-		currentPlayer = GameController.Singleton.getCurrentPlayer ();
+		currentPlayer = GameController.Singleton.GetCurrentPlayer ();
 	}
 	
 

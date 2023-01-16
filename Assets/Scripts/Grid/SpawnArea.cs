@@ -41,7 +41,7 @@ public class SpawnArea : MonoBehaviour {
 		}
 
 
-		player = GameController.Singleton.getCurrentPlayer ();
+		player = GameController.Singleton.GetCurrentPlayer ();
 		if (player!=null && player.hasCondition (ConditionType.PickSpawnArea)){
 
 			if(player.GetPlayerType() == PlayerType.Remote || (player.GetPlayerType() == PlayerType.Local && canBeUsedToSpawn)) {

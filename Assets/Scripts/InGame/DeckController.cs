@@ -5,74 +5,131 @@ using System.Collections.Generic;
 
 public class DeckController : MonoBehaviour {
 
-	public float distanceBetweenCards = 0.02f;
-	public bool isMouseOver;
 
-	TextMesh Counter;
-	GameObject coverTemplate;
-	Player player;
+	[SerializeField] TextMesh deckCounter;
+
+
+	private Player player;
+	private int currentDeckSize;
+	private GameObject deckObject;
+
+
+
+
+
+	public bool isMouseOver;
+	
 	Stack<GameObject> DeckCards;
 	GameObject aux;
 	float value = 0;
 	RaycastHit[] results;
 	int layerMask;
 
-	Civilization currentCivilization;
 
 	void Start(){
-
 		DeckCards = new Stack<GameObject> ();
-		player = GetComponentInParent<Player> ();
-		currentCivilization = player.GetCivilization();
-
-		coverTemplate = Resources.Load<GameObject> ("Prefabs/CardBackCover"+((int)currentCivilization));
-
-		Counter = transform.GetComponentInChildren<TextMesh> ();
 	}
-	void Update () {
-		if (player.GetCurrentPlayDeckCount() < getNumberOfCards()) {
-			Destroy (DeckCards.Pop ().gameObject);
-		} else if (player.GetCurrentPlayDeckCount() > getNumberOfCards()) {
-			(aux = (GameObject)Instantiate (coverTemplate, Vector3.zero, Quaternion.Euler (90, 0, 0))).transform.position = transform.position + Vector3.up * (distanceBetweenCards * DeckCards.Count);
-			DeckCards.Push (aux);
-			aux.transform.SetParent (transform, true);
-		}
-		value = getNumberOfCards();
 
-		Counter.text = value + "\n"+((value>1)?"Cards":"Card");
+	public void Setup(Player player)
+    {
+		this.player = player;
 
-		if (isMouseOver && Input.GetMouseButtonDown (0)) {
-			if (GameController.Singleton.currentPhase == Phase.Draw && GameController.Singleton.currentPlayerNumber == ((int)currentCivilization)) {
-				if (!player.HasDrawnCard()) {				
-					player.SetDrawnCard(true);
-					player.DrawCard ();
 
-					GameController.Singleton.goToPhase (Phase.Action, player.GetCivilization());
-				} else {
-					if(!player.hasCondition(ConditionType.DrawCard) && !Application.isEditor){
-						Debug.LogWarning ("You already drawn your card this turn");
-					}else{
-						player.DrawCard ();
-					}
+		InstantiateDeck();
+	}
+
+	void InstantiateDeck()
+    {
+		var coverTemplate = Resources.Load<GameObject>("Prefabs/CardBackCover" + ((int)player.GetCivilization()));
+
+		deckObject = Instantiate(coverTemplate);
+		deckObject.transform.SetParent(transform, true);
+		deckObject.transform.localPosition = Vector3.zero;
+		deckObject.transform.localRotation = Quaternion.Euler(90, 0, 0);
+		currentDeckSize = 0;
+	}
+
+	void SetDeckSize(int newSize)
+	{
+		if (newSize == 0)
+			return;
+
+		var scale = deckObject.transform.localScale;
+
+		scale.z += newSize;
+
+		deckObject.transform.localScale = scale;
+
+		currentDeckSize += newSize;
+	}
+	void SyncCardNumber()
+	{
+		var realDeckCount = player.GetCurrentPlayDeckCount();
+
+		var cardDelta = realDeckCount - currentDeckSize;
+
+		SetDeckSize(cardDelta);
+
+		deckCounter.text = realDeckCount + "\n" + ((realDeckCount > 1) ? "Cards" : "Card");
+	}
+
+	void CheckMouseOver()
+    {
+		if (!isMouseOver || !Input.GetMouseButtonDown(0))
+			return;
+
+		if (GameController.Singleton.currentPhase == Phase.Draw && GameController.Singleton.GetCurrentPlayer() == player)
+		{
+			if (!player.HasDrawnCard())
+			{
+				player.SetDrawnCard(true);
+				player.DrawCard();
+
+				GameController.Singleton.goToPhase(Phase.Action, player.GetCivilization());
+			}
+			else
+			{
+				if (!player.hasCondition(ConditionType.DrawCard) && !Application.isEditor)
+				{
+					Debug.LogWarning("You already drawn your card this turn");
 				}
-			} else {
-				if(!player.hasCondition(ConditionType.DrawCard) && !Application.isEditor){
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					Debug.LogWarning ("You only draw a card in your Drawn Phase");
-				}else{
-					player.DrawCard ();
+				else
+				{
+					player.DrawCard();
 				}
 			}
 		}
-			
+		else
+		{
+			if (!player.hasCondition(ConditionType.DrawCard) && !Application.isEditor)
+			{
+				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+				Debug.LogWarning("You only draw a card in your Drawn Phase");
+			}
+			else
+			{
+				player.DrawCard();
+			}
+		}
+
 		layerMask = 1 << gameObject.layer;
-		results = Physics.RaycastAll (Camera.main.ScreenPointToRay (Input.mousePosition), 1000, layerMask);
-		if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count>0) {
+		results = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1000, layerMask);
+		if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count > 0)
+		{
 			isMouseOver = true;
-		}else{
+		}
+		else
+		{
 			isMouseOver = false;
 		}
 	}
+
+	void Update () {
+		SyncCardNumber();
+
+		CheckMouseOver();
+	}
+
 
 	public int getNumberOfCards(){
 		if (DeckCards == null) {
@@ -82,7 +139,7 @@ public class DeckController : MonoBehaviour {
 	}
 
 	public Vector3 getTopPosition(){
-		return transform.position + Vector3.up * (distanceBetweenCards * ((getNumberOfCards()>0)?getNumberOfCards():1));
+		return transform.position + Vector3.up * deckObject.transform.localScale.y;
 	}
 
 	public Quaternion getTopRotation(){

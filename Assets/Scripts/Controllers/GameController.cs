@@ -55,15 +55,14 @@ public class GameController : MonoBehaviour
 	{
 		foreach (Player player in Players)
 		{
-			player.SetCivilization((Civilization)Players.Count);
-			Players.Add(player);
+			player.Setup();
 			player.StartGame();
 		}
 
 		var player1 = Players[0];
 		var player2 = Players[1];
 
-		while (player1.IsDeckFull() && player2.IsDeckFull())
+		while (!player1.IsDeckFull() && !player2.IsDeckFull())
 		{
 			yield return null;
 		}
@@ -203,7 +202,7 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	public Player getCurrentPlayer()
+	public Player GetCurrentPlayer()
 	{
 		if (MatchHasStarted)
 		{

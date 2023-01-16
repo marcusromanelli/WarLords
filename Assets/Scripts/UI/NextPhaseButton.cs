@@ -17,7 +17,7 @@ public class NextPhaseButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(GameController.Singleton.MatchHasStarted && GameController.Singleton.getCurrentPlayer() == player && GameController.Singleton.currentPhase == Phase.Action){
+		if(GameController.Singleton.MatchHasStarted && GameController.Singleton.GetCurrentPlayer() == player && GameController.Singleton.currentPhase == Phase.Action){
 			isHidden = false;
 		}else{
 			isHidden = true;

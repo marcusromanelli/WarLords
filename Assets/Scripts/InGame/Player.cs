@@ -42,8 +42,6 @@ public class Player : MonoBehaviour {
 	Action auxiliarAction;
 
 	void Awake(){
-		civilization = Civilization.DoNotApply;
-
 		PlayDeck = new Stack<Card> ();
 		Graveyard = new Stack<Card> ();
 		ManaPool = new List<Card> ();
@@ -55,8 +53,18 @@ public class Player : MonoBehaviour {
 		HandObject.setPlayer(this);
 	}
 
+	public void Setup()
+    {
+		DeckController.Setup(this);
+
+		var startLife = GameConfiguration.startLife;
+		LifePointsController.Setup(startLife);
+
+
+	}
+
 	public void StartGame(){
-		InitializeVariables();
+		Initialize();
 	}
 
 	public void StartTurn(){
@@ -69,7 +77,7 @@ public class Player : MonoBehaviour {
 		EndPhase();
 	}
 
-	void InitializeVariables(){
+	void Initialize(){
 		PlayDeck = new Stack<Card> ();
 		int c = 1;
 		Card aux2;
@@ -385,7 +393,7 @@ public class Player : MonoBehaviour {
 
 		life -= value;
 		if(life<0) life=0;
-		LifePointsController.setNewLife (life);
+		LifePointsController.SetLife (life);
 	}
 
 	public void AddLife(int value){
@@ -394,7 +402,7 @@ public class Player : MonoBehaviour {
 		life += value;
 	
 		GameConfiguration.PlaySFX(GameConfiguration.heal);
-		LifePointsController.setNewLife (life);
+		LifePointsController.SetLife(life);
 	}
 
 	public void killCard(CardObject card){
