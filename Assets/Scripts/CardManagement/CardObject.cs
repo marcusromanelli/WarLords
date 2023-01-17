@@ -12,6 +12,8 @@ public enum ManaStatus
 public class CardObject : MonoBehaviour
 {
 
+	public GameController gameController;
+	public Battlefield battlefield;
 	public Card cardData;
 	public bool isBeingHeld;
 	public bool isBeingVisualized;
@@ -31,6 +33,7 @@ public class CardObject : MonoBehaviour
 	Vector3 originalScale;
 	Vector3 mousePosition;
 	Vector3 destinyPosition, destinyScale;
+	SpawnArea selectedTile;
 	Quaternion destinyRotation;
 	ActionType destiny;
 	string civilizationName;
@@ -243,16 +246,21 @@ public class CardObject : MonoBehaviour
 										transform.position = Vector3.MoveTowards(transform.position, Hero.selectedHero.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
 										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.GetTopRotation(), Time.deltaTime * 600f);
 									}
-									else if (SpawnArea.selected != null && SpawnArea.selected.LocalPlayer)
-									{
-										transform.position = Vector3.MoveTowards(transform.position, SpawnArea.selected.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, SpawnArea.selected.GetTopRotation(), Time.deltaTime * 600f);
-									}
 									else
 									{
-										transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
-										transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(Vector3.right * 270), Time.deltaTime * handController.cardFoldSpeed);
-										transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale, Time.deltaTime * 15f);
+										var selectedTile = battlefield.GetSelectedTile();
+
+										if (selectedTile != null && selectedTile.player.GetPlayerType() == PlayerType.Local)
+										{
+											transform.position = Vector3.MoveTowards(transform.position, selectedTile.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+											transform.rotation = Quaternion.RotateTowards(transform.rotation, selectedTile.GetTopRotation(), Time.deltaTime * 600f);
+										}
+										else
+										{
+											transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
+											transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(Vector3.right * 270), Time.deltaTime * handController.cardFoldSpeed);
+											transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale, Time.deltaTime * 15f);
+										}
 									}
 								}
 								else
@@ -307,13 +315,13 @@ public class CardObject : MonoBehaviour
 									case ActionType.BuffHero:
 										GameConfiguration.PlaySFX(GameConfiguration.buffCard);
 										target.cardObject.AddSkill(cardData.Skills[1]);
-										GameController.SetTriggerType(TriggerType.OnBeforeSpawn, target.cardObject);
-										GameController.SetTriggerType(TriggerType.OnAfterSpawn, target.cardObject);
+										gameController.SetTriggerType(TriggerType.OnBeforeSpawn, target.cardObject);
+										gameController.SetTriggerType(TriggerType.OnAfterSpawn, target.cardObject);
 										target = null;
 										Destroy(this.gameObject);
 										break;
 									case ActionType.SummonHero:
-										if (!player.Summon(this, destinyPosition))
+										if (!player.Summon(this, selectedTile))
 										{
 											destiny = ActionType.NoAction;
 											isBeingHeld = false;
@@ -443,16 +451,18 @@ public class CardObject : MonoBehaviour
 					Debug.LogWarning("This movement is not allowed now.");
 				}
 			}
-			else if (SpawnArea.selected != null && !isBeingVisualized && isBeingHeld)
+			else if (battlefield.GetSelectedTile() != null && !isBeingVisualized && isBeingHeld)
 			{
+				selectedTile = battlefield.GetSelectedTile();
+
 				if (GameController.Singleton.MatchHasStarted)
 				{
 					if (player.canSpendMana(cardData.calculateCost()))
 					{
 						destiny = ActionType.SummonHero;
 
-						destinyPosition = SpawnArea.selected.GetTopPosition();
-						destinyRotation = SpawnArea.selected.GetTopRotation();
+						destinyPosition = selectedTile.GetTopPosition();
+						destinyRotation = selectedTile.GetTopRotation();
 						return;
 					}
 					else
@@ -538,7 +548,7 @@ public class CardObject : MonoBehaviour
 
 	public void Die()
 	{
-		GameController.SetTriggerType(TriggerType.OnBeforeDeath, this);
+		gameController.SetTriggerType(TriggerType.OnBeforeDeath, this);
 		player.killCard(this);
 	}
 
@@ -567,20 +577,24 @@ public class CardObject : MonoBehaviour
 		}
 	}
 
-	public void setCharacterSpawnArea(Vector3 area)
+	public void setCharacterSpawnArea(SpawnArea spawnArea)
 	{
+		var areaPosition = spawnArea.transform.position;
+
 		GameObject res = Resources.Load<GameObject>("Prefabs/Characters/" + civilizationName + "/" + cardData.name.Replace(" ", ""));
 		if (res == null)
 		{
 			Debug.LogError("Could not instantiate: " + civilizationName + "/" + cardData.name.Replace(" ", ""));
 		}
-		area = Grid.GridToUnity(Grid.UnityToGrid(area));
-		Character = ((GameObject)Instantiate(res, area, Quaternion.identity)).AddComponent<Hero>();
+
+		areaPosition = battlefield.GridToUnity(battlefield.UnityToGrid(areaPosition));
+
+		Character = ((GameObject)Instantiate(res, areaPosition, Quaternion.identity)).AddComponent<Hero>();
 
 		Character.setCard(cardData, player);
 		Character.Initialize(this);
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
-		GameController.SetTriggerType(TriggerType.OnAfterSpawn, this);
+		gameController.SetTriggerType(TriggerType.OnAfterSpawn, this);
 	}
 	public void Setup(int cardID, int playID, Player player)
 	{

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class IA : MonoBehaviour {
+
+	[SerializeField] Battlefield battlefield;
 	Player player;
 
 	void Start () {
@@ -14,47 +16,48 @@ public class IA : MonoBehaviour {
 
 
 	void solvePhase(){
-		var AIWillPlay = !player.hasConditions() && !player.IsDrawing() && GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == player;
+		var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == player;
 
 		if (!AIWillPlay)
 			return;
 
 
 		switch (GameController.Singleton.currentPhase) {
-		case Phase.Draw:
-			//if(!player.hasDrawnCard){
-				//player.DrawCard ();
-			//}
-			break;
-		case Phase.Action:
-			if (!player.HasUsedHability()) {
-				if (player.GetCurrentHandNumber() <= 2) {
-					player.DiscartCardToDrawTwo (getRandomCardFromHand ());
-				} else {
-					player.SendCardToManaPool (getRandomCardFromHand ());
+			case Phase.Draw:
+				//if(!player.hasDrawnCard){
+					//player.DrawCard ();
+				//}
+				break;
+			case Phase.Action:
+				if (!player.HasUsedHability()) {
+					if (player.GetCurrentHandNumber() <= 2) {
+						player.DiscartCardToDrawTwo (getRandomCardFromHand ());
+					} else {
+						player.SendCardToManaPool (getRandomCardFromHand ());
+					}
 				}
-			}
 
-			Card cd = getRandomCardFromHand ();
-			int cost = cd.calculateCost ();
+				Card cd = getRandomCardFromHand ();
+				int cost = cd.calculateCost ();
 
-			if (player.canSpendMana (cost)) {
-				List<SpawnArea> test = GameObject.FindObjectsOfType<SpawnArea> ().ToList ();
-				test.RemoveAll (a => a.LocalPlayer == true || a.doesHaveHero);
+				if (player.canSpendMana (cost)) {
+					List<SpawnArea> test = battlefield.GetEmptyFields(player);
+					test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.areaHero == null);
 
-				CardObject cad = player.GetHandObject().cards.Find (a => a.cardData.PlayID == cd.PlayID);
-				Vector3 pos = test [Random.Range (0, test.Count)].transform.position;
+					CardObject cad = player.GetHandObject().cards.Find (a => a.cardData.PlayID == cd.PlayID);
 
-				player.Summon (cad, pos);
-			}
+					var tile = test[Random.Range(0, test.Count)];
 
-			player.EndPhase ();
-			break;
+					player.Summon (cad, tile);
+				}
+
+				player.EndPhase ();
+				break;
 		}
 	}
 
 	void solveCondition()	{
-		var AIWillPlay = !player.hasConditions() || player.IsDrawing();
+		var AIWillPlay = !player.HasConditions() || player.IsDrawing();
 
 		if (!AIWillPlay)
 			return;

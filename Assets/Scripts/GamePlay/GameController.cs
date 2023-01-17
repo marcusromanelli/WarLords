@@ -30,7 +30,10 @@ public class GameController : MonoBehaviour
 	}
 
 
-	public List<Player> Players;
+	[SerializeField] Player LocalPlayer;
+	[SerializeField] Player RemotePlayer;
+
+
 	protected List<MacroComponent> Macros;
 
 	public Player currentPlayer;
@@ -42,50 +45,57 @@ public class GameController : MonoBehaviour
 	private Phase nextPhase;
 	private bool isChangingPhase;
 
+	enum Actions { Move, Attack }
 
 
 
 	void Start()
 	{
-		initializeList();
+		Initialize();
 		StartCoroutine("waitForDeck");
 
 	}
 
+	void StartupPlayers()
+	{
+		LocalPlayer.Setup();
+		LocalPlayer.StartGame();
+
+		RemotePlayer.Setup();
+		RemotePlayer.StartGame();
+	}
+	IEnumerator AwaitDeckFull()
+	{
+		while (!LocalPlayer.IsDeckFull() && !RemotePlayer.IsDeckFull())
+		{
+			yield return null;
+		}
+	}
+	IEnumerator AwaitConditionsResolve()
+	{
+		var hasConditions = true;
+		while (hasConditions)
+		{
+			yield return null;
+			hasConditions = LocalPlayer.HasConditions() || RemotePlayer.HasConditions();
+		}
+	}
+	void InitializePlayers() {
+		LocalPlayer.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
+		LocalPlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+
+		RemotePlayer.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
+		RemotePlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+	}
 	IEnumerator waitForDeck()
 	{
-		foreach (Player player in Players)
-		{
-			player.Setup();
-			player.StartGame();
-		}
+		StartupPlayers();
 
-		var player1 = Players[0];
-		var player2 = Players[1];
+		yield return AwaitDeckFull();
 
-		while (!player1.IsDeckFull() && !player2.IsDeckFull())
-		{
-			yield return null;
-		}
+		InitializePlayers();
 
-
-		while (!player1.IsDeckFull() && !player2.IsDeckFull())
-		{
-			yield return null;
-		}
-
-		foreach (Player player in Players)
-		{
-			player.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
-			player.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-		}
-
-		var hasConditions = true;
-        while (hasConditions)
-        {
-			yield return null;
-			hasConditions = player1.hasConditions() || player2.hasConditions();
-		}
+		yield return AwaitConditionsResolve();
 
 		StartGame();
 	}
@@ -96,26 +106,26 @@ public class GameController : MonoBehaviour
 		WatchEndGame();
 	}
 	void WatchEndGame()
-    {
+	{
 		if (!MatchHasStarted)
 			return;
-		
+
 		//TODO ARRRRG
-		if (Players[0].GetCurrentLife() <= 0)
+		if (LocalPlayer.GetCurrentLife() <= 0)
 		{
-			PhasesTitle.setWinner(Players[1]);
-			Players[0].enabled = false;
-			Players[1].enabled = false;
+			PhasesTitle.setWinner(RemotePlayer);
+			LocalPlayer.enabled = false;
+			RemotePlayer.enabled = false;
 		}
-		else if (Players[1].GetCurrentLife() <= 0)
+		else if (RemotePlayer.GetCurrentLife() <= 0)
 		{
-			PhasesTitle.setWinner(Players[0]);
-			Players[0].enabled = false;
-			Players[1].enabled = false;
+			PhasesTitle.setWinner(LocalPlayer);
+			LocalPlayer.enabled = false;
+			RemotePlayer.enabled = false;
 		}
 	}
 	void WatchExitGame()
-    {
+	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
@@ -125,17 +135,10 @@ public class GameController : MonoBehaviour
 		NextTurn(Phase.Draw);
 	}
 
-	void initializeList()
+	void Initialize()
 	{
-		if (Players == null)
-		{
-			Players = new List<Player>();
-		}
-
 		if (Macros == null)
-		{
 			Macros = new List<MacroComponent>();
-		}
 	}
 
 	void NextTurn(Phase phase = Phase.Draw)
@@ -143,12 +146,12 @@ public class GameController : MonoBehaviour
 		currentPhase = phase;
 		if (currentPlayer == null)
 		{
-			currentPlayer = Players[0];
+			currentPlayer = LocalPlayer;
 			currentPlayer.SetDrawnCard(true);
 		}
 		else
 		{
-			currentPlayer = (Players[1]) ? Players[0] : Players[1];
+			currentPlayer = (RemotePlayer) ? LocalPlayer : RemotePlayer;
 		}
 
 		currentPlayer.StartTurn();
@@ -180,7 +183,7 @@ public class GameController : MonoBehaviour
 		else
 		{
 
-			int player = allPlayersOk();
+			int player = AllPlayersOk();
 			if (player < 0)
 			{
 				nextPhase = (Phase)((int)currentPhase) + 1;
@@ -203,16 +206,20 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	public int allPlayersOk()
+	public int AllPlayersOk()
 	{
 		var val = -1;
-		foreach (Player player in Players)
+
+		if (LocalPlayer.HasConditions())
 		{
-			if (player.hasConditions())
-			{
-				return (int)player.GetCivilization();
-			}
+			return (int)LocalPlayer.GetCivilization();
 		}
+
+		if (RemotePlayer.HasConditions())
+		{
+			return (int)RemotePlayer.GetCivilization();
+		}
+
 		return val;
 	}
 
@@ -232,6 +239,7 @@ public class GameController : MonoBehaviour
 
 		return null;
 	}
+
 	IEnumerator startChangingPhases()
 	{
 		isChangingPhase = true;
@@ -267,12 +275,22 @@ public class GameController : MonoBehaviour
 				break;
 		}
 	}
-	enum Actions { Move, Attack }
+	void DisablePlayers()
+	{
+		TogglePlayers(false);
+	}
+	void EnablePlayers()
+	{
+		TogglePlayers(true);
+	}
+	void TogglePlayers(bool value)
+	{
+		LocalPlayer.enabled = value;
+		RemotePlayer.enabled = value;
+	}
 	IEnumerator doActions(Actions action)
 	{
-		Players.ForEach(delegate (Player obj) {
-			obj.enabled = false;
-		});
+		DisablePlayers();
 
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
 		heroes.RemoveAll(a => a.player != currentPlayer);
@@ -302,9 +320,7 @@ public class GameController : MonoBehaviour
 			}
 		}
 
-		Players.ForEach(delegate (Player obj) {
-			obj.enabled = true;
-		});
+		EnablePlayers();
 
 		yield return new WaitForSeconds(1);
 		NextPhase();
@@ -315,10 +331,10 @@ public class GameController : MonoBehaviour
 		Player target;
 
 		//TODO arg
-		if (currentPlayer == Players[0])
-			target = Players[1];
+		if (currentPlayer == LocalPlayer)
+			target = RemotePlayer;
 		else
-			target = Players[0];
+			target = LocalPlayer;
 
 
 		target.TakeDamage(damage);
@@ -327,14 +343,14 @@ public class GameController : MonoBehaviour
 			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));
 	}
 
-	public static void SetTriggerType(TriggerType trigger, CardObject hero)
+	public void SetTriggerType(TriggerType trigger, CardObject hero)
 	{
 		List<Skill> aux = hero.cardData.hasSkillType(trigger);
 		List<Skill> aux2 = hero.cardData.hasSkillType(TriggerType.Passive);
 
 		foreach (Skill auxs in aux)
 		{
-			GameController.AddMacro(auxs, hero);
+			AddMacro(auxs, hero);
 		}
 
 
@@ -342,32 +358,33 @@ public class GameController : MonoBehaviour
 		{
 			foreach (Skill auxs in aux2)
 			{
-				GameController.AddMacro(auxs, hero);
+				AddMacro(auxs, hero);
 			}
 		}
 	}
 
-	public static List<MacroComponent> GetMacrosFromPlayer(Player player)
+	public List<MacroComponent> GetMacrosFromPlayer(Player player)
 	{
-		return Singleton.GetComponents<MacroComponent>().ToList().FindAll(a => a.originalCard.player = player);
+		return Macros.FindAll(macro => macro.GetPlayer() == player);
 	}
-	public static void AddMacro(Skill skill, CardObject hero)
+	public void AddMacro(Skill skill, CardObject hero)
 	{
 		if (!IsMacroActive(hero, skill))
 		{
-			MacroComponent aux = GameController.Singleton.gameObject.AddComponent<MacroComponent>();
-			aux.SetValues(skill, hero);
-			GameController.Singleton.Macros.Add(aux);
-			if (!GameController.Singleton.Macros[0].isChecking)
-			{
-				GameController.Singleton.Macros[0].setActive();
-			}
+			MacroComponent aux = Singleton.gameObject.AddComponent<MacroComponent>();
+
+			aux.Setup(this, skill, hero);
+
+			Singleton.Macros.Add(aux);
+
+			if (!Singleton.Macros[0].IsResolving)
+				Singleton.Macros[0].setActive();
 		}
 	}
 
-	public static bool IsMacroActive(CardObject card, Skill skill)
+	public bool IsMacroActive(CardObject card, Skill skill)
 	{
-		return (GameController.Singleton.Macros.FindAll(a => a.originalCard.cardData.PlayID == card.cardData.PlayID && a.Skill.triggerType == skill.triggerType).Count > 0);
+		return Macros.FindAll(macro => macro.GetCardObject().cardData.PlayID == card.cardData.PlayID && macro.GetSkill().triggerType == skill.triggerType).Count > 0;
 	}
 
 	public static void RemoveMacro(MacroComponent condition)
@@ -378,21 +395,55 @@ public class GameController : MonoBehaviour
 	}
 
 
-	public static Player getOpponent(Player player)
+	public Player GetOpponent(Player player)
 	{
-		if (player.GetCivilization() == Civilization.Aeterna)
-		{
-			return GameController.Singleton.Players.Find(a => a.GetCivilization() == Civilization.Arkamore);
-		}
-		else
-		{
-			return GameController.Singleton.Players.Find(a => a.GetCivilization() == Civilization.Aeterna);
-		}
+		return player == LocalPlayer ? RemotePlayer : LocalPlayer;
 	}
 
-	public static Player GetLocalPlayer()
+	public Player GetLocalPlayer()
 	{
-		return Singleton.Players.Find(a => a.GetPlayerType() == PlayerType.Local);
+		return LocalPlayer;
+	}
+	public Player GetRemotePlayer()
+	{
+		return RemotePlayer;
+	}
+
+	string GetPlayerConditionPrint(Player player)
+    {
+		string final = "";
+
+		if (player.HasConditions())
+		{
+			final += player.GetPlayerType().ToString();
+
+			final += "\n";
+
+			var conditions = player.GetConditionList();
+
+			foreach (Condition cond in conditions)
+			{
+				final += cond.getDescription() + "\n";
+			}
+		}
+		final += "\n\n";
+
+		return final;
+	}
+
+	string GetPlayersConditionsPrint()
+	{
+		return GetPlayerConditionPrint(LocalPlayer) + GetPlayerConditionPrint(RemotePlayer);
+	}
+
+	int GetPlayerConditionsNumber(Player player)
+	{
+		return player.GetConditionList().Count;
+	}
+
+	int GetPlayersConditionsNumber()
+	{
+		return GetPlayerConditionsNumber(LocalPlayer) + GetPlayerConditionsNumber(RemotePlayer);
 	}
 
 	void OnGUI()
@@ -407,25 +458,10 @@ public class GameController : MonoBehaviour
 		//}
 
 		string final = "";
-		int count = 0;
-		foreach (Player paux in Players)
-		{
-			if (paux.hasConditions())
-			{
-				final += paux.GetPlayerType().ToString();
+		int count = GetPlayersConditionsNumber();
 
-				final += "\n";
+		final += GetPlayersConditionsPrint();
 
-				var conditions = paux.GetConditionList();
-
-				foreach (Condition cond in conditions)
-				{
-					final += cond.getDescription() + "\n";
-				}
-				count++;
-			}
-			final += "\n\n";
-		}
 		if (count > 0)
 		{
 			final = "Waiting for these actions: \n\n" + final;
@@ -434,12 +470,12 @@ public class GameController : MonoBehaviour
 		}
 
 		final = "Current working macros:\n\n";
-		foreach (MacroComponent macro in GetComponents<MacroComponent>())
+		foreach (MacroComponent macro in Macros)
 		{
 			final += macro.getDescription() + "\n";
 		}
 
-		if (GetComponent<MacroComponent>() != null)
+		if (Macros.Count > 0)
 		{
 			Rect derp = new Rect(0, 0, 450, 50 * GetComponents<MacroComponent>().Length);
 			GUI.Box(derp, final);

@@ -384,7 +384,7 @@ public class Player : MonoBehaviour
 			Conditions[0].setActive();
 	}
 
-	public bool hasConditions()
+	public bool HasConditions()
 	{
 		return (Conditions.Count > 0);
 	}
@@ -404,7 +404,7 @@ public class Player : MonoBehaviour
 		GameController.Singleton.NextPhase();
 	}
 
-	public bool Summon(CardObject card, Vector3 position)
+	public bool Summon(CardObject card, SpawnArea area)
 	{
 		int value = card.cardData.calculateCost();
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
@@ -416,7 +416,7 @@ public class Player : MonoBehaviour
 				SpendMana(value);
 
 				card.SummonType = SummonType.Monster;
-				BattlefieldController.Summon(card, position);
+				BattlefieldController.Summon(card, area);
 				Battlefield.Add(card);
 				Hand.Remove(card.cardData);
 

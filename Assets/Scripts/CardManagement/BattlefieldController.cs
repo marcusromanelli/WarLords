@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 
-public class BattlefieldController : PlaceableCard {
-
+public class BattlefieldController : PlaceableCard 
+{
+	[SerializeField] Battlefield battlefield;
+	[SerializeField] GameController gameController;
 	CardObject cardWaitingForSpawn;
 	Player player;
 	RaycastHit[] results;
@@ -17,24 +19,28 @@ public class BattlefieldController : PlaceableCard {
 		player = GetComponentInParent<Player> ();
 	}
 		
-	void Update () { 
-		if (waitingForSpawnPoint) {
-			layerMask = 1 << 13;
-			results = Physics.RaycastAll (Camera.main.ScreenPointToRay (Input.mousePosition), 1000, layerMask);
-			List<RaycastHit> result = results.ToList ().FindAll (a => (a.collider.GetComponent<SpawnArea> () != null && (a.collider.GetComponent<SpawnArea>().LocalPlayer || (!a.collider.GetComponent<SpawnArea>().LocalPlayer && a.collider.GetComponent<SpawnArea>().canBeUsedToSpawn))));
-
-			if (result.Count>0 && Input.GetMouseButtonDown(0)){
-				if(Physics.CheckSphere(result[0].transform.position, 0.3f, 1 << LayerMask.NameToLayer("Hero"))){
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-				}else{
-					cardWaitingForSpawn.setCharacterSpawnArea(result[0].transform.position);
-					waitingForSpawnPoint = false;
-					cardWaitingForSpawn = null;
-				}
-			}
-		}
+	void Update () {
+		CheckEmptySpawnArea();
 	}
 
+
+	void CheckEmptySpawnArea()
+    {
+		var currentTile = battlefield.GetSelectedTile();
+
+		if (!waitingForSpawnPoint || currentTile == null || !Input.GetMouseButton(0))
+			return;
+
+		if (currentTile.areaHero != null)
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			return;
+		}
+
+		cardWaitingForSpawn.setCharacterSpawnArea(currentTile);
+		waitingForSpawnPoint = false;
+		cardWaitingForSpawn = null;
+	}
 
 
 	float calculateZ(int number){
@@ -44,20 +50,20 @@ public class BattlefieldController : PlaceableCard {
 	public void Summon(CardObject hero){
 		hero.transform.SetParent(transform);
 		player.AddCondition (ConditionType.PickSpawnArea);
-		GameController.SetTriggerType (TriggerType.OnBeforeSpawn, hero);
+		gameController.SetTriggerType (TriggerType.OnBeforeSpawn, hero);
 		waitingForSpawnPoint = true;
 		cardWaitingForSpawn = hero;
 	}
 
-	public void Summon(CardObject hero, Vector3 position){
+	public void Summon(CardObject hero, SpawnArea area){
 		hero.transform.SetParent(transform);
-		hero.setCharacterSpawnArea(position);
+		hero.setCharacterSpawnArea(area);
 	}
 
 	public void Kill(CardObject card){
 		Hero hero = card.Character;
 		Destroy (hero.gameObject);
-		GameController.SetTriggerType(TriggerType.OnAfterDeath, card);
+		gameController.SetTriggerType(TriggerType.OnAfterDeath, card);
 		Destroy (card.gameObject);
 	}
 		

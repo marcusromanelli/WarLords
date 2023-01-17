@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PhasesTitle : MonoBehaviour
 {
+	[SerializeField] GameController gameController;
 
 	private static PhasesTitle __singleton;
 	public static PhasesTitle Singleton
@@ -57,7 +58,7 @@ public class PhasesTitle : MonoBehaviour
 	{
 		if (!Singleton.finish)
 		{
-			if (player.GetCivilization() == GameController.GetLocalPlayer().GetCivilization())
+			if (player.GetCivilization() == Singleton.gameController.GetLocalPlayer().GetCivilization())
 			{
 				Singleton.image.sprite = Singleton.Win;
 			}

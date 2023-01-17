@@ -753,6 +753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4afdbfe365dc70048adcbce612b06609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 0}
   Combat: {fileID: 21300000, guid: 9874d53c20076c84bb2923a1eb88994e, type: 3}
   Enemy: {fileID: 21300000, guid: 1549888b879535e47b5e7d6da9dfeb33, type: 3}
   Movement: {fileID: 21300000, guid: 714975e57a96a44449760f6bdfe2eac4, type: 3}

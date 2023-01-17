@@ -3,309 +3,375 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MacroComponent : MonoBehaviour {
+public class MacroComponent : MonoBehaviour
+{
+	Player Player;
+	GameController GameController;
+	Battlefield battlefield;
+	public bool IsResolving { get; private set; }
 
-	Player currentPlayer;
-	public CardObject originalCard;
+	CardObject CardObject;
 
 
-	public Skill Skill;
-	public bool isChecking;
+	Skill Skill;
 
-	List<GameObject> auxiliarList;
+	List<SpawnArea> spawnAreaAuxiliarList;
+	List<Hero> heroAuxiliarList;
+
 	int auxiliarInt, auxiliarInt2, auxiliarInt3, auxiliarInt4;
 
-	void Awake () {
-		isChecking = false;
-		currentPlayer = GameController.Singleton.GetCurrentPlayer ();
+	void Awake()
+	{
+		IsResolving = false;
 	}
-	
 
-	void Update () {
-		if (isChecking) {
-			switch (Skill.macroType) {
+
+	void Update()
+	{
+		if (!IsResolving)
+			return;
+
+		var currentPlayer = GameController.Singleton.currentPlayer;
+
+		switch (Skill.macroType)
+		{
 			case MacroType.Invader:
-				if (!currentPlayer.hasCondition (ConditionType.PickSpawnArea)) {
-					RemoveMacro ();
+				if (!currentPlayer.hasCondition(ConditionType.PickSpawnArea))
+				{
+					RemoveMacro();
 				}
 				break;
 			case MacroType.BloodBrothers:
 				//auxint = numero de personagens que o cara tem em campo
 				//auxint2 = numero que a macro acha que tem em campo
-				auxiliarInt = currentPlayer.getNumberOfHeroes ();
-				if (auxiliarInt > auxiliarInt2) {
+				auxiliarInt = currentPlayer.getNumberOfHeroes();
+				if (auxiliarInt > auxiliarInt2)
+				{
 					auxiliarInt2 = auxiliarInt;
-					originalCard.Character.AddAttack (Skill.skillLevel);
-					originalCard.Character.AddLife (Skill.skillLevel);
-				} else if (auxiliarInt2 > auxiliarInt) {
+					CardObject.Character.AddAttack(Skill.skillLevel);
+					CardObject.Character.AddLife(Skill.skillLevel);
+				}
+				else if (auxiliarInt2 > auxiliarInt)
+				{
 					auxiliarInt2 = auxiliarInt;
 				}
 				break;
 			case MacroType.Scourge:
-				auxiliarInt = currentPlayer.getNumberOfHeroes () + GameController.getOpponent(currentPlayer).getNumberOfHeroes();
-				if (auxiliarInt > auxiliarInt2) {
-					for (int i = 0; i < (auxiliarInt - auxiliarInt2); i++) {
-						GameController.getOpponent (originalCard.player).TakeDamage (Skill.skillLevel);	
+				auxiliarInt = currentPlayer.getNumberOfHeroes() + GameController.GetOpponent(currentPlayer).getNumberOfHeroes();
+				if (auxiliarInt > auxiliarInt2)
+				{
+					for (int i = 0; i < (auxiliarInt - auxiliarInt2); i++)
+					{
+						GameController.GetOpponent(CardObject.player).TakeDamage(Skill.skillLevel);
 					}
 					auxiliarInt2 = auxiliarInt;
-				} else if (auxiliarInt2 > auxiliarInt) {
+				}
+				else if (auxiliarInt2 > auxiliarInt)
+				{
 					auxiliarInt2 = auxiliarInt;
 				}
 
 				break;
 			case MacroType.Science:
-				auxiliarInt = originalCard.Character.card.Skills.Count;
-				if (auxiliarInt > auxiliarInt2) {
-					originalCard.player.DrawCard ();
+				auxiliarInt = CardObject.Character.card.Skills.Count;
+				if (auxiliarInt > auxiliarInt2)
+				{
+					CardObject.player.DrawCard();
 					auxiliarInt2 = auxiliarInt;
-				} else if (auxiliarInt2 > auxiliarInt) {
+				}
+				else if (auxiliarInt2 > auxiliarInt)
+				{
 					auxiliarInt2 = auxiliarInt;
 				}
 				break;
-			}
 		}
-		//if (originalCard == null || originalCard.Character == null) {
-		//	RemoveMacro();
-		//}
 	}
 
-	void RemoveMacro(){
-		switch (Skill.macroType) {
-		case MacroType.Invader:
-			auxiliarList.ForEach (delegate(GameObject obj) {
-				if(obj.GetComponent<SpawnArea>().LocalPlayer==false){
-					obj.GetComponent<SpawnArea>().canBeUsedToSpawn = true;
-				}
-			});
-			break;
-		}
-		Debug.LogWarning("Macro "+Skill.macroType.ToString()+" removed");
-		GameController.RemoveMacro(this);
-		Destroy (this);
-	}
-	public void setActive(){
-		Initialize ();
-	}
-	public void SetValues(Skill type, CardObject hero){
-		Skill = type;
-		originalCard = hero;
-		isChecking = false;
-		if (type.triggerType == TriggerType.Passive) {
-			Initialize ();
-		}
-	}
-		
-	public string getDescription(){
-		return Skill.name+" - "+Skill.description;
-	}
-	public void Unenchant(){
-		switch (Skill.macroType) {
-		case MacroType.BloodBrothers:
-			originalCard.Character.RemoveAttack (Skill.skillLevel);
-			originalCard.Character.ResetLife ();
-			break;
-		case MacroType.Exalt:
-			foreach (GameObject aux in auxiliarList) {
-				if (aux != null && aux.GetComponent<Hero> ()) {
-					aux.GetComponent<Hero> ().RemoveAttack (Skill.skillLevel);
-				}
-			}
-			break;
-		default:
-			Debug.Log (Skill.macroType.ToString () + " does not have an unenchant case");	
-			break;
-		}
-		RemoveMacro ();
-	}
-	void Initialize(){
-		isChecking = true;
-		auxiliarList = new List<GameObject> ();
-		LogController.Log (Action.UseMacro, originalCard.player, Skill.macroType);
-
-		switch (Skill.macroType) {
+	void RemoveMacro()
+	{
+		switch (Skill.macroType)
+		{
 			case MacroType.Invader:
-				List<SpawnArea> spawns = GameObject.FindObjectsOfType<SpawnArea> ().ToList ();
-				spawns.ForEach (delegate(SpawnArea obj) {
-					if(obj.LocalPlayer == false){
-						//obj.LocalPlayer = true;
-						obj.canBeUsedToSpawn = true;
-						auxiliarList.Add(obj.gameObject);	
+				spawnAreaAuxiliarList.ForEach(delegate (SpawnArea obj) {
+					if (obj.player.GetPlayerType() == PlayerType.Remote)
+					{
+						obj.TemporarilySummonable = true;
+					}
+				});
+				break;
+		}
+		Debug.LogWarning("Macro " + Skill.macroType.ToString() + " removed");
+		GameController.RemoveMacro(this);
+		Destroy(this);
+	}
+	public void setActive()
+	{
+		Initialize();
+	}
+	public void Setup(GameController gameController, Skill type, CardObject hero)
+	{
+		Skill = type;
+		CardObject = hero;
+		IsResolving = false;
+		GameController = gameController;
+		Player = hero.player;
+
+		if (type.triggerType == TriggerType.Passive)
+		{
+			Initialize();
+		}
+	}
+
+	public string getDescription()
+	{
+		return Skill.name + " - " + Skill.description;
+	}
+	public void Unenchant()
+	{
+		switch (Skill.macroType)
+		{
+			case MacroType.BloodBrothers:
+				CardObject.Character.RemoveAttack(Skill.skillLevel);
+				CardObject.Character.ResetLife();
+				break;
+			case MacroType.Exalt:
+				foreach (SpawnArea aux in spawnAreaAuxiliarList)
+				{
+					if (aux != null && aux.GetComponent<Hero>())
+					{
+						aux.GetComponent<Hero>().RemoveAttack(Skill.skillLevel);
+					}
+				}
+				break;
+			default:
+				Debug.Log(Skill.macroType.ToString() + " does not have an unenchant case");
+				break;
+		}
+		RemoveMacro();
+	}
+	void Initialize()
+	{
+		IsResolving = true;
+		spawnAreaAuxiliarList = new List<SpawnArea>();
+		LogController.Log(Action.UseMacro, CardObject.player, Skill.macroType);
+
+		var currentPlayer = GameController.Singleton.currentPlayer;
+
+		switch (Skill.macroType)
+		{
+			case MacroType.Invader:
+				List<SpawnArea> spawns = GameObject.FindObjectsOfType<SpawnArea>().ToList();
+				spawns.ForEach(delegate (SpawnArea obj) {
+					if (obj.player.GetPlayerType() == PlayerType.Remote)
+					{
+						obj.TemporarilySummonable = true;
+						spawnAreaAuxiliarList.Add(obj);
 					}
 				});
 				break;
 			case MacroType.Lifelink:
-				originalCard.player.AddLife (originalCard.Character.lastGivenDamage);
-				RemoveMacro ();
+				CardObject.player.AddLife(CardObject.Character.lastGivenDamage);
+				RemoveMacro();
 				break;
 			case MacroType.Abundance:
-				Debug.Log ("Rodando Abundance");
-				foreach (Player aux in GameController.Singleton.Players) {
-					aux.DrawCard (Skill.skillLevel);
-					aux.AddMana (Skill.skillLevel);
+				Debug.Log("Rodando Abundance");
+
+				void AbundancePlayer(Player player)
+				{
+					player.DrawCard(Skill.skillLevel);
+					player.AddMana(Skill.skillLevel);
 				}
-				RemoveMacro ();
+
+				AbundancePlayer(GameController.GetLocalPlayer());
+				AbundancePlayer(GameController.GetRemotePlayer());
+
+				RemoveMacro();
 				break;
 			case MacroType.Quicken:
-				currentPlayer.AddMana (Skill.skillLevel);
-				RemoveMacro ();
+				currentPlayer.AddMana(Skill.skillLevel);
+				RemoveMacro();
 				break;
 			case MacroType.EnergyFlare:
-				foreach (Player aux in GameController.Singleton.Players) {
-					aux.AddMana (Skill.skillLevel);
+				void EnergyFlarePlayer(Player player)
+				{
+					player.AddMana(Skill.skillLevel);
 				}
-				RemoveMacro ();
+
+				EnergyFlarePlayer(GameController.GetLocalPlayer());
+				EnergyFlarePlayer(GameController.GetRemotePlayer());
+
+				RemoveMacro();
 				break;
 			case MacroType.DirectDamage:
-				GameController.getOpponent (currentPlayer).TakeDamage (Skill.skillLevel);
-				RemoveMacro ();
+				GameController.GetOpponent(currentPlayer).TakeDamage(Skill.skillLevel);
+				RemoveMacro();
 				break;
 			case MacroType.BloodBrothers:
-				auxiliarInt = currentPlayer.getNumberOfHeroes ();
+				auxiliarInt = currentPlayer.getNumberOfHeroes();
 				auxiliarInt2 = auxiliarInt;
 				break;
 			case MacroType.Excavate:
-				currentPlayer.GetRandomCardFromGraveyard ();
-				RemoveMacro ();
+				currentPlayer.GetRandomCardFromGraveyard();
+				RemoveMacro();
 				break;
 			case MacroType.Renew:
-				originalCard.player.DrawCard ();
-				RemoveMacro ();
+				CardObject.player.DrawCard();
+				RemoveMacro();
 				break;
 			case MacroType.Dispel:
-				Player en = GameController.getOpponent(currentPlayer);
+				Player en = GameController.GetOpponent(currentPlayer);
 				var battleField = en.GetBattlefieldList();
 
-				foreach(CardObject enemy in battleField)
-					{
+				foreach (CardObject enemy in battleField)
+				{
 					enemy.Character.DisableSkills();
 				}
-				foreach(MacroComponent aux in GameController.GetMacrosFromPlayer(en)){
+				foreach (MacroComponent aux in GameController.GetMacrosFromPlayer(en))
+				{
 					aux.Unenchant();
 				}
-				RemoveMacro ();
+				RemoveMacro();
 				break;
 			case MacroType.Scourge:
-				auxiliarInt = currentPlayer.getNumberOfHeroes () + GameController.getOpponent (currentPlayer).getNumberOfHeroes ()+1;
+				auxiliarInt = currentPlayer.getNumberOfHeroes() + GameController.GetOpponent(currentPlayer).getNumberOfHeroes() + 1;
 				auxiliarInt2 = auxiliarInt;
 				break;
 			case MacroType.Speed:
 				//if (!originalCard.Character.card.hasSkill (MacroType.Speed).isActive) {
-					originalCard.Character.AddWalkSpeed (Skill.skillLevel);
+				CardObject.Character.AddWalkSpeed(Skill.skillLevel);
 				//}
-				RemoveMacro ();
+				RemoveMacro();
 				break;
 			case MacroType.Sift:
-				originalCard.player.GetRandomCardFromDeck (Skill.skillLevel);
-				originalCard.player.AddCondition (ConditionType.DiscartCard, 5);
-				RemoveMacro ();
+				CardObject.player.GetRandomCardFromDeck(Skill.skillLevel);
+				CardObject.player.AddCondition(ConditionType.DiscartCard, 5);
+				RemoveMacro();
 				break;
 			case MacroType.TripleStrike:
-				originalCard.Character.AddNumberOfAttacks (2);
-				RemoveMacro ();
+				CardObject.Character.AddNumberOfAttacks(2);
+				RemoveMacro();
 				break;
 			case MacroType.DoubleStrike:
-				originalCard.Character.AddNumberOfAttacks (1);
-				RemoveMacro ();
+				CardObject.Character.AddNumberOfAttacks(1);
+				RemoveMacro();
 				break;
 			case MacroType.Exalt:
-				Vector2 pos = originalCard.Character.gridPosition;
-				for(int i = 0; i<Grid.Singleton.numberOfSquares;i++){
+				Vector2 pos = CardObject.Character.gridPosition;
+				for (int i = 0; i < battlefield.GetNumberOfSquares(); i++)
+				{
 					pos.x = i;
-					List<Collider> aux2 = Physics.OverlapSphere (Grid.GridToUnity (pos), 0.3f, 1 << LayerMask.NameToLayer("Hero")).ToList ();
-					if(aux2.Count>0){
-						auxiliarList.Add (aux2 [0].gameObject);
-						aux2[0].GetComponent<Hero>().AddAttack(Skill.skillLevel);
+					List<Collider> colliders = Physics.OverlapSphere(battlefield.GridToUnity(pos), 0.3f, 1 << LayerMask.NameToLayer("Hero")).ToList();
+					if (colliders.Count > 0)
+					{
+						var heroComponent = colliders[0].GetComponent<Hero>();
+
+						heroAuxiliarList.Add(heroComponent);
+
+						heroComponent.AddAttack(Skill.skillLevel);
 					}
 				}
 				break;
 			case MacroType.Wrath:
-				List<Hero> derp = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				derp.Remove (originalCard.Character);
+				List<Hero> derp = GameObject.FindObjectsOfType<Hero>().ToList();
+				derp.Remove(CardObject.Character);
 				int damage = derp.Count;
-				foreach (Hero lol in derp) {
-					lol.Die ();
+				foreach (Hero lol in derp)
+				{
+					lol.Die();
 				}
-				originalCard.player.TakeDamage (damage);
-				RemoveMacro ();
+				CardObject.player.TakeDamage(damage);
+				RemoveMacro();
 				break;
 			case MacroType.Science:
-				auxiliarInt = originalCard.Character.card.Skills.Count;
+				auxiliarInt = CardObject.Character.card.Skills.Count;
 				auxiliarInt2 = auxiliarInt;
 				break;
 			case MacroType.Landmines:
 				List<Hero> Enemies;
-				Enemies = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				Enemies.RemoveAll (a => a.player.GetPlayerType() == originalCard.player.GetPlayerType());
-				foreach (Hero hero in Enemies) {
+				Enemies = GameObject.FindObjectsOfType<Hero>().ToList();
+				Enemies.RemoveAll(a => a.player.GetPlayerType() == CardObject.player.GetPlayerType());
+				foreach (Hero hero in Enemies)
+				{
 					//Debug.Log ("Dono original da carta é "+((originalCard.player.isRemotePlayer)?"Remoto":"Local")+". Posição do heroi: "+Grid.UnityToGrid(hero.transform.position)+". Posição necessaria: "+((originalCard.player.isRemotePlayer)?"Y >= que "+(Grid.Singleton.numberOfSquares - Grid.Singleton.numberOfSpawnAreasPerLane):"Y < que "+Grid.Singleton.numberOfSpawnAreasPerLane));
-					if ((Grid.UnityToGrid (hero.transform.position).y < Grid.Singleton.numberOfSpawnAreasPerLane && originalCard.player.GetPlayerType() == PlayerType.Local ) 
-						|| (Grid.UnityToGrid (hero.transform.position).y >= (Grid.Singleton.numberOfSquares - Grid.Singleton.numberOfSpawnAreasPerLane) && originalCard.player.GetPlayerType() == PlayerType.Remote)){
-						hero.doDamage (Skill.skillLevel);
+					if ((battlefield.UnityToGrid(hero.transform.position).y < battlefield.GetNumberOfSpawnAreasPerLane() && CardObject.player.GetPlayerType() == PlayerType.Local)
+						|| (battlefield.UnityToGrid(hero.transform.position).y >= (battlefield.GetNumberOfSquares() - battlefield.GetNumberOfSpawnAreasPerLane()) && CardObject.player.GetPlayerType() == PlayerType.Remote))
+					{
+						hero.doDamage(Skill.skillLevel);
 					}
 				}
 				RemoveMacro();
 				break;
 			case MacroType.ExplosiveAttack:
-				Vector2 pos2 = originalCard.Character.gridPosition;
+				Vector2 pos2 = CardObject.Character.gridPosition;
 
 				//Top
-				pos2.y = originalCard.Character.gridPosition.y + 1;
-				Collider[] auxL = Physics.OverlapSphere (Grid.GridToUnity (pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
-				if (auxL.Length > 0) {
-					if(auxL[0].GetComponent<Hero>().player == originalCard.player){
-						auxL [0].GetComponent<Hero> ().doDamage (originalCard.Character.lastGivenDamage);
+				pos2.y = CardObject.Character.gridPosition.y + 1;
+				Collider[] auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				if (auxL.Length > 0)
+				{
+					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					{
+						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
 					}
 				}
 
 				//Bot
-				pos2.y = originalCard.Character.gridPosition.y - 1;
-				auxL = Physics.OverlapSphere (Grid.GridToUnity (pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
-				if (auxL.Length > 0) {
-					if(auxL[0].GetComponent<Hero>().player == originalCard.player){
-						auxL [0].GetComponent<Hero> ().doDamage (originalCard.Character.lastGivenDamage);
+				pos2.y = CardObject.Character.gridPosition.y - 1;
+				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				if (auxL.Length > 0)
+				{
+					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					{
+						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
 					}
 				}
 
 				//Right
-				pos2.y = originalCard.Character.gridPosition.y;
-				pos2.x = originalCard.Character.gridPosition.x + 1;
-				auxL = Physics.OverlapSphere (Grid.GridToUnity (pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
-				if (auxL.Length > 0) {
-					if(auxL[0].GetComponent<Hero>().player == originalCard.player){
-						auxL [0].GetComponent<Hero> ().doDamage (originalCard.Character.lastGivenDamage);
+				pos2.y = CardObject.Character.gridPosition.y;
+				pos2.x = CardObject.Character.gridPosition.x + 1;
+				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				if (auxL.Length > 0)
+				{
+					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					{
+						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
 					}
 				}
 
 				//Left
-				pos2.y = originalCard.Character.gridPosition.y;
-				pos2.x = originalCard.Character.gridPosition.x + 1;
-				auxL = Physics.OverlapSphere (Grid.GridToUnity (pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
-				if (auxL.Length > 0) {
-					if(auxL[0].GetComponent<Hero>().player == originalCard.player){
-						auxL [0].GetComponent<Hero> ().doDamage (originalCard.Character.lastGivenDamage);
+				pos2.y = CardObject.Character.gridPosition.y;
+				pos2.x = CardObject.Character.gridPosition.x + 1;
+				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				if (auxL.Length > 0)
+				{
+					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					{
+						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
 					}
 				}
 
-				RemoveMacro ();
+				RemoveMacro();
 				break;
 
 			//Place holders
 			case MacroType.Bombard:
-				List<Hero> heroes = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				heroes.RemoveAll (a => a.player.GetCivilization() == originalCard.player.GetCivilization());
-				if (heroes.Count > 0) {
-					int index = Random.Range (0, heroes.Count - 1);
-					heroes [index].doDamage (Skill.skillLevel);
+				List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				if (heroes.Count > 0)
+				{
+					int index = Random.Range(0, heroes.Count - 1);
+					heroes[index].doDamage(Skill.skillLevel);
 				}
 				RemoveMacro();
 				break;
 
 
 			case MacroType.Masochism:
-				heroes = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				heroes.RemoveAll (a => a.player.GetCivilization() == originalCard.player.GetCivilization());
-				if (heroes.Count > 0) {
-					Hero hero = heroes [Random.Range (0, heroes.Count - 1)];
+				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				if (heroes.Count > 0)
+				{
+					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];
 					hero.doDamage(hero.calculateAttackPower());
 				}
 				RemoveMacro();
@@ -313,25 +379,41 @@ public class MacroComponent : MonoBehaviour {
 
 
 			case MacroType.FriendlyAid:
-				heroes = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				heroes.RemoveAll (a => a.player.GetCivilization() != originalCard.player.GetCivilization());
-				if (heroes.Count > 0) {
-					Hero hero = heroes [Random.Range (0, heroes.Count - 1)];
-					hero.AddLife (Skill.skillLevel);
+				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.player.GetCivilization() != CardObject.player.GetCivilization());
+				if (heroes.Count > 0)
+				{
+					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];
+					hero.AddLife(Skill.skillLevel);
 				}
 				RemoveMacro();
 				break;
 
 
 			case MacroType.Waste:
-				heroes = GameObject.FindObjectsOfType<Hero> ().ToList ();
-				heroes.RemoveAll (a => a.player.GetCivilization() == originalCard.player.GetCivilization());
-				if (heroes.Count > 0) {
-					Hero hero = heroes [Random.Range (0, heroes.Count - 1)];
-					hero.doDamage (Skill.skillLevel);
+				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				if (heroes.Count > 0)
+				{
+					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];
+					hero.doDamage(Skill.skillLevel);
 				}
 				RemoveMacro();
 				break;
 		}
+	}
+
+	public Player GetPlayer()
+    {
+		return Player;
+    }
+
+	public CardObject GetCardObject()
+	{
+		return CardObject;
+	}
+	public Skill GetSkill()
+	{
+		return Skill;
 	}
 }

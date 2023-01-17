@@ -13,7 +13,8 @@ public class Hero : PlaceableCard {
 
 
 	Card originalCard;
-	Grid Grid;
+	Battlefield battlefield;
+	GameController gameController;
 
 
 	public Transform pivot;
@@ -42,7 +43,6 @@ public class Hero : PlaceableCard {
 	void Awake(){
 	}
 	void Start () {
-		Grid = Grid.Singleton;
 		GameObject aux = new GameObject();
 		aux.transform.SetParent(this.transform);
 		Vector3 aux2 = Vector3.zero;
@@ -57,7 +57,7 @@ public class Hero : PlaceableCard {
 	}
 
 	void Update () {
-		gridPosition = Grid.UnityToGrid (transform.position);
+		gridPosition = battlefield.UnityToGrid (transform.position);
 
 		//Debug
 		if (doMoveForward) {
@@ -65,11 +65,11 @@ public class Hero : PlaceableCard {
 			doMoveForward = false;
 		}
 		if (activateSkill1) {
-			GameController.AddMacro (card.Skills [0], cardObject);
+			gameController.AddMacro (card.Skills [0], cardObject);
 			activateSkill1 = false;
 		}
 		if (activateSkill2) {
-			GameController.AddMacro (card.Skills [1], cardObject);
+			gameController.AddMacro (card.Skills [1], cardObject);
 			activateSkill2 = false;
 		}
 		//Debug
@@ -81,11 +81,11 @@ public class Hero : PlaceableCard {
 
 		if (!isDying) {
 			if (isWalking) {
-				if (transform.position != Grid.GridToUnity (targetPoint)) {
+				if (transform.position != battlefield.GridToUnity (targetPoint)) {
 					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					transform.position = Vector3.MoveTowards (transform.position, Grid.GridToUnity (targetPoint), Time.deltaTime * 3f);
+					transform.position = Vector3.MoveTowards (transform.position, battlefield.GridToUnity (targetPoint), Time.deltaTime * 3f);
 				} else {
-					GameController.SetTriggerType(TriggerType.OnAfterWalk, cardObject);
+					gameController.SetTriggerType(TriggerType.OnAfterWalk, cardObject);
 					isWalking = false;
 				}
 			}
@@ -128,10 +128,10 @@ public class Hero : PlaceableCard {
 
 
 	void WalkTo(Vector2 pos){
-		targetPoint = Grid.Normalize(pos);
+		targetPoint = battlefield.Normalize(pos);
 		isWalking = true;
 
-		GameController.SetTriggerType(TriggerType.OnBeforeWalk, cardObject);
+		gameController.SetTriggerType(TriggerType.OnBeforeWalk, cardObject);
 	}
 
 	public void setCard(Card card, Player player){
@@ -165,13 +165,13 @@ public class Hero : PlaceableCard {
 
 		for (int i = 0; i < numberOfAttacks; i++) {
 
-			GameController.SetTriggerType(TriggerType.OnBeginAttack, cardObject);
+			gameController.SetTriggerType(TriggerType.OnBeginAttack, cardObject);
 			Hero hero = checkForEnemiesInFront ();
 			if (hero == null) {
-				if ((player.GetPlayerType() == PlayerType.Remote && gridPosition.y == 0) || (player.GetPlayerType() == PlayerType.Local && gridPosition.y == Grid.numberOfSquares - 1)) {
+				if ((player.GetPlayerType() == PlayerType.Remote && gridPosition.y == 0) || (player.GetPlayerType() == PlayerType.Local && gridPosition.y == battlefield.GetNumberOfSquares() - 1)) {
 					Debug.LogWarning ("Attacked player with " + calculateAttackPower () + " damage");
-					LogController.Log (Action.AttackPlayer, calculateAttackPower(), player, GameController.getOpponent(player));
-					GameController.Singleton.AttackPlayer (calculateAttackPower ());
+					LogController.Log (Action.AttackPlayer, calculateAttackPower(), player, gameController.GetOpponent(player));
+					gameController.AttackPlayer (calculateAttackPower ());
 					lastGivenDamage = calculateAttackPower ();
 				}
 			} else {
@@ -183,7 +183,7 @@ public class Hero : PlaceableCard {
 				}
 			}
 
-			GameController.SetTriggerType(TriggerType.OnAfterAttack, cardObject);
+			gameController.SetTriggerType(TriggerType.OnAfterAttack, cardObject);
 			yield return new WaitForSeconds (0.25f);
 		}
 
@@ -266,14 +266,14 @@ public class Hero : PlaceableCard {
 	}
 
 	Vector2 calculateEndPosition(){
-		Vector2 gridPos = Grid.UnityToGrid(transform.position);
+		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
 		gridPos.y += movementDirection() * calculateWalkSpeed();
 
 		return gridPos;
 	}
 
 	Vector2 calculateNextForward(){
-		Vector2 gridPos = Grid.UnityToGrid(transform.position);
+		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
 		gridPos.y += movementDirection ();
 
 		return gridPos;
@@ -308,7 +308,7 @@ public class Hero : PlaceableCard {
 		Vector2 aux = calculateNextForward ();
 		int layerMask = 1 << gameObject.layer;
 
-		List<Collider> aux2 = Physics.OverlapSphere (Grid.GridToUnity (aux), 0.3f, layerMask).ToList ();
+		List<Collider> aux2 = Physics.OverlapSphere (battlefield.GridToUnity (aux), 0.3f, layerMask).ToList ();
 		aux2.RemoveAll (a => a.GetComponent<Hero>() == this.GetComponent<Hero>());
 		if (aux2.Count>0) {
 			return aux2 [0].GetComponent<Hero> ();
