@@ -2,90 +2,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using NaughtyAttributes;
 
 [ExecuteInEditMode]
 public class Battlefield : MonoBehaviour
 {
 
+	[SerializeField] GameController gameController;
 	[SerializeField] GameObject[] gridTiles;
 	[SerializeField] int numberOfLanes = 5;
 	[SerializeField] int numberOfSquares = 7;
 	[SerializeField] int numberOfSpawnAreasPerLane = 2;
 
-	[SerializeField] bool doGenerate;
-	[SerializeField] bool updateSquareSize;
 	[SerializeField] float squareSize = 0.8f;
 
 	List<SpawnArea> tiles;
 	SpawnArea selectedTile;
 
 
-	void Start()
+	[Button("Generate Grid")]
+	void Generate()
 	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-		if (doGenerate)
-		{
-			doGenerate = false;
-			Generate();
-		}
-
 		if (numberOfLanes % 2 == 0)
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.LogWarning("The number of lanes must be an odd number.");
+			return;
 		}
-	}
 
+		EraseAllGrid();
 
-	void Generate()
-	{
-		if (numberOfLanes % 2 != 0)
+		int currentLane = 0;
+
+		Vector3 aux;
+		GameObject lane;
+
+		while (currentLane < numberOfLanes)
 		{
-			EraseAllGrid();
+			aux = transform.position;
+			aux.x += currentLane * squareSize;
+			lane = new GameObject("Lane " + (currentLane + 1));
+			lane.transform.position = aux;
+			lane.transform.SetParent(transform, true);
 
-			int currentLane = 0;
-
-			Vector3 aux;
-			;
-			GameObject lane;
-
-			while (currentLane < numberOfLanes)
+			for (int i = 0; i < numberOfSquares; i++)
 			{
-				aux = transform.position;
-				aux.x += currentLane * squareSize;
-				lane = new GameObject("Lane " + (currentLane + 1));
-				lane.transform.position = aux;
-				lane.transform.SetParent(transform, true);
+				aux.z = i * squareSize;
+				GameObject aux2 = Instantiate(gridTiles[currentLane], Vector3.zero, Quaternion.identity);
+				aux2.transform.position = aux;
+				aux2.transform.SetParent(lane.transform);
 
-				for (int i = 0; i < numberOfSquares; i++)
-				{
-					aux.z = i * squareSize;
-					GameObject aux2 = Instantiate(gridTiles[currentLane], Vector3.zero, Quaternion.identity);
-					aux2.transform.position = aux;
-					aux2.transform.SetParent(lane.transform);
+				var spawnArea = aux2.GetComponent<SpawnArea>();
 
-					var spawnArea = aux2.GetComponent<SpawnArea>();
-					var isSummonable = (i <= numberOfSpawnAreasPerLane - 1) || (i >= numberOfSquares - numberOfSpawnAreasPerLane);
+				var isLocal = (i <= numberOfSpawnAreasPerLane - 1);
+				var isRemote = (i >= numberOfSquares - numberOfSpawnAreasPerLane);
+				var isSummonable = isLocal || isRemote;
+					
 
-					spawnArea.SetSummonable(isSummonable);
+				spawnArea.Setup(this, isSummonable, isLocal ? PlayerType.Local : PlayerType.Remote);
 
-					tiles.Add(spawnArea);
-				}
-
-				currentLane++;
+				tiles.Add(spawnArea);
 			}
 
-		}
-		else
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("The number of lanes must be an odd number.");
+			currentLane++;
 		}
 	}
 
@@ -97,19 +76,18 @@ public class Battlefield : MonoBehaviour
 			return;
 		}
 
-		tiles.ForEach(delegate (SpawnArea aux) {
-			if (aux != null)
-			{
-				DestroyImmediate(aux);
-			}
-		});
+		foreach (var tile in tiles) {
+			if (tile != null)
+				DestroyImmediate(tile);
+		};
 
-		GetComponentsInChildren<Transform>().ToList().ForEach(delegate (Transform aux) {
-			if (aux != null && aux != transform)
-			{
-				DestroyImmediate(aux.gameObject);
-			}
-		});
+		var children = GetComponentsInChildren<Transform>();
+
+		foreach (var child in children)
+        {
+			if(child != null && child.gameObject != this.gameObject)
+				DestroyImmediate(child.gameObject);
+        }
 
 		tiles.Clear();
 	}
@@ -168,11 +146,19 @@ public class Battlefield : MonoBehaviour
 
 	public List<SpawnArea> GetEmptyFields(Player player)
 	{
-		return tiles.FindAll(tile => tile.player == player && tile.IsSummonable && tile.HasHero() == false);
+		var isLocalPlayer = player == gameController.GetLocalPlayer();
+		var isRemotePlayer = player == gameController.GetRemotePlayer();
+
+		return tiles.FindAll(tile => tile.playerType == player.GetPlayerType()
+										&& tile.IsSummonable && tile.HasHero() == false);
 	}
 	public List<SpawnArea> GetFields(Player player)
 	{
-		return tiles.FindAll(tile => tile.player == player && tile.IsSummonable);
+		var isLocalPlayer = player == gameController.GetLocalPlayer();
+		var isRemotePlayer = player == gameController.GetRemotePlayer();
+
+		return tiles.FindAll(tile => tile.playerType == player.GetPlayerType()
+										&& tile.IsSummonable);
 	}
 
 	public int GetNumberOfSquares()

@@ -7,7 +7,7 @@ public class MacroComponent : MonoBehaviour
 {
 	Player Player;
 	GameController GameController;
-	Battlefield battlefield;
+	Battlefield Battlefield;
 	public bool IsResolving { get; private set; }
 
 	CardObject CardObject;
@@ -15,7 +15,7 @@ public class MacroComponent : MonoBehaviour
 
 	Skill Skill;
 
-	List<SpawnArea> spawnAreaAuxiliarList;
+	//List<SpawnArea> spawnAreaAuxiliarList;
 	List<Hero> heroAuxiliarList;
 
 	int auxiliarInt, auxiliarInt2, auxiliarInt3, auxiliarInt4;
@@ -92,14 +92,15 @@ public class MacroComponent : MonoBehaviour
 		switch (Skill.macroType)
 		{
 			case MacroType.Invader:
-				spawnAreaAuxiliarList.ForEach(delegate (SpawnArea obj) {
-					if (obj.player.GetPlayerType() == PlayerType.Remote)
-					{
-						obj.TemporarilySummonable = true;
-					}
+				var tiles = Battlefield.GetFields(GameController.GetRemotePlayer());
+
+
+				tiles.ForEach(delegate (SpawnArea obj) {
+					obj.TemporarilySummonable = true;
 				});
 				break;
 		}
+
 		Debug.LogWarning("Macro " + Skill.macroType.ToString() + " removed");
 		GameController.RemoveMacro(this);
 		Destroy(this);
@@ -135,11 +136,13 @@ public class MacroComponent : MonoBehaviour
 				CardObject.Character.ResetLife();
 				break;
 			case MacroType.Exalt:
-				foreach (SpawnArea aux in spawnAreaAuxiliarList)
+				var tiles = Battlefield.GetFields(GameController.GetRemotePlayer());
+
+				foreach (SpawnArea spawnArea in tiles)
 				{
-					if (aux != null && aux.GetComponent<Hero>())
+					if (spawnArea.HasHero())
 					{
-						aux.GetComponent<Hero>().RemoveAttack(Skill.skillLevel);
+						spawnArea.Hero.RemoveAttack(Skill.skillLevel);
 					}
 				}
 				break;
@@ -152,7 +155,6 @@ public class MacroComponent : MonoBehaviour
 	void Initialize()
 	{
 		IsResolving = true;
-		spawnAreaAuxiliarList = new List<SpawnArea>();
 		LogController.Log(Action.UseMacro, CardObject.player, Skill.macroType);
 
 		var currentPlayer = GameController.Singleton.currentPlayer;
@@ -160,13 +162,10 @@ public class MacroComponent : MonoBehaviour
 		switch (Skill.macroType)
 		{
 			case MacroType.Invader:
-				List<SpawnArea> spawns = GameObject.FindObjectsOfType<SpawnArea>().ToList();
-				spawns.ForEach(delegate (SpawnArea obj) {
-					if (obj.player.GetPlayerType() == PlayerType.Remote)
-					{
-						obj.TemporarilySummonable = true;
-						spawnAreaAuxiliarList.Add(obj);
-					}
+				var tiles = Battlefield.GetFields(GameController.GetRemotePlayer());
+
+				tiles.ForEach(delegate (SpawnArea obj) {
+					obj.TemporarilySummonable = true;
 				});
 				break;
 			case MacroType.Lifelink:
@@ -257,10 +256,10 @@ public class MacroComponent : MonoBehaviour
 				break;
 			case MacroType.Exalt:
 				Vector2 pos = CardObject.Character.gridPosition;
-				for (int i = 0; i < battlefield.GetNumberOfSquares(); i++)
+				for (int i = 0; i < Battlefield.GetNumberOfSquares(); i++)
 				{
 					pos.x = i;
-					List<Collider> colliders = Physics.OverlapSphere(battlefield.GridToUnity(pos), 0.3f, 1 << LayerMask.NameToLayer("Hero")).ToList();
+					List<Collider> colliders = Physics.OverlapSphere(Battlefield.GridToUnity(pos), 0.3f, 1 << LayerMask.NameToLayer("Hero")).ToList();
 					if (colliders.Count > 0)
 					{
 						var heroComponent = colliders[0].GetComponent<Hero>();
@@ -293,8 +292,8 @@ public class MacroComponent : MonoBehaviour
 				foreach (Hero hero in Enemies)
 				{
 					//Debug.Log ("Dono original da carta é "+((originalCard.player.isRemotePlayer)?"Remoto":"Local")+". Posição do heroi: "+Grid.UnityToGrid(hero.transform.position)+". Posição necessaria: "+((originalCard.player.isRemotePlayer)?"Y >= que "+(Grid.Singleton.numberOfSquares - Grid.Singleton.numberOfSpawnAreasPerLane):"Y < que "+Grid.Singleton.numberOfSpawnAreasPerLane));
-					if ((battlefield.UnityToGrid(hero.transform.position).y < battlefield.GetNumberOfSpawnAreasPerLane() && CardObject.player.GetPlayerType() == PlayerType.Local)
-						|| (battlefield.UnityToGrid(hero.transform.position).y >= (battlefield.GetNumberOfSquares() - battlefield.GetNumberOfSpawnAreasPerLane()) && CardObject.player.GetPlayerType() == PlayerType.Remote))
+					if ((Battlefield.UnityToGrid(hero.transform.position).y < Battlefield.GetNumberOfSpawnAreasPerLane() && CardObject.player.GetPlayerType() == PlayerType.Local)
+						|| (Battlefield.UnityToGrid(hero.transform.position).y >= (Battlefield.GetNumberOfSquares() - Battlefield.GetNumberOfSpawnAreasPerLane()) && CardObject.player.GetPlayerType() == PlayerType.Remote))
 					{
 						hero.doDamage(Skill.skillLevel);
 					}
@@ -306,7 +305,7 @@ public class MacroComponent : MonoBehaviour
 
 				//Top
 				pos2.y = CardObject.Character.gridPosition.y + 1;
-				Collider[] auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				Collider[] auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
 					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
@@ -317,7 +316,7 @@ public class MacroComponent : MonoBehaviour
 
 				//Bot
 				pos2.y = CardObject.Character.gridPosition.y - 1;
-				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
 					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
@@ -329,7 +328,7 @@ public class MacroComponent : MonoBehaviour
 				//Right
 				pos2.y = CardObject.Character.gridPosition.y;
 				pos2.x = CardObject.Character.gridPosition.x + 1;
-				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
 					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
@@ -341,7 +340,7 @@ public class MacroComponent : MonoBehaviour
 				//Left
 				pos2.y = CardObject.Character.gridPosition.y;
 				pos2.x = CardObject.Character.gridPosition.x + 1;
-				auxL = Physics.OverlapSphere(battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
+				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
 					if (auxL[0].GetComponent<Hero>().player == CardObject.player)

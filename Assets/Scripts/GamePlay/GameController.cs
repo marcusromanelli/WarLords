@@ -63,6 +63,8 @@ public class GameController : MonoBehaviour
 
 		RemotePlayer.Setup();
 		RemotePlayer.StartGame();
+
+		currentPlayer = LocalPlayer;
 	}
 	IEnumerator AwaitDeckFull()
 	{

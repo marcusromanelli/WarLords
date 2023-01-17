@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public abstract class HandController : MonoBehaviour{
 
+	[SerializeField] GameController gameController;
+	[SerializeField] Battlefield battlefield;
 	[SerializeField] DeckController deckController;
 
 
@@ -51,9 +53,10 @@ public abstract class HandController : MonoBehaviour{
 		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
 		aux.transform.SetParent(transform, true);
 
+		var cardObj = aux.GetComponent<CardObject>();
 
-		aux.GetComponent<CardObject> ().Setup (card.CardID, card.PlayID, player);
-		aux.GetComponent<CardObject> ().originalPosition = aux.transform.localPosition;
+		cardObj.Setup (card, player, battlefield, this, gameController);
+		cardObj.originalPosition = aux.transform.localPosition;
 		updateCardList ();
 	}
 

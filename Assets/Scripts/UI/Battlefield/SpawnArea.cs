@@ -6,17 +6,17 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class SpawnArea : PlaceableCard
 {
-	new public Player player;	
-
+	[SerializeField] Battlefield battlefield;
 	[SerializeField] new Renderer renderer;
 	[SerializeField] Color defaultColor = Color.grey;
 	[SerializeField] Color selectedColor = Color.black;
+	public PlayerType playerType { get; private set; }
 	public bool IsSummonable { get; private set; }
 	public bool TemporarilySummonable;
-	public Hero areaHero = null;
+	public Hero Hero = null;
 
 
-	Battlefield battlefield;
+	
 
     private void Awake()
     {
@@ -30,31 +30,27 @@ public class SpawnArea : PlaceableCard
 
 		SetColor(defaultColor);
 	}
-
-	void Setup(Battlefield battlefield, bool IsSummonableTile)
+	public void Setup(Battlefield battlefield, bool IsSummonableTile, PlayerType playerType)
     {
 		this.battlefield = battlefield;
 		IsSummonable = IsSummonableTile;
-	}
 
+		this.playerType = playerType;
+	}
 	void SetColor(Color color)
 	{
 		renderer.material.color = color;
 	}
-
 	protected override void Update()
 	{
-		if (Application.isEditor)
-			return;
-
-		if (!GameController.Singleton.MatchHasStarted)
+		if (!Application.isPlaying)
 			return;
 
 		player = GameController.Singleton.currentPlayer;
 
 		SetColor(defaultColor);
 
-		if (!player.hasCondition(ConditionType.PickSpawnArea))
+		if (player == null || !player.hasCondition(ConditionType.PickSpawnArea))
         {
 			CheckMouse();
 			return;
@@ -65,16 +61,15 @@ public class SpawnArea : PlaceableCard
 
 		isMouseOver = base.CheckMouseOver(false);
 
-		if ((isLocal || TemporarilySummonable) && isMouseOver && areaHero == null)
+		if ((isLocal || TemporarilySummonable) && isMouseOver && Hero == null)
 			SetColor(selectedColor);
 	}
-
 	protected void CheckMouse()
 	{
 		isMouseOver = base.CheckMouseOver(true);
 
 
-		if (isMouseOver && areaHero == null)
+		if (isMouseOver && Hero == null)
 		{
 			battlefield.SetSelectedTile(this);
 		}
@@ -86,7 +81,6 @@ public class SpawnArea : PlaceableCard
 				battlefield.SetUnselectedTile(this);
 		}
 	}
-
 	public override Vector3 GetTopPosition()
 	{
 		Vector3 aux = transform.position;
@@ -94,24 +88,16 @@ public class SpawnArea : PlaceableCard
 		aux.y += 0.1f;
 		return aux;
 	}
-
-	public override Quaternion GetTopRotation()
+    public override Quaternion GetTopRotation()
+    {
+        return Quaternion.Euler(270, 180, 0);
+    }
+    public void SetHero(Hero hero)
 	{
-		return Quaternion.Euler(270, 180, 0);
+		Hero = hero;
 	}
-
-	public void SetHero(Hero hero)
-	{
-		areaHero = hero;
-	}
-
 	public bool HasHero()
     {
-		return areaHero != null;
-    }
-
-	public void SetSummonable(bool isSummonable)
-    {
-		IsSummonable = isSummonable;
+		return Hero != null;
     }
 }

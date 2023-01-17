@@ -31,7 +31,7 @@ public class BattlefieldController : PlaceableCard
 		if (!waitingForSpawnPoint || currentTile == null || !Input.GetMouseButton(0))
 			return;
 
-		if (currentTile.areaHero != null)
+		if (currentTile.Hero != null)
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			return;

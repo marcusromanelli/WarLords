@@ -12,8 +12,7 @@ public enum ManaStatus
 public class CardObject : MonoBehaviour
 {
 
-	public GameController gameController;
-	public Battlefield battlefield;
+	
 	public Card cardData;
 	public bool isBeingHeld;
 	public bool isBeingVisualized;
@@ -24,8 +23,6 @@ public class CardObject : MonoBehaviour
 
 	public Player player;
 
-	TextWrapper skillDesc1, skillDesc2;
-	LocalHand handController;
 	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, CloseButton;
 	public Hero Character;
 	public Vector3 originalPosition;
@@ -41,7 +38,9 @@ public class CardObject : MonoBehaviour
 	BattlefieldController battlefieldController;
 	ManaPoolController manaPoolController;
 	GraveyardController graveyardController;
-	
+	GameController gameController;
+	Battlefield battlefield;
+	HandController handController;
 
 	void Awake()
 	{
@@ -82,7 +81,6 @@ public class CardObject : MonoBehaviour
 
 	void Start()
 	{
-		handController = GameObject.FindObjectOfType<LocalHand>();
 		originalScale = transform.localScale;
 
 	}
@@ -250,7 +248,7 @@ public class CardObject : MonoBehaviour
 									{
 										var selectedTile = battlefield.GetSelectedTile();
 
-										if (selectedTile != null && selectedTile.player.GetPlayerType() == PlayerType.Local)
+										if (selectedTile != null && selectedTile.playerType == gameController.currentPlayer.GetPlayerType())
 										{
 											transform.position = Vector3.MoveTowards(transform.position, selectedTile.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
 											transform.rotation = Quaternion.RotateTowards(transform.rotation, selectedTile.GetTopRotation(), Time.deltaTime * 600f);
@@ -596,11 +594,14 @@ public class CardObject : MonoBehaviour
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 		gameController.SetTriggerType(TriggerType.OnAfterSpawn, this);
 	}
-	public void Setup(int cardID, int playID, Player player)
+	public void Setup(Card card, Player player, Battlefield battlefield, HandController handController, GameController gameController)
 	{
 		if (cardData.Initialized())
 			return;
 
+		this.gameController = gameController;
+		this.handController = handController;
+		this.battlefield = battlefield;
 		civilizationName = player.GetCivilization().ToString();
 		deckController = player.GetDeckController();
 		battlefieldController = player.GetBattlefieldController();
@@ -608,8 +609,8 @@ public class CardObject : MonoBehaviour
 		graveyardController = player.GetGraveyardController();
 
 
-		cardData = new Card(cardID);
-		cardData.PlayID = playID;
+		cardData = new Card(card.CardID);
+		cardData.PlayID = card.PlayID;
 		this.player = player;
 		GameObject cardObj = Resources.Load<GameObject>("Prefabs/Cards/" + civilizationName + "/" + cardData.name.Replace(" ", ""));
 		GameObject aux;

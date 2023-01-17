@@ -21,12 +21,10 @@ public class PlaceableCard : MonoBehaviour
 		this.player = player;
 		this.GetCardCount = getCardCount;
 	}
-
 	protected virtual void Update()
     {
 		isMouseOver = CheckMouseOver(true);
     }
-
 	protected virtual bool CheckMouseOver(bool needsMouseClick)
 	{
 		if (needsMouseClick && !Input.GetMouseButton(0))
@@ -49,16 +47,16 @@ public class PlaceableCard : MonoBehaviour
 			return false;
 		}
 	}
-
 	public virtual Vector3 GetTopPosition()
 	{
 		return CardReferencePosition.transform.position;
 	}
-
 	public virtual Quaternion GetTopRotation()
 	{
 		return CardReferencePosition.transform.rotation;
 	}
-
-
+	public Player GetPlayer()
+	{
+		return player;
+	}
 }

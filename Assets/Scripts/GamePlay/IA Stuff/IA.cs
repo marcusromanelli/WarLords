@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class IA : MonoBehaviour {
 
+	[SerializeField] GameController gameController;
 	[SerializeField] Battlefield battlefield;
 	Player player;
 
@@ -41,8 +42,8 @@ public class IA : MonoBehaviour {
 				int cost = cd.calculateCost ();
 
 				if (player.canSpendMana (cost)) {
-					List<SpawnArea> test = battlefield.GetEmptyFields(player);
-					test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.areaHero == null);
+					List<SpawnArea> test = battlefield.GetEmptyFields(gameController.GetLocalPlayer());
+					//test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.Hero == null);
 
 					CardObject cad = player.GetHandObject().cards.Find (a => a.cardData.PlayID == cd.PlayID);
 
