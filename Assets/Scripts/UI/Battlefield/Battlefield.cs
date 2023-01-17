@@ -56,10 +56,11 @@ public class Battlefield : MonoBehaviour
 
 				var isLocal = (i <= numberOfSpawnAreasPerLane - 1);
 				var isRemote = (i >= numberOfSquares - numberOfSpawnAreasPerLane);
-				var isSummonable = isLocal || isRemote;
 					
-
-				spawnArea.Setup(this, isSummonable, isLocal ? PlayerType.Local : PlayerType.Remote);
+				if(isLocal || isRemote)
+					spawnArea.Setup(this, gameController, isLocal ? PlayerType.Local : PlayerType.Remote);
+				else
+					spawnArea.Setup(this, gameController);
 
 				tiles.Add(spawnArea);
 			}
@@ -170,4 +171,32 @@ public class Battlefield : MonoBehaviour
 	{
 		return numberOfSpawnAreasPerLane;
 	}
+
+	public bool IsAtEnemyEdge(Hero hero)
+    {
+		var opponent = gameController.GetOpponent(hero.GetPlayer());
+
+		if (opponent.GetPlayerType() == PlayerType.Local)
+			return IsAtLocalPlayerEdge(hero.GridPosition);
+		else
+			return IsAtRemotePlayerEdge(hero.GridPosition);
+	}
+	public bool IsAtLocalPlayerEdge(Vector2 position)
+	{
+		return IsAtLocalPlayerEdge(position.y);
+	}
+	public bool IsAtLocalPlayerEdge(float YPosition)
+	{
+		return (YPosition <= numberOfSpawnAreasPerLane - 1);
+	}
+	public bool IsAtRemotePlayerEdge(Vector2 position)
+	{
+		return IsAtRemotePlayerEdge(position.y);
+
+	}
+	public bool IsAtRemotePlayerEdge(float YPosition)
+	{
+		return (YPosition >= numberOfSquares - numberOfSpawnAreasPerLane);
+	}
+
 }

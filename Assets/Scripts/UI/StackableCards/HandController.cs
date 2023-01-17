@@ -48,7 +48,6 @@ public abstract class HandController : MonoBehaviour{
 		updateCardList ();
 	}
 
-	Vector3 aux2;
 	public void AddCard(Card card){
 		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
 		aux.transform.SetParent(transform, true);
@@ -96,106 +95,106 @@ public abstract class HandController : MonoBehaviour{
 	float getAngleByCardNumber(int number){
 		int retur = 0;
 		switch (cards.Count) {
-		default:
-		case 1: retur = 0; break;
-		case 2: 
-			switch(number){
-			case 1:
-				retur = 5; break;
-			case 2:
-				retur = -5;break;
-			}
-			break;
-		case 3: 
-			switch(number){
-			case 1:
-				retur = 10; break;
-			case 2:
-				retur = 0; break;
-			case 3:
-				retur = -10;break;
-			}
-			break;
-		case 4: 
-			switch(number){
-			case 1:
-				retur = 10; break;
-			case 2:
-				retur = 5; break;
-			case 3:
-				retur = -5;break;
-			case 4:
-				retur = -10;break;
-			}
-			break;
-		case 5: 
-			switch(number){
-			case 1:
-				retur = 15; break;
-			case 2:
-				retur = 10; break;
-			case 3:
-				retur = 0;break;
-			case 4:
-				retur = -10;break;
-			case 5:
-				retur = -15;break;
-			}
-			break;
-		case 6: 
-			switch(number){
-			case 1:
-				retur = 20; break;
-			case 2:
-				retur = 10; break;
-			case 3:
-				retur = 5;break;
-			case 4:
-				retur = -5;break;
-			case 5:
-				retur = -10;break;
-			case 6:
-				retur = -20;break;
-			}
-			break;
-		case 7: 
-			switch(number){
-			case 1:
-				retur = 20; break;
-			case 2:
-				retur = 15; break;
-			case 3:
-				retur = 5;break;
-			case 4:
-				retur = 0;break;
-			case 5:
-				retur = -5;break;
-			case 6:
-				retur = -15;break;
-			case 7:
-				retur = -20;break;
-			}
-			break;
-		case 8: 
-			switch(number){
-			case 1:
-				retur = 25; break;
-			case 2:
-				retur = 15; break;
-			case 3:
-				retur = 5;break;
-			case 4:
-				retur = 0;break;
-			case 5:
-				retur = 0;break;
-			case 6:
-				retur = -5;break;
-			case 7:
-				retur = -15;break;
-			case 8:
-				retur = -25;break;
-			}
-			break;
+			default:
+			case 1: retur = 0; break;
+			case 2: 
+				switch(number){
+				case 1:
+					retur = 5; break;
+				case 2:
+					retur = -5;break;
+				}
+				break;
+			case 3: 
+				switch(number){
+				case 1:
+					retur = 10; break;
+				case 2:
+					retur = 0; break;
+				case 3:
+					retur = -10;break;
+				}
+				break;
+			case 4: 
+				switch(number){
+				case 1:
+					retur = 10; break;
+				case 2:
+					retur = 5; break;
+				case 3:
+					retur = -5;break;
+				case 4:
+					retur = -10;break;
+				}
+				break;
+			case 5: 
+				switch(number){
+				case 1:
+					retur = 15; break;
+				case 2:
+					retur = 10; break;
+				case 3:
+					retur = 0;break;
+				case 4:
+					retur = -10;break;
+				case 5:
+					retur = -15;break;
+				}
+				break;
+			case 6: 
+				switch(number){
+				case 1:
+					retur = 20; break;
+				case 2:
+					retur = 10; break;
+				case 3:
+					retur = 5;break;
+				case 4:
+					retur = -5;break;
+				case 5:
+					retur = -10;break;
+				case 6:
+					retur = -20;break;
+				}
+				break;
+			case 7: 
+				switch(number){
+				case 1:
+					retur = 20; break;
+				case 2:
+					retur = 15; break;
+				case 3:
+					retur = 5;break;
+				case 4:
+					retur = 0;break;
+				case 5:
+					retur = -5;break;
+				case 6:
+					retur = -15;break;
+				case 7:
+					retur = -20;break;
+				}
+				break;
+			case 8: 
+				switch(number){
+				case 1:
+					retur = 25; break;
+				case 2:
+					retur = 15; break;
+				case 3:
+					retur = 5;break;
+				case 4:
+					retur = 0;break;
+				case 5:
+					retur = 0;break;
+				case 6:
+					retur = -5;break;
+				case 7:
+					retur = -15;break;
+				case 8:
+					retur = -25;break;
+				}
+				break;
 		}
 		return retur;
 	}

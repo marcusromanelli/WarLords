@@ -1,5 +1,6 @@
 ﻿public enum PlayerType
 {
     Local,
-    Remote
+    Remote,
+    None
 }

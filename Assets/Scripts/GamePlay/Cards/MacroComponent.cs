@@ -73,7 +73,7 @@ public class MacroComponent : MonoBehaviour
 
 				break;
 			case MacroType.Science:
-				auxiliarInt = CardObject.Character.card.Skills.Count;
+				auxiliarInt = CardObject.Character.GetSkills().Count;
 				if (auxiliarInt > auxiliarInt2)
 				{
 					CardObject.player.DrawCard();
@@ -169,7 +169,7 @@ public class MacroComponent : MonoBehaviour
 				});
 				break;
 			case MacroType.Lifelink:
-				CardObject.player.AddLife(CardObject.Character.lastGivenDamage);
+				CardObject.player.AddLife(CardObject.Character.GetLastGivenDamage());
 				RemoveMacro();
 				break;
 			case MacroType.Abundance:
@@ -255,7 +255,7 @@ public class MacroComponent : MonoBehaviour
 				RemoveMacro();
 				break;
 			case MacroType.Exalt:
-				Vector2 pos = CardObject.Character.gridPosition;
+				Vector2 pos = CardObject.Character.GridPosition;
 				for (int i = 0; i < Battlefield.GetNumberOfSquares(); i++)
 				{
 					pos.x = i;
@@ -282,13 +282,14 @@ public class MacroComponent : MonoBehaviour
 				RemoveMacro();
 				break;
 			case MacroType.Science:
-				auxiliarInt = CardObject.Character.card.Skills.Count;
+				auxiliarInt = CardObject.Character.GetSkills().Count;
 				auxiliarInt2 = auxiliarInt;
 				break;
 			case MacroType.Landmines:
 				List<Hero> Enemies;
-				Enemies = GameObject.FindObjectsOfType<Hero>().ToList();
-				Enemies.RemoveAll(a => a.player.GetPlayerType() == CardObject.player.GetPlayerType());
+				Enemies = FindObjectsOfType<Hero>().ToList();
+				Enemies.RemoveAll(a => a.GetPlayer().GetPlayerType() == CardObject.player.GetPlayerType());
+
 				foreach (Hero hero in Enemies)
 				{
 					//Debug.Log ("Dono original da carta é "+((originalCard.player.isRemotePlayer)?"Remoto":"Local")+". Posição do heroi: "+Grid.UnityToGrid(hero.transform.position)+". Posição necessaria: "+((originalCard.player.isRemotePlayer)?"Y >= que "+(Grid.Singleton.numberOfSquares - Grid.Singleton.numberOfSpawnAreasPerLane):"Y < que "+Grid.Singleton.numberOfSpawnAreasPerLane));
@@ -301,51 +302,59 @@ public class MacroComponent : MonoBehaviour
 				RemoveMacro();
 				break;
 			case MacroType.ExplosiveAttack:
-				Vector2 pos2 = CardObject.Character.gridPosition;
+				Vector2 pos2 = CardObject.Character.GridPosition;
 
 				//Top
-				pos2.y = CardObject.Character.gridPosition.y + 1;
+				pos2.y = CardObject.Character.GridPosition.y + 1;
 				Collider[] auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
-					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					var hero = auxL[0].GetComponent<Hero>();
+
+					if (hero.GetPlayer() == CardObject.player)
 					{
-						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
+						hero.doDamage(CardObject.Character.GetLastGivenDamage());
 					}
 				}
 
 				//Bot
-				pos2.y = CardObject.Character.gridPosition.y - 1;
+				pos2.y = CardObject.Character.GridPosition.y - 1;
 				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
-					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					var hero = auxL[0].GetComponent<Hero>();
+
+					if (hero.GetPlayer() == CardObject.player)
 					{
-						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
+						hero.doDamage(CardObject.Character.GetLastGivenDamage());
 					}
 				}
 
 				//Right
-				pos2.y = CardObject.Character.gridPosition.y;
-				pos2.x = CardObject.Character.gridPosition.x + 1;
+				pos2.y = CardObject.Character.GridPosition.y;
+				pos2.x = CardObject.Character.GridPosition.x + 1;
 				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
-					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					var hero = auxL[0].GetComponent<Hero>();
+
+					if (hero.GetPlayer() == CardObject.player)
 					{
-						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
+						hero.doDamage(CardObject.Character.GetLastGivenDamage());
 					}
 				}
 
 				//Left
-				pos2.y = CardObject.Character.gridPosition.y;
-				pos2.x = CardObject.Character.gridPosition.x + 1;
+				pos2.y = CardObject.Character.GridPosition.y;
+				pos2.x = CardObject.Character.GridPosition.x + 1;
 				auxL = Physics.OverlapSphere(Battlefield.GridToUnity(pos2), 0.3f, 1 << LayerMask.NameToLayer("Hero"));
 				if (auxL.Length > 0)
 				{
-					if (auxL[0].GetComponent<Hero>().player == CardObject.player)
+					var hero = auxL[0].GetComponent<Hero>();
+
+					if (hero.GetPlayer() == CardObject.player)
 					{
-						auxL[0].GetComponent<Hero>().doDamage(CardObject.Character.lastGivenDamage);
+						hero.doDamage(CardObject.Character.GetLastGivenDamage());
 					}
 				}
 
@@ -354,8 +363,9 @@ public class MacroComponent : MonoBehaviour
 
 			//Place holders
 			case MacroType.Bombard:
-				List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				List<Hero> heroes = FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.GetPlayer().GetCivilization() == CardObject.player.GetCivilization());
+
 				if (heroes.Count > 0)
 				{
 					int index = Random.Range(0, heroes.Count - 1);
@@ -366,8 +376,8 @@ public class MacroComponent : MonoBehaviour
 
 
 			case MacroType.Masochism:
-				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				heroes = FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.GetPlayer().GetCivilization() == CardObject.player.GetCivilization());
 				if (heroes.Count > 0)
 				{
 					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];
@@ -378,8 +388,8 @@ public class MacroComponent : MonoBehaviour
 
 
 			case MacroType.FriendlyAid:
-				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-				heroes.RemoveAll(a => a.player.GetCivilization() != CardObject.player.GetCivilization());
+				heroes = FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.GetPlayer().GetCivilization() != CardObject.player.GetCivilization());
 				if (heroes.Count > 0)
 				{
 					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];
@@ -390,8 +400,8 @@ public class MacroComponent : MonoBehaviour
 
 
 			case MacroType.Waste:
-				heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-				heroes.RemoveAll(a => a.player.GetCivilization() == CardObject.player.GetCivilization());
+				heroes = FindObjectsOfType<Hero>().ToList();
+				heroes.RemoveAll(a => a.GetPlayer().GetCivilization() == CardObject.player.GetCivilization());
 				if (heroes.Count > 0)
 				{
 					Hero hero = heroes[Random.Range(0, heroes.Count - 1)];

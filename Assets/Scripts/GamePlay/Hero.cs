@@ -3,7 +3,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Hero : PlaceableCard {
+public class Hero : PlaceableCard
+{
 
 	public bool doMoveForward;
 	public bool activateSkill1;
@@ -17,32 +18,35 @@ public class Hero : PlaceableCard {
 	GameController gameController;
 
 
-	public Transform pivot;
-	public Card card;
-	public CardObject cardObject;
-	public Player player;
-	public Vector2 nextPoint;
-	public bool attack;
+	Transform pivot;
+	Card card;
+	CardObject cardObject;
+	Player player;
+	Vector2 nextPoint;
+	bool attack;
 	Vector2 targetPoint;
-	public bool isWalking;
-	public bool isAttacking;
-	public bool isDying;
-	public int diretion;
-	public int lastGivenDamage;
-	public int walkSpeed = 1;
-	public int numberOfAttacks = 1;
-	public Vector2 gridPosition;
+	bool isWalking;
+	bool isAttacking;
+	bool isDying;
+	int diretion;
+	int lastGivenDamage;
+	int walkSpeed = 1;
+	int numberOfAttacks = 1;
+
+	public Vector2 GridPosition
+	{
+		get
+		{
+			return battlefield.UnityToGrid(transform.position);
+		}
+	}
 
 	TextMesh Life, _Attack;
 
-	RaycastHit[] results;
 	int layerMask;
-	bool isMouseOver;
 
-
-	void Awake(){
-	}
-	void Start () {
+	void Start()
+	{
 		GameObject aux = new GameObject();
 		aux.transform.SetParent(this.transform);
 		Vector3 aux2 = Vector3.zero;
@@ -56,50 +60,62 @@ public class Hero : PlaceableCard {
 		pivot = transform.GetChild(0);
 	}
 
-	void Update () {
-		gridPosition = battlefield.UnityToGrid (transform.position);
-
+	void Update()
+	{
 		//Debug
-		if (doMoveForward) {
-			moveForward ();
+		if (doMoveForward)
+		{
+			moveForward();
 			doMoveForward = false;
 		}
-		if (activateSkill1) {
-			gameController.AddMacro (card.Skills [0], cardObject);
+		if (activateSkill1)
+		{
+			gameController.AddMacro(card.Skills[0], cardObject);
 			activateSkill1 = false;
 		}
-		if (activateSkill2) {
-			gameController.AddMacro (card.Skills [1], cardObject);
+		if (activateSkill2)
+		{
+			gameController.AddMacro(card.Skills[1], cardObject);
 			activateSkill2 = false;
 		}
 		//Debug
 
-		if (attack) {
+		if (attack)
+		{
 			attack = false;
-			moveForward ();
+			moveForward();
 		}
 
-		if (!isDying) {
-			if (isWalking) {
-				if (transform.position != battlefield.GridToUnity (targetPoint)) {
+		if (!isDying)
+		{
+			if (isWalking)
+			{
+				if (transform.position != battlefield.GridToUnity(targetPoint))
+				{
 					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					transform.position = Vector3.MoveTowards (transform.position, battlefield.GridToUnity (targetPoint), Time.deltaTime * 3f);
-				} else {
+					transform.position = Vector3.MoveTowards(transform.position, battlefield.GridToUnity(targetPoint), Time.deltaTime * 3f);
+				}
+				else
+				{
 					gameController.SetTriggerType(TriggerType.OnAfterWalk, cardObject);
 					isWalking = false;
 				}
 			}
-				
-			if (card.life <= 0) {
-				LogController.Log (Action.AttackChar, this);
-				Die ();
+
+			if (card.life <= 0)
+			{
+				LogController.Log(Action.AttackChar, this);
+				Die();
 			}
 
 			layerMask = 1 << gameObject.layer;
-			results = Physics.RaycastAll (Camera.main.ScreenPointToRay (Input.mousePosition), 1000, layerMask);
-			if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count>0) {
+			results = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1000, layerMask);
+			if (results.ToList().FindAll(a => a.collider.gameObject == this.gameObject).Count > 0)
+			{
 				isMouseOver = true;
-			}else{
+			}
+			else
+			{
 				isMouseOver = false;
 			}
 
@@ -107,84 +123,106 @@ public class Hero : PlaceableCard {
 			_Attack.text = calculateAttackPower().ToString();
 		}
 
-		if (isMouseOver) {
+		if (isMouseOver)
+		{
 			selectedHero = this;
-		} else {
-			if (selectedHero == this) {
+		}
+		else
+		{
+			if (selectedHero == this)
+			{
 				selectedHero = null;
 			}
 		}
 	}
 
-	public void Initialize(CardObject card){
+	public void Setup(GameController gameController, Battlefield battlefield, CardObject card)
+	{
 		this.cardObject = card;
 
 		this.card = cardObject.cardData;
 		player = cardObject.player;
-
+		this.battlefield = battlefield;
+		this.gameController = gameController;
 
 		Instantiate(Resources.Load<GameObject>("Prefabs/Particles/Smoke"), transform.position, Quaternion.identity);
 	}
 
 
-	void WalkTo(Vector2 pos){
+	void WalkTo(Vector2 pos)
+	{
 		targetPoint = battlefield.Normalize(pos);
 		isWalking = true;
 
 		gameController.SetTriggerType(TriggerType.OnBeforeWalk, cardObject);
 	}
 
-	public void setCard(Card card, Player player){
+	public void setCard(Card card, Player player)
+	{
 		this.card = card;
 		this.originalCard = card;
 		this.player = player;
 	}
-	
-	public void moveForward(){
+
+	public void moveForward()
+	{
 		//if (!isWalking) {
-			Vector2 newPos = calculateEndPosition ();
+		Vector2 newPos = calculateEndPosition();
 
-			Hero aux = checkForEnemiesInFront ();
+		Hero aux = checkForEnemiesInFront();
 
 
-			if (aux == null) {
+		if (aux == null)
+		{
 
-				WalkTo (newPos);
-		}else{
-				Debug.Log(card.name+" - achou "+aux.name);
-			}
+			WalkTo(newPos);
+		}
+		else
+		{
+			Debug.Log(card.name + " - achou " + aux.name);
+		}
 		//}
 	}
 
-	public void Attack(){
+	public void Attack()
+	{
 		isAttacking = true;
-		StartCoroutine ("DoAttack");
+		StartCoroutine("DoAttack");
 	}
-	IEnumerator DoAttack(){
+	IEnumerator DoAttack()
+	{
 		isAttacking = true;
 
-		for (int i = 0; i < numberOfAttacks; i++) {
+		for (int i = 0; i < numberOfAttacks; i++)
+		{
 
 			gameController.SetTriggerType(TriggerType.OnBeginAttack, cardObject);
-			Hero hero = checkForEnemiesInFront ();
-			if (hero == null) {
-				if ((player.GetPlayerType() == PlayerType.Remote && gridPosition.y == 0) || (player.GetPlayerType() == PlayerType.Local && gridPosition.y == battlefield.GetNumberOfSquares() - 1)) {
-					Debug.LogWarning ("Attacked player with " + calculateAttackPower () + " damage");
-					LogController.Log (Action.AttackPlayer, calculateAttackPower(), player, gameController.GetOpponent(player));
-					gameController.AttackPlayer (calculateAttackPower ());
-					lastGivenDamage = calculateAttackPower ();
+			Hero targetHero = checkForEnemiesInFront();
+			if (targetHero == null)
+			{
+				var isAtEdgeOfOpponent = battlefield.IsAtEnemyEdge(this);
+
+				if (isAtEdgeOfOpponent)
+				{
+					Debug.LogWarning("Attacked player with " + calculateAttackPower() + " damage");
+					LogController.Log(Action.AttackPlayer, calculateAttackPower(), player, gameController.GetOpponent(player));
+					gameController.AttackPlayer(calculateAttackPower());
+					lastGivenDamage = calculateAttackPower();
 				}
-			} else {
-				if(hero.player != player){
-					LogController.Log (Action.AttackChar,  calculateAttackPower(), this, hero);
-					Debug.LogWarning ("Attacked "+hero.name+" with " + calculateAttackPower() + " damage");
-					hero.doDamage (calculateAttackPower ());
-					lastGivenDamage = calculateAttackPower ();
+			}
+			else
+			{
+				if (targetHero.player != player)
+				{
+					LogController.Log(Action.AttackChar, calculateAttackPower(), this, targetHero);
+					Debug.LogWarning("Attacked " + targetHero.name + " with " + calculateAttackPower() + " damage");
+					targetHero.doDamage(calculateAttackPower());
+					lastGivenDamage = calculateAttackPower();
 				}
 			}
 
 			gameController.SetTriggerType(TriggerType.OnAfterAttack, cardObject);
-			yield return new WaitForSeconds (0.25f);
+			yield return new WaitForSeconds(0.25f);
 		}
 
 
@@ -192,128 +230,184 @@ public class Hero : PlaceableCard {
 		numberOfAttacks = 1;
 		isAttacking = false;
 	}
-	public void doDamage(int value){
-		DamageCounter.New (transform.position, -value);
+	public void doDamage(int value)
+	{
+		DamageCounter.New(transform.position, -value);
 		Instantiate(Resources.Load<GameObject>("Prefabs/Particles/Hit"), pivot.transform.position, Quaternion.identity);
 		GameConfiguration.PlaySFX(GameConfiguration.Hit);
 		card.life -= value;
 	}
 
-	public void Die(){
-		cardObject.Die ();
+	public void Die()
+	{
+		cardObject.Die();
 	}
-	
-	public void AddAttack(int number){
-		if(number<0) number=0;
+
+	public void AddAttack(int number)
+	{
+		if (number < 0) number = 0;
 		card.attack += number;
 	}
-	public void RemoveAttack(int number){
-		if(number<0) number=0;
+	public void RemoveAttack(int number)
+	{
+		if (number < 0) number = 0;
 		card.attack -= number;
 	}
-	public void AddLife(int number){
-		if(number<0) number=0;
-		DamageCounter.New (transform.position, number);
+	public void AddLife(int number)
+	{
+		if (number < 0) number = 0;
+		DamageCounter.New(transform.position, number);
 		card.life += number;
 	}
-	public void ResetAttack(){
+	public void ResetAttack()
+	{
 		card.attack = originalCard.attack;
 	}
-	public void ResetLife(){
-		if(card.life>originalCard.life){
+	public void ResetLife()
+	{
+		if (card.life > originalCard.life)
 			card.life = originalCard.life;
-		}
 	}
-	public void DisableSkills(){
+	public void DisableSkills()
+	{
 		Skill aux;
-		for (int i=0;i<card.Skills.Count;i++){
-			aux = card.Skills [i];
+		for (int i = 0; i < card.Skills.Count; i++)
+		{
+			aux = card.Skills[i];
 			aux.isActive = false;
-			card.Skills [i] = aux;
+			card.Skills[i] = aux;
 		}
 	}
-	
-	public void AddWalkSpeed(int number){
+
+	public void AddWalkSpeed(int number)
+	{
 		if (number < 0)
 			number = 0;
-		
-		if (walkSpeed == 1) {
+
+		if (walkSpeed == 1)
+		{
 			GameConfiguration.PlaySFX(GameConfiguration.movementBuff);
 			walkSpeed += number;
 		}
 	}
-	public void RemoveWalkSpeed(int number){
+	public void RemoveWalkSpeed(int number)
+	{
 		if (number < 0)
 			number = 0;
 
-		walkSpeed-=number;
+		walkSpeed -= number;
 		if (walkSpeed <= 0)
 			walkSpeed = 1;
 	}
-	
-	public void AddNumberOfAttacks(int number){
+
+	public void AddNumberOfAttacks(int number)
+	{
 		if (number < 0)
 			number = 0;
-		numberOfAttacks+=number;
+		numberOfAttacks += number;
 	}
-	public void RemoveNumberOfAttacks(int number){
+	public void RemoveNumberOfAttacks(int number)
+	{
 		if (number < 0)
 			number = 0;
 
-		numberOfAttacks-=number;
+		numberOfAttacks -= number;
 		if (numberOfAttacks <= 0)
 			numberOfAttacks = 1;
 	}
 
-	Vector2 calculateEndPosition(){
+	Vector2 calculateEndPosition()
+	{
 		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
 		gridPos.y += movementDirection() * calculateWalkSpeed();
 
 		return gridPos;
 	}
 
-	Vector2 calculateNextForward(){
+	Vector2 calculateNextForward()
+	{
 		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
-		gridPos.y += movementDirection ();
+		gridPos.y += movementDirection();
 
 		return gridPos;
 	}
 
-	public override Vector3 GetTopPosition(){
+	public override Vector3 GetTopPosition()
+	{
 		return pivot.transform.position;
 	}
 
-	public int calculateAttackPower(){
+	public int calculateAttackPower()
+	{
 		return card.attack;
 	}
 
-	public int calculateWalkSpeed(){
+	public int calculateWalkSpeed()
+	{
 		return walkSpeed;
 	}
 
-	int movementDirection(){
-		if(player.GetPlayerType() == PlayerType.Remote)
+	int movementDirection()
+	{
+		if (player.GetPlayerType() == PlayerType.Remote)
 		{
 			return -1;
-		}else{
+		}
+		else
+		{
 			return 1;
 		}
 	}
 
-	void OnMouseDown(){
+	void OnMouseDown()
+	{
 		cardObject.isBeingHeroVisualized = true;
 	}
 
-	Hero checkForEnemiesInFront(){
-		Vector2 aux = calculateNextForward ();
+	Hero checkForEnemiesInFront()
+	{
+		Vector2 aux = calculateNextForward();
 		int layerMask = 1 << gameObject.layer;
 
-		List<Collider> aux2 = Physics.OverlapSphere (battlefield.GridToUnity (aux), 0.3f, layerMask).ToList ();
-		aux2.RemoveAll (a => a.GetComponent<Hero>() == this.GetComponent<Hero>());
-		if (aux2.Count>0) {
-			return aux2 [0].GetComponent<Hero> ();
+		List<Collider> aux2 = Physics.OverlapSphere(battlefield.GridToUnity(aux), 0.3f, layerMask).ToList();
+		aux2.RemoveAll(a => a.GetComponent<Hero>() == this.GetComponent<Hero>());
+		if (aux2.Count > 0)
+		{
+			return aux2[0].GetComponent<Hero>();
 		}
 
 		return null;
+	}
+	public List<Skill> GetSkills()
+    {
+		return card.Skills;
+    }
+	public Player GetPlayer()
+    {
+		return player;
+    }
+	public Card GetCard()
+    {
+		return card;
+    }
+	public CardObject GetCardObject()
+    {
+		return cardObject;
+    }
+	public Vector3 GetPivotPosition()
+    {
+		return pivot.transform.position;
+    }
+	public int GetLastGivenDamage()
+    {
+		return lastGivenDamage;
+	}
+	public bool IsAttacking()
+	{
+		return isAttacking;
+	}
+	public bool IsWalking()
+	{
+		return isWalking;
 	}
 }

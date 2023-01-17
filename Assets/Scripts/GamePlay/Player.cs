@@ -407,8 +407,9 @@ public class Player : MonoBehaviour
 	public bool Summon(CardObject card, SpawnArea area)
 	{
 		int value = card.cardData.calculateCost();
-		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.card.CardID != card.cardData.CardID);
+		List<Hero> heroes = FindObjectsOfType<Hero>().ToList();
+		heroes.RemoveAll(a => a.GetCard().CardID != card.cardData.CardID);
+
 		if (heroes.Count <= 0)
 		{
 			if (canSpendMana(value))
@@ -438,8 +439,9 @@ public class Player : MonoBehaviour
 	public bool Summon(CardObject card)
 	{
 		int value = card.cardData.calculateCost();
-		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.card.CardID != card.cardData.CardID);
+		List<Hero> heroes = FindObjectsOfType<Hero>().ToList();
+		heroes.RemoveAll(a => a.GetCard().CardID != card.cardData.CardID);
+
 		if (heroes.Count <= 0)
 		{
 			if (canSpendMana(value))

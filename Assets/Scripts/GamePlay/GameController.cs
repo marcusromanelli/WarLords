@@ -295,7 +295,7 @@ public class GameController : MonoBehaviour
 		DisablePlayers();
 
 		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.player != currentPlayer);
+		heroes.RemoveAll(a => a.GetPlayer() != currentPlayer);
 
 		foreach (Hero hero in heroes)
 		{
@@ -305,14 +305,14 @@ public class GameController : MonoBehaviour
 				{
 					case Actions.Attack:
 						hero.Attack();
-						while (hero.isAttacking)
+						while (hero.IsAttacking())
 						{
 							yield return null;
 						}
 						break;
 					case Actions.Move:
 						hero.moveForward();
-						while (hero.isWalking)
+						while (hero.IsWalking())
 						{
 							yield return null;
 						}
@@ -399,7 +399,7 @@ public class GameController : MonoBehaviour
 
 	public Player GetOpponent(Player player)
 	{
-		return player == LocalPlayer ? RemotePlayer : LocalPlayer;
+		return player.GetPlayerType() == LocalPlayer.GetPlayerType() ? RemotePlayer : LocalPlayer;
 	}
 
 	public Player GetLocalPlayer()

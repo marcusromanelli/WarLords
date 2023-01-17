@@ -312,9 +312,10 @@ public class CardObject : MonoBehaviour
 										break;
 									case ActionType.BuffHero:
 										GameConfiguration.PlaySFX(GameConfiguration.buffCard);
-										target.cardObject.AddSkill(cardData.Skills[1]);
-										gameController.SetTriggerType(TriggerType.OnBeforeSpawn, target.cardObject);
-										gameController.SetTriggerType(TriggerType.OnAfterSpawn, target.cardObject);
+										var cardObject = target.GetCardObject();
+										cardObject.AddSkill(cardData.Skills[1]);
+										gameController.SetTriggerType(TriggerType.OnBeforeSpawn, cardObject);
+										gameController.SetTriggerType(TriggerType.OnAfterSpawn, cardObject);
 										target = null;
 										Destroy(this.gameObject);
 										break;
@@ -438,7 +439,7 @@ public class CardObject : MonoBehaviour
 						player.SpendMana(cardData.Skills[1].manaCost);
 						destiny = ActionType.BuffHero;
 
-						destinyPosition = target.pivot.transform.position;
+						destinyPosition = target.GetPivotPosition();
 						destinyRotation = deckController.GetTopRotation();
 						return;
 					}
@@ -590,7 +591,7 @@ public class CardObject : MonoBehaviour
 		Character = ((GameObject)Instantiate(res, areaPosition, Quaternion.identity)).AddComponent<Hero>();
 
 		Character.setCard(cardData, player);
-		Character.Initialize(this);
+		Character.Setup(gameController, battlefield, this);
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 		gameController.SetTriggerType(TriggerType.OnAfterSpawn, this);
 	}

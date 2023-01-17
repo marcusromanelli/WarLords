@@ -7,16 +7,18 @@ using System.Collections.Generic;
 public class SpawnArea : PlaceableCard
 {
 	[SerializeField] Battlefield battlefield;
+	[SerializeField] GameController gameController;
 	[SerializeField] new Renderer renderer;
 	[SerializeField] Color defaultColor = Color.grey;
 	[SerializeField] Color selectedColor = Color.black;
-	public PlayerType playerType { get; private set; }
-	public bool IsSummonable { get; private set; }
+	public PlayerType playerType/* { get; private set; }*/ = PlayerType.None;
+	public bool IsSummonable {
+		get {
+			return playerType != PlayerType.None;
+		}
+	}
 	public bool TemporarilySummonable;
-	public Hero Hero = null;
-
-
-	
+	public Hero Hero = null;	
 
     private void Awake()
     {
@@ -25,18 +27,25 @@ public class SpawnArea : PlaceableCard
 	}
     void Start()
 	{
-		if (Application.isEditor)
+		if (!Application.isPlaying)
 			return;
 
-		SetColor(defaultColor);
+		if(IsSummonable)
+			SetColor(defaultColor);
 	}
-	public void Setup(Battlefield battlefield, bool IsSummonableTile, PlayerType playerType)
-    {
-		this.battlefield = battlefield;
-		IsSummonable = IsSummonableTile;
+	public void Setup(Battlefield battlefield, GameController gameController, PlayerType playerType)
+	{
+		Setup(battlefield, gameController);
 
 		this.playerType = playerType;
+
 	}
+	public void Setup(Battlefield battlefield, GameController gameController)
+	{
+		this.battlefield = battlefield;
+		this.gameController = gameController;
+	}
+
 	void SetColor(Color color)
 	{
 		renderer.material.color = color;
@@ -46,26 +55,32 @@ public class SpawnArea : PlaceableCard
 		if (!Application.isPlaying)
 			return;
 
-		player = GameController.Singleton.currentPlayer;
+		CheckMouse();
 
-		SetColor(defaultColor);
+		UpdateColor();
+	}
 
-		if (player == null || !player.hasCondition(ConditionType.PickSpawnArea))
-        {
-			CheckMouse();
+	void UpdateColor()
+	{
+		var player = gameController.currentPlayer;
+
+		if (player == null)
 			return;
-		}
-
 
 		var isLocal = player.GetPlayerType() == PlayerType.Local;
+		var isPickingLocation = player.hasCondition(ConditionType.PickSpawnArea);
 
 		isMouseOver = base.CheckMouseOver(false);
 
-		if ((isLocal || TemporarilySummonable) && isMouseOver && Hero == null)
+		if ((isLocal || TemporarilySummonable) && isPickingLocation && isMouseOver && Hero == null)
 			SetColor(selectedColor);
+
 	}
-	protected void CheckMouse()
+	void CheckMouse()
 	{
+		if (player != null && player.hasCondition(ConditionType.PickSpawnArea))
+			return;
+
 		isMouseOver = base.CheckMouseOver(true);
 
 
