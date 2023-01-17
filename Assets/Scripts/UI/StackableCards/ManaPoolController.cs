@@ -132,8 +132,8 @@ public class ManaPoolController : PlaceableCard
 		aux = (GameObject)Instantiate(Mana, Vector3.zero, Quaternion.Euler(270, 0, 180));
 		//aux.transform.localScale /= 1.2f;
 		aux.transform.position = next;
-		aux.AddComponent<CardObject>().setMana();
-		aux.GetComponent<CardObject>().setPlayer(player);
+		aux.AddComponent<CardObject>().SetMana();
+		aux.GetComponent<CardObject>().SetPlayer(player);
 		ManaPoolCards.Add(aux.GetComponent<CardObject>());
 		aux.transform.SetParent(transform, true);
 	}

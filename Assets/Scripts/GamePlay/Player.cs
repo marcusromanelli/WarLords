@@ -286,7 +286,7 @@ public class Player : MonoBehaviour
 		return new Stack<Card>(aux);
 	}
 
-	public bool canSpendMana(int number)
+	public bool CanSpendMana(int number)
 	{
 		int manaNumber = ManaPool.FindAll(a => a.manaStatus != ManaStatus.Used).Count;
 		if (number > manaNumber)
@@ -329,7 +329,7 @@ public class Player : MonoBehaviour
 	}
 	public void SpendMana(int number)
 	{
-		if (canSpendMana(number))
+		if (CanSpendMana(number))
 		{
 			int c = 0;
 			Card aux;
@@ -403,38 +403,38 @@ public class Player : MonoBehaviour
 	{
 		GameController.Singleton.NextPhase();
 	}
-
 	public bool Summon(CardObject card, SpawnArea area)
 	{
 		int value = card.cardData.calculateCost();
 		List<Hero> heroes = FindObjectsOfType<Hero>().ToList();
 		heroes.RemoveAll(a => a.GetCard().CardID != card.cardData.CardID);
 
-		if (heroes.Count <= 0)
-		{
-			if (canSpendMana(value))
-			{
-				SpendMana(value);
+		var hasHero = heroes.Count > 0;
 
-				card.SummonType = SummonType.Monster;
-				BattlefieldController.Summon(card, area);
-				Battlefield.Add(card);
-				Hand.Remove(card.cardData);
-
-				Debug.Log(GetFormatedName() + " is summoning " + card.name);
-				return true;
-			}
-			else
-			{
-				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			}
-		}
-		else
+        if (hasHero)
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.LogWarning("you can only have one type of the same hero in the field.");
+			return false;
 		}
-		return false;
+
+		if (!CanSpendMana(value))
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("Not enough mana.");
+			return false;
+		}
+
+		SpendMana(value);
+
+		card.SummonType = SummonType.Monster;
+		BattlefieldController.Summon(card, area);
+		Battlefield.Add(card);
+		Hand.Remove(card.cardData);
+
+		Debug.Log(GetFormatedName() + " is summoning " + card.name);
+
+		return true;
 	}
 	public bool Summon(CardObject card)
 	{
@@ -444,7 +444,7 @@ public class Player : MonoBehaviour
 
 		if (heroes.Count <= 0)
 		{
-			if (canSpendMana(value))
+			if (CanSpendMana(value))
 			{
 				SpendMana(value);
 

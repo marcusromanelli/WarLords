@@ -12,12 +12,15 @@ public class SpawnArea : PlaceableCard
 	[SerializeField] Color defaultColor = Color.grey;
 	[SerializeField] Color selectedColor = Color.black;
 	public PlayerType playerType/* { get; private set; }*/ = PlayerType.None;
+
+	Color lastUsedColor;
+
 	public bool IsSummonable {
 		get {
 			return playerType != PlayerType.None;
 		}
 	}
-	public bool TemporarilySummonable;
+	public bool IsTemporarilySummonable;
 	public Hero Hero = null;	
 
     private void Awake()
@@ -48,7 +51,11 @@ public class SpawnArea : PlaceableCard
 
 	void SetColor(Color color)
 	{
+		if (color == lastUsedColor)
+			return;
+
 		renderer.material.color = color;
+		lastUsedColor = color;
 	}
 	protected override void Update()
 	{
@@ -62,9 +69,12 @@ public class SpawnArea : PlaceableCard
 
 	void UpdateColor()
 	{
-		var player = gameController.currentPlayer;
+		var player = gameController.GetCurrentPlayer();
 
 		if (player == null)
+			return;
+
+		if (!IsTemporarilySummonable && !IsSummonable)
 			return;
 
 		var isLocal = player.GetPlayerType() == PlayerType.Local;
@@ -72,9 +82,10 @@ public class SpawnArea : PlaceableCard
 
 		isMouseOver = base.CheckMouseOver(false);
 
-		if ((isLocal || TemporarilySummonable) && isPickingLocation && isMouseOver && Hero == null)
+		if ((isLocal || IsTemporarilySummonable) && isPickingLocation && isMouseOver && Hero == null)
 			SetColor(selectedColor);
-
+		else
+			SetColor(defaultColor);
 	}
 	void CheckMouse()
 	{

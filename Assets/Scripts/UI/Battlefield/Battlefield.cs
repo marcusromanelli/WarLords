@@ -198,5 +198,24 @@ public class Battlefield : MonoBehaviour
 	{
 		return (YPosition >= numberOfSquares - numberOfSpawnAreasPerLane);
 	}
+	public bool CanSummon(Player player, SpawnArea area)
+    {
+		if (area == null)
+			return false;
+
+		if (!area.IsSummonable && !area.IsTemporarilySummonable)
+			return false;
+
+		var type = gameController.GetCurrentPlayer().GetPlayerType();
+
+		if (area.IsSummonable && area.playerType != type)
+			return false;
+
+		return true;
+    }
+	public bool CanSummonOnSelectedTile(Player player)
+    {
+		return CanSummon(player, selectedTile);
+    }
 
 }

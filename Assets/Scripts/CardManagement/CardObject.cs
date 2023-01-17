@@ -28,12 +28,13 @@ public class CardObject : MonoBehaviour
 	public Vector3 originalPosition;
 	Vector3 offset;
 	Vector3 originalScale;
-	Vector3 mousePosition;
+	Vector3 lastKnownMousePosition;
 	Vector3 destinyPosition, destinyScale;
-	SpawnArea selectedTile;
 	Quaternion destinyRotation;
-	ActionType destiny;
+	ActionType nextActionType;
 	string civilizationName;
+	Hero targetHero;
+	SpawnArea targetSpawnArea;
 	DeckController deckController;
 	BattlefieldController battlefieldController;
 	ManaPoolController manaPoolController;
@@ -177,7 +178,7 @@ public class CardObject : MonoBehaviour
 				hideSummonButtons();
 				break;
 			case SummonType.Monster:
-				if (isMouseDown && Vector3.Distance(mousePosition, Input.mousePosition) > 0.2)
+				if (isMouseDown && Vector3.Distance(lastKnownMousePosition, Input.mousePosition) > 0.2)
 				{
 					isBeingHeroVisualized = false;
 				}
@@ -210,19 +211,19 @@ public class CardObject : MonoBehaviour
 					}
 					else
 					{
-						if (destiny == ActionType.NoAction)
+						if (nextActionType == ActionType.NoAction)
 						{
-							if (isMouseDown && Vector3.Distance(mousePosition, Input.mousePosition) > 0.2)
+							if (isMouseDown && Vector3.Distance(lastKnownMousePosition, Input.mousePosition) > 0.2)
 							{
 								isBeingHeld = true;
 								isBeingVisualized = false;
 							}
-							mousePosition = Input.mousePosition;
+							lastKnownMousePosition = Input.mousePosition;
 							if (isBeingHeld)
 							{
 								hideSummonButtons();
 								offset.z = offset.x = 0;
-								if (GameController.Singleton.currentPlayer == player || player.hasCondition(ConditionType.DiscartCard) || player.hasCondition(ConditionType.DrawCard) || player.hasCondition(ConditionType.SendCardToManaPool))
+								if (gameController.GetCurrentPlayer() == player || player.hasCondition(ConditionType.DiscartCard) || player.hasCondition(ConditionType.DrawCard) || player.hasCondition(ConditionType.SendCardToManaPool))
 								{
 									if (deckController.IsMouseOver)
 									{
@@ -248,14 +249,17 @@ public class CardObject : MonoBehaviour
 									{
 										var selectedTile = battlefield.GetSelectedTile();
 
-										if (selectedTile != null && selectedTile.playerType == gameController.currentPlayer.GetPlayerType())
+										var hasTile = selectedTile != null;
+										var player = gameController.GetCurrentPlayer();
+
+										if (hasTile && (player != null && selectedTile.playerType == player.GetPlayerType()))
 										{
 											transform.position = Vector3.MoveTowards(transform.position, selectedTile.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
 											transform.rotation = Quaternion.RotateTowards(transform.rotation, selectedTile.GetTopRotation(), Time.deltaTime * 600f);
 										}
 										else
 										{
-											transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
+											transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(lastKnownMousePosition.x, lastKnownMousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
 											transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(Vector3.right * 270), Time.deltaTime * handController.cardFoldSpeed);
 											transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale, Time.deltaTime * 15f);
 										}
@@ -263,7 +267,7 @@ public class CardObject : MonoBehaviour
 								}
 								else
 								{
-									transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
+									transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(lastKnownMousePosition.x, lastKnownMousePosition.y, 10f)), Time.deltaTime * cardMovementSpeed);
 									transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(Vector3.right * 270), Time.deltaTime * handController.cardFoldSpeed);
 									transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale, Time.deltaTime * 15f);
 								}
@@ -299,7 +303,7 @@ public class CardObject : MonoBehaviour
 							}
 							else
 							{
-								switch (destiny)
+								switch (nextActionType)
 								{
 									case ActionType.CardToDeck:
 										player.DiscartCardToDrawTwo(cardData);
@@ -312,18 +316,21 @@ public class CardObject : MonoBehaviour
 										break;
 									case ActionType.BuffHero:
 										GameConfiguration.PlaySFX(GameConfiguration.buffCard);
-										var cardObject = target.GetCardObject();
+										var cardObject = targetHero.GetCardObject();
 										cardObject.AddSkill(cardData.Skills[1]);
 										gameController.SetTriggerType(TriggerType.OnBeforeSpawn, cardObject);
 										gameController.SetTriggerType(TriggerType.OnAfterSpawn, cardObject);
-										target = null;
+										targetHero = null;
 										Destroy(this.gameObject);
 										break;
 									case ActionType.SummonHero:
-										if (!player.Summon(this, selectedTile))
+										var hasSummon = player.Summon(this, targetSpawnArea);
+
+                                        if (!hasSummon)
 										{
-											destiny = ActionType.NoAction;
+											nextActionType = ActionType.NoAction;
 											isBeingHeld = false;
+											return;
 										}
 										break;
 								}
@@ -339,173 +346,171 @@ public class CardObject : MonoBehaviour
 	{
 		if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
 		{
-			mousePosition = Input.mousePosition;
+			lastKnownMousePosition = Input.mousePosition;
 			offset = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 11)) - transform.localPosition;
 			isMouseDown = true;
 		}
 	}
-	Hero target;
-	public void OnMouseUp()
-	{
-		isMouseDown = false;
-		if (SummonType == SummonType.DoNotApply)
+	
+	void CheckDeckInteraction()
+    {
+		if (!deckController.IsMouseOver)
+			return;
+
+		if(gameController.currentPhase == Phase.Attack || gameController.currentPhase == Phase.End || gameController.currentPhase == Phase.Movement || !gameController.MatchHasStarted)
 		{
-			if (deckController.IsMouseOver)
-			{
-				if (GameController.Singleton.currentPhase != Phase.Attack && GameController.Singleton.currentPhase != Phase.End && GameController.Singleton.currentPhase != Phase.Movement && GameController.Singleton.MatchHasStarted)
-				{
-					if (!player.HasUsedHability())
-					{
-						destiny = ActionType.CardToDeck;
-						destinyPosition = deckController.GetTopPosition();
-						destinyRotation = deckController.GetTopRotation();
-						return;
-					}
-					else
-					{
-						GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-						Debug.LogWarning("You already used your hability this turn.");
-					}
-				}
-				else
-				{
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					Debug.LogWarning("This movement is not allowed now.");
-				}
-			}
-			else if (manaPoolController.IsMouseOver)
-			{
-				if (GameController.Singleton.MatchHasStarted)
-				{
-					if (GameController.Singleton.currentPhase != Phase.Attack && GameController.Singleton.currentPhase != Phase.End && GameController.Singleton.currentPhase != Phase.Movement)
-					{
-						if (!player.HasUsedHability())
-						{
-							destiny = ActionType.CardToManaPool;
-							destinyPosition = manaPoolController.GetBasePosition();
-							destinyRotation = manaPoolController.GetTopRotation();
-							return;
-						}
-						else
-						{
-							GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-							Debug.LogWarning("You already used your hability this turn.");
-						}
-					}
-					else
-					{
-						GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-						Debug.LogWarning("This movement is not allowed in this phase.");
-					}
-				}
-				else
-				{
-					if (!player.hasCondition(ConditionType.SendCardToManaPool))
-					{
-						GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-						Debug.LogWarning("This movement is not allowed now.");
-					}
-					else
-					{
-						destiny = ActionType.CardToManaPool;
-						destinyPosition = manaPoolController.GetBasePosition();
-						destinyRotation = manaPoolController.GetTopRotation();
-						return;
-					}
-				}
-			}
-			else if (graveyardController.IsMouseOver)
-			{
-				if (!player.hasCondition(ConditionType.DiscartCard) && !Application.isEditor)
-				{
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					Debug.LogWarning("You cannot discart a cart without a reason.");
-				}
-				else
-				{
-					destiny = ActionType.DiscartCard;
-					destinyPosition = graveyardController.GetTopPosition();
-					destinyRotation = graveyardController.GetTopRotation();
-					return;
-				}
-			}
-			else if (Hero.selectedHero != null && !isBeingVisualized && isBeingHeld)
-			{
-				if (GameController.Singleton.MatchHasStarted)
-				{
-					if (player.canSpendMana(cardData.Skills[1].manaCost))
-					{
-						target = Hero.selectedHero;
-						player.SpendMana(cardData.Skills[1].manaCost);
-						destiny = ActionType.BuffHero;
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("This movement is not allowed now.");
+			return;
+		}
 
-						destinyPosition = target.GetPivotPosition();
-						destinyRotation = deckController.GetTopRotation();
-						return;
-					}
-				}
-				else
-				{
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					Debug.LogWarning("This movement is not allowed now.");
-				}
-			}
-			else if (battlefield.GetSelectedTile() != null && !isBeingVisualized && isBeingHeld)
+
+		if (player.HasUsedHability())
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("You already used your hability this turn.");
+			return;
+		}
+
+
+		nextActionType = ActionType.CardToDeck;
+		destinyPosition = deckController.GetTopPosition();
+		destinyRotation = deckController.GetTopRotation();
+	}
+	void CheckManaPoolInteraction()
+	{
+		if (!manaPoolController.IsMouseOver)
+			return;
+
+		if (!gameController.MatchHasStarted)
+        {
+			if (!player.hasCondition(ConditionType.SendCardToManaPool))
 			{
-				selectedTile = battlefield.GetSelectedTile();
-
-				if (GameController.Singleton.MatchHasStarted)
-				{
-					if (player.canSpendMana(cardData.calculateCost()))
-					{
-						destiny = ActionType.SummonHero;
-
-						destinyPosition = selectedTile.GetTopPosition();
-						destinyRotation = selectedTile.GetTopRotation();
-						return;
-					}
-					else
-					{
-						GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-						Debug.LogWarning("Not enought mana.");
-					}
-					/*if (player.canSpendMana (card.Skills [1].manaCost)) {
-						target = Hero.selectedHero;
-						player.SpendMana (card.Skills [1].manaCost);
-					}*/
-				}
-				else
-				{
-					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-					Debug.LogWarning("This movement is not allowed now.");
-				}
+				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+				Debug.LogWarning("This movement is not allowed now.");
 			}
 			else
 			{
-				if (player.GetPlayerType() == PlayerType.Local && !isBeingHeld && Vector3.Distance(Input.mousePosition, mousePosition) < 0.1f)
-				{
-					isBeingVisualized = true;
-					if (!isBeingVisualized)
-					{
-						Skill aux;
-						for (int i = 0; i < cardData.Skills.Count; i++)
-						{
-							aux = cardData.Skills[i];
-							aux.isActive = false;
-							cardData.Skills[i] = aux;
-						}
-					}
-				}
+				nextActionType = ActionType.CardToManaPool;
+				destinyPosition = manaPoolController.GetBasePosition();
+				destinyRotation = manaPoolController.GetTopRotation();
 			}
+
+			return;
 		}
-		else if (SummonType == SummonType.DoNotApply)
+
+		if (gameController.currentPhase == Phase.Attack || gameController.currentPhase == Phase.End || gameController.currentPhase == Phase.Movement)
 		{
-			isBeingHeroVisualized = !isBeingHeroVisualized;
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("This movement is not allowed in this phase.");
+			return;
 		}
+
+		if (player.HasUsedHability())
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("You already used your hability this turn.");
+			return;
+		}
+
+		nextActionType = ActionType.CardToManaPool;
+		destinyPosition = manaPoolController.GetBasePosition();
+		destinyRotation = manaPoolController.GetTopRotation();
+    }
+	void CheckGraveyardInteraction()
+	{
+		if (!graveyardController.IsMouseOver)
+			return;
+
+		if (!player.hasCondition(ConditionType.DiscartCard))
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("You cannot discart a cart without a reason.");
+			return;
+		}
+
+		nextActionType = ActionType.DiscartCard;
+		destinyPosition = graveyardController.GetTopPosition();
+		destinyRotation = graveyardController.GetTopRotation();
+	}
+	void CheckHeroInteraction()
+    {
+		if (Hero.selectedHero == null || isBeingVisualized || !isBeingHeld)
+			return;
+
+		if (!gameController.MatchHasStarted)
+        {
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("This movement is not allowed now.");
+			return;
+		}
+		
+		if (player.CanSpendMana(cardData.Skills[1].manaCost))
+		{
+			targetHero = Hero.selectedHero;
+			player.SpendMana(cardData.Skills[1].manaCost);
+			nextActionType = ActionType.BuffHero;
+
+			destinyPosition = targetHero.GetPivotPosition();
+			destinyRotation = deckController.GetTopRotation();
+			return;
+		}
+	}
+	void CheckBattleFieldInteraction()
+    {
+		if (battlefield.GetSelectedTile() == null || !battlefield.CanSummonOnSelectedTile(player) || isBeingVisualized || !isBeingHeld)
+		{
+
+			if (Vector3.Distance(Input.mousePosition, lastKnownMousePosition) > 0.1f)
+				return;
+
+			isBeingVisualized = true;
+
+			return;
+		}
+
+
+		var selectedTile = battlefield.GetSelectedTile();
+
+		if (!gameController.MatchHasStarted)
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("This movement is not allowed now.");
+			return;
+		}
+
+
+		if (!player.CanSpendMana(cardData.calculateCost()))
+		{
+			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			Debug.LogWarning("Not enought mana.");
+			return;
+		}
+
+		nextActionType = ActionType.SummonHero;
+
+		destinyPosition = selectedTile.GetTopPosition();
+		destinyRotation = selectedTile.GetTopRotation();
+		targetSpawnArea = selectedTile;
+	}
+	public void OnMouseUp()
+	{
+		isMouseDown = false;
+
+		CheckDeckInteraction();
+
+		CheckManaPoolInteraction();
+
+		CheckGraveyardInteraction();
+
+		CheckHeroInteraction();
+
+		CheckBattleFieldInteraction();
+
 		isBeingHeld = false;
 	}
 
-	public void addSKill(int number)
+	public void AddSKill(int number)
 	{
 		if (number > 1) number = 1;
 		Skill aux = cardData.Skills[number];
@@ -513,7 +518,7 @@ public class CardObject : MonoBehaviour
 		cardData.Skills[number] = aux;
 	}
 
-	public void removeSkill(int number)
+	public void RemoveSkill(int number)
 	{
 		if (number > 1) number = 1;
 		Skill aux = cardData.Skills[number];
@@ -521,17 +526,21 @@ public class CardObject : MonoBehaviour
 		cardData.Skills[number] = aux;
 	}
 
-	public void setMana()
+	public void SetMana()
 	{
-		aux = GetComponent<Renderer>().material.color;
-		aux2 = GetComponent<Renderer>().material.GetColor("_EmissionColor");
+		var renderer = GetComponent<Renderer>();
+
+		aux = renderer.material.color;
+		aux2 = renderer.material.GetColor("_EmissionColor");
+
 		SummonType = SummonType.Mana;
-		aux = GetComponent<Renderer>().material.color;
-		aux2 = GetComponent<Renderer>().material.GetColor("_EmissionColor");
+
+		aux = renderer.material.color;
+		aux2 = renderer.material.GetColor("_EmissionColor");
 	}
 
 	ParticleSystem system;
-	public void becameMana()
+	public void BecameMana()
 	{
 		system = GetComponentInChildren<ParticleSystem>();
 		system.Play();
@@ -540,7 +549,7 @@ public class CardObject : MonoBehaviour
 	}
 
 
-	public void setPlayer(Player player)
+	public void SetPlayer(Player player)
 	{
 		this.player = player;
 	}

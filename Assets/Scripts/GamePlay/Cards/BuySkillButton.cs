@@ -49,10 +49,10 @@ public class BuySkillButton : MonoBehaviour {
 			GameConfiguration.PlaySFX(GameConfiguration.confirmAction);
 			if(!status){
 				Debug.Log("Add skill");
-				card.addSKill(skillNumber);
+				card.AddSKill(skillNumber);
 			}else{
 				Debug.Log("Remove skill");
-				card.removeSkill(skillNumber);
+				card.RemoveSkill(skillNumber);
 			}
 
 			status = !status;

@@ -4643,6 +4643,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3912952147145587446, guid: d5c0ee78c6f4aaf489be1571962428bd,
         type: 3}
+      propertyPath: Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912952147145587446, guid: d5c0ee78c6f4aaf489be1571962428bd,
+        type: 3}
       propertyPath: HandObject
       value: 
       objectReference: {fileID: 862700324}

@@ -54,7 +54,7 @@ public class PhasesTitle : MonoBehaviour
 	}
 
 
-	public static void setWinner(Player player)
+	public static void SetWinner(Player player)
 	{
 		if (!Singleton.finish)
 		{
@@ -115,7 +115,7 @@ public class PhasesTitle : MonoBehaviour
 		switch (next)
 		{
 			case Phase.Action:
-				var currentPlayer = GameController.Singleton.currentPlayer;
+				var currentPlayer = gameController.GetCurrentPlayer();
 
 				if (currentPlayer.GetPlayerType() == PlayerType.Remote)
 				{

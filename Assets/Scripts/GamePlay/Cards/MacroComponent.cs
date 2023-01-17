@@ -31,7 +31,7 @@ public class MacroComponent : MonoBehaviour
 		if (!IsResolving)
 			return;
 
-		var currentPlayer = GameController.Singleton.currentPlayer;
+		var currentPlayer = GameController.GetCurrentPlayer();
 
 		switch (Skill.macroType)
 		{
@@ -96,7 +96,7 @@ public class MacroComponent : MonoBehaviour
 
 
 				tiles.ForEach(delegate (SpawnArea obj) {
-					obj.TemporarilySummonable = true;
+					obj.IsTemporarilySummonable = true;
 				});
 				break;
 		}
@@ -157,7 +157,7 @@ public class MacroComponent : MonoBehaviour
 		IsResolving = true;
 		LogController.Log(Action.UseMacro, CardObject.player, Skill.macroType);
 
-		var currentPlayer = GameController.Singleton.currentPlayer;
+		var currentPlayer = GameController.GetCurrentPlayer();
 
 		switch (Skill.macroType)
 		{
@@ -165,7 +165,7 @@ public class MacroComponent : MonoBehaviour
 				var tiles = Battlefield.GetFields(GameController.GetRemotePlayer());
 
 				tiles.ForEach(delegate (SpawnArea obj) {
-					obj.TemporarilySummonable = true;
+					obj.IsTemporarilySummonable = true;
 				});
 				break;
 			case MacroType.Lifelink:

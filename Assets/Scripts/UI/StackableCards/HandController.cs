@@ -62,7 +62,7 @@ public abstract class HandController : MonoBehaviour{
 	public void RemoveCard(int PlayID){
 		CardObject cd = cards.Find (a => a.cardData.PlayID == PlayID);
 		if (cd!=null) {
-			cd.becameMana ();
+			cd.BecameMana ();
 			cards.Remove (cd);
 			updateCardList ();
 		} else {

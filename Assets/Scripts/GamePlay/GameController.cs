@@ -115,13 +115,13 @@ public class GameController : MonoBehaviour
 		//TODO ARRRRG
 		if (LocalPlayer.GetCurrentLife() <= 0)
 		{
-			PhasesTitle.setWinner(RemotePlayer);
+			PhasesTitle.SetWinner(RemotePlayer);
 			LocalPlayer.enabled = false;
 			RemotePlayer.enabled = false;
 		}
 		else if (RemotePlayer.GetCurrentLife() <= 0)
 		{
-			PhasesTitle.setWinner(LocalPlayer);
+			PhasesTitle.SetWinner(LocalPlayer);
 			LocalPlayer.enabled = false;
 			RemotePlayer.enabled = false;
 		}
@@ -391,15 +391,15 @@ public class GameController : MonoBehaviour
 
 	public static void RemoveMacro(MacroComponent condition)
 	{
-		GameController.Singleton.Macros.Remove(condition);
-		if (GameController.Singleton.Macros.Count > 0)
-			GameController.Singleton.Macros[0].setActive();
+		Singleton.Macros.Remove(condition);
+		if (Singleton.Macros.Count > 0)
+			Singleton.Macros[0].setActive();
 	}
 
 
 	public Player GetOpponent(Player player)
 	{
-		return player.GetPlayerType() == LocalPlayer.GetPlayerType() ? RemotePlayer : LocalPlayer;
+		return player == LocalPlayer ? RemotePlayer : LocalPlayer;
 	}
 
 	public Player GetLocalPlayer()

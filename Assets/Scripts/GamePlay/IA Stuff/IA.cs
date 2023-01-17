@@ -17,7 +17,7 @@ public class IA : MonoBehaviour {
 
 
 	void solvePhase(){
-		var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.Singleton.MatchHasStarted && GameController.Singleton.currentPlayer == player;
+		var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.Singleton.MatchHasStarted && gameController.GetCurrentPlayer() == player;
 
 		if (!AIWillPlay)
 			return;
@@ -41,7 +41,7 @@ public class IA : MonoBehaviour {
 				Card cd = getRandomCardFromHand ();
 				int cost = cd.calculateCost ();
 
-				if (player.canSpendMana (cost)) {
+				if (player.CanSpendMana (cost)) {
 					List<SpawnArea> test = battlefield.GetEmptyFields(gameController.GetLocalPlayer());
 					//test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.Hero == null);
 
