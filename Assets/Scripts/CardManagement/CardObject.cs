@@ -131,50 +131,12 @@ public class CardObject : MonoBehaviour
 		}
 	}
 
-	Color aux, aux2;
-	float spd = 1;
 	void Update()
 	{
 		switch (SummonType)
 		{
 			case SummonType.Mana:
-				switch (cardData.manaStatus)
-				{
-					case ManaStatus.Used:
-						GetComponentsInChildren<ParticleSystem>().ToList().ForEach(delegate (ParticleSystem obj) {
-							if (obj.isPlaying || obj.IsAlive())
-							{
-								obj.Stop(true);
-								spd = obj.playbackSpeed;
-								obj.playbackSpeed = spd * 5f;
-							}
-						});
-						GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, Color.black, Time.deltaTime);
-						GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.black);
-						break;
-					case ManaStatus.Active:
-						GetComponentsInChildren<ParticleSystem>().ToList().ForEach(delegate (ParticleSystem obj) {
-							if (!obj.isPlaying)
-							{
-								obj.Play();
-								obj.playbackSpeed = spd;
-							}
-						});
-						GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, aux, Time.deltaTime);
-						GetComponent<Renderer>().material.SetColor("_EmissionColor", aux2);
-						break;
-					case ManaStatus.Preview:
-						GetComponentsInChildren<ParticleSystem>().ToList().ForEach(delegate (ParticleSystem obj) {
-							if (!obj.isPlaying)
-							{
-								obj.Play();
-								obj.playbackSpeed = spd;
-							}
-						});
-						GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, Color.red, Time.deltaTime);
-						GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
-						break;
-				}
+
 				hideSummonButtons();
 				break;
 			case SummonType.Monster:
@@ -526,18 +488,6 @@ public class CardObject : MonoBehaviour
 		cardData.Skills[number] = aux;
 	}
 
-	public void SetMana()
-	{
-		var renderer = GetComponent<Renderer>();
-
-		aux = renderer.material.color;
-		aux2 = renderer.material.GetColor("_EmissionColor");
-
-		SummonType = SummonType.Mana;
-
-		aux = renderer.material.color;
-		aux2 = renderer.material.GetColor("_EmissionColor");
-	}
 
 	ParticleSystem system;
 	public void BecameMana()

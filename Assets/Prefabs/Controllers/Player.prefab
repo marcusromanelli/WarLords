@@ -566,7 +566,7 @@ MonoBehaviour:
   Deck: 
   civilization: 0
   life: 0
-  playerType: 0
+  Type: 0
   Hand:
   - CardID: 0
     PlayID: 0
@@ -908,6 +908,8 @@ MonoBehaviour:
   BaseCenter: {fileID: 4024137065332159077}
   distanceBetweenColumns: 0.2
   distanceBetweenLines: 0.3
+  manaOrbAsset: {fileID: 1000011447547414, guid: c3c0a5696d608524796375b662bcf708,
+    type: 3}
 --- !u!65 &3980749403499942338
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1189,6 +1191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f29b345b71cfd44aacaedded4169a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 0}
+  battlefield: {fileID: 0}
   deckController: {fileID: 3912952147278033878}
   cardFoldSpeed: 600
   cards: []
@@ -1320,6 +1324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardReferencePosition: {fileID: 1561681325608008593}
+  battlefield: {fileID: 0}
+  gameController: {fileID: 0}
   waitingForSpawnPoint: 0
 --- !u!1 &4024835808216190578
 GameObject:

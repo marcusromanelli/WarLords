@@ -311,7 +311,7 @@ public class Player : MonoBehaviour
 				c++;
 			}
 		}
-		ManaPoolController.previewMana(number);
+		ManaPoolController.PreviewMana(number);
 	}
 	public void ResetPreviewMana()
 	{
@@ -325,7 +325,7 @@ public class Player : MonoBehaviour
 				ManaPool[i] = aux;
 			}
 		}
-		ManaPoolController.recoverPreviewMana();
+		ManaPoolController.RecoverPreviewMana();
 	}
 	public void SpendMana(int number)
 	{
@@ -345,7 +345,7 @@ public class Player : MonoBehaviour
 			}
 			GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
 			Debug.Log("Spended " + number + " mana");
-			ManaPoolController.spendMana(number);
+			ManaPoolController.SpendMana(number);
 		}
 	}
 	public void RecoverMana(int number)
@@ -364,7 +364,7 @@ public class Player : MonoBehaviour
 		}
 		GameConfiguration.PlaySFX(GameConfiguration.energyToCard);
 		Debug.Log("Recovered " + number + " mana");
-		ManaPoolController.recoverMana(number);
+		ManaPoolController.RecoverSpentMana(number);
 	}
 	public void AddCondition(ConditionType Type, int number = -1)
 	{
