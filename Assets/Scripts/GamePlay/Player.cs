@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
 	[SerializeField] Stack<Card> Graveyard;
 	[SerializeField] List<Card> Hand;
 	[SerializeField] List<Card> Field;
-	[SerializeField] List<Card> ManaPool;
 	[SerializeField] List<CardObject> Battlefield;
 	[SerializeField] List<Condition> Conditions;
 
@@ -46,7 +45,6 @@ public class Player : MonoBehaviour
 	{
 		PlayDeck = new Stack<Card>();
 		Graveyard = new Stack<Card>();
-		ManaPool = new List<Card>();
 		Field = new List<Card>();
 		Hand = new List<Card>();
 		life = GameConfiguration.startLife;
@@ -75,7 +73,7 @@ public class Player : MonoBehaviour
 	public void StartTurn()
 	{
 		ResetHabilities();
-		RecoverMana(ManaPool.Count);
+		RecoverMana();
 		ResetPreviewMana();
 
 		DrawCard();
@@ -189,34 +187,25 @@ public class Player : MonoBehaviour
 				return;
 			}
 		}
-		if (ManaPool.Count >= 12)
+		if (!ManaPoolController.HasManaSpace())
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.Log("You already have the maximum mana permitted.");
 			return;
 		}
-		if (Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0)
-		{
-			HandObject.RemoveCard(card.PlayID);
-			AddMana();
-			hasUsedHability = true;
-			Debug.Log("Card ID nº " + card.PlayID + " became a Mana");
-		}
-		else
+
+		var removedCard = Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0;
+		if (!removedCard)
 		{
 			Debug.LogError("Tried to remove a card from hand of " + GetFormatedName() + " that doesn't is there");
-		}
-	}
+			return;
 
-
-	public void AddMana(int number = 1)
-	{
-		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
-		LogController.Log(Action.CreateEnergy, this, number);
-		for (int i = 0; i < number; i++)
-		{
-			ManaPool.Add(new Card());
 		}
+
+		HandObject.RemoveCard(card.PlayID);
+		ManaPoolController.IncreaseMaxMana();
+		hasUsedHability = true;
+		Debug.Log("Card ID nº " + card.PlayID + " became a Mana");
 	}
 
 	void TurnGraveyardIntoDeck()
@@ -231,27 +220,28 @@ public class Player : MonoBehaviour
 
 	public void DiscartCardToDrawTwo(Card card)
 	{
-		if (!hasUsedHability)
-		{
-			if (Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0)
-			{
-				Graveyard.Push(card);
-				HandObject.RemoveCard(card.PlayID);
-				DrawCard(2);
-				hasUsedHability = true;
-				LogController.Log(Action.ChangeCard, this);
-				Debug.Log("Card ID nº " + card + " has gone to Graveyard and " + GetFormatedName() + " drawed 2 cards");
-			}
-			else
-			{
-				Debug.LogError("Tried to remove a card from hand that doesn't is there");
-			}
-		}
-		else
+		if (hasUsedHability)
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.Log(GetFormatedName() + " cannot use his hability because he already used this turn");
+			return;
 		}
+
+		var hasDiscarted = Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0;
+
+
+		if (!hasDiscarted)
+		{
+			Debug.LogError("Tried to remove a card from hand that doesn't is there");
+			return;
+		}
+
+		Graveyard.Push(card);
+		HandObject.RemoveCard(card.PlayID);
+		DrawCard(2);
+		hasUsedHability = true;
+		LogController.Log(Action.ChangeCard, this);
+		Debug.Log("Card ID nº " + card + " has gone to Graveyard and " + GetFormatedName() + " drawed 2 cards");
 	}
 
 	string GetFormatedName()
@@ -288,83 +278,41 @@ public class Player : MonoBehaviour
 
 	public bool CanSpendMana(int number)
 	{
-		int manaNumber = ManaPool.FindAll(a => a.manaStatus != ManaStatus.Used).Count;
-		if (number > manaNumber)
-		{
-			Debug.LogWarning("Not have enough mana. Requested: " + number + " - You have: " + manaNumber);
-			return false;
-		}
-		return true;
+		return ManaPoolController.HasAvailableMana(number);
 	}
 
-	public void previewSpendMana(int number)
+	public void PreviewSpendMana(int number)
 	{
-		int c = 0;
-		Card aux;
-		for (int i = 0; i < ManaPool.Count; i++)
-		{
-			if (ManaPool[i].manaStatus == ManaStatus.Active && c < number)
-			{
-				aux = ManaPool[i];
-				aux.manaStatus = ManaStatus.Preview;
-				ManaPool[i] = aux;
-				c++;
-			}
-		}
 		ManaPoolController.PreviewMana(number);
 	}
 	public void ResetPreviewMana()
 	{
-		Card aux;
-		for (int i = 0; i < ManaPool.Count; i++)
-		{
-			if (ManaPool[i].manaStatus == ManaStatus.Preview)
-			{
-				aux = ManaPool[i];
-				aux.manaStatus = ManaStatus.Active;
-				ManaPool[i] = aux;
-			}
-		}
-		ManaPoolController.RecoverPreviewMana();
+		ManaPoolController.RestorePreviewedMana();
+	}
+	public void AddMaxMana(int number)
+	{
+		Debug.Log("Added " + number + " mana");
+
+		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
+
+		ManaPoolController.SpendMana(number);
 	}
 	public void SpendMana(int number)
 	{
-		if (CanSpendMana(number))
+		if (!CanSpendMana(number))
 		{
-			int c = 0;
-			Card aux;
-			for (int i = 0; i < ManaPool.Count; i++)
-			{
-				if (ManaPool[i].manaStatus != ManaStatus.Used && c != number)
-				{
-					aux = ManaPool[i];
-					aux.manaStatus = ManaStatus.Active;
-					ManaPool[i] = aux;
-					c++;
-				}
-			}
-			GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
-			Debug.Log("Spended " + number + " mana");
-			ManaPoolController.SpendMana(number);
+			Debug.LogWarning("Not have enough mana. Requested: " + number + " - You have: " + ManaPoolController.GetCurrentMana());
+			return;
 		}
+
+
+		Debug.Log("Spended " + number + " mana");
+		ManaPoolController.SpendMana(number);
 	}
-	public void RecoverMana(int number)
+	public void RecoverMana(int number = -1)
 	{
-		int c = 0;
-		Card aux;
-		for (int i = 0; i < ManaPool.Count; i++)
-		{
-			if (ManaPool[i].manaStatus == ManaStatus.Used && c != number)
-			{
-				aux = ManaPool[i];
-				aux.manaStatus = ManaStatus.Active;
-				ManaPool[i] = aux;
-				c++;
-			}
-		}
-		GameConfiguration.PlaySFX(GameConfiguration.energyToCard);
 		Debug.Log("Recovered " + number + " mana");
-		ManaPoolController.RecoverSpentMana(number);
+		ManaPoolController.RestoreSpentMana(number);
 	}
 	public void AddCondition(ConditionType Type, int number = -1)
 	{
@@ -541,7 +489,7 @@ public class Player : MonoBehaviour
 
 	public int GetCurrentManaPoolCount()
 	{
-		return ManaPool.Count;
+		return ManaPoolController.GetCurrentMana();
 	}
 
 	public int GetEmptyBattleFieldNumber()

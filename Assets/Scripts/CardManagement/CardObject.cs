@@ -241,7 +241,7 @@ public class CardObject : MonoBehaviour
 									transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 70, 5f)), Time.deltaTime * cardMovementSpeed);
 									transform.localRotation = Quaternion.Euler(310, 0, 0);
 									transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale * 1.5f, Time.deltaTime * 15f);
-									player.previewSpendMana(cardData.calculateCost());
+									player.PreviewSpendMana(cardData.calculateCost());
 
 									showSummonButtons();
 								}

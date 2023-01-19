@@ -10,7 +10,7 @@ public class ManaPoolController : PlaceableCard
 	[SerializeField] public float distanceBetweenColumns = 1f;
 	[SerializeField] float distanceBetweenLines = 1f;
 	[SerializeField] GameObject manaOrbAsset;
-	[SerializeField] int maxManaAllowed = 12;
+	[SerializeField, ReadOnly] int maxManaAllowed = 12;
 
 
 	Vector3 baseCenterPosition;
@@ -64,36 +64,57 @@ public class ManaPoolController : PlaceableCard
 
 		manaPoolElements.Add(mana);
 		manaObj.transform.SetParent(transform, true);
+
+		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
 	}
 	[Button("Add 2 Mana")]
-	void Add2Mana()
+	void _Add2Mana()
 	{
 		IncreaseMaxMana(2);
 	}
 	[Button("Spend 2 Mana")]
-	void Spend2Mana()
+	void _Spend2Mana()
 	{
 		SpendMana(2);
 	}
 	[Button("Preview 3 Mana")]
-	void Preview2Mana()
+	void _Preview2Mana()
 	{
 		PreviewMana(2);
 	}
 	[Button("Restore Previewed Mana")]
-	void RestorePreviewedMana()
+	void _RestoreAllPreviewedMana()
 	{
 		RestorePreviewedMana();
+	}
+	[Button("Restore All Mana")]
+	void _RestoreAllMana()
+	{
+		RestoreSpentMana();
 	}
 	public Vector3 GetBasePosition()
 	{
 		return baseCenterPosition;
 	}
 
-	public void IncreaseMaxMana(int number)
+	public void IncreaseMaxMana(int number = 1)
     {
 		SetMaxManaValue(maxMana + number);
 		SetCurrentManaValue(currentMana + number);
+
+		UpdateManaOrbs();
+	}
+
+	public void RestoreSpentMana(int number = -1)
+    {
+		var valueToRestore = number == -1 ? maxMana - currentMana : number;
+
+		if (valueToRestore <= 0)
+			return;
+
+		GameConfiguration.PlaySFX(GameConfiguration.energyToCard);
+
+		SetCurrentManaValue(currentMana + valueToRestore);
 
 		UpdateManaOrbs();
 	}
@@ -112,13 +133,12 @@ public class ManaPoolController : PlaceableCard
 			return;
 		}
 
-		SetCurrentManaValue(currentMana - number);
+		if (number <= 0)
+			return;
 
-		UpdateManaOrbs();
-	}
-	public void RecoverSpentMana(int number)
-	{
-		SetCurrentManaValue(currentMana + number);
+		GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
+
+		SetCurrentManaValue(currentMana - number);
 
 		UpdateManaOrbs();
 	}
@@ -161,7 +181,7 @@ public class ManaPoolController : PlaceableCard
 			}
 		}
 	}
-	public void RecoverPreviewMana()
+	public void RestorePreviewedMana()
 	{
 		for (int i = 0; i < manaPoolElements.Count; i++)
 		{
@@ -170,5 +190,18 @@ public class ManaPoolController : PlaceableCard
 			if (manaOrb.ManaStatus == ManaStatus.Preview)
 				manaPoolElements[i].SetStatus(ManaStatus.Active);
 		}
+	}
+
+	public bool HasManaSpace()
+	{
+		return maxMana < maxManaAllowed;
+	}
+	public bool HasAvailableMana(int value)
+	{
+		return value <= currentMana;
+	}
+	public int GetCurrentMana()
+	{
+		return currentMana;
 	}
 }

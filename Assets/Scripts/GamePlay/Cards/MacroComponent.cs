@@ -178,7 +178,7 @@ public class MacroComponent : MonoBehaviour
 				void AbundancePlayer(Player player)
 				{
 					player.DrawCard(Skill.skillLevel);
-					player.AddMana(Skill.skillLevel);
+					player.AddMaxMana(Skill.skillLevel);
 				}
 
 				AbundancePlayer(GameController.GetLocalPlayer());
@@ -187,13 +187,13 @@ public class MacroComponent : MonoBehaviour
 				RemoveMacro();
 				break;
 			case MacroType.Quicken:
-				currentPlayer.AddMana(Skill.skillLevel);
+				currentPlayer.AddMaxMana(Skill.skillLevel);
 				RemoveMacro();
 				break;
 			case MacroType.EnergyFlare:
 				void EnergyFlarePlayer(Player player)
 				{
-					player.AddMana(Skill.skillLevel);
+					player.AddMaxMana(Skill.skillLevel);
 				}
 
 				EnergyFlarePlayer(GameController.GetLocalPlayer());
