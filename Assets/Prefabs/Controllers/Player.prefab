@@ -156,7 +156,7 @@ Transform:
   m_LocalScale: {x: 0.8, y: 0.6, z: 0.7}
   m_Children: []
   m_Father: {fileID: 4023595366195039226}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &4024137066022774428
 MeshFilter:
@@ -433,7 +433,7 @@ Transform:
   m_Children:
   - {fileID: 4024137065786695530}
   m_Father: {fileID: 4023595366195039226}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 89.981, y: 0, z: 179.99998}
 --- !u!33 &4024137066706072553
 MeshFilter:
@@ -542,7 +542,6 @@ Transform:
   - {fileID: 4023595362930403968}
   - {fileID: 4023595365674026492}
   - {fileID: 4023595363405912026}
-  - {fileID: 4023595370181246096}
   - {fileID: 4024137066022774429}
   - {fileID: 4023595365449730070}
   - {fileID: 4023595366372166316}
@@ -562,42 +561,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97ba632cd5a1b948a5f31a04a94e6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RemainingCards: 
-  Deck: 
   civilization: 0
-  life: 0
-  Type: 0
-  Hand:
-  - CardID: 0
-    PlayID: 0
-    name: 
-    manaCost: 0
-    attack: 0
-    life: 0
-    manaStatus: 0
-    civilization: 0
-    Skills:
-    - name: 
-      description: 
-      manaCost: 0
-      isActive: 0
-      skillLevel: 0
-      triggerType: 0
-      macroType: 0
-  Field: []
-  ManaPool: []
-  Battlefield: []
-  Conditions: []
-  HandObject: {fileID: 3912952149233179356}
-  DeckController: {fileID: 3912952147278033878}
-  ManaPoolController: {fileID: 3912952147446061438}
-  GraveyardController: {fileID: 3912952149214902654}
-  BattlefieldController: {fileID: 3912952149176748420}
-  LifePointsController: {fileID: 4024137065940147752}
-  hasUsedHability: 0
-  hasDrawnCard: 0
-  isSelectingCard: 0
-  isDrawing: 0
+  PlayDeck:
+    uiCardDeck: {fileID: 7121840362206527237}
+    NumberOfShuffles: 1
 --- !u!1 &4024835801678399008
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,9 +574,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4023595365674026492}
-  - component: {fileID: 3912952147278033878}
   - component: {fileID: 3980749401068479098}
   - component: {fileID: 3992234284476293996}
+  - component: {fileID: 7121840362206527237}
   m_Layer: 9
   m_Name: Deck
   m_TagString: Untagged
@@ -634,20 +601,6 @@ Transform:
   m_Father: {fileID: 4023595366195039226}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3912952147278033878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835801678399008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4a3f366b3af9f4797c6f0d013f0288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardReferencePosition: {fileID: 1561681325608008593}
-  deckCounter: {fileID: 3941488803416849020}
 --- !u!65 &3980749401068479098
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -677,6 +630,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7121840362206527237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024835801678399008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  cardReferencePosition: {fileID: 1561681325608008593}
+  distanceBetweenCards: 0.01
+  isBusy: 0
 --- !u!1 &4024835802194419092
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,8 +835,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4023595366372166316}
-  - component: {fileID: 3912952147446061438}
   - component: {fileID: 3980749403499942338}
+  - component: {fileID: 733321029461912880}
   m_Layer: 11
   m_Name: Mana Pool
   m_TagString: Untagged
@@ -890,26 +859,8 @@ Transform:
   - {fileID: 4023595364013647548}
   - {fileID: 6634223155522149010}
   m_Father: {fileID: 4023595366195039226}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3912952147446061438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835802671291078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bb6c9975975df645ab9c25525bf1293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardReferencePosition: {fileID: 6634223155522149010}
-  BaseCenter: {fileID: 4024137065332159077}
-  distanceBetweenColumns: 0.2
-  distanceBetweenLines: 0.3
-  manaOrbAsset: {fileID: 1000011447547414, guid: c3c0a5696d608524796375b662bcf708,
-    type: 3}
 --- !u!65 &3980749403499942338
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -923,6 +874,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 2.83}
   m_Center: {x: 0, y: 0, z: 0.66}
+--- !u!114 &733321029461912880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024835802671291078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc1019e5464723499738eb0519a15f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManaPool: {fileID: 0}
+  maxManaAllowed: 12
+  currentMana: 0
+  maxMana: 0
 --- !u!1 &4024835803019479762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,88 +972,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4024835803563075114
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4023595369833561482}
-  - component: {fileID: 4012045374710179548}
-  - component: {fileID: 4001779441582658176}
-  m_Layer: 11
-  m_Name: Floor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &4023595369833561482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835803563075114}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.775}
-  m_LocalScale: {x: 4.6, y: 1.5500019, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4023595370181246096}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!33 &4012045374710179548
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835803563075114}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4001779441582658176
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835803563075114}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d0cd27e5c776fe74c9017f949c0b2943, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4024835803630256446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,7 +981,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4023595363405912026}
-  - component: {fileID: 3912952149214902654}
   - component: {fileID: 3980749402927224574}
   m_Layer: 10
   m_Name: Graveyard
@@ -1121,20 +1005,6 @@ Transform:
   m_Father: {fileID: 4023595366195039226}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &3912952149214902654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835803630256446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c9ebf6f604808f43b4ea9eaae4b8914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardReferencePosition: {fileID: 5522595699533326268}
-  deckCounter: {fileID: 0}
 --- !u!65 &3980749402927224574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1177,7 +1047,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4023595366195039226}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &3912952149233179356
 MonoBehaviour:
@@ -1193,7 +1063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
   battlefield: {fileID: 0}
-  deckController: {fileID: 3912952147278033878}
+  deckController: {fileID: 0}
   cardFoldSpeed: 600
   cards: []
 --- !u!1 &4024835804514363286
@@ -1279,54 +1149,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4024835804528768286
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4023595370181246096}
-  - component: {fileID: 3912952149176748420}
-  m_Layer: 11
-  m_Name: BattleField
-  m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4023595370181246096
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835804528768286}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.932, y: -0.5190997, z: -6.45}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4023595369833561482}
-  m_Father: {fileID: 4023595366195039226}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3912952149176748420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024835804528768286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42275c2aa502fa41b315ed6cb6ad98d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardReferencePosition: {fileID: 1561681325608008593}
-  battlefield: {fileID: 0}
-  gameController: {fileID: 0}
-  waitingForSpawnPoint: 0
 --- !u!1 &4024835808216190578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,15 +1549,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0cd53e643890e664eac3739abeb0fbc6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
---- !u!1 &7551983596032364463 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 8d107fe97593d6d48ac5e10257f1e701,
-    type: 3}
-  m_PrefabInstance: {fileID: 7551983596032461071}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7551983596032070543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701,
+    type: 3}
+  m_PrefabInstance: {fileID: 7551983596032461071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7551983596032364463 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 8d107fe97593d6d48ac5e10257f1e701,
     type: 3}
   m_PrefabInstance: {fileID: 7551983596032461071}
   m_PrefabAsset: {fileID: 0}

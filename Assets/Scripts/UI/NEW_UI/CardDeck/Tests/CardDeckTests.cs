@@ -100,7 +100,7 @@ public class CardDeckTests
             pileOfCards.Add(GetRandomCard());
         }
 
-        deck.AddCards(pileOfCards.ToArray(), false);
+        deck.AddCards(pileOfCards.ToArray());
 
         deck.Shuffle();
 

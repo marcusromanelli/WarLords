@@ -1,17 +1,22 @@
+using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class CardDeck<T>
 {
-    [SerializeField] UICardDeck uiCardDeck;
-    [SerializeField] Stack<T> Cards;
-    [SerializeField] int NumberOfShuffles = 1;
-
+    [SerializeField] protected UICardDeck uiCardDeck;
+    [SerializeField] protected Stack<T> Cards = new Stack<T>();
+    [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
-    public CardDeck()
+    protected Civilization civilization;
+
+    public void Setup(Civilization civilization)
     {
         Cards = new Stack<T>();
+        uiCardDeck.Setup(civilization);
     }
     public void AddCard(T card)
     {
@@ -20,7 +25,7 @@ public class CardDeck<T>
 
         Cards.Push(card);
     }
-    public void AddCards(T[] cards, bool shuffle = true)
+    public void AddCards(T[] cards)
     {
         if (cards == null)
             return;
@@ -30,8 +35,7 @@ public class CardDeck<T>
             Cards.Push(card);
         }
 
-        if(shuffle)
-            Shuffle();
+        UpdateUI();
     }
     public T DrawCard()
     {
@@ -82,7 +86,7 @@ public class CardDeck<T>
             {
                 T temp = tempList[i];
 
-                int randomIndex = Random.Range(i, tempList.Length);
+                int randomIndex = UnityEngine.Random.Range(i, tempList.Length);
 
                 tempList[i] = tempList[randomIndex];
 
@@ -92,6 +96,14 @@ public class CardDeck<T>
 
         Cards.Clear();
 
-        AddCards(tempList, false);
+        AddCards(tempList);
+    }
+    public System.Collections.IEnumerator IsUIUpdating()
+    {
+        yield return uiCardDeck.IsResolving();
+    }
+    void UpdateUI()
+    {
+        uiCardDeck.UpdateDeckSize(GetCardCount());
     }
 }
