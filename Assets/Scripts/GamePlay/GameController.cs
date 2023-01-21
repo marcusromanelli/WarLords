@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
 	}
 
 
+	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
 	[SerializeField] Player RemotePlayer;
 
@@ -38,7 +39,21 @@ public class GameController : MonoBehaviour
 
 	public Player currentPlayer;
 	public Phase currentPhase;
-	public bool MatchHasStarted;
+	public static Phase Phase
+    {
+        get
+        {
+			return Singleton.currentPhase;
+        }
+    }
+	public bool matchHasStarted;
+	public static bool MatchHasStarted
+	{
+		get
+		{
+			return Singleton.matchHasStarted;
+		}
+	}
 	public static bool isExecutingMacro;
 
 
@@ -49,31 +64,31 @@ public class GameController : MonoBehaviour
 
 
 
-	void Start()
+	IEnumerator Start()
 	{
 		Initialize();
-		StartCoroutine("waitForDeck");
 
+		yield return AwaitForGameStart();
 	}
 
-	void StartupPlayers()
+	IEnumerator StartupPlayers()
 	{
 		LocalPlayer.Setup();
-		LocalPlayer.StartGame();
-
 		RemotePlayer.Setup();
-		RemotePlayer.StartGame();
+
+		LocalPlayer.SetupPlayDeck();
+		RemotePlayer.SetupPlayDeck();
+
+		LocalPlayer.SetupHand();
+		RemotePlayer.SetupHand();
+
+		yield return LocalPlayer.IsInitialized();
+
+		yield return RemotePlayer.IsInitialized();
 
 		currentPlayer = LocalPlayer;
 	}
-	IEnumerator AwaitDeckFull()
-	{
-		while (!LocalPlayer.IsDeckFull() && !RemotePlayer.IsDeckFull())
-		{
-			yield return null;
-		}
-	}
-	IEnumerator AwaitConditionsResolve()
+	IEnumerator AwaitPreGame()
 	{
 		var hasConditions = true;
 		while (hasConditions)
@@ -82,22 +97,20 @@ public class GameController : MonoBehaviour
 			hasConditions = LocalPlayer.HasConditions() || RemotePlayer.HasConditions();
 		}
 	}
-	void InitializePlayers() {
-		LocalPlayer.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
+	void StartPreGame() {
+		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
 		LocalPlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 
-		RemotePlayer.DrawCard(GameConfiguration.numberOfInitialDrawnCards);
+		RemotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
 		RemotePlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
-	IEnumerator waitForDeck()
+	IEnumerator AwaitForGameStart()
 	{
-		StartupPlayers();
+		yield return StartupPlayers();
 
-		yield return AwaitDeckFull();
+		StartPreGame();
 
-		InitializePlayers();
-
-		yield return AwaitConditionsResolve();
+		yield return AwaitPreGame();
 
 		StartGame();
 	}
@@ -133,7 +146,7 @@ public class GameController : MonoBehaviour
 	}
 	void StartGame()
 	{
-		MatchHasStarted = true;
+		matchHasStarted = true;
 		NextTurn(Phase.Draw);
 	}
 
@@ -197,7 +210,7 @@ public class GameController : MonoBehaviour
 				{
 					if (!isChangingPhase)
 					{
-						StartCoroutine("startChangingPhases");
+						StartCoroutine(startChangingPhases());
 					}
 				}
 			}
@@ -231,7 +244,7 @@ public class GameController : MonoBehaviour
 			return;
 
 		nextPhase = phase;
-		StartCoroutine("startChangingPhases");
+		StartCoroutine(startChangingPhases());
 	}
 
 	public Player GetCurrentPlayer()
@@ -266,22 +279,22 @@ public class GameController : MonoBehaviour
 				//
 				break;
 			case Phase.Movement:
-				StartCoroutine("doActions", Actions.Move);
+				StartCoroutine(AwaitMovementPhase());
 				break;
 			case Phase.Attack:
-				StartCoroutine("doActions", Actions.Attack);
+				StartCoroutine(AwaitAttackPhase());
 				break;
 			case Phase.End:
-				Debug.LogError("Troca Fase 1");
+				Debug.LogError("Gone to next turn");
 				NextPhase();
 				break;
 		}
 	}
-	void DisablePlayers()
+	public void DisablePlayers()
 	{
 		TogglePlayers(false);
 	}
-	void EnablePlayers()
+	public void EnablePlayers()
 	{
 		TogglePlayers(true);
 	}
@@ -290,7 +303,21 @@ public class GameController : MonoBehaviour
 		LocalPlayer.enabled = value;
 		RemotePlayer.enabled = value;
 	}
-	IEnumerator doActions(Actions action)
+
+	IEnumerator AwaitMovementPhase()
+	{
+		yield return battlefield.MovementPhase();
+
+		NextPhase();
+	}
+	IEnumerator AwaitAttackPhase()
+	{
+		yield return battlefield.AttackPhase();
+
+		NextPhase();
+	}
+
+	/*IEnumerator doActions(Actions action)
 	{
 		DisablePlayers();
 
@@ -326,7 +353,7 @@ public class GameController : MonoBehaviour
 
 		yield return new WaitForSeconds(1);
 		NextPhase();
-	}
+	}*/
 
 	public void AttackPlayer(int damage)
 	{
@@ -345,24 +372,24 @@ public class GameController : MonoBehaviour
 			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));
 	}
 
-	public void SetTriggerType(TriggerType trigger, CardObject hero)
+	public void SetTriggerType(TriggerType trigger, CardObject cardObject)
 	{
-		List<Skill> aux = hero.cardData.hasSkillType(trigger);
-		List<Skill> aux2 = hero.cardData.hasSkillType(TriggerType.Passive);
+		//List<Skill> aux = cardObject.GetCardData().hasSkillType(trigger);
+		//List<Skill> aux2 = cardObject.GetCardData().hasSkillType(TriggerType.Passive);
 
-		foreach (Skill auxs in aux)
-		{
-			AddMacro(auxs, hero);
-		}
+		//foreach (Skill auxs in aux)
+		//{
+		//	AddMacro(auxs, cardObject);
+		//}
 
 
-		if (trigger != TriggerType.OnBeforeSpawn)
-		{
-			foreach (Skill auxs in aux2)
-			{
-				AddMacro(auxs, hero);
-			}
-		}
+		//if (trigger != TriggerType.OnBeforeSpawn)
+		//{
+		//	foreach (Skill auxs in aux2)
+		//	{
+		//		AddMacro(auxs, cardObject);
+		//	}
+		//}
 	}
 
 	public List<MacroComponent> GetMacrosFromPlayer(Player player)
@@ -386,7 +413,8 @@ public class GameController : MonoBehaviour
 
 	public bool IsMacroActive(CardObject card, Skill skill)
 	{
-		return Macros.FindAll(macro => macro.GetCardObject().cardData.PlayID == card.cardData.PlayID && macro.GetSkill().triggerType == skill.triggerType).Count > 0;
+		return false;
+		//return Macros.FindAll(macro => macro.GetCardObject().GetCardData().PlayID == card.GetCardData().PlayID && macro.GetSkill().triggerType == skill.triggerType).Count > 0;
 	}
 
 	public static void RemoveMacro(MacroComponent condition)
@@ -413,6 +441,7 @@ public class GameController : MonoBehaviour
 
 	string GetPlayerConditionPrint(Player player)
     {
+		return "";
 		string final = "";
 
 		if (player.HasConditions())
@@ -440,7 +469,7 @@ public class GameController : MonoBehaviour
 
 	int GetPlayerConditionsNumber(Player player)
 	{
-		return player.GetConditionList().Count;
+		return 0;// player.GetConditionList().Count;
 	}
 
 	int GetPlayersConditionsNumber()

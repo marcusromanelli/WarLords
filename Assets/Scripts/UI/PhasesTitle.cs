@@ -54,33 +54,41 @@ public class PhasesTitle : MonoBehaviour
 	}
 
 
-	public static void SetWinner(Player player)
+	public static void SetWinner(Player player) {
+		Singleton.setWinner(player);
+	}
+
+	public void setWinner(Player player)
 	{
-		if (!Singleton.finish)
+		if (!finish)
 		{
-			if (player.GetCivilization() == Singleton.gameController.GetLocalPlayer().GetCivilization())
+			if (player.GetCivilization() == gameController.GetLocalPlayer().GetCivilization())
 			{
-				Singleton.image.sprite = Singleton.Win;
+				image.sprite = Singleton.Win;
 			}
 			else
 			{
-				Singleton.image.sprite = Singleton.Lose;
+				image.sprite = Singleton.Lose;
 			}
-			Singleton.finish = true;
-			Singleton.StartCoroutine("fade");
+			finish = true;
+			StartCoroutine(Fade());
 		}
 	}
 
-	public static void ChangePhase(Phase next)
+	public static void ChangePhase(Phase nextPhase)
+    {
+		Singleton.changePhase(nextPhase);
+    }
+	public void changePhase(Phase nextPhase)
 	{
-		if (!Singleton.finish)
+		if (!finish)
 		{
-			Singleton.updateImage(next);
-			Singleton.StartCoroutine("fade");
+			updateImage(nextPhase);
+			StartCoroutine(Fade());
 		}
 	}
 
-	IEnumerator fade()
+	IEnumerator Fade()
 	{
 		isFading = true;
 		if (image.sprite != null)

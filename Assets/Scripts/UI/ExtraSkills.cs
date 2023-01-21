@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public class ExtraSkills : MonoBehaviour {
 
-	CardObject card;
+	CardObject cardObject;
 	List<TextWrapper> text;
 	// Use this for initialization
 	void Start () {
-		card = GetComponentInParent<CardObject>();
+		cardObject = GetComponentInParent<CardObject>();
 		text = GetComponentsInChildren<TextWrapper>().ToList();
 
 		text.ForEach(delegate(TextWrapper obj) {
@@ -19,18 +19,18 @@ public class ExtraSkills : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(card.cardData.Skills.Count>2){
-			int found=0;
-			for(int i=2;i<card.cardData.Skills.Count;i++){
-				if(text[i-2].transform.parent.gameObject.activeSelf==false){
-					text[i-2].transform.parent.gameObject.SetActive(true);
-					text[i-2].text = card.cardData.Skills[i].name+" - "+card.cardData.Skills[i].description;
-					found++;
-				}
-			}
-			for(int i=0;i<found;i++){
-				text[i+2].transform.parent.gameObject.SetActive(false);
-			}
-		}
+		//if(cardObject.GetCardData().Skills.Count>2){
+		//	int found=0;
+		//	for(int i=2;i<cardObject.GetCardData().Skills.Count;i++){
+		//		if(text[i-2].transform.parent.gameObject.activeSelf==false){
+		//			text[i-2].transform.parent.gameObject.SetActive(true);
+		//			text[i-2].text = cardObject.GetCardData().Skills[i].name+" - "+cardObject.GetCardData().Skills[i].description;
+		//			found++;
+		//		}
+		//	}
+		//	for(int i=0;i<found;i++){
+		//		text[i+2].transform.parent.gameObject.SetActive(false);
+		//	}
+		//}
 	}
 }

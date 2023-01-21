@@ -1,26 +1,34 @@
+using NaughtyAttributes;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class PlayerHand<T>
+public class PlayerHand
 {
-    [SerializeField] List<T> Cards;
+    [SerializeField] UIPlayerHand uiPlayerHand;
+    [SerializeField, ReadOnly] List<Card> Cards;
     public int Count => Cards.Count;
+    protected Civilization civilization;
 
     public PlayerHand()
     {
-        Cards = new List<T>();
+        Cards = new List<Card>();
     }
-    public void AddCard(T card)
+    public void Setup(Civilization civilization)
+    {
+        uiPlayerHand.Setup(civilization);
+    }
+    public void AddCard(Card card)
     {
         if (Cards == null)
             return;
 
         Cards.Add(card);
+
+        uiPlayerHand.AddCard(card);
     }
-    public void AddCards(T[] cards)
+    public void AddCards(Card[] cards)
     {
         if (Cards == null)
             return;
@@ -30,30 +38,31 @@ public class PlayerHand<T>
             var card = cards[i];
             Cards.Add(card);
         }
+
+        uiPlayerHand.AddCards(cards);
     }
-    public T DiscardCard()
+    public Card DiscardCard()
     {
         if (Cards.Count <= 0)
-            return default(T);
+            return default(Card);
 
 
-        T card = Cards[0];
+        Card card = Cards[0];
 
         Cards.RemoveAt(0);
 
-
         return card;
     }
-    public T[] DiscardCards(int number)
+    public Card[] DiscardCards(int number)
     {
         if (Cards.Count <= 0)
-            return new T[0];
+            return new Card[0];
 
-        T[] cards = new T[number];
+        Card[] cards = new Card[number];
 
         for (int i = 0; i < number; i++)
         {
-            T card = Cards[0];
+            Card card = Cards[0];
 
             Cards.RemoveAt(0);
 
@@ -63,8 +72,12 @@ public class PlayerHand<T>
 
         return cards;
     }
-    public T[] GetCards()
+    public Card[] GetCards()
     {
         return Cards.ToArray();
+    }
+    public System.Collections.IEnumerator IsUIUpdating()
+    {
+        yield return uiPlayerHand.IsResolving();
     }
 }

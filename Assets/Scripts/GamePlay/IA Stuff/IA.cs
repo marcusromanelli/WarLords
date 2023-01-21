@@ -17,10 +17,10 @@ public class IA : MonoBehaviour {
 
 
 	void solvePhase(){
-		var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.Singleton.MatchHasStarted && gameController.GetCurrentPlayer() == player;
+		//var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.MatchHasStarted && gameController.GetCurrentPlayer() == player;
 
-		if (!AIWillPlay)
-			return;
+		//if (!AIWillPlay)
+		//	return;
 
 
 		switch (GameController.Singleton.currentPhase) {
@@ -39,17 +39,17 @@ public class IA : MonoBehaviour {
 				}
 
 				Card cd = getRandomCardFromHand ();
-				int cost = cd.calculateCost ();
+				int cost = cd.CalculateSummonCost ();
 
 				if (player.CanSpendMana (cost)) {
-					List<SpawnArea> test = battlefield.GetEmptyFields(gameController.GetLocalPlayer());
+					List<SpawnArea> emptyTiles = battlefield.GetEmptyFields(gameController.GetLocalPlayer());
 					//test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.Hero == null);
 
-					CardObject cad = player.GetHandObject().cards.Find (a => a.cardData.PlayID == cd.PlayID);
+					/*CardObject cardObject = player.GetHandObject().cards.Find (a => a.GetCardData().PlayID == cd.PlayID);
 
-					var tile = test[Random.Range(0, test.Count)];
-
-					player.Summon (cad, tile);
+					var tile = emptyTiles[Random.Range(0, emptyTiles.Count)];
+					
+					battlefield.Summon (cardObject, tile);*/
 				}
 
 				player.EndPhase ();
@@ -58,7 +58,7 @@ public class IA : MonoBehaviour {
 	}
 
 	void solveCondition()	{
-		var AIWillPlay = !player.HasConditions() || player.IsDrawing();
+		var AIWillPlay = !player.HasConditions();// || player.IsDrawing();
 
 		if (!AIWillPlay)
 			return;
@@ -73,10 +73,10 @@ public class IA : MonoBehaviour {
 
 		switch (condition.Type) {
 			case ConditionType.DrawCard:
-				player.DrawCard ();
+				player.TryDrawCards ();
 				break;
 			case ConditionType.DiscartCard:
-				player.DiscartCard (getRandomCardFromHand());
+				player.DiscartCardFromHand (getRandomCardFromHand());
 				break;
 			case ConditionType.SendCardToManaPool:
 				player.SendCardToManaPool (getRandomCardFromHand());
@@ -86,7 +86,8 @@ public class IA : MonoBehaviour {
 
 	Card getRandomCardFromHand()
 	{
-		var hand = player.GetHand();
-		return hand[Random.Range(0, hand.Count - 1)];
+		/*var hand = player.GetHand();
+		return hand[Random.Range(0, hand.Count - 1)];*/
+		return default(Card);
 	}
 }

@@ -11,6 +11,6 @@ public class CloseButton : MonoBehaviour {
 	}
 	
 	void OnMouseDown(){
-		card.Close();
+		//card.Close();
 	}
 }

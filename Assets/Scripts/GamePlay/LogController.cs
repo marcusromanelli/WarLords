@@ -90,7 +90,7 @@ public class ActionComponent
 				str.Append(" exchanged 2 cards into 1 card");
 				break;
 			case Action.AttackChar:
-				cardName = attacker.GetCard().name;
+				cardName = attacker.CardObject.name;
 
 				str.Append(playerAttacker.getName());
 				str.Append("'s " + cardName + " attacked ");
@@ -110,7 +110,7 @@ public class ActionComponent
 				str.Append(" damage");
 				break;
 			case Action.KilledChar:
-				cardName = attacker.GetCard().name;
+				cardName = attacker.CardObject.name;
 
 				str.Append(playerAttacker.getName());
 				str.Append("'s ");

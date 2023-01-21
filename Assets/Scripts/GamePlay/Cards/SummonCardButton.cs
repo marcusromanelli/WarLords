@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SummonCardButton : MonoBehaviour {
+public class SummonCardButton : MonoBehaviour 
+{
+	[SerializeField] CardObject cardObject;
 
-	Player player;
-	CardObject card;
-
-	void Start () {
-		card = transform.GetComponentInParent<CardObject>();
-		player = card.player;
-	}
-	
 	void OnMouseDown(){
-		player.Summon(card);
+		//cardObject.SummonClick();
 	}
 }

@@ -51,13 +51,13 @@ public class Condition : MonoBehaviour {
 				}
 				break;
 			case ConditionType.PickSpawnArea:
-				var playerEmptyBattleFieldNumber = player.GetEmptyBattleFieldNumber();
+				/*var playerEmptyBattleFieldNumber = player.GetEmptyBattleFieldNumber();
 
 				if (playerEmptyBattleFieldNumber <= 0)
 				{
 					player.removeCondition(this);
 					Destroy(this);
-				}
+				}*/
 				break;
 		}
 	}

@@ -92,7 +92,7 @@ public class UICardDeck : MonoBehaviour
     void AddCardAction()
     {
         CardObject cardObject = CardFactory.CreateEmptyCard(civilization, transform);
-        cardObject.transform.rotation = GetReferenceRotation();
+        cardObject.transform.rotation = GetRotationReference();
         cardObject.transform.position = GetTopCardPosition();
 
         deckObjects.Add(cardObject);
@@ -115,7 +115,7 @@ public class UICardDeck : MonoBehaviour
 
         return cardReferencePosition.position + Vector3.up * verticalPosition;
     }
-    public Quaternion GetReferenceRotation()
+    public Quaternion GetRotationReference()
     {
         return cardReferencePosition.transform.rotation;
     }

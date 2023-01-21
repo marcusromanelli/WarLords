@@ -13,8 +13,8 @@ public class StatusScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (card.Character != null) {
-			text.text = "Life:        Attack:        Speed:\n   " + card.cardData.life + "               " + card.Character.calculateAttackPower () + "              " + card.Character.calculateWalkSpeed () + " Sqr";
-		}
+		//if (card.Character != null) {
+			//text.text = "Life:        Attack:        Speed:\n   " + card.cardData.life + "               " + card.Character.calculateAttackPower () + "              " + card.Character.calculateWalkSpeed () + " Sqr";
+		//}
 	}
 }

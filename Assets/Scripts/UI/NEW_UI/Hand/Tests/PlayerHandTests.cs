@@ -15,7 +15,7 @@ public class PlayerHandTests
     {
         Card card = GetRandomCard();
 
-        PlayerHand<Card> hand = new PlayerHand<Card>();
+        PlayerHand hand = new PlayerHand();
 
         hand.AddCard(card);
 
@@ -27,7 +27,7 @@ public class PlayerHandTests
         Card card1 = GetRandomCard();
         Card card2 = GetRandomCard();
 
-        PlayerHand<Card> hand = new PlayerHand<Card>();
+        PlayerHand hand = new PlayerHand();
 
         hand.AddCard(card1);
         hand.AddCard(card2);
@@ -39,7 +39,7 @@ public class PlayerHandTests
     {
         Card card = GetRandomCard();
 
-        PlayerHand<Card> hand = new PlayerHand<Card>();
+        PlayerHand hand = new PlayerHand();
 
         hand.AddCard(card);
 
@@ -54,7 +54,7 @@ public class PlayerHandTests
         Card card1 = GetRandomCard();
         Card card2 = GetRandomCard();
 
-        PlayerHand<Card> hand = new PlayerHand<Card>();
+        PlayerHand hand = new PlayerHand();
 
         hand.AddCard(card1);
         hand.AddCard(card2);
@@ -72,7 +72,7 @@ public class PlayerHandTests
         Card card1 = GetRandomCard();
         Card card2 = GetRandomCard();
 
-        PlayerHand<Card> hand = new PlayerHand<Card>();
+        PlayerHand hand = new PlayerHand();
 
         hand.AddCard(card1);
         hand.AddCard(card2);

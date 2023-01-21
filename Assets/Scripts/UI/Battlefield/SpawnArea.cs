@@ -1,29 +1,41 @@
-﻿using UnityEngine;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 [ExecuteInEditMode]
-public class SpawnArea : PlaceableCard
+public class SpawnArea : MonoBehaviour
 {
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] GameController gameController;
 	[SerializeField] new Renderer renderer;
 	[SerializeField] Color defaultColor = Color.grey;
 	[SerializeField] Color selectedColor = Color.black;
-	public PlayerType playerType/* { get; private set; }*/ = PlayerType.None;
+	[ReadOnly] public PlayerType playerType = PlayerType.None;
+	public bool IsTemporarilySummonable;
+	public Hero Hero = null;
 
 	Color lastUsedColor;
-
-	public bool IsSummonable {
-		get {
-			return playerType != PlayerType.None;
+	/// <summary>
+	/// Returns if a tile is a player summon area
+	/// </summary>
+	public bool IsSummonArea
+	{
+		get
+		{
+			return playerType == PlayerType.Local;
 		}
 	}
-	public bool IsTemporarilySummonable;
-	public Hero Hero = null;	
+	/// <summary>
+	/// Returns if the tile is allowed to receive a summon
+	/// </summary>
+	public bool IsSummonable
+	{
+		get
+		{
+			return (IsSummonArea || IsTemporarilySummonable) && Hero == null;
+		}
+	}
 
-    private void Awake()
+	private void Awake()
     {
 		if (renderer == null)
 			renderer = gameObject.GetComponent<Renderer>();
@@ -33,7 +45,7 @@ public class SpawnArea : PlaceableCard
 		if (!Application.isPlaying)
 			return;
 
-		if(IsSummonable)
+		if(IsSummonArea)
 			SetColor(defaultColor);
 	}
 	public void Setup(Battlefield battlefield, GameController gameController, PlayerType playerType)
@@ -57,24 +69,24 @@ public class SpawnArea : PlaceableCard
 		renderer.material.color = color;
 		lastUsedColor = color;
 	}
-	protected override void Update()
+	protected void Update()
 	{
 		if (!Application.isPlaying)
 			return;
 
-		CheckMouse();
+		//CheckMouse();
 
-		UpdateColor();
+		//UpdateColor();
 	}
 
-	void UpdateColor()
+    /*void UpdateColor()
 	{
 		var player = gameController.GetCurrentPlayer();
 
 		if (player == null)
 			return;
 
-		if (!IsTemporarilySummonable && !IsSummonable)
+		if (!IsTemporarilySummonable && !IsSummonArea)
 			return;
 
 		var isLocal = player.GetPlayerType() == PlayerType.Local;
@@ -86,14 +98,18 @@ public class SpawnArea : PlaceableCard
 			SetColor(selectedColor);
 		else
 			SetColor(defaultColor);
-	}
-	void CheckMouse()
+	}*/
+	/*void CheckMouse()
 	{
 		if (player != null && player.hasCondition(ConditionType.PickSpawnArea))
 			return;
 
 		isMouseOver = base.CheckMouseOver(true);
 
+		if(IsMouseOver && Input.GetMouseButtonUp(0))
+		{
+			battlefield.ClickedTile(this);
+		}
 
 		if (isMouseOver && Hero == null)
 		{
@@ -117,8 +133,8 @@ public class SpawnArea : PlaceableCard
     public override Quaternion GetTopRotation()
     {
         return Quaternion.Euler(270, 180, 0);
-    }
-    public void SetHero(Hero hero)
+    }*/
+	public void SetHero(Hero hero)
 	{
 		Hero = hero;
 	}

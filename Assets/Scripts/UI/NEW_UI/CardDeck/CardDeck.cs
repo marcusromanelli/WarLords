@@ -56,6 +56,8 @@ public class CardDeck<T>
             cardList[i] = Cards.Pop();
         }
 
+        UpdateUI();
+
         return cardList;
     } 
     public int GetCardCount()
@@ -69,6 +71,7 @@ public class CardDeck<T>
     public void Empty()
     {
         Cards.Clear();
+        UpdateUI();
     }
     public T GetRandomCard()
     {

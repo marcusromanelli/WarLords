@@ -4,10 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class HandController : MonoBehaviour{
-
 	[SerializeField] GameController gameController;
 	[SerializeField] Battlefield battlefield;
-	[SerializeField] DeckController deckController;
+	[SerializeField] StackableCards deckController;
 
 
 	public float cardFoldSpeed = 600f;
@@ -15,6 +14,7 @@ public abstract class HandController : MonoBehaviour{
 	public List<CardObject> cards;
 	protected Renderer[] renderers;
 	Player player;
+	CardObject cardBeingHeld;
 
 	void Awake(){
 		cards = new List<CardObject> ();
@@ -23,51 +23,68 @@ public abstract class HandController : MonoBehaviour{
 
 	Vector3 aux;
 	void Update () {
-		int c = 1;
-		foreach (CardObject card in cards) {
-			if (card != null) {
-				aux = card.transform.rotation.eulerAngles;
-				aux.y = getAngleByCardNumber (c);
-				if (!card.isBeingHeld && !card.isBeingVisualized) {
-					if(player.GetPlayerType() == PlayerType.Remote){
-						aux.z = -180;
-						aux.x = 90;
-					}else{
-						aux.x = 270;
-						aux.z = 0;
-					}
+		//int c = 1;
+		//foreach (CardObject card in cards) {
+		//	if (card != null) {
+		//		aux = card.transform.rotation.eulerAngles;
+		//		aux.y = getAngleByCardNumber (c);
+		//		if (!card == cardBeingHeld && !card.isBeingVisualized) {
+		//			if(player.GetPlayerType() == PlayerType.Remote){
+		//				aux.z = -180;
+		//				aux.x = 90;
+		//			}else{
+		//				aux.x = 270;
+		//				aux.z = 0;
+		//			}
 
-					card.transform.localRotation = Quaternion.RotateTowards (card.transform.localRotation, Quaternion.Euler (aux), Time.deltaTime * cardFoldSpeed); 
+		//			card.transform.localRotation = Quaternion.RotateTowards (card.transform.localRotation, Quaternion.Euler (aux), Time.deltaTime * cardFoldSpeed); 
 
-					card.transform.localPosition = Vector3.MoveTowards (card.transform.localPosition, calculatePosition(c), Time.deltaTime * cardFoldSpeed/50); 
-				}
-				c++;
-			}
-		}
+		//			card.transform.localPosition = Vector3.MoveTowards (card.transform.localPosition, calculatePosition(c), Time.deltaTime * cardFoldSpeed/50); 
+		//		}
+		//		c++;
+		//	}
+		//}
 
-		updateCardList ();
+		//updateCardList ();
 	}
 
-	public void AddCard(Card card){
-		GameObject aux = (GameObject)Instantiate (cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
-		aux.transform.SetParent(transform, true);
+	public void AddCard(Card card)
+	{
+		//GameObject aux = Instantiate(cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
+		//aux.transform.SetParent(transform, true);
 
-		var cardObj = aux.GetComponent<CardObject>();
+		//var cardObj = aux.GetComponent<CardObject>();
 
-		cardObj.Setup (card, player, battlefield, this, gameController);
-		cardObj.originalPosition = aux.transform.localPosition;
-		updateCardList ();
+		//cardObj.Setup(card);
+		//cardObj.originalPosition = aux.transform.localPosition;
+		//updateCardList();
+	}
+	public void AddCards(Card[] cards)
+	{
+		//for (int i = 0; i < cards.Length; i++)
+		//{
+		//	var card = cards[i];
+
+		//	GameObject aux = Instantiate(cardTemplate.gameObject, deckController.GetTopPosition(), deckController.GetTopRotation());
+		//	aux.transform.SetParent(transform, true);
+
+		//	var cardObj = aux.GetComponent<CardObject>();
+
+		//	cardObj.Setup(card);
+		//	cardObj.originalPosition = aux.transform.localPosition;
+		//	updateCardList();
+		//}
 	}
 
 	public void RemoveCard(int PlayID){
-		CardObject cd = cards.Find (a => a.cardData.PlayID == PlayID);
-		if (cd!=null) {
-			cd.BecameMana ();
-			cards.Remove (cd);
-			updateCardList ();
-		} else {
-			Debug.Log ("Trying to remove a card that isn't in hand");
-		}
+		//CardObject cd = cards.Find (a => a.GetCardData().PlayID == PlayID);
+		//if (cd!=null) {
+		//	cd.BecameMana ();
+		//	cards.Remove (cd);
+		//	updateCardList ();
+		//} else {
+		//	Debug.Log ("Trying to remove a card that isn't in hand");
+		//}
 	}
 	public void setPlayer(Player player){
 		this.player = player;
@@ -81,6 +98,23 @@ public abstract class HandController : MonoBehaviour{
 		pos.x = -((count*cardSize)/2) + cardSize * number;
 
 		return pos;
+	}
+	public void SetCardClicked(CardObject card)
+	{
+		player.SetClickCard(card);
+	}
+
+
+	public void SetCardBeingHeld(CardObject card)
+	{
+		if(card == null)
+        {
+			player.SetReleaseCard(cardBeingHeld);
+			return;
+		}
+
+		player.SetHoldCard(cardBeingHeld);
+		cardBeingHeld = card;
 	}
 
 	void updateRendererList(){

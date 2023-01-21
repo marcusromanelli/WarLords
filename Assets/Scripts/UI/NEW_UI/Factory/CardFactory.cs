@@ -9,31 +9,44 @@ public class CardFactory : Singleton<CardFactory>
 
     public static CardObject CreateCard(Card card, Transform transform)
     {
-        //var cardObj = CreateEmptyCard(transform);
+        return CreateCard(card, transform, Vector3.zero);
+    }
+    public static CardObject CreateCard(Card card, Transform transform, Vector3 position)
+    {
+        var cardObj = CreateEmptyCard(card.civilization, transform, position);
 
-        //cardObj.Setup(card);
+        cardObj.Setup(card);
 
-        return null;
+        return cardObj;
     }
     public static CardObject CreateEmptyCard(Civilization civilization, Transform transform)
     {
+        return CreateEmptyCard(civilization, transform, Vector3.zero);
+    }
+    public static CardObject CreateEmptyCard(Civilization civilization, Transform transform, Vector3 position)
+    {
+        CardObject obj;
         if (PoolHasElements())
         {
-            return GetPoolElement();
+            obj = GetPoolElement();
+        }
+        else {
+            var cardTemplate = Instance.CardTemplate;
+
+            obj = ElementFactory.CreatePrefab<CardObject>(cardTemplate, transform);
         }
 
-        var cardTemplate = Instance.CardTemplate;
+        obj.transform.SetParent(transform, false);
+        obj.transform.position = position;
+        obj.SetupCover(civilization);
 
-        var prefab = ElementFactory.CreatePrefab<CardObject>(cardTemplate, transform);
-        prefab.transform.SetParent(transform, false);
-        prefab.SetupEmpty(civilization);
-
-        return prefab;
+        return obj;
     }
     public static void AddCardToPool(CardObject cardObject)
     {
         var cardPool = GetPool();
 
+        cardObject.transform.SetParent(Instance.transform);
         cardObject.gameObject.SetActive(false);
         cardObject.Pool();
         cardPool.Push(cardObject);

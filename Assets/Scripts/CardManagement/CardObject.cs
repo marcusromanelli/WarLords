@@ -3,137 +3,160 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum ManaStatus
 {
 	Active, Used, Preview
 }
 
-public class CardObject : MonoBehaviour
+public class CardObject : MonoBehaviour, IPoolable
 {
-
-	
-	public Card cardData;
-	public bool isBeingHeld;
+	[SerializeField] float cardMovementSpeed = 20;
+	[SerializeField] float cardRotationSpeed = 20;
+	/*Card originalCardData;
+	Card currentCardData;
+	bool isBeingHeld;
 	public bool isBeingVisualized;
 	public bool isBeingHeroVisualized;
 	public SummonType SummonType;
-	public float cardMovementSpeed = 20;
 	bool isMouseDown;
 
 	public Player player;
 
 	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, CloseButton;
 	public Hero Character;
-	public Vector3 originalPosition;
-	Vector3 offset;
+	public Vector3 originalPosition;*/
+	public List<GameObject> cardCoversPerCivilization;
+	public bool IsInPosition => isInPosition;
+
+	private Card originalCard;
+	private GameObject currentActiveCardCover;
+	private Vector3 targetPosition;
+	private Quaternion targetRotation;
+	private bool isInPosition = true;
+
+	/*Vector3 offset;
 	Vector3 originalScale;
 	Vector3 lastKnownMousePosition;
 	Vector3 destinyPosition, destinyScale;
 	Quaternion destinyRotation;
 	ActionType nextActionType;
 	string civilizationName;
-	Hero targetHero;
-	SpawnArea targetSpawnArea;
-	DeckController deckController;
-	BattlefieldController battlefieldController;
-	ManaPoolController manaPoolController;
-	GraveyardController graveyardController;
+	Hero targetHero;*/
+	/*InteractiveDeck deckController;
+	BaseManaPool manaPoolController;
+	InteractiveDeck graveyardController;
 	GameController gameController;
-	Battlefield battlefield;
-	HandController handController;
+	Battlefield battlefield;*/
+	//HandController handController;
+
+	public void SetPositionAndRotation(Vector3 targetPosition, Quaternion targetRotation){
+		this.targetPosition = targetPosition;
+		this.targetRotation = targetRotation;
+		isInPosition = false;
+	}
 
 	void Awake()
 	{
-		if (SummonType != SummonType.Mana)
-		{
-			if (transform.Find("Summon"))
-			{
-				summonButton = transform.Find("Summon").gameObject;
-				summonButton.SetActive(false);
-			}
-			if (transform.Find("Skill1Button"))
-			{
-				skillButton1 = transform.Find("Skill1Button").gameObject;
-				skillButton1.SetActive(false);
-			}
-			if (transform.Find("Skill2Button"))
-			{
-				skillButton2 = transform.Find("Skill2Button").gameObject;
-				skillButton2.SetActive(false);
-			}
-			if (transform.Find("Skills"))
-			{
-				SkillsTree = transform.Find("Skills").gameObject;
-				SkillsTree.SetActive(false);
-			}
-			if (transform.Find("Status"))
-			{
-				Status = transform.Find("Status").gameObject;
-				Status.SetActive(false);
-			}
-			if (transform.Find("CloseButton"))
-			{
-				CloseButton = transform.Find("CloseButton").gameObject;
-				CloseButton.SetActive(false);
-			}
-		}
+	//	if (transform.Find("Summon"))
+	//	{
+	//		summonButton = transform.Find("Summon").gameObject;
+	//		summonButton.SetActive(false);
+	//	}
+	//	if (transform.Find("Skill1Button"))
+	//	{
+	//		skillButton1 = transform.Find("Skill1Button").gameObject;
+	//		skillButton1.SetActive(false);
+	//	}
+	//	if (transform.Find("Skill2Button"))
+	//	{
+	//		skillButton2 = transform.Find("Skill2Button").gameObject;
+	//		skillButton2.SetActive(false);
+	//	}
+	//	if (transform.Find("Skills"))
+	//	{
+	//		SkillsTree = transform.Find("Skills").gameObject;
+	//		SkillsTree.SetActive(false);
+	//	}
+	//	if (transform.Find("Status"))
+	//	{
+	//		Status = transform.Find("Status").gameObject;
+	//		Status.SetActive(false);
+	//	}
+	//	if (transform.Find("CloseButton"))
+	//	{
+	//		CloseButton = transform.Find("CloseButton").gameObject;
+	//		CloseButton.SetActive(false);
+	//	}
 	}
 
-	void Start()
-	{
-		originalScale = transform.localScale;
+	//void Start()
+	//{
+	//	//originalScale = transform.localScale;
 
+	//}
+
+	//void showSkillTree()
+	//{
+	//	if (SkillsTree != null)
+	//	{
+	//		SkillsTree.SetActive(true);
+	//		Status.SetActive(true);
+	//		CloseButton.SetActive(true);
+	//	}
+	//}
+
+	//void hideSkillTree()
+	//{
+	//	if (SkillsTree != null)
+	//	{
+	//		SkillsTree.SetActive(false);
+	//		Status.SetActive(true);
+	//		CloseButton.SetActive(true);
+	//	}
+	//}
+
+	//void showSummonButtons()
+	//{
+	//	if (summonButton != null)
+	//	{
+	//		if (Character == null)
+	//		{
+	//			summonButton.SetActive(true);
+	//		}
+	//		skillButton1.SetActive(true);
+	//		skillButton2.SetActive(true);
+	//		CloseButton.SetActive(true);
+	//	}
+	//}
+
+	//void hideSummonButtons()
+	//{
+	//	if (summonButton != null)
+	//	{
+	//		summonButton.SetActive(false);
+	//		skillButton1.SetActive(false);
+	//		skillButton2.SetActive(false);
+	//		CloseButton.SetActive(false);
+	//	}
+	//}
+
+	void MoveToTargetPosition()
+    {
+		if (isInPosition)
+			return;
+
+		transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * cardMovementSpeed);
+		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * cardRotationSpeed);
+
+		if(transform.position == targetPosition && transform.localRotation == targetRotation)
+			isInPosition = true;
 	}
-
-	void showSkillTree()
-	{
-		if (SkillsTree != null)
-		{
-			SkillsTree.SetActive(true);
-			Status.SetActive(true);
-			CloseButton.SetActive(true);
-		}
-	}
-
-	void hideSkillTree()
-	{
-		if (SkillsTree != null)
-		{
-			SkillsTree.SetActive(false);
-			Status.SetActive(true);
-			CloseButton.SetActive(true);
-		}
-	}
-
-	void showSummonButtons()
-	{
-		if (summonButton != null)
-		{
-			if (Character == null)
-			{
-				summonButton.SetActive(true);
-			}
-			skillButton1.SetActive(true);
-			skillButton2.SetActive(true);
-			CloseButton.SetActive(true);
-		}
-	}
-
-	void hideSummonButtons()
-	{
-		if (summonButton != null)
-		{
-			summonButton.SetActive(false);
-			skillButton1.SetActive(false);
-			skillButton2.SetActive(false);
-			CloseButton.SetActive(false);
-		}
-	}
-
 	void Update()
 	{
-		switch (SummonType)
+		MoveToTargetPosition();
+		/*switch (SummonType)
 		{
 			case SummonType.Mana:
 
@@ -147,7 +170,7 @@ public class CardObject : MonoBehaviour
 
 				if (isBeingHeroVisualized)
 				{
-					transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / ((cardData.Skills.Count > 2) ? 2.25f : 2), 70, 5f)), Time.deltaTime * cardMovementSpeed);
+					transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / ((currentCardData.Skills.Count > 2) ? 2.25f : 2), 70, 5f)), Time.deltaTime * cardMovementSpeed);
 					transform.localRotation = Quaternion.Euler(-50, 180, 0);
 					transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale * 1.5f, Time.deltaTime * 15f);
 					showSkillTree();
@@ -157,16 +180,16 @@ public class CardObject : MonoBehaviour
 				{
 					hideSkillTree();
 					hideSummonButtons();
-					transform.position = Vector3.MoveTowards(transform.position, battlefieldController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-					transform.rotation = Quaternion.RotateTowards(transform.rotation, battlefieldController.GetTopRotation(), Time.deltaTime * 600f);
+					transform.position = Vector3.MoveTowards(transform.position, battlefield.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+					transform.rotation = Quaternion.RotateTowards(transform.rotation, battlefield.GetTopRotation(), Time.deltaTime * 600f);
 					hideSummonButtons();
 				}
 
 				break;
 			case SummonType.DoNotApply:
-				if (cardData.CardID != 0)
+				if (currentCardData.CardID != 0)
 				{
-					if (cardData.CardID <= 0)
+					if (currentCardData.CardID <= 0)
 					{
 						Destroy(gameObject);
 						Debug.LogWarning("Card created empty! Deleting...");
@@ -175,10 +198,12 @@ public class CardObject : MonoBehaviour
 					{
 						if (nextActionType == ActionType.NoAction)
 						{
-							if (isMouseDown && Vector3.Distance(lastKnownMousePosition, Input.mousePosition) > 0.2)
+							var dist = Vector3.Distance(lastKnownMousePosition, Input.mousePosition);
+
+							if (isMouseDown && dist > 0.2)
 							{
-								isBeingHeld = true;
 								isBeingVisualized = false;
+								SetCardBeingHeld(true);
 							}
 							lastKnownMousePosition = Input.mousePosition;
 							if (isBeingHeld)
@@ -216,8 +241,8 @@ public class CardObject : MonoBehaviour
 
 										if (hasTile && (player != null && selectedTile.playerType == player.GetPlayerType()))
 										{
-											transform.position = Vector3.MoveTowards(transform.position, selectedTile.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-											transform.rotation = Quaternion.RotateTowards(transform.rotation, selectedTile.GetTopRotation(), Time.deltaTime * 600f);
+											//transform.position = Vector3.MoveTowards(transform.position, selectedTile.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
+											//transform.rotation = Quaternion.RotateTowards(transform.rotation, selectedTile.GetTopRotation(), Time.deltaTime * 600f);
 										}
 										else
 										{
@@ -241,7 +266,7 @@ public class CardObject : MonoBehaviour
 									transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 70, 5f)), Time.deltaTime * cardMovementSpeed);
 									transform.localRotation = Quaternion.Euler(310, 0, 0);
 									transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale * 1.5f, Time.deltaTime * 15f);
-									player.PreviewSpendMana(cardData.calculateCost());
+									player.PreviewSpendMana(CalculateSummonCost());
 
 									showSummonButtons();
 								}
@@ -267,33 +292,24 @@ public class CardObject : MonoBehaviour
 							{
 								switch (nextActionType)
 								{
-									case ActionType.CardToDeck:
-										player.DiscartCardToDrawTwo(cardData);
-										break;
-									case ActionType.CardToManaPool:
-										player.SendCardToManaPool(cardData);
-										break;
-									case ActionType.DiscartCard:
-										player.DiscartCard(cardData);
-										break;
 									case ActionType.BuffHero:
-										GameConfiguration.PlaySFX(GameConfiguration.buffCard);
+										/*GameConfiguration.PlaySFX(GameConfiguration.buffCard);
 										var cardObject = targetHero.GetCardObject();
-										cardObject.AddSkill(cardData.Skills[1]);
+										cardObject.AddSkill(currentCardData.Skills[1]);
 										gameController.SetTriggerType(TriggerType.OnBeforeSpawn, cardObject);
 										gameController.SetTriggerType(TriggerType.OnAfterSpawn, cardObject);
 										targetHero = null;
-										Destroy(this.gameObject);
+										Destroy(this.gameObject);*
 										break;
 									case ActionType.SummonHero:
-										var hasSummon = player.Summon(this, targetSpawnArea);
+										/*var hasSummon = player.Summon(this, targetSpawnArea);
 
                                         if (!hasSummon)
 										{
 											nextActionType = ActionType.NoAction;
 											isBeingHeld = false;
 											return;
-										}
+										}*
 										break;
 								}
 							}
@@ -301,41 +317,27 @@ public class CardObject : MonoBehaviour
 					}
 				}
 				break;
-		}
+		}*/
 	}
 
 	public void OnMouseDown()
 	{
-		if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
+		/*if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
 		{
 			lastKnownMousePosition = Input.mousePosition;
 			offset = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 11)) - transform.localPosition;
 			isMouseDown = true;
-		}
+		}*/
 	}
-	
-	void CheckDeckInteraction()
+
+	/*void CheckDeckInteraction()
     {
 		if (!deckController.IsMouseOver)
 			return;
 
-		if(gameController.currentPhase == Phase.Attack || gameController.currentPhase == Phase.End || gameController.currentPhase == Phase.Movement || !gameController.MatchHasStarted)
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("This movement is not allowed now.");
-			return;
-		}
 
 
-		if (player.HasUsedHability())
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("You already used your hability this turn.");
-			return;
-		}
 
-
-		nextActionType = ActionType.CardToDeck;
 		destinyPosition = deckController.GetTopPosition();
 		destinyRotation = deckController.GetTopRotation();
 	}
@@ -344,38 +346,7 @@ public class CardObject : MonoBehaviour
 		if (!manaPoolController.IsMouseOver)
 			return;
 
-		if (!gameController.MatchHasStarted)
-        {
-			if (!player.hasCondition(ConditionType.SendCardToManaPool))
-			{
-				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-				Debug.LogWarning("This movement is not allowed now.");
-			}
-			else
-			{
-				nextActionType = ActionType.CardToManaPool;
-				destinyPosition = manaPoolController.GetBasePosition();
-				destinyRotation = manaPoolController.GetTopRotation();
-			}
 
-			return;
-		}
-
-		if (gameController.currentPhase == Phase.Attack || gameController.currentPhase == Phase.End || gameController.currentPhase == Phase.Movement)
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("This movement is not allowed in this phase.");
-			return;
-		}
-
-		if (player.HasUsedHability())
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("You already used your hability this turn.");
-			return;
-		}
-
-		nextActionType = ActionType.CardToManaPool;
 		destinyPosition = manaPoolController.GetBasePosition();
 		destinyRotation = manaPoolController.GetTopRotation();
     }
@@ -384,14 +355,8 @@ public class CardObject : MonoBehaviour
 		if (!graveyardController.IsMouseOver)
 			return;
 
-		if (!player.hasCondition(ConditionType.DiscartCard))
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("You cannot discart a cart without a reason.");
-			return;
-		}
 
-		nextActionType = ActionType.DiscartCard;
+
 		destinyPosition = graveyardController.GetTopPosition();
 		destinyRotation = graveyardController.GetTopRotation();
 	}
@@ -407,10 +372,10 @@ public class CardObject : MonoBehaviour
 			return;
 		}
 		
-		if (player.CanSpendMana(cardData.Skills[1].manaCost))
+		if (player.CanSpendMana(currentCardData.Skills[1].manaCost))
 		{
 			targetHero = Hero.selectedHero;
-			player.SpendMana(cardData.Skills[1].manaCost);
+			player.SpendMana(currentCardData.Skills[1].manaCost);
 			nextActionType = ActionType.BuffHero;
 
 			destinyPosition = targetHero.GetPivotPosition();
@@ -418,9 +383,9 @@ public class CardObject : MonoBehaviour
 			return;
 		}
 	}
-	void CheckBattleFieldInteraction()
+	void CheckClickInteraction()
     {
-		if (battlefield.GetSelectedTile() == null || !battlefield.CanSummonOnSelectedTile(player) || isBeingVisualized || !isBeingHeld)
+		if (isBeingVisualized || !isBeingHeld)
 		{
 
 			if (Vector3.Distance(Input.mousePosition, lastKnownMousePosition) > 0.1f)
@@ -428,33 +393,12 @@ public class CardObject : MonoBehaviour
 
 			isBeingVisualized = true;
 
+			handController.SetCardBeingHeld(this);
+
 			return;
 		}
-
-
-		var selectedTile = battlefield.GetSelectedTile();
-
-		if (!gameController.MatchHasStarted)
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("This movement is not allowed now.");
-			return;
-		}
-
-
-		if (!player.CanSpendMana(cardData.calculateCost()))
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.LogWarning("Not enought mana.");
-			return;
-		}
-
-		nextActionType = ActionType.SummonHero;
-
-		destinyPosition = selectedTile.GetTopPosition();
-		destinyRotation = selectedTile.GetTopRotation();
-		targetSpawnArea = selectedTile;
 	}
+
 	public void OnMouseUp()
 	{
 		isMouseDown = false;
@@ -467,26 +411,31 @@ public class CardObject : MonoBehaviour
 
 		CheckHeroInteraction();
 
-		CheckBattleFieldInteraction();
+		CheckClickInteraction();
 
-		isBeingHeld = false;
-	}
+		if(!isBeingVisualized)
+			SetCardBeingHeld(false);
+	}*/
+	//public int CalculateSummonCost()
+	//{
+	//	return currentCardData.CalculateSummonCost();
+	//}
 
-	public void AddSKill(int number)
-	{
-		if (number > 1) number = 1;
-		Skill aux = cardData.Skills[number];
-		aux.isActive = true;
-		cardData.Skills[number] = aux;
-	}
+	//public void AddSKill(int number)
+	//{
+	//	if (number > 1) number = 1;
+	//	Skill aux = currentCardData.Skills[number];
+	//	aux.isActive = true;
+	//	currentCardData.Skills[number] = aux;
+	//}
 
-	public void RemoveSkill(int number)
-	{
-		if (number > 1) number = 1;
-		Skill aux = cardData.Skills[number];
-		aux.isActive = false;
-		cardData.Skills[number] = aux;
-	}
+	//public void RemoveSkill(int number)
+	//{
+	//	if (number > 1) number = 1;
+	//	Skill aux = currentCardData.Skills[number];
+	//	aux.isActive = false;
+	//	currentCardData.Skills[number] = aux;
+	//}
 
 
 	ParticleSystem system;
@@ -499,91 +448,168 @@ public class CardObject : MonoBehaviour
 	}
 
 
-	public void SetPlayer(Player player)
-	{
-		this.player = player;
+	//public void SetPlayer(Player player)
+	//{
+	//	this.player = player;
+	//}
+
+	//public void Die()
+	//{
+	//	//gameController.SetTriggerType(TriggerType.OnBeforeDeath, this);
+	//	player.killCard(this);
+	//}
+
+	//public void AddSkill(Skill skills)
+	//{
+	//	Debug.LogWarning("Adicionando skill " + skills.name + " para a carda " + name);
+	//	Debug.LogWarning("-----Comecou----");
+	//	if (Character != null)
+	//	{
+	//		Debug.LogWarning("1");
+	//		currentCardData.AddSkill(skills);
+	//	}
+	//	Debug.LogWarning("-----Terminou----");
+	//}
+
+	//public void Close()
+	//{
+	//	if (isBeingHeroVisualized)
+	//	{
+	//		isBeingHeroVisualized = false;
+	//	}
+	//	if (isBeingVisualized)
+	//	{
+	//		player.ResetPreviewMana();
+	//		isBeingVisualized = false;
+ //       }
+ //   }
+
+    public void SetupCover(Civilization civilization)
+    {
+		var cardCover = cardCoversPerCivilization[(int)civilization];
+
+		cardCover.SetActive(true);
+
+		currentActiveCardCover = cardCover;
 	}
 
-	public void Die()
+    public void Pool()
+    {
+		currentActiveCardCover.SetActive(false);
+    }
+	public void Setup(Card card)
 	{
-		gameController.SetTriggerType(TriggerType.OnBeforeDeath, this);
-		player.killCard(this);
+		originalCard = card;
+
+		LoadCardData();
 	}
-
-	public void AddSkill(Skill skills)
+	private void LoadCardData()
 	{
-		Debug.LogWarning("Adicionando skill " + skills.name + " para a carda " + name);
-		Debug.LogWarning("-----Comecou----");
-		if (Character != null)
-		{
-			Debug.LogWarning("1");
-			cardData.AddSkill(skills);
-		}
-		Debug.LogWarning("-----Terminou----");
-	}
-
-	public void Close()
-	{
-		if (isBeingHeroVisualized)
-		{
-			isBeingHeroVisualized = false;
-		}
-		if (isBeingVisualized)
-		{
-			player.ResetPreviewMana();
-			isBeingVisualized = false;
-		}
-	}
-
-	public void setCharacterSpawnArea(SpawnArea spawnArea)
-	{
-		var areaPosition = spawnArea.transform.position;
-
-		GameObject res = Resources.Load<GameObject>("Prefabs/Characters/" + civilizationName + "/" + cardData.name.Replace(" ", ""));
-		if (res == null)
-		{
-			Debug.LogError("Could not instantiate: " + civilizationName + "/" + cardData.name.Replace(" ", ""));
-		}
-
-		areaPosition = battlefield.GridToUnity(battlefield.UnityToGrid(areaPosition));
-
-		Character = ((GameObject)Instantiate(res, areaPosition, Quaternion.identity)).AddComponent<Hero>();
-
-		Character.setCard(cardData, player);
-		Character.Setup(gameController, battlefield, this);
-		GameConfiguration.PlaySFX(GameConfiguration.Summon);
-		gameController.SetTriggerType(TriggerType.OnAfterSpawn, this);
-	}
-	public void Setup(Card card, Player player, Battlefield battlefield, HandController handController, GameController gameController)
-	{
-		if (cardData.Initialized())
-			return;
-
-		this.gameController = gameController;
-		this.handController = handController;
-		this.battlefield = battlefield;
-		civilizationName = player.GetCivilization().ToString();
-		deckController = player.GetDeckController();
-		battlefieldController = player.GetBattlefieldController();
-		manaPoolController = player.GetManaPoolController();
-		graveyardController = player.GetGraveyardController();
-
-
-		cardData = new Card(card.CardID);
-		cardData.PlayID = card.PlayID;
-		this.player = player;
-		GameObject cardObj = Resources.Load<GameObject>("Prefabs/Cards/" + civilizationName + "/" + cardData.name.Replace(" ", ""));
-		GameObject aux;
+		GameObject cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
 
 		if (cardObj == null)
 		{
-			Debug.Log(cardData.name.Replace(" ", "") + " não invocado. Civ:" + civilizationName);
-			cardObj = Resources.Load<GameObject>("Prefabs/Cards/Aeterna/AnittaAshervind");
+			Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
+			return;
 		}
 
-		aux = (GameObject)Instantiate(cardObj, Vector3.zero, Quaternion.identity);
-		aux.transform.SetParent(this.transform);
-		aux.transform.localPosition = Vector3.zero;
-		aux.transform.localRotation = Quaternion.Euler(Vector3.zero);
+		cardObj.transform.localPosition = Vector3.zero;
+		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
 	}
+	string GetCardResourcePath()
+	{
+		return "Prefabs/Cards/" + originalCard.civilization.ToString() + "/" + GetResourceName();
+	}
+	string GetResourceName()
+	{
+		return originalCard.name.Replace(" ", "");
+	}
+	/*
+	 * 
+	string GetEmptyCardResourcePath(Civilization civilization)
+	{
+		return "Prefabs/Cards/" + civilizationName + "/" + GetResourceName();
+	}*/
+	/*string GetCharacterResourcePath()
+	{
+		return "Prefabs/Characters/" + civilizationName + "/" + GetResourceName();
+	}
+	public Hero GetCharacterResource()
+    {
+		var path = GetCharacterResourcePath();
+		Hero hero = Resources.Load<Hero>(path);
+
+		if (hero == null)
+		{
+			Debug.LogError("Could not instantiate: " + civilizationName + "/" + path);
+			return null;
+		}
+	
+		return hero;
+	}
+	public void SummonClick()
+    {
+		SetCardBeingHeld(true);
+    }
+	void SetCardBeingHeld(bool value)
+    {
+		if (!isBeingHeld && !value)
+			return;
+
+		isBeingHeld = value;
+
+		if(value)
+			handController.SetCardBeingHeld(this);
+		else
+			handController.SetCardBeingHeld(null);
+	}
+	public void AddAttack(int number)
+	{
+		if (number < 0) number = 0;
+		currentCardData.attack += number;
+	}
+	public void RemoveAttack(int number)
+	{
+		if (number < 0) number = 0;
+		currentCardData.attack -= number;
+	}
+	public void AddLife(int number)
+	{
+		if (number < 0) number = 0;
+		DamageCounter.New(transform.position, number);
+		currentCardData.life += number;
+	}
+	public void ResetAttack()
+	{
+		currentCardData.attack = originalCardData.attack;
+	}
+	public void ResetLife()
+	{
+		if (currentCardData.life > originalCardData.life)
+			currentCardData.life = originalCardData.life;
+	}
+	public void DisableSkills()
+	{
+		Skill aux;
+		for (int i = 0; i < currentCardData.Skills.Count; i++)
+		{
+			aux = currentCardData.Skills[i];
+			aux.isActive = false;
+			currentCardData.Skills[i] = aux;
+		}
+	}
+	public Card GetCardData()
+    {
+		return currentCardData;
+	}
+	public void RemoveLife(int number)
+    {
+		currentCardData.life -= number;
+	}
+
+	public List<Skill> GetSkills()
+    {
+		return currentCardData.Skills;
+    }*/
+
 }

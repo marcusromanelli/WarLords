@@ -34,13 +34,13 @@ public class ManaOrb : MonoBehaviour
 		switch (ManaStatus)
 		{
 			case ManaStatus.Used:
-				StartCoroutine("SetUsed");
+				StartCoroutine(SetUsed());
 				break;
 			case ManaStatus.Active:
-				StartCoroutine("SetActive");
+				StartCoroutine(SetActive());
 				break;
 			case ManaStatus.Preview:
-				StartCoroutine("SetPreview");
+				StartCoroutine(SetPreview());
 				break;
 		}
 
@@ -48,17 +48,17 @@ public class ManaOrb : MonoBehaviour
 	[Button("Set Used")]
 	void setUsed()
 	{
-		StartCoroutine("SetUsed");
+		StartCoroutine(SetUsed());
 	}
 	[Button("Set Active")]
 	void setActive()
 	{
-		StartCoroutine("SetActive");
+		StartCoroutine(SetActive());
 	}
 	[Button("Set Preview")]
 	void setPreview()
 	{
-		StartCoroutine("SetPreview");
+		StartCoroutine(SetPreview());
 	}
 	IEnumerator SetUsed()
 	{
@@ -138,32 +138,4 @@ public class ManaOrb : MonoBehaviour
 		lastUsedMaterialColor = materialColor;
 		lastUsedEmissionColor = emissionColor;
 	}
-	/*void RestartParticleSystem()
-	{
-		for (int i = 0; i < particleSystem.Length; i++)
-		{
-			var obj = particleSystem[i];
-
-			if (obj.isPlaying || obj.IsAlive())
-			{
-				obj.Stop(true);
-				particleSystemSpeed = obj.playbackSpeed;
-				obj.playbackSpeed = particleSystemSpeed * 5f;
-			}
-		}
-	}
-	void DisableParticleSystem()
-	{
-		for (int i = 0; i < particleSystem.Length; i++)
-		{
-			var obj = particleSystem[i];
-
-			if (!obj.isPlaying)
-			{
-				obj.Play();
-				obj.playbackSpeed = particleSystemSpeed;
-			}
-		}
-	}*/
-
 }

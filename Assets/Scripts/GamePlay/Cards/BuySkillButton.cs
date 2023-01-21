@@ -18,7 +18,7 @@ public class BuySkillButton : MonoBehaviour {
 	}
 
 	void Update(){
-		if(card.Character==null){
+		/*if(card.Character==null){
 			if(status){
 				renderers.ForEach(delegate(Renderer obj) {
 					obj.material.color = BlueSelected;
@@ -38,13 +38,13 @@ public class BuySkillButton : MonoBehaviour {
 					obj.material.color = Red;
 				});
 			}
-		}
+		}*/
 
 
 	}
 
 	void OnMouseDown(){
-		Debug.LogWarning("CLick");
+		/*Debug.LogWarning("CLick");
 		if(card.Character==null){
 			GameConfiguration.PlaySFX(GameConfiguration.confirmAction);
 			if(!status){
@@ -56,6 +56,6 @@ public class BuySkillButton : MonoBehaviour {
 			}
 
 			status = !status;
-		}
+		}*/
 	}
 }

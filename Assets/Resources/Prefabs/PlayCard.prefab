@@ -665,8 +665,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000011500084202}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 949.7494, y: 269.31076, z: -13.857023}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000012122538204}
@@ -681,7 +681,7 @@ Transform:
   - {fileID: 3372673312582705182}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114000011009465866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,9 +694,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5091c5826603908459d06cf60d18f9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardMovementSpeed: 10
+  cardRotationSpeed: 1000
   cardCoversPerCivilization:
-  - {fileID: 1320688543516375476}
   - {fileID: 3369709561916968042}
+  - {fileID: 1320688543516375476}
 --- !u!65 &65000013358346654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7517,7 +7519,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000011500084202, guid: f70152883a223924489679bab0804369, type: 3}
       propertyPath: m_Name
-      value: EmptyCardAeterna
+      value: CoverCardAeterna
       objectReference: {fileID: 0}
     - target: {fileID: 1000011500084202, guid: f70152883a223924489679bab0804369, type: 3}
       propertyPath: m_IsActive
@@ -7590,7 +7592,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000011500084202, guid: 1027968bf19a4fd47b54e05fd539e6d0, type: 3}
       propertyPath: m_Name
-      value: EmptyCardArkamore
+      value: CoverCardArkamore
       objectReference: {fileID: 0}
     - target: {fileID: 1000011500084202, guid: 1027968bf19a4fd47b54e05fd539e6d0, type: 3}
       propertyPath: m_IsActive
