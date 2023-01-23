@@ -16,14 +16,16 @@ public class UIPlayerHand : MonoBehaviour
     protected Civilization civilization;
 
     private InputController inputController;
-    private HandleHoverObject onHoverCardStart;
-    private HandleHoverObject onHoverCardEnd;
+    private HandleMouseAction onPressedCard;
+    private HandleMouseAction onDownCard;
+    private HandleMouseAction onUpCard;
 
-    public void PreSetup(InputController inputController, HandleHoverObject onHoverCardStart, HandleHoverObject onHoverCardEnd)
+    public void PreSetup(InputController inputController, HandleMouseAction onDownCard, HandleMouseAction onPressedCard, HandleMouseAction onUpCard)
     {
         this.inputController = inputController;
-        this.onHoverCardStart = onHoverCardStart;
-        this.onHoverCardEnd = onHoverCardEnd;
+        this.onPressedCard = onPressedCard;
+        this.onDownCard = onDownCard;
+        this.onUpCard = onUpCard;
     }
     public void Setup(Civilization civilization)
     {
@@ -36,8 +38,9 @@ public class UIPlayerHand : MonoBehaviour
 
         cardList.Add(cardObj);
 
-        inputController.RegisterCallback(InputController.HoverType.Start, cardObj.gameObject, onHoverCardStart);
-        inputController.RegisterCallback(InputController.HoverType.End, cardObj.gameObject, onHoverCardEnd);
+        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObj.gameObject, onUpCard);
+        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButton, cardObj.gameObject, onPressedCard);
+        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, cardObj.gameObject, onDownCard);
 
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 

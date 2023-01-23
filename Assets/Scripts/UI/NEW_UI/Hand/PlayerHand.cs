@@ -20,7 +20,7 @@ public class PlayerHand
     }
     public void PreSetup(InputController inputController)
     {
-        uiPlayerHand.PreSetup(inputController, OnHoverCardStart, OnHoverCardEnd);
+        uiPlayerHand.PreSetup(inputController, OnDownCard, OnPressedCard, OnUpCard);
     }
     public void Setup(Civilization civilization)
     {
@@ -82,17 +82,29 @@ public class PlayerHand
     {
         yield return uiPlayerHand.IsResolving();
     }
-    void OnHoverCardStart(GameObject cardObject)
+    void OnClickCard(GameObject cardObject)
     {
+        var card = cardObject.GetComponent<CardObject>();
+        Debug.Log("Clicked " + card.name);
+
         if (currentHoveringCard != null && currentHoveringCard.gameObject == cardObject)
             return;
 
         hoveringCards.Add(cardObject.GetComponent<CardObject>());
-        Debug.Log("Current is " + currentHoveringCard.name);
     }
-
-    void OnHoverCardEnd(GameObject cardObject)
+    void OnDownCard(GameObject cardObject)
     {
-        hoveringCards.RemoveAll (a => a.gameObject == cardObject);
+        var card = cardObject.GetComponent<CardObject>();
+        Debug.Log("Mouse DOWN " + card.name);
+    }
+    void OnUpCard(GameObject cardObject)
+    {
+        var card = cardObject.GetComponent<CardObject>();
+        Debug.Log("Mouse UP " + card.name);
+    }
+    void OnPressedCard(GameObject cardObject)
+    {
+        var card = cardObject.GetComponent<CardObject>();
+        Debug.Log("Mouse PRESSED " + card.name);
     }
 }

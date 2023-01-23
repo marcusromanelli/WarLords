@@ -320,18 +320,18 @@ public class CardObject : MonoBehaviour, IPoolable
 		}*/
 	}
 
-	public void OnMouseDown()
+	/*public void OnMouseDown()
 	{
-		/*if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
+		if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
 		{
 			lastKnownMousePosition = Input.mousePosition;
 			offset = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 11)) - transform.localPosition;
 			isMouseDown = true;
-		}*/
-	}
+		}
+	}*/
 
 	/*void CheckDeckInteraction()
-    {
+	{
 		if (!deckController.IsMouseOver)
 			return;
 
@@ -349,7 +349,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 		destinyPosition = manaPoolController.GetBasePosition();
 		destinyRotation = manaPoolController.GetTopRotation();
-    }
+	}
 	void CheckGraveyardInteraction()
 	{
 		if (!graveyardController.IsMouseOver)
@@ -361,17 +361,17 @@ public class CardObject : MonoBehaviour, IPoolable
 		destinyRotation = graveyardController.GetTopRotation();
 	}
 	void CheckHeroInteraction()
-    {
+	{
 		if (Hero.selectedHero == null || isBeingVisualized || !isBeingHeld)
 			return;
 
 		if (!gameController.MatchHasStarted)
-        {
+		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.LogWarning("This movement is not allowed now.");
 			return;
 		}
-		
+
 		if (player.CanSpendMana(currentCardData.Skills[1].manaCost))
 		{
 			targetHero = Hero.selectedHero;
@@ -384,7 +384,7 @@ public class CardObject : MonoBehaviour, IPoolable
 		}
 	}
 	void CheckClickInteraction()
-    {
+	{
 		if (isBeingVisualized || !isBeingHeld)
 		{
 

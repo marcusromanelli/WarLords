@@ -5,31 +5,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
-
-	private static GameController _singleton;
-	public static GameController Singleton
-	{
-		get
-		{
-			if (_singleton == null)
-			{
-				GameController aux = GameObject.FindObjectOfType<GameController>();
-				if (aux == null)
-				{
-					_singleton = (new GameObject("-----Game Controller-----", typeof(GameController))).GetComponent<GameController>();
-				}
-				else
-				{
-					_singleton = aux;
-				}
-			}
-			return _singleton;
-		}
-	}
-
-
 	[SerializeField] InputController inputController;
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
@@ -44,7 +21,7 @@ public class GameController : MonoBehaviour
     {
         get
         {
-			return Singleton.currentPhase;
+			return Instance.currentPhase;
         }
     }
 	public bool matchHasStarted;
@@ -52,7 +29,7 @@ public class GameController : MonoBehaviour
 	{
 		get
 		{
-			return Singleton.matchHasStarted;
+			return Instance.matchHasStarted;
 		}
 	}
 	public static bool isExecutingMacro;
@@ -403,7 +380,7 @@ public class GameController : MonoBehaviour
 	}
 	public void AddMacro(Skill skill, CardObject hero)
 	{
-		if (!IsMacroActive(hero, skill))
+		/*if (!IsMacroActive(hero, skill))
 		{
 			MacroComponent aux = Singleton.gameObject.AddComponent<MacroComponent>();
 
@@ -413,7 +390,7 @@ public class GameController : MonoBehaviour
 
 			if (!Singleton.Macros[0].IsResolving)
 				Singleton.Macros[0].setActive();
-		}
+		}*/
 	}
 
 	public bool IsMacroActive(CardObject card, Skill skill)
@@ -424,9 +401,9 @@ public class GameController : MonoBehaviour
 
 	public static void RemoveMacro(MacroComponent condition)
 	{
-		Singleton.Macros.Remove(condition);
+		/*Singleton.Macros.Remove(condition);
 		if (Singleton.Macros.Count > 0)
-			Singleton.Macros[0].setActive();
+			Singleton.Macros[0].setActive();*/
 	}
 
 

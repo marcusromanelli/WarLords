@@ -17,7 +17,7 @@ public class NextPhaseButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(GameController.MatchHasStarted && GameController.Singleton.GetCurrentPlayer() == player && GameController.Phase == Phase.Action){
+		/*if(GameController.MatchHasStarted && GameController.Instance.GetCurrentPlayer() == player && GameController.Phase == Phase.Action){
 			isHidden = false;
 		}else{
 			isHidden = true;
@@ -27,7 +27,7 @@ public class NextPhaseButton : MonoBehaviour {
 			transform.localPosition = Vector3.MoveTowards(transform.localPosition, hiddenPosition, Time.deltaTime * 10);
 		}else{
 			transform.localPosition = Vector3.MoveTowards(transform.localPosition, originalPosition, Time.deltaTime * 10);
-		}
+		}*/
 	}
 
 	void OnMouseDown(){

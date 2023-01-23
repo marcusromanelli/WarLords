@@ -1,98 +1,43 @@
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public delegate void HandleHoverObject(GameObject obj);
-
-public class InputController : MonoBehaviour
+[Serializable]
+public class MouseManager
 {
-    public enum HoverType
-    {
-        Start, End
-    }
-    [Serializable]
-    class ObjectLayer
-    {
-        public GameObject @object;
-        public HandleHoverObject OnHoverStart;
-        public HandleHoverObject OnHoverEnd;
-        [ReadOnly] public bool IsHovering;
-
-        public ObjectLayer(GameObject gameObject)
-        {
-            @object = gameObject;
-            OnHoverEnd = null;
-            OnHoverStart = null;
-            IsHovering = false;
-        }
-        public void SetHovering(bool value)
-        {
-            if (IsHovering && !value)
-            {
-                //Stopped
-                OnHoverEnd?.Invoke(@object);
-            }else if(!IsHovering && value)
-            {
-                //Started
-                OnHoverStart?.Invoke(@object);
-            }
-
-            IsHovering = value;
-        }
-        public void Register(HoverType type, HandleHoverObject evnt)
-        {
-            switch (type)
-            {
-                case HoverType.Start:
-                    OnHoverStart += evnt;
-                    break;
-                case HoverType.End:
-                    OnHoverEnd += evnt;
-                    break;
-            }
-        }
-        public void Unregister(HoverType type, HandleHoverObject evnt)
-        {
-            switch (type)
-            {
-                case HoverType.Start:
-                    OnHoverStart -= evnt;
-                    break;
-                case HoverType.End:
-                    OnHoverEnd -= evnt;
-                    break;
-            }
-        }
-    }
     Dictionary<GameObject, ObjectLayer> objectsToWatch;
-
 
     [SerializeField] float minMouseMovement = 1f;
 #if UNITY_EDITOR
     [BoxGroup("Debug"), SerializeField] bool enableDebugMode = false;
     [BoxGroup("Debug"), SerializeField] bool ignoreLayerMask = false;
-    [BoxGroup("Debug"), SerializeField, ReadOnly] GameObject[] lastRecordedHitObjects;
+    [BoxGroup("Debug"), ReorderableList] GameObject[] lastRecordedHitObjects;
 #endif
     [BoxGroup("Debug")] public int registeredLayerMask;
-    private Vector3 lastRecordedMousePosition;    
+    private Vector3 lastRecordedMousePosition;
     private Ray lastRaycast;
 
-    private void Awake()
+    public MouseManager()
     {
         objectsToWatch = new Dictionary<GameObject, ObjectLayer>();
     }
-    private void Update()
+
+    public void CheckHoverage()
     {
-        CheckHoverage();
-    }
-    void CheckHoverage()
-    {
+        CheckClick();
+
         if (!MouseMoved())
             return;
 
         UpdateRaycastCollisions();
+    }
+    void CheckClick()
+    {
+        foreach (var obj in objectsToWatch)
+        {
+            obj.Value.SetClick(Input.GetMouseButton(0));
+        }
     }
     bool MouseMoved()
     {
@@ -126,7 +71,7 @@ public class InputController : MonoBehaviour
         {
             string layerName = LayerMask.LayerToName(obj.Key.layer);
 
-            if(!layers.ContainsKey(layerName))
+            if (!layers.ContainsKey(layerName))
                 layers.Add(layerName, 0);
 
             layers[layerName]++;
@@ -147,7 +92,7 @@ public class InputController : MonoBehaviour
 
         RaycastHit[] results;
 
-        if(!ignoreLayerMask)
+        if (!ignoreLayerMask)
             results = Physics.RaycastAll(lastRaycast, 1000, registeredLayerMask);
         else
             results = Physics.RaycastAll(lastRaycast, 1000);
@@ -156,23 +101,14 @@ public class InputController : MonoBehaviour
 #if UNITY_EDITOR
         lastRecordedHitObjects = new GameObject[results.Length];
 #endif
-        /*
-        foreach (var result in results)
-        {
-            var gameObject = result.collider.gameObject;
-#if UNITY_EDITOR
-            lastRecordedHitObjects[c++] = gameObject;
-#endif
-            if(objectsToWatch.ContainsKey(gameObject))
-                objectsToWatch[gameObject].SetHovering(true);
-        }*/
+
         int c = 0;
 
         foreach (var obj in objectsToWatch)
         {
             bool isHovering = false;
 
-            foreach(var result in results)
+            foreach (var result in results)
             {
                 var gameObject = result.collider.gameObject;
 
@@ -190,7 +126,7 @@ public class InputController : MonoBehaviour
             obj.Value.SetHovering(isHovering);
         }
     }
-    public void RegisterCallback(HoverType type, GameObject gameObject, HandleHoverObject onHoverAction)
+    public void RegisterCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onHoverAction)
     {
         if (!objectsToWatch.ContainsKey(gameObject))
         {
@@ -200,17 +136,11 @@ public class InputController : MonoBehaviour
 
         objectsToWatch[gameObject].Register(type, onHoverAction);
     }
-    public void UnregisterCallback(HoverType type, GameObject gameObject, HandleHoverObject onHoverAction)
+    public void UnregisterCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onHoverAction)
     {
         if (!objectsToWatch.ContainsKey(gameObject))
             return;
 
         objectsToWatch[gameObject].Unregister(type, onHoverAction);
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        //Gizmos.DrawRay(lastRaycast);        
-        Gizmos.DrawRay(Camera.main.transform.position, lastRaycast.direction * 1000);
     }
 }
