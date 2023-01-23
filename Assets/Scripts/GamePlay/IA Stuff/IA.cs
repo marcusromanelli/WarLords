@@ -22,7 +22,7 @@ public class IA : MonoBehaviour {
 		//if (!AIWillPlay)
 		//	return;
 
-
+/*
 		switch (GameController.Singleton.currentPhase) {
 			case Phase.Draw:
 				//if(!player.hasDrawnCard){
@@ -49,16 +49,16 @@ public class IA : MonoBehaviour {
 
 					var tile = emptyTiles[Random.Range(0, emptyTiles.Count)];
 					
-					battlefield.Summon (cardObject, tile);*/
+					battlefield.Summon (cardObject, tile);*
 				}
 
 				player.EndPhase ();
 				break;
-		}
+		}*/
 	}
 
 	void solveCondition()	{
-		var AIWillPlay = !player.HasConditions();// || player.IsDrawing();
+		/*var AIWillPlay = !player.HasConditions();// || player.IsDrawing();
 
 		if (!AIWillPlay)
 			return;
@@ -81,7 +81,7 @@ public class IA : MonoBehaviour {
 			case ConditionType.SendCardToManaPool:
 				player.SendCardToManaPool (getRandomCardFromHand());
 				break;
-		}
+		}*/
 	}
 
 	Card getRandomCardFromHand()

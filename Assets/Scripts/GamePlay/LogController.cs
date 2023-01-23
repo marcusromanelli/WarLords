@@ -62,7 +62,7 @@ public class ActionComponent
 	{
 		StringBuilder str = new StringBuilder("Player ");
 
-		string cardName;
+		/*string cardName;
 		switch (action)
 		{
 			case Action.DrawCard:
@@ -125,7 +125,7 @@ public class ActionComponent
 				str.Append(" activated macro ");
 				str.Append(macro.ToString());
 				break;
-		}
+		}*/
 
 		return str.ToString();
 	}

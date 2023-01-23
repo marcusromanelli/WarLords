@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
 	}
 
 
+	[SerializeField] InputController inputController;
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
 	[SerializeField] Player RemotePlayer;
@@ -73,8 +74,8 @@ public class GameController : MonoBehaviour
 
 	IEnumerator StartupPlayers()
 	{
-		LocalPlayer.Setup();
-		RemotePlayer.Setup();
+		//LocalPlayer.Setup();
+		//RemotePlayer.Setup();
 
 		LocalPlayer.SetupPlayDeck();
 		RemotePlayer.SetupPlayDeck();
@@ -122,7 +123,7 @@ public class GameController : MonoBehaviour
 	}
 	void WatchEndGame()
 	{
-		if (!MatchHasStarted)
+		/*if (!MatchHasStarted)
 			return;
 
 		//TODO ARRRRG
@@ -137,7 +138,7 @@ public class GameController : MonoBehaviour
 			PhasesTitle.SetWinner(LocalPlayer);
 			LocalPlayer.enabled = false;
 			RemotePlayer.enabled = false;
-		}
+		}*/
 	}
 	void WatchExitGame()
 	{
@@ -154,11 +155,14 @@ public class GameController : MonoBehaviour
 	{
 		if (Macros == null)
 			Macros = new List<MacroComponent>();
+
+		LocalPlayer.Setup(inputController);
+		RemotePlayer.Setup(inputController);
 	}
 
 	void NextTurn(Phase phase = Phase.Draw)
 	{
-		currentPhase = phase;
+		/*currentPhase = phase;
 		if (currentPlayer == null)
 		{
 			currentPlayer = LocalPlayer;
@@ -171,11 +175,11 @@ public class GameController : MonoBehaviour
 
 		currentPlayer.StartTurn();
 
-		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());
+		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());*/
 	}
 	public void NextPhase()
 	{
-		if (isChangingPhase)
+		/*if (isChangingPhase)
 			return;
 
 		if (currentPhase == Phase.End)
@@ -218,12 +222,12 @@ public class GameController : MonoBehaviour
 			{
 				Debug.LogWarning("Cannot change phase. Waiting for Player " + player + " to finish it's conditions");
 			}
-		}
+		}*/
 	}
 
 	public int AllPlayersOk()
 	{
-		var val = -1;
+		/*var val = -1;
 
 		if (LocalPlayer.HasConditions())
 		{
@@ -235,7 +239,8 @@ public class GameController : MonoBehaviour
 			return (int)RemotePlayer.GetCivilization();
 		}
 
-		return val;
+		return val;*/
+		return 0;
 	}
 
 	public void GoToPhase(Phase phase, Player player)
@@ -357,7 +362,7 @@ public class GameController : MonoBehaviour
 
 	public void AttackPlayer(int damage)
 	{
-		Player target;
+		/*Player target;
 
 		//TODO arg
 		if (currentPlayer == LocalPlayer)
@@ -369,7 +374,7 @@ public class GameController : MonoBehaviour
 		target.TakeDamage(damage);
 
 		if (currentPlayer.GetPlayerType() == PlayerType.Remote)
-			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));
+			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));*/
 	}
 
 	public void SetTriggerType(TriggerType trigger, CardObject cardObject)
@@ -442,7 +447,7 @@ public class GameController : MonoBehaviour
 	string GetPlayerConditionPrint(Player player)
     {
 		return "";
-		string final = "";
+		/*string final = "";
 
 		if (player.HasConditions())
 		{
@@ -459,7 +464,7 @@ public class GameController : MonoBehaviour
 		}
 		final += "\n\n";
 
-		return final;
+		return final;*/
 	}
 
 	string GetPlayersConditionsPrint()

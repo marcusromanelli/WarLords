@@ -6,14 +6,14 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-	public delegate void ReleaseCard(CardObject card);
+	/*public delegate void ReleaseCard(CardObject card);
 	public event ReleaseCard OnReleaseCard;
 
 	public delegate void HoldCard(CardObject card);
 	public event HoldCard OnHoldCard;
 
 	public delegate void ClickCard(CardObject card);
-	public event ClickCard OnClickCard;
+	public event ClickCard OnClickCard;*/
 
 
 
@@ -26,10 +26,13 @@ public class Player : MonoBehaviour
 	[SerializeField] Civilization civilization;
 	//[SerializeField] int life;
 	//[SerializeField] PlayerType Type;
-	[Header("Player Properties")]
+	[Header("Game Logic")]
 	[SerializeField] CardDeck<Card> PlayDeck;
 	[SerializeField] CardDeck<Card> Graveyard;
 	[SerializeField] PlayerHand Hand;
+
+
+	private InputController inputController;	
 	//[SerializeField] ManaPool ManaPool;
 	//[SerializeField] List<Condition> Conditions;
 
@@ -53,33 +56,13 @@ public class Player : MonoBehaviour
 
 	bool isFillingDeck;
 
-	void Start()
-	{
-		//ManaPool = new ManaPool();
-		//Graveyard = new CardDeck<Card>(civilization);
-		//Hand = new PlayerHand<Card>();
+	public void Setup(InputController inputController)
+    {
+		this.inputController = inputController;
 
-		//life = GameConfiguration.startLife;
-	}
-
-	public void Setup()
-	{
-		//var startLife = GameConfiguration.startLife;
-		//LifePointsController.Setup(startLife);
-	}
-
-	public void StartTurn()
-	{
-		//ResetHabilities();
-		//RecoverMana();
-		//ResetPreviewMana();
-
-		//TryDrawCards();
-		//hasDrawnCard = true;
-		//EndPhase();
-	}
-
-	public void SetupPlayDeck()
+		Hand.PreSetup(inputController);
+    }
+    public void SetupPlayDeck()
 	{
 		PlayDeck.Setup(civilization);
 
@@ -118,7 +101,6 @@ public class Player : MonoBehaviour
 
 		DoDrawCards(number);
 	}
-
 	void DoDrawCards(int number)
 	{
 		LogController.Log(Action.DrawCard, this, number);
@@ -128,43 +110,106 @@ public class Player : MonoBehaviour
 
 		Hand.AddCards(cards);
 	}
-
-	public void DiscartCardFromHand(Card nCard)
+	void TurnGraveyardIntoDeck()
 	{
-		return;/*
-		Card card = Hand.Find(a => a.PlayID == nCard.PlayID);
-		if (card.CardID > 0)
+		PlayDeck.AddCards(Graveyard.GetAllCards());
+
+		Graveyard.Empty();
+	}
+	string GetFormatedName()
+	{
+		return "Player " + (civilization + 1);
+	}
+	public bool HasConditions()
+	{
+		return true;// (Conditions.Count > 0);
+	}
+	public void AddCondition(ConditionType Type, int number = -1)
+	{
+		/*Condition aux = gameObject.AddComponent<Condition>();
+		aux.SetValues(Type, number);
+		Conditions.Add(aux);
+		if (!Conditions[0].isChecking)
 		{
-			Hand.Remove(card);
-			HandObject.RemoveCard(card.PlayID);
-			Graveyard.AddCard(card);
-			LogController.Log(Action.DiscartCard, this, 1);
+			Conditions[0].setActive();
 		}*/
 	}
 
-	void ResetHabilities()
+	public void removeCondition(Condition condition)
 	{
-		//hasUsedHability = false;
-		//hasDrawnCard = false;
+		/*Conditions.Remove(condition);
+		if (Conditions.Count > 0)
+			Conditions[0].setActive();*/
 	}
 
-	public void SendCardToManaPool(Card card)
+	public bool hasCondition(ConditionType condition)
 	{
-		/*if (hasUsedHability)
+		return true;// (Conditions.Count > 0 && Conditions[0].Type == condition);
+	}
+
+
+
+		/*void Start()
 		{
-			if (!hasCondition(ConditionType.SendCardToManaPool))
+			//ManaPool = new ManaPool();
+			//Graveyard = new CardDeck<Card>(civilization);
+			//Hand = new PlayerHand<Card>();
+
+			//life = GameConfiguration.startLife;
+		}
+
+		public void Setup()
+		{
+			//var startLife = GameConfiguration.startLife;
+			//LifePointsController.Setup(startLife);
+		}
+
+		public void StartTurn()
+		{
+			//ResetHabilities();
+			//RecoverMana();
+			//ResetPreviewMana();
+
+			//TryDrawCards();
+			//hasDrawnCard = true;
+			//EndPhase();
+		}
+		public void DiscartCardFromHand(Card nCard)
+		{
+			return;/*
+			Card card = Hand.Find(a => a.PlayID == nCard.PlayID);
+			if (card.CardID > 0)
+			{
+				Hand.Remove(card);
+				HandObject.RemoveCard(card.PlayID);
+				Graveyard.AddCard(card);
+				LogController.Log(Action.DiscartCard, this, 1);
+			}*
+		}
+
+		void ResetHabilities()
+		{
+			//hasUsedHability = false;
+			//hasDrawnCard = false;
+		}
+
+		public void SendCardToManaPool(Card card)
+		{
+			/*if (hasUsedHability)
+			{
+				if (!hasCondition(ConditionType.SendCardToManaPool))
+				{
+					GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+					Debug.Log(GetFormatedName() + " cannot use his hability because he already used this turn");
+					return;
+				}
+			}
+			if (!ManaPool.HasManaSpace())
 			{
 				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-				Debug.Log(GetFormatedName() + " cannot use his hability because he already used this turn");
+				Debug.Log("You already have the maximum mana permitted.");
 				return;
-			}
-		}
-		if (!ManaPool.HasManaSpace())
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.Log("You already have the maximum mana permitted.");
-			return;
-		}*/
+			}*/
 
 		/*var removedCard = Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0;
 		if (!removedCard)
@@ -177,14 +222,7 @@ public class Player : MonoBehaviour
 		HandObject.RemoveCard(card.PlayID);*/
 		/*ManaPool.IncreaseMaxMana();
 		hasUsedHability = true;
-		Debug.Log("Card ID nº " + card.PlayID + " became a Mana");*/
-	}
-
-	void TurnGraveyardIntoDeck()
-	{
-		PlayDeck.AddCards(Graveyard.GetAllCards());
-
-		Graveyard.Empty();
+		Debug.Log("Card ID nº " + card.PlayID + " became a Mana");*
 	}
 
 	public void DiscartCardToDrawTwo(Card card)
@@ -210,12 +248,7 @@ public class Player : MonoBehaviour
 		TryDrawCards(2);
 		hasUsedHability = true;
 		LogController.Log(Action.ChangeCard, this);
-		Debug.Log("Card ID nº " + card + " has gone to Graveyard and " + GetFormatedName() + " drawed 2 cards");*/
-	}
-
-	string GetFormatedName()
-	{
-		return "Player " + (civilization + 1);
+		Debug.Log("Card ID nº " + card + " has gone to Graveyard and " + GetFormatedName() + " drawed 2 cards");*
 	}
 
 	List<Card> shuffleCards(List<Card> cards)
@@ -284,33 +317,6 @@ public class Player : MonoBehaviour
 		Debug.Log("Recovered " + number + " mana");
 		//ManaPool.RestoreSpentMana(number);
 	}
-	public void AddCondition(ConditionType Type, int number = -1)
-	{
-		Condition aux = gameObject.AddComponent<Condition>();
-		aux.SetValues(Type, number);
-		/*Conditions.Add(aux);
-		if (!Conditions[0].isChecking)
-		{
-			Conditions[0].setActive();
-		}*/
-	}
-
-	public void removeCondition(Condition condition)
-	{
-		/*Conditions.Remove(condition);
-		if (Conditions.Count > 0)
-			Conditions[0].setActive();*/
-	}
-
-	public bool HasConditions()
-	{
-		return true;// (Conditions.Count > 0);
-	}
-
-	public bool hasCondition(ConditionType condition)
-	{
-		return true;// (Conditions.Count > 0 && Conditions[0].Type == condition);
-	}
 
 	public void setPlayerCivilization(Civilization civ)
 	{
@@ -328,7 +334,7 @@ public class Player : MonoBehaviour
 
 		life -= value;
 		if (life < 0) life = 0;
-		LifePointsController.SetLife(life);*/
+		LifePointsController.SetLife(life);*
 	}
 
 	public void AddLife(int value)
@@ -338,7 +344,7 @@ public class Player : MonoBehaviour
 		life += value;
 
 		GameConfiguration.PlaySFX(GameConfiguration.heal);
-		LifePointsController.SetLife(life);*/
+		LifePointsController.SetLife(life);*
 	}
 
 	public void killCard(CardObject cardObject)
@@ -362,7 +368,7 @@ public class Player : MonoBehaviour
 			Hand.AddCard(card);
 
 			GameConfiguration.PlaySFX(GameConfiguration.drawCard);
-		}*/
+		}*
 	}
 
 	public void GetRandomCardFromDeck(int number = 1)
@@ -458,5 +464,5 @@ public class Player : MonoBehaviour
 	public void SetClickCard(CardObject card)
 	{
 		OnClickCard?.Invoke(card);
+	}*/
 	}
-}

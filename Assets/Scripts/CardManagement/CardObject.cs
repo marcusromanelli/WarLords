@@ -513,6 +513,7 @@ public class CardObject : MonoBehaviour, IPoolable
 			return;
 		}
 
+		this.name = GetResourceName();
 		cardObj.transform.localPosition = Vector3.zero;
 		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
 	}

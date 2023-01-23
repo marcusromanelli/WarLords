@@ -29,9 +29,8 @@ public class Battlefield : MonoBehaviour, ICardPlaceable
 		if (!Application.isPlaying)
 			return;
 
-		localPlayerController.OnHoldCard += SetCardBeingHeld;
-		localPlayerController.OnReleaseCard += SetCardBeingReleased;
-
+		//localPlayerController.OnHoldCard += SetCardBeingHeld;
+		//localPlayerController.OnReleaseCard += SetCardBeingReleased;
 	}
 
     [Button("Generate Grid")]
@@ -161,19 +160,21 @@ public class Battlefield : MonoBehaviour, ICardPlaceable
 
 	public List<SpawnArea> GetEmptyFields(Player player)
 	{
-		var isLocalPlayer = player == gameController.GetLocalPlayer();
+		return null;
+		/*var isLocalPlayer = player == gameController.GetLocalPlayer();
 		var isRemotePlayer = player == gameController.GetRemotePlayer();
 
 		return generatedTiles.FindAll(tile => tile.playerType == player.GetPlayerType()
-										&& tile.IsSummonArea && tile.HasHero() == false);
+										&& tile.IsSummonArea && tile.HasHero() == false);*/
 	}
 	public List<SpawnArea> GetFields(Player player)
 	{
-		var isLocalPlayer = player == gameController.GetLocalPlayer();
+		return null;
+		/*var isLocalPlayer = player == gameController.GetLocalPlayer();
 		var isRemotePlayer = player == gameController.GetRemotePlayer();
 
 		return generatedTiles.FindAll(tile => tile.playerType == player.GetPlayerType()
-										&& tile.IsSummonArea);
+										&& tile.IsSummonArea);*/
 	}
 
 	public int GetNumberOfSquares()
@@ -222,7 +223,7 @@ public class Battlefield : MonoBehaviour, ICardPlaceable
 	}
 	public bool CanSummon(Player player, SpawnArea area)
     {
-		if (area == null)
+		/*if (area == null)
 			return false;
 
 		if (!area.IsSummonable)
@@ -235,7 +236,7 @@ public class Battlefield : MonoBehaviour, ICardPlaceable
 
 		if (area.IsSummonArea && area.playerType != type)
 			return false;
-
+		*/
 		return true;
     }
 	public bool CanSummonOnSelectedTile(Player player)
@@ -389,9 +390,9 @@ public class Battlefield : MonoBehaviour, ICardPlaceable
 
 	void ReorderHeroList(Player player)
     {
-		var targetEdge = player.GetPlayerType() == PlayerType.Local ? GetRemotePlayerEdge() : GetLocalPlayerEdge();
+		/*var targetEdge = player.GetPlayerType() == PlayerType.Local ? GetRemotePlayerEdge() : GetLocalPlayerEdge();
 
-		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - hero.GridPosition.y));
+		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - hero.GridPosition.y));*/
     }
 	public void SetCardBeingHeld(CardObject card)
     {

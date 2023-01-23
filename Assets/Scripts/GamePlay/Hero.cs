@@ -252,14 +252,15 @@ public class Hero : MonoBehaviour, ICardPlaceable
 
 	int movementDirection()
 	{
-		if (Player.GetPlayerType() == PlayerType.Remote)
+		/*if (Player.GetPlayerType() == PlayerType.Remote)
 		{
 			return -1;
 		}
 		else
 		{
 			return 1;
-		}
+		}*/
+		return 1;
 	}
 
 	void OnMouseDown()

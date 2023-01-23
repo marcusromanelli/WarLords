@@ -15,6 +15,16 @@ public class UIPlayerHand : MonoBehaviour
     private bool isBusy;
     protected Civilization civilization;
 
+    private InputController inputController;
+    private HandleHoverObject onHoverCardStart;
+    private HandleHoverObject onHoverCardEnd;
+
+    public void PreSetup(InputController inputController, HandleHoverObject onHoverCardStart, HandleHoverObject onHoverCardEnd)
+    {
+        this.inputController = inputController;
+        this.onHoverCardStart = onHoverCardStart;
+        this.onHoverCardEnd = onHoverCardEnd;
+    }
     public void Setup(Civilization civilization)
     {
         this.civilization = civilization;
@@ -26,6 +36,9 @@ public class UIPlayerHand : MonoBehaviour
 
         cardList.Add(cardObj);
 
+        inputController.RegisterCallback(InputController.HoverType.Start, cardObj.gameObject, onHoverCardStart);
+        inputController.RegisterCallback(InputController.HoverType.End, cardObj.gameObject, onHoverCardEnd);
+
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 
         StartCoroutine(UpdatePositions());
@@ -33,9 +46,7 @@ public class UIPlayerHand : MonoBehaviour
     public void AddCards(Card[] cards)
     {
         foreach(Card card in cards)
-        {
             AddCard(card);
-        }        
     }
 
     IEnumerator UpdatePositions()

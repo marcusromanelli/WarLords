@@ -11,9 +11,16 @@ public class PlayerHand
     public int Count => Cards.Count;
     protected Civilization civilization;
 
+    [SerializeField, ReorderableList] List<CardObject> hoveringCards = new List<CardObject>();
+    [SerializeField] CardObject currentHoveringCard => hoveringCards.Count > 0 ? hoveringCards[hoveringCards.Count - 1] : null;
+
     public PlayerHand()
     {
         Cards = new List<Card>();
+    }
+    public void PreSetup(InputController inputController)
+    {
+        uiPlayerHand.PreSetup(inputController, OnHoverCardStart, OnHoverCardEnd);
     }
     public void Setup(Civilization civilization)
     {
@@ -34,12 +41,7 @@ public class PlayerHand
             return;
 
         for (int i = 0; i < cards.Length; i++)
-        {
-            var card = cards[i];
-            Cards.Add(card);
-        }
-
-        uiPlayerHand.AddCards(cards);
+            AddCard(cards[i]);
     }
     public Card DiscardCard()
     {
@@ -79,5 +81,18 @@ public class PlayerHand
     public System.Collections.IEnumerator IsUIUpdating()
     {
         yield return uiPlayerHand.IsResolving();
+    }
+    void OnHoverCardStart(GameObject cardObject)
+    {
+        if (currentHoveringCard != null && currentHoveringCard.gameObject == cardObject)
+            return;
+
+        hoveringCards.Add(cardObject.GetComponent<CardObject>());
+        Debug.Log("Current is " + currentHoveringCard.name);
+    }
+
+    void OnHoverCardEnd(GameObject cardObject)
+    {
+        hoveringCards.RemoveAll (a => a.gameObject == cardObject);
     }
 }

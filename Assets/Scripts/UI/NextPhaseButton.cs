@@ -31,6 +31,6 @@ public class NextPhaseButton : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
-		player.EndPhase();
+		//player.EndPhase();
 	}
 }

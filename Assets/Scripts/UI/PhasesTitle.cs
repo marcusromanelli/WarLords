@@ -60,7 +60,7 @@ public class PhasesTitle : MonoBehaviour
 
 	public void setWinner(Player player)
 	{
-		if (!finish)
+		/*if (!finish)
 		{
 			if (player.GetCivilization() == gameController.GetLocalPlayer().GetCivilization())
 			{
@@ -72,7 +72,7 @@ public class PhasesTitle : MonoBehaviour
 			}
 			finish = true;
 			StartCoroutine(Fade());
-		}
+		}*/
 	}
 
 	public static void ChangePhase(Phase nextPhase)
@@ -120,7 +120,7 @@ public class PhasesTitle : MonoBehaviour
 
 	void updateImage(Phase next)
 	{
-		switch (next)
+		/*switch (next)
 		{
 			case Phase.Action:
 				var currentPlayer = gameController.GetCurrentPlayer();
@@ -143,6 +143,6 @@ public class PhasesTitle : MonoBehaviour
 			default:
 				image.sprite = null; ;
 				break;
-		}
+		}*/
 	}
 }

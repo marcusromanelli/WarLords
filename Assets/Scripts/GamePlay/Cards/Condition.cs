@@ -21,7 +21,7 @@ public class Condition : MonoBehaviour {
 
 	void CheckConditions()
 	{
-		if (!isChecking)
+		/*if (!isChecking)
 			return;
 
 		var playerHandNumber = player.GetCurrentHandNumber();
@@ -44,7 +44,7 @@ public class Condition : MonoBehaviour {
 				}
 				break;
 			case ConditionType.SendCardToManaPool:
-				if (/*playerHandNumber <= 0 || */playerManaPoolNumber == originalStoredValue + targetQuantity || playerManaPoolNumber >= GameConfiguration.maxNumberOfCardsInManaPool)
+				if (/*playerHandNumber <= 0 || *playerManaPoolNumber == originalStoredValue + targetQuantity || playerManaPoolNumber >= GameConfiguration.maxNumberOfCardsInManaPool)
 				{
 					player.removeCondition(this);
 					Destroy(this);
@@ -57,9 +57,9 @@ public class Condition : MonoBehaviour {
 				{
 					player.removeCondition(this);
 					Destroy(this);
-				}*/
+				}*
 				break;
-		}
+		}*/
 	}
 
 	public void setActive(){
@@ -72,7 +72,8 @@ public class Condition : MonoBehaviour {
 	}
 		
 	public string getDescription(){
-		var originalQuantityNumber = player.GetCurrentHandNumber() - originalStoredValue;
+		return "";
+		/*var originalQuantityNumber = player.GetCurrentHandNumber() - originalStoredValue;
 
 		switch (Type) {
 		default:
@@ -85,11 +86,11 @@ public class Condition : MonoBehaviour {
 			return "You have to send " + targetQuantity + " cards to the mana pool.";
 		case ConditionType.PickSpawnArea:
 			return "You have to pick an spawn area for a recently summoned hero.";
-		}
+		}*/
 	}
 
 	void Initialize(){
-		isChecking = true;
+		/*isChecking = true;
 		switch (Type) {
 		case ConditionType.DiscartCard:
 		case ConditionType.DrawCard:
@@ -98,6 +99,6 @@ public class Condition : MonoBehaviour {
 		case ConditionType.SendCardToManaPool:
 			originalStoredValue = player.GetCurrentManaPoolCount();
 			break;
-		}
+		}*/
 	}
 }

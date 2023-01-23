@@ -12,7 +12,7 @@ public class InteractiveDeck : StackableCards, ICardPlaceable
 
     protected void Awake()
 	{
-		localPlayerController.OnReleaseCard += OnReleaseCard;
+		//localPlayerController.OnReleaseCard += OnReleaseCard;
 	}
 	public void Setup(Player player)
     {

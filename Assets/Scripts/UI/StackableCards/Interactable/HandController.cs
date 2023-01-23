@@ -101,20 +101,20 @@ public abstract class HandController : MonoBehaviour{
 	}
 	public void SetCardClicked(CardObject card)
 	{
-		player.SetClickCard(card);
+		//player.SetClickCard(card);
 	}
 
 
 	public void SetCardBeingHeld(CardObject card)
 	{
-		if(card == null)
+		/*if(card == null)
         {
 			player.SetReleaseCard(cardBeingHeld);
 			return;
 		}
 
 		player.SetHoldCard(cardBeingHeld);
-		cardBeingHeld = card;
+		cardBeingHeld = card;*/
 	}
 
 	void updateRendererList(){
