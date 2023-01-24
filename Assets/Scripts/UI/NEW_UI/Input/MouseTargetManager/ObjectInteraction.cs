@@ -9,7 +9,7 @@ class ObjectInteraction
     public GameObject @object;
     public Dictionary<MouseEventType, HandleMouseAction>  Events;
     [ReadOnly] public bool IsHovering;
-    [ReadOnly] public bool IsClicking;
+    [ReadOnly] public bool IsCurrentlyClicking;
     [ReadOnly] public bool IsDragging;
 
     public ObjectInteraction(GameObject gameObject)
@@ -20,7 +20,7 @@ class ObjectInteraction
     }
     public void SetMousePosition(Vector3 mousePosition)
     {
-        if (!IsHovering || !IsClicking || IsDragging)
+        if (!IsHovering || !IsCurrentlyClicking || IsDragging)
             return;
 
         IsDragging = true;
@@ -42,29 +42,30 @@ class ObjectInteraction
         if(IsHovering)
             TriggerEventCallback(MouseEventType.Hover);
     }
-    public void SetClick(bool clicking)
+    public void SetClick(bool clickStatus)
     {
-        if (IsHovering)
-        {
-            if (IsClicking && !clicking)
-            {
-                TriggerEventCallback(MouseEventType.LeftMouseButtonUp);
+        var hasClicked = clickStatus == true;
+        var hasReleased = clickStatus == false;
 
-                if (IsDragging)
-                {
-                    IsDragging = false;
-                    TriggerEventCallback(MouseEventType.LeftMouseDragEnd);
-                }
-            }
-            else if (!IsClicking && clicking)
+        if (IsHovering)
+            if(!IsCurrentlyClicking && hasClicked)
             {
                 TriggerEventCallback(MouseEventType.LeftMouseButtonDown);
+            }else if(IsCurrentlyClicking && hasReleased)
+            {
+                TriggerEventCallback(MouseEventType.LeftMouseButtonUp);
             }
+
+
+        if(IsCurrentlyClicking && hasReleased && IsDragging)
+        {
+            IsDragging = false;
+            TriggerEventCallback(MouseEventType.LeftMouseDragEnd);
         }
 
-        IsClicking = clicking;
+        IsCurrentlyClicking = hasClicked;
 
-        if(IsClicking)
+        if(IsCurrentlyClicking)
             TriggerEventCallback(MouseEventType.LeftMouseButton);
     }
     public void Register(MouseEventType type, HandleMouseAction @event)
