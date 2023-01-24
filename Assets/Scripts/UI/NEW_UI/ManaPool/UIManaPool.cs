@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using NaughtyAttributes;
 
+public delegate int GetMaxAllowedMana();
 public delegate int GetMaxMana();
 public delegate int GetCurrentMana();
 
@@ -11,34 +13,41 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	[SerializeField] float distanceBetweenLines = 1f;
 	[SerializeField] GameObject manaOrbAsset;
 
-	private List<ManaOrb> manaPoolElements = new List<ManaOrb>();
+	private List<ManaOrb> manaOrbs = new List<ManaOrb>();
 	private GetMaxMana getMaxManaCallback;
 	private GetCurrentMana getCurrentManaCallback;
+	private GetMaxAllowedMana getMaxAllowedManaCallback;
 
 
 	void Awake()
 	{
-		manaPoolElements = new List<ManaOrb>();
+		manaOrbs = new List<ManaOrb>();
 	}
-	public void Setup(GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback)
+	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback)
     {
+		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxManaCallback = getMaxManaCallback;
 		this.getCurrentManaCallback = getCurrentManaCallback;
 	}
+	[Button("Force Refresh UI")]
 	public void UpdateUI()
 	{
-		while (manaPoolElements.Count < getMaxManaCallback())
+		while (manaOrbs.Count < getMaxManaCallback())
 		{
 			AddOrb();
 		}
 
 		int c = 0;
-		for (int i = manaPoolElements.Count; i > 0; i--)
+		for (int i = manaOrbs.Count; i > 0; i--)
 		{
+			var manaOrb = manaOrbs[i - 1];
+
+			manaOrb.transform.position = CalculateOrbPosition(i - 1);
+
 			if (getCurrentManaCallback() >= i)
-				manaPoolElements[i - 1].SetStatus(ManaStatus.Active);
+				manaOrbs[i - 1].SetStatus(ManaStatus.Active);
 			else
-				manaPoolElements[i - 1].SetStatus(ManaStatus.Used);
+				manaOrbs[i - 1].SetStatus(ManaStatus.Used);
 		}
 	}
 	public Vector3 GetTopCardPosition()
@@ -49,40 +58,38 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	{
 		return cardReferencePosition.transform.rotation;
 	}
-
 	float calculateRow(int number)
 	{
-		return (number % 6);
+		var maxMana = getMaxAllowedManaCallback();
+
+		return (number % (maxMana/2));
 	}
-	Vector3 calculateNextPosition()
+	Vector3 CalculateOrbPosition(int index)
 	{
-		int value = manaPoolElements.Count + 1;
-		if (value >= 12)
-			value = 12;
+		var maxMana = getMaxAllowedManaCallback();
+		int value = Mathf.Clamp(index, 0, maxMana);
 
 		Vector3 pos = transform.position;
+		var isLeftPosition = value < maxMana / 2;
 
-		if (value <= 6)
-		{
+		if (isLeftPosition)
 			pos.x -= distanceBetweenColumns;
-		}
 		else
-		{
 			pos.x += distanceBetweenColumns;
-		}
 
-		pos.z += transform.forward.z * calculateRow(value - 1) * distanceBetweenLines;
+		pos.z += transform.forward.z * calculateRow(value) * distanceBetweenLines;
+
 		return pos;
 	}
 	void AddOrb()
 	{
-		Vector3 next = calculateNextPosition();
 		var manaObj = Instantiate(manaOrbAsset, Vector3.zero, Quaternion.Euler(270, 0, 180));
-		
+		Vector3 next = CalculateOrbPosition(manaOrbs.Count + 1);
+
 		manaObj.transform.position = next;
 		var mana = manaObj.GetComponent<ManaOrb>();
 
-		manaPoolElements.Add(mana);
+		manaOrbs.Add(mana);
 		manaObj.transform.SetParent(transform, true);
 
 		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);

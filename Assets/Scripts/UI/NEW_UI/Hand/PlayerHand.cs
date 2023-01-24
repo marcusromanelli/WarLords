@@ -3,9 +3,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void HandleOnCardReleasedOnDeck(CardObject card);
+public delegate void HandleOnCardReleasedOnGraveyard(CardObject card);
+public delegate void HandleOnCardReleasedOnManaPool(CardObject card);
+
 [Serializable]
 public class PlayerHand
 {
+    public delegate void HandleOnCardReleasedOnGraveyard(CardObject card);
+    public event HandleOnCardReleasedOnGraveyard OnCardReleasedOnGraveyard;
+    public delegate void HandleOnCardReleasedOnManaPool(CardObject card);
+    public event HandleOnCardReleasedOnManaPool OnCardReleasedOnManaPool;
+
+
     [SerializeField] UIPlayerHand uiPlayerHand;
     [SerializeField, ReadOnly] List<Card> Cards;
     public int Count => Cards.Count;
@@ -17,7 +27,7 @@ public class PlayerHand
     }
     public void PreSetup(InputController inputController)
     {
-        uiPlayerHand.PreSetup(inputController);
+        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool);
     }
     public void Setup(Civilization civilization)
     {
@@ -39,6 +49,15 @@ public class PlayerHand
 
         for (int i = 0; i < cards.Length; i++)
             AddCard(cards[i]);
+    }
+    public void TurnCardIntoMana(CardObject cardObject)
+    {
+        if (Cards.Count <= 0)
+            return;
+
+        Cards.Remove(cardObject.CardData);
+
+        uiPlayerHand.TurnCardIntoMana(cardObject);
     }
     public Card DiscardCard()
     {
@@ -78,5 +97,21 @@ public class PlayerHand
     public System.Collections.IEnumerator IsUIUpdating()
     {
         yield return uiPlayerHand.IsResolving();
+    }
+    public CardObject GetHoldingCard()
+    {
+        return uiPlayerHand.CurrentHoldingCard;
+    }
+    public void CancelHandToCardInteraction()
+    {
+        uiPlayerHand.CancelHandToCardInteraction();
+    }
+    void onCardReleasedOnGraveyard(CardObject cardObject)
+    {
+        OnCardReleasedOnGraveyard?.Invoke(cardObject);
+    }
+    void onCardReleasedOnManaPool(CardObject cardObject)
+    {
+        OnCardReleasedOnManaPool?.Invoke(cardObject);
     }
 }

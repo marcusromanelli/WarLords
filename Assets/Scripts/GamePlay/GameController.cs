@@ -51,8 +51,8 @@ public class GameController : Singleton<GameController>
 
 	IEnumerator StartupPlayers()
 	{
-		//LocalPlayer.Setup();
-		//RemotePlayer.Setup();
+		LocalPlayer.SetupConditions();
+		RemotePlayer.SetupConditions();
 
 		LocalPlayer.SetupPlayDeck();
 		RemotePlayer.SetupPlayDeck();
@@ -423,16 +423,15 @@ public class GameController : Singleton<GameController>
 
 	string GetPlayerConditionPrint(Player player)
     {
-		return "";
-		/*string final = "";
+		string final = "";
 
 		if (player.HasConditions())
 		{
-			final += player.GetPlayerType().ToString();
+			final += player.name;
 
 			final += "\n";
 
-			var conditions = player.GetConditionList();
+			var conditions = player.GetConditions();
 
 			foreach (Condition cond in conditions)
 			{
@@ -441,7 +440,7 @@ public class GameController : Singleton<GameController>
 		}
 		final += "\n\n";
 
-		return final;*/
+		return final;
 	}
 
 	string GetPlayersConditionsPrint()
@@ -451,7 +450,7 @@ public class GameController : Singleton<GameController>
 
 	int GetPlayerConditionsNumber(Player player)
 	{
-		return 0;// player.GetConditionList().Count;
+		return player.GetConditions().Count;
 	}
 
 	int GetPlayersConditionsNumber()

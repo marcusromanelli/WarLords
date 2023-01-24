@@ -7,6 +7,7 @@ public class Condition : MonoBehaviour {
 	public ConditionType Type;
 	public bool isChecking;
 	public float targetQuantity;
+	public float usedStoredValue;
 	public float originalStoredValue;
 
 	void Awake () {
@@ -72,8 +73,7 @@ public class Condition : MonoBehaviour {
 	}
 		
 	public string getDescription(){
-		return "";
-		/*var originalQuantityNumber = player.GetCurrentHandNumber() - originalStoredValue;
+		var originalQuantityNumber = usedStoredValue - originalStoredValue;
 
 		switch (Type) {
 		default:
@@ -86,7 +86,7 @@ public class Condition : MonoBehaviour {
 			return "You have to send " + targetQuantity + " cards to the mana pool.";
 		case ConditionType.PickSpawnArea:
 			return "You have to pick an spawn area for a recently summoned hero.";
-		}*/
+		}
 	}
 
 	void Initialize(){

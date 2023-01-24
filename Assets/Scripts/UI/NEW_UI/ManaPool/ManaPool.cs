@@ -6,15 +6,16 @@ using System;
 public class ManaPool
 {
 	[SerializeField] UIManaPool uiManaPool;
-	[SerializeField, ReadOnly] int maxManaAllowed = 12;
+	[SerializeField, ReadOnly] int maxAllowedMana = 12;
 	[SerializeField, ReadOnly] int currentMana;
 	[SerializeField, ReadOnly] int maxMana;
 
 	public int MaxMana => maxMana;
 	public int CurrentMana => currentMana;
-	void Start()
+
+	public void Setup()
     {
-		uiManaPool.Setup(GetMaxMana, GetCurrentMana);
+		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana);
     }
 	public void IncreaseMaxMana(int number = 1)
     {
@@ -55,7 +56,7 @@ public class ManaPool
 	}
 	public bool HasManaSpace()
 	{
-		return maxMana < maxManaAllowed;
+		return maxMana < maxAllowedMana;
 	}
 	public bool HasAvailableMana(int value)
 	{
@@ -69,9 +70,13 @@ public class ManaPool
 	{
 		return MaxMana;
 	}
+	public int GetMaxAllowedMana()
+	{
+		return maxAllowedMana;
+	}
 	void SetMaxManaValue(int newValue)
 	{
-		maxMana = Mathf.Clamp(newValue, 0, maxManaAllowed);
+		maxMana = Mathf.Clamp(newValue, 0, maxAllowedMana);
 	}
 	void SetCurrentManaValue(int newValue)
 	{

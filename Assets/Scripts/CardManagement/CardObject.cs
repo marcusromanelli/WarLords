@@ -13,7 +13,9 @@ public class CardObject : MonoBehaviour, IPoolable
 {
 	[SerializeField] float cardMovementSpeed = 20;
 	[SerializeField] float cardRotationSpeed = 20;
-	[SerializeField] GameObject CloseButton;
+	[SerializeField] ParticleSystem fadeIntoManaParticle;
+
+	public Card CardData => originalCard;
 	/*Card originalCardData;
 	Card currentCardData;
 	bool isBeingHeld;
@@ -31,11 +33,14 @@ public class CardObject : MonoBehaviour, IPoolable
 	public bool IsInPosition => isInPosition;
 
 	private Card originalCard;
-	private GameObject currentActiveCardCover;
+	private GameObject currentActiveFrontCover;
+	private GameObject currentActiveBackCover;
 	private Nullable<CardPositionData> targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = true;
 	private OnClickCloseButton closeCallback;
+	private bool isBecamingMana = false;
+	private Action onManaParticleEnd;
 	/*Vector3 offset;
 	Vector3 originalScale;
 	Vector3 lastKnownMousePosition;
@@ -76,53 +81,21 @@ public class CardObject : MonoBehaviour, IPoolable
     {
 		closeCallback?.Invoke();
 	}
-
-	
-
-	void MoveToTargetPosition()
-    {
-		if (getPositionAndRotationCallback != null)
-        {
-			GoToDynamicTargetPosition();
-        }else
-			GoToPresetTargetPosition();
-	}
-	void GoToDynamicTargetPosition()
+	public void SetupCover(Civilization civilization)
 	{
-		var targetPosition = getPositionAndRotationCallback();
-
-		transform.position = targetPosition.Position;
-		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPosition.Rotation, Time.deltaTime * cardRotationSpeed);
-	}
-	void GoToPresetTargetPosition()
-    {
-		if (isInPosition)
-			return;
-
-		transform.position = Vector3.MoveTowards(transform.position, targetPositionAndRotation.Value.Position, Time.deltaTime * cardMovementSpeed);
-		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPositionAndRotation.Value.Rotation, Time.deltaTime * cardRotationSpeed);
-
-		if (transform.position == targetPositionAndRotation.Value.Position && transform.localRotation == targetPositionAndRotation.Value.Rotation)
-			isInPosition = true;
-	}
-	void Update()
-	{
-		MoveToTargetPosition();
-	}
-
-    public void SetupCover(Civilization civilization)
-    {
 		var cardCover = cardCoversPerCivilization[(int)civilization];
 
 		cardCover.SetActive(true);
 
-		currentActiveCardCover = cardCover;
+		currentActiveBackCover = cardCover;
 	}
-
-    public void Pool()
-    {
-		currentActiveCardCover.SetActive(false);
+	public void Pool()
+	{
+		currentActiveBackCover?.SetActive(false);
+		currentActiveFrontCover?.SetActive(false);
 		closeCallback = null;
+		isBecamingMana = false;
+		isInPosition = true;
 	}
 	public void Setup(Card card)
 	{
@@ -140,9 +113,68 @@ public class CardObject : MonoBehaviour, IPoolable
 			return;
 		}
 
-		this.name = GetResourceName();
+		name = GetResourceName();
 		cardObj.transform.localPosition = Vector3.zero;
 		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+		currentActiveFrontCover = cardObj;
+	}
+	public void BecameMana(Action onFinishesAnimation)
+	{
+		currentActiveFrontCover.SetActive(false);
+		currentActiveBackCover.SetActive(false);
+		fadeIntoManaParticle.Play();
+		onManaParticleEnd = onFinishesAnimation;
+	}
+
+
+
+	void MoveToTargetPosition()
+    {
+		if (isBecamingMana)
+			return;
+
+		if (getPositionAndRotationCallback != null) {
+			GoToDynamicTargetPosition();
+			return;
+        }
+		if (!isInPosition &&targetPositionAndRotation != null)
+		{
+			GoToPresetTargetPosition();
+		}
+	}
+	void GoToDynamicTargetPosition()
+	{
+		var targetPosition = getPositionAndRotationCallback();
+
+		transform.position = targetPosition.Position;
+		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPosition.Rotation, Time.deltaTime * cardRotationSpeed);
+	}
+	void GoToPresetTargetPosition()
+    {
+		transform.position = Vector3.MoveTowards(transform.position, targetPositionAndRotation.Value.Position, Time.deltaTime * cardMovementSpeed);
+		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPositionAndRotation.Value.Rotation, Time.deltaTime * cardRotationSpeed);
+
+		if (transform.position == targetPositionAndRotation.Value.Position && transform.localRotation == targetPositionAndRotation.Value.Rotation)
+			isInPosition = true;
+	}
+	void Update()
+	{
+		MoveToTargetPosition();
+
+		AwaitManaParticleEnd();
+	}
+	void AwaitManaParticleEnd()
+    {
+		if (!isBecamingMana)
+			return;
+
+		if (fadeIntoManaParticle.isPlaying)
+			return;
+
+		Debug.Log("Finished Playing");
+		isBecamingMana = false;
+		onManaParticleEnd();
 	}
 	string GetCardResourcePath()
 	{

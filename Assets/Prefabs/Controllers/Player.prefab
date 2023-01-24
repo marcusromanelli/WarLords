@@ -672,7 +672,7 @@ MonoBehaviour:
     NumberOfShuffles: 1
   ManaPool:
     uiManaPool: {fileID: 5353303773012978506}
-    maxManaAllowed: 12
+    maxAllowedMana: 12
     currentMana: 0
     maxMana: 0
   Hand:
@@ -981,8 +981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardReferencePosition: {fileID: 6634223155522149010}
-  distanceBetweenColumns: 1
-  distanceBetweenLines: 1
+  distanceBetweenColumns: 0.18
+  distanceBetweenLines: 0.29
   manaOrbAsset: {fileID: 1000011447547414, guid: c3c0a5696d608524796375b662bcf708,
     type: 3}
 --- !u!1 &4024835803019479762

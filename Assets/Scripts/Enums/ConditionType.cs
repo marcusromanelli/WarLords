@@ -1,3 +1,3 @@
 ﻿public enum ConditionType{
-	DiscartCard, DrawCard, SendCardToManaPool, PickSpawnArea
+	None, DiscartCard, DrawCard, SendCardToManaPool, PickSpawnArea
 }

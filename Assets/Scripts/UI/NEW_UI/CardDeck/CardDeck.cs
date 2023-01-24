@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +23,8 @@ public class CardDeck<T>
             return;
 
         Cards.Push(card);
+
+        UpdateUI();
     }
     public void AddCards(T[] cards)
     {
@@ -34,8 +35,6 @@ public class CardDeck<T>
             var card = cards[i];
             Cards.Push(card);
         }
-
-        UpdateUI();
     }
     public T DrawCard()
     {
