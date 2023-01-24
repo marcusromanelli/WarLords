@@ -125,10 +125,14 @@ public class Player : MonoBehaviour
 			Conditions[0].setActive();
 		}*/
 	}
-	public bool CanCreateMana()
-    {
+	public bool CanUseHability()
+	{
 		return infinityHabilitiesPerTurn || (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(ConditionType.SendCardToManaPool));
-    }
+	}
+	public bool CanGenerateMana()
+	{
+		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(ConditionType.SendCardToManaPool);
+	}
 	void DoDrawCards(int number)
 	{
 		Debug.Log(GetFormatedName() + " drawed " + number + " cards");
@@ -150,11 +154,15 @@ public class Player : MonoBehaviour
 
 	void OnCardReleasedOnManaPool(CardObject card)
 	{
-        if (!CanCreateMana())
-        {
+		UseManaHability();
+	}
+	void UseManaHability()
+    {
+		if (!CanGenerateMana())
+		{
 			Debug.Log("You cannot create mana right now.");
 			return;
-        }
+		}
 
 		CreateMana();
 	}
@@ -175,14 +183,34 @@ public class Player : MonoBehaviour
 		var currentCard = Hand.GetHoldingCard();
 		var currentCardData = currentCard.CardData;
 		Hand.TurnCardIntoMana(currentCard);
+		Graveyard.AddCard(currentCardData);
 
 		ManaPool.IncreaseMaxMana();
-
-		Graveyard.AddCard(currentCardData);
 	}
 	void OnCardReleasedOnGraveyard(CardObject card)
 	{
-		throw new NotImplementedException();
+		UseDiscardOneToDrawTwohability();
+	}
+	void UseDiscardOneToDrawTwohability()
+    {
+		if (!CanUseHability())
+		{
+			Debug.Log("You cannot use this hability right now.");
+			return;
+		}
+
+		HasUsedHability = true;
+
+		DiscardCurrentHoldingCard();
+	}
+	void DiscardCurrentHoldingCard()
+    {
+		var currentCard = Hand.GetHoldingCard();
+		var currentCardData = currentCard.CardData;
+		Hand.DiscardCard(currentCard);
+		Graveyard.AddCard(currentCardData);
+
+		TryDrawCards(2);
 	}
 	public List<Condition> GetConditions()
 	{

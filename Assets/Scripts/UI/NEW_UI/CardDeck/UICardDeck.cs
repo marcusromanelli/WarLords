@@ -6,6 +6,7 @@ using UnityEngine;
 public class UICardDeck : MonoBehaviour, ICardPlaceable
 {    enum DeckActionType { AddCard, DrawCard }
 
+    [SerializeField] TextMesh cardCounter;
     [SerializeField] Transform cardReferencePosition;
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;
@@ -39,6 +40,13 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         {
             yield return null;
         }
+    }
+    void UpdateCardCount()
+    {
+        if (cardCounter == null)
+            return;
+
+        cardCounter.text = deckObjects.Count.ToString();
     }
 
     void AddCards(int count)
@@ -91,6 +99,8 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         cardObject.transform.position = GetTopCardPosition();
 
         deckObjects.Add(cardObject);
+
+        UpdateCardCount();
     }
     void RemoveCardAction()
     {
@@ -103,6 +113,8 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         CardFactory.AddCardToPool(card);
 
         deckObjects.RemoveAt(lastPosition);
+
+        UpdateCardCount();
     }
     public Vector3 GetTopCardPosition()
     {

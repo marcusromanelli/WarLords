@@ -44,6 +44,14 @@ public class UIPlayerHand : MonoBehaviour
     {
         this.civilization = civilization;
     }
+    public void Discard(CardObject cardObject)
+    {
+        CancelHandToCardInteraction();
+
+        UnregisterCardCallback(cardObject.gameObject);
+
+        RemoveCard(cardObject);
+    }
     public void TurnCardIntoMana(CardObject cardObject)
     {
         CancelHandToCardInteraction();

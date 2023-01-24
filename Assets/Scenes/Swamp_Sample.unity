@@ -1202,6 +1202,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 286360841}
   m_Mesh: {fileID: 4300000, guid: ea782ccb689e7e04e9834261e9c83e95, type: 3}
+--- !u!102 &294716439 stripped
+TextMesh:
+  m_CorrespondingSourceObject: {fileID: 102000010650052396, guid: 4c6cb34e3527ec14f9208abf976980ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 6851824715203774338}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &297159764
 GameObject:
   m_ObjectHideFlags: 0
@@ -15134,6 +15140,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427806187}
   m_Mesh: {fileID: 4300000, guid: 4f71198e7dec1124692745a776121f59, type: 3}
+--- !u!114 &1433792545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6960246458939573746, guid: 4c6cb34e3527ec14f9208abf976980ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 6851824715203774338}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1439938881
 GameObject:
   m_ObjectHideFlags: 0
@@ -17659,11 +17677,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: Graveyard.uiCardDeck
+      value: 
+      objectReference: {fileID: 1433792545}
+    - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: infinityHabilitiesPerTurn
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114000012439921640, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: inputController
       value: 
       objectReference: {fileID: 1218760873}
+    - target: {fileID: 6128633028063076949, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: cardCounter
+      value: 
+      objectReference: {fileID: 294716439}
     - target: {fileID: 6359655526031735865, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: IsInteractable

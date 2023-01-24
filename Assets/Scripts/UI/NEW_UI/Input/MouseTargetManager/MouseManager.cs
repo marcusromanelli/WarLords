@@ -36,9 +36,15 @@ public class MouseManager
     }
     void CheckClick()
     {
-        foreach (var obj in objectsToWatch)
+        try
         {
-            obj.Value.SetClick(Input.GetMouseButton(0));
+            foreach (var obj in objectsToWatch)
+            {
+                obj.Value.SetClick(Input.GetMouseButton(0));
+            }
+        }catch(InvalidOperationException)
+        {
+            //Thera was a change in watchable objects. This error is safe to happen
         }
     }
     void UpdateMousePosition()

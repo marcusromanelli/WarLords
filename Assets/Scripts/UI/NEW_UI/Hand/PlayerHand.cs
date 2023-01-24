@@ -50,6 +50,15 @@ public class PlayerHand
         for (int i = 0; i < cards.Length; i++)
             AddCard(cards[i]);
     }
+    public void DiscardCard(CardObject cardObject)
+    {
+        if (Cards.Count <= 0)
+            return;
+
+        Cards.Remove(cardObject.CardData);
+
+        uiPlayerHand.Discard(cardObject);
+    }
     public void TurnCardIntoMana(CardObject cardObject)
     {
         if (Cards.Count <= 0)
