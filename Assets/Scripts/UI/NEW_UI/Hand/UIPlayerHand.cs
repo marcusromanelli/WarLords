@@ -18,7 +18,8 @@ public class UIPlayerHand : MonoBehaviour
 
     [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData visualizeCardPositionOffset;
 	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
-    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] Vector3 DeckRotation;
+    [BoxGroup("Presets"), SerializeField] Vector3 HandRotation;
+    //[BoxGroup("Presets"), SerializeField] Vector3 DeckRotation;
 
     List<CardObject> cardList = new List<CardObject>();
     private bool isBusy;
@@ -29,6 +30,7 @@ public class UIPlayerHand : MonoBehaviour
     private bool IsHoldingCard => currentTargetCard != null;
     private bool IsCardAwaitingRelease;
     private bool IsDraggingCard;
+    private bool IsNOTInteractable => !IsInteractable;
     HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard;
     HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool;
 
@@ -68,12 +70,12 @@ public class UIPlayerHand : MonoBehaviour
 
         CardFactory.AddCardToPool(cardObject);
 
-        StartCoroutine(RefreshHandCardsPositions());
+        RefreshCardPositions();
     }
     public void AddCard(Card card)
     {
-        var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition());
-        cardObj.SetPositionAndRotation(CardPositionData.Create(uiCardDeck.GetTopCardPosition(), Quaternion.Euler(DeckRotation)));
+        var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition(), !IsInteractable);
+        cardObj.SetPositionAndRotation(CardPositionData.Create(uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference()));
 
         cardList.Add(cardObj);
 
@@ -81,7 +83,7 @@ public class UIPlayerHand : MonoBehaviour
 
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 
-        StartCoroutine(RefreshHandCardsPositions());
+        RefreshCardPositions();
     }
     public void AddCards(Card[] cards)
     {
@@ -123,7 +125,12 @@ public class UIPlayerHand : MonoBehaviour
             inputController.UnregisterTargetCallback(MouseEventType.LeftMouseDragEnd, gameObject, OnDragCardEnd);
         }
     }
-    IEnumerator RefreshHandCardsPositions()
+    [Button("Force Card Positions Refresh")]
+    void RefreshCardPositions()
+    {
+        StartCoroutine(DoRefreshHandCardsPositions());
+    }
+    IEnumerator DoRefreshHandCardsPositions()
     {
         var numberOfCards = cardList.Count;
 
@@ -352,7 +359,8 @@ public class UIPlayerHand : MonoBehaviour
         var rotationValue = curveRange.Evaluate(normalizedPosition);
         rotationValue *= 10;//Curve is stored in X/10 value
 
-        var rotation = Quaternion.Euler(-90, 180, rotationValue);
+
+        var rotation = Quaternion.Euler(HandRotation.x, HandRotation.y, rotationValue);
 
         return CardPositionData.Create(position, rotation);
     }

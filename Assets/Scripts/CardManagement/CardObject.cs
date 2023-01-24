@@ -97,25 +97,38 @@ public class CardObject : MonoBehaviour, IPoolable
 		isBecamingMana = false;
 		isInPosition = true;
 	}
-	public void Setup(Card card)
+	public void Setup(Card card, bool hideInfo)
 	{
 		originalCard = card;
 
-		LoadCardData();
+		LoadCardData(hideInfo);
 	}
-	private void LoadCardData()
+	private void LoadCardData(bool hideInfo)
 	{
-		GameObject cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
+		GameObject cardObj;
 
-		if (cardObj == null)
+		//Turn the cover 180 degrees to show on the front and on the back
+		var rotation = hideInfo ? Quaternion.Euler(Vector3.up * 180f) : Quaternion.identity;
+
+		if (!hideInfo)
 		{
-			Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
-			return;
+			cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
+
+			if (cardObj == null)
+			{
+				Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
+				return;
+			}
+
+			name = GetResourceName();
+		}
+        else
+        {
+			cardObj = ElementFactory.CreateGameObject(currentActiveBackCover, transform);
 		}
 
-		name = GetResourceName();
+		cardObj.transform.localRotation = rotation;
 		cardObj.transform.localPosition = Vector3.zero;
-		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
 		currentActiveFrontCover = cardObj;
 	}

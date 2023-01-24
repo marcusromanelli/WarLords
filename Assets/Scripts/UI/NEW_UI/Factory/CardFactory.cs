@@ -7,15 +7,15 @@ public class CardFactory : Singleton<CardFactory>
 
     Stack<CardObject> cardPool = new Stack<CardObject>();
 
-    public static CardObject CreateCard(Card card, Transform transform)
+    public static CardObject CreateCard(Card card, Transform transform, bool hideCardInfo)
     {
-        return CreateCard(card, transform, Vector3.zero);
+        return CreateCard(card, transform, Vector3.zero, hideCardInfo);
     }
-    public static CardObject CreateCard(Card card, Transform transform, Vector3 position)
+    public static CardObject CreateCard(Card card, Transform transform, Vector3 position, bool hideCardInfo)
     {
         var cardObj = CreateEmptyCard(card.civilization, transform, position);
 
-        cardObj.Setup(card);
+        cardObj.Setup(card, hideCardInfo);
 
         return cardObj;
     }

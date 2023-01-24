@@ -286,6 +286,16 @@ PrefabInstance:
       objectReference: {fileID: 3426097218623002091}
     - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
+      propertyPath: HandRotation.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: HandRotation.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
       propertyPath: uiGraveyardDeck
       value: 
       objectReference: {fileID: 3642963771313186307}
@@ -561,7 +571,7 @@ PrefabInstance:
     - target: {fileID: 3129163404921785551, guid: e5c03f4075b67fd44874ccda68a3b8b8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2
+      value: -3.3
       objectReference: {fileID: 0}
     - target: {fileID: 3129163404921785551, guid: e5c03f4075b67fd44874ccda68a3b8b8,
         type: 3}

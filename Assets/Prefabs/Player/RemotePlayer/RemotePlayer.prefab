@@ -216,7 +216,7 @@ PrefabInstance:
     - target: {fileID: 4541446118807110463, guid: 6583fd8c2967b1843ac4b0a2f200a8a8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.977
+      value: 4.427
       objectReference: {fileID: 0}
     - target: {fileID: 4541446118807110463, guid: 6583fd8c2967b1843ac4b0a2f200a8a8,
         type: 3}
@@ -455,6 +455,11 @@ PrefabInstance:
       propertyPath: uiManaPool
       value: 
       objectReference: {fileID: 444793233157916697}
+    - target: {fileID: 8636483163761718569, guid: a9bc8887acecfe44fa3850dcc400b706,
+        type: 3}
+      propertyPath: HandRotation.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 8636483163761718569, guid: a9bc8887acecfe44fa3850dcc400b706,
         type: 3}
       propertyPath: uiGraveyardDeck

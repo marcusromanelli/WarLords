@@ -27,6 +27,11 @@ PrefabInstance:
       propertyPath: uiGraveyardDeck
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5640023540144885975, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.736
+      objectReference: {fileID: 0}
     - target: {fileID: 9043610634752290689, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
       propertyPath: m_Name

@@ -72,7 +72,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2924117919731216067}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -1.6465902, y: -0.029215466, z: 0.9555176}
+  m_LocalPosition: {x: -1.769, y: -0.029215466, z: 0.986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 428274476439735279}
@@ -274,7 +274,7 @@ MonoBehaviour:
   draggingCardRotationOffset:
     Position: {x: 0, y: -50, z: 10}
     EulerRotation: {x: 270, y: 180, z: 0}
-  DeckRotation: {x: 90, y: 0, z: 0}
+  HandRotation: {x: 0, y: 0, z: 0}
 --- !u!1 &9044026799581514665
 GameObject:
   m_ObjectHideFlags: 0

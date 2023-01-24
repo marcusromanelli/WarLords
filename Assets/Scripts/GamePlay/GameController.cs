@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 
 public class GameController : Singleton<GameController>
 {
@@ -9,12 +10,13 @@ public class GameController : Singleton<GameController>
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
 	[SerializeField] Player RemotePlayer;
+	[SerializeField, ReadOnly] Player currentPlayer;
+	[SerializeField, ReadOnly] Phase currentPhase;
 
 
 	protected List<MacroComponent> Macros;
 
-	public Player currentPlayer;
-	public Phase currentPhase;
+
 	public static Phase Phase
     {
         get
@@ -30,9 +32,6 @@ public class GameController : Singleton<GameController>
 		}
 	}
 	public static bool isExecutingMacro;
-
-
-	private bool isChangingPhase;
 
 	enum Actions { Move, Attack }
 
@@ -223,7 +222,7 @@ public class GameController : Singleton<GameController>
 			return;
 
 		currentPhase = phase;
-		StartCoroutine(startChangingPhases());
+		StartCoroutine(StartChangePhase());
 	}
 
 	public Player GetCurrentPlayer()
@@ -234,9 +233,8 @@ public class GameController : Singleton<GameController>
 		return null;
 	}
 
-	IEnumerator startChangingPhases()
+	IEnumerator StartChangePhase()
 	{
-		isChangingPhase = true;
 		PhasesTitle.ChangePhase(currentPhase);
 
 		while (PhasesTitle.isFading)
@@ -245,11 +243,11 @@ public class GameController : Singleton<GameController>
 		}
 
 		Debug.LogWarning("New Phase: " + currentPhase.ToString());
-		isChangingPhase = false;
-		finishChangingPhases();
+
+		EndPhaseChange();
 	}
 
-	void finishChangingPhases()
+	void EndPhaseChange()
 	{
 		switch (currentPhase)
 		{
