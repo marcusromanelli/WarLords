@@ -51,20 +51,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   civilization: 0
   PlayDeck:
-    uiCardDeck: {fileID: 0}
+    uiCardDeck: {fileID: 3365073403211521110}
     NumberOfShuffles: 1
   Graveyard:
-    uiCardDeck: {fileID: 0}
+    uiCardDeck: {fileID: 1957271906497805297}
     NumberOfShuffles: 1
   ManaPool:
-    uiManaPool: {fileID: 0}
+    uiManaPool: {fileID: 444793233157916697}
     maxAllowedMana: 12
     currentMana: 0
     maxMana: 0
   Hand:
-    uiPlayerHand: {fileID: 0}
+    uiPlayerHand: {fileID: 2105107900512989623}
     Cards: []
-  conditionManager: {fileID: 0}
+  conditionManager: {fileID: 8916673347036682317}
   infinityHabilitiesPerTurn: 0
 --- !u!114 &8916673347036682317
 MonoBehaviour:
@@ -468,6 +468,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7704581262850737310}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2105107900512989623 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8636483163761718569, guid: a9bc8887acecfe44fa3850dcc400b706,
+    type: 3}
+  m_PrefabInstance: {fileID: 7704581262850737310}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29191bff9dc67354ca760ff01fc23065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8877358527859021715
 PrefabInstance:
   m_ObjectHideFlags: 0
