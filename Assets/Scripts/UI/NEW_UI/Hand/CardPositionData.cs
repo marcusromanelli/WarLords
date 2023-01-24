@@ -2,23 +2,23 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public struct CardObjectData
+public struct CardPositionData
 {
     public Vector3 Position;
     public Quaternion Rotation => Quaternion.Euler(EulerRotation);
     public Vector3 EulerRotation;
 
-    public static CardObjectData Create(Vector3 position, Quaternion rotation)
+    public static CardPositionData Create(Vector3 position, Quaternion rotation)
     {
-        CardObjectData cardObjectData = new CardObjectData();
+        CardPositionData cardObjectData = new CardPositionData();
         cardObjectData.Position = position;
         cardObjectData.EulerRotation = rotation.eulerAngles;
 
         return cardObjectData;
     }
-    public static CardObjectData Create(Vector3 position, Vector3 rotation)
+    public static CardPositionData Create(Vector3 position, Vector3 rotation)
     {
-        CardObjectData cardObjectData = new CardObjectData();
+        CardPositionData cardObjectData = new CardPositionData();
         cardObjectData.Position = position;
         cardObjectData.EulerRotation = rotation;
 

@@ -8,7 +8,7 @@ public enum ManaStatus
 }
 
 public delegate void OnClickCloseButton();
-public delegate CardObjectData OnGetPositionAndRotation();
+public delegate CardPositionData OnGetPositionAndRotation();
 public class CardObject : MonoBehaviour, IPoolable
 {
 	[SerializeField] float cardMovementSpeed = 20;
@@ -32,7 +32,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	private Card originalCard;
 	private GameObject currentActiveCardCover;
-	private Nullable<CardObjectData> targetPositionAndRotation;
+	private Nullable<CardPositionData> targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = true;
 	private OnClickCloseButton closeCallback;
@@ -51,7 +51,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	Battlefield battlefield;*/
 	//HandController handController;
 
-	public void SetPositionAndRotation(CardObjectData cardData)
+	public void SetPositionAndRotation(CardPositionData cardData)
 	{
 		targetPositionAndRotation = cardData;
 

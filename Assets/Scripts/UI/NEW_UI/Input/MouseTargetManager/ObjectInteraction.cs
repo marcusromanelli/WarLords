@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-class ObjectLayer
+class ObjectInteraction
 {
     public GameObject @object;
     public Dictionary<MouseEventType, HandleMouseAction>  Events;
@@ -13,7 +13,7 @@ class ObjectLayer
     [ReadOnly] public bool IsDragging;
     [ReadOnly] public Vector3 lastMousePosition;
 
-    public ObjectLayer(GameObject gameObject)
+    public ObjectInteraction(GameObject gameObject)
     {
         @object = gameObject;
         Events = new Dictionary<MouseEventType, HandleMouseAction>();
@@ -21,25 +21,11 @@ class ObjectLayer
     }
     public void SetMousePosition(Vector3 mousePosition)
     {
-        //When arrives here, we already know that the mouse move the minimum amount, so we just do the necessary logic
+        if (!IsHovering || !IsClicking || IsDragging)
+            return;
 
-        if (IsHovering && IsClicking)
-        {
-            if (!IsDragging)
-            {
-                IsDragging = true;
-                TriggerEventCallback(MouseEventType.LeftMouseDragStart);
-            }
-        }
-        else
-        {
-            if (IsDragging)
-            {
-                IsDragging = false;
-                TriggerEventCallback(MouseEventType.LeftMouseDragEnd);
-            }
-        }
-
+        IsDragging = true;
+        TriggerEventCallback(MouseEventType.LeftMouseDragStart);
     }
     public void SetHovering(bool hovering)
     {
@@ -53,22 +39,25 @@ class ObjectLayer
         }
 
         IsHovering = hovering;
-
-        if (!IsHovering)
-            IsClicking = false;
     }
     public void SetClick(bool clicking)
     {
-        if (!IsHovering)
-            return;
+        if (IsHovering)
+        {
+            if (IsClicking && !clicking)
+            {
+                TriggerEventCallback(MouseEventType.LeftMouseButtonUp);
 
-        if (IsClicking && !clicking)
-        {
-            TriggerEventCallback(MouseEventType.LeftMouseButtonUp);
-        }
-        else if (!IsClicking && clicking)
-        {
-            TriggerEventCallback(MouseEventType.LeftMouseButtonDown);
+                if (IsDragging)
+                {
+                    IsDragging = false;
+                    TriggerEventCallback(MouseEventType.LeftMouseDragEnd);
+                }
+            }
+            else if (!IsClicking && clicking)
+            {
+                TriggerEventCallback(MouseEventType.LeftMouseButtonDown);
+            }
         }
 
         IsClicking = clicking;

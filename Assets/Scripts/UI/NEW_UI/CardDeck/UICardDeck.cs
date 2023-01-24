@@ -3,14 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UIDeckType
-{
-    MainDeck, ManaPool, Graveyard
-}
 public class UICardDeck : MonoBehaviour, ICardPlaceable
 {    enum DeckActionType { AddCard, DrawCard }
 
-    [SerializeField] UIDeckType type;
     [SerializeField] Transform cardReferencePosition;
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;

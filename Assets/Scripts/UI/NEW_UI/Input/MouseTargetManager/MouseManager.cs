@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class MouseManager
 {
-    Dictionary<GameObject, ObjectLayer> objectsToWatch;
+    Dictionary<GameObject, ObjectInteraction> objectsToWatch;
 
     [SerializeField] float minMouseMovement = 1f;
 #if UNITY_EDITOR
@@ -21,7 +21,7 @@ public class MouseManager
 
     public MouseManager()
     {
-        objectsToWatch = new Dictionary<GameObject, ObjectLayer>();
+        objectsToWatch = new Dictionary<GameObject, ObjectInteraction>();
     }
 
     public void CheckHoverage()
@@ -138,7 +138,7 @@ public class MouseManager
     {
         if (!objectsToWatch.ContainsKey(gameObject))
         {
-            objectsToWatch.Add(gameObject, new ObjectLayer(gameObject));
+            objectsToWatch.Add(gameObject, new ObjectInteraction(gameObject));
             UpdateLayers();
         }
 

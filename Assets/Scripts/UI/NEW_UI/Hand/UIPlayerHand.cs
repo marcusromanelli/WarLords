@@ -11,11 +11,13 @@ public class UIPlayerHand : MonoBehaviour
     [SerializeField] bool IsInteractable = true;
     [SerializeField] float awaitTimeBetweenDraws = 0f;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiCardDeck;
+    [SerializeField, ShowIf("IsInteractable")] UICardDeck uiGraveyardDeck;
+    [SerializeField, ShowIf("IsInteractable")] UIManaPool uiManaPool;
     [SerializeField, ShowIf("IsInteractable")] BezierCurve bezierCurve;
 	[SerializeField, ShowIf("IsInteractable")] AnimationCurve curveRange;
 
-    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardObjectData visualizeCardPositionOffset;
-	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardObjectData draggingCardRotationOffset;
+    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData visualizeCardPositionOffset;
+	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
     [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] Vector3 DeckRotation;
 
     List<CardObject> cardList = new List<CardObject>();
@@ -24,13 +26,13 @@ public class UIPlayerHand : MonoBehaviour
 
     private InputController inputController;
     private CardObject currentTargetCard;
-    private CardObjectData storedOriginalCardObjectData;
-    private bool isDraggingObject;
-
+    private bool IsDraggingCard;
 
     public void PreSetup(InputController inputController)
     {
         this.inputController = inputController;
+
+        RegisterDefaultCallbacks();
     }
     public void Setup(Civilization civilization)
     {
@@ -39,16 +41,11 @@ public class UIPlayerHand : MonoBehaviour
     public void AddCard(Card card)
     {
         var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition());
-        cardObj.SetPositionAndRotation(CardObjectData.Create(uiCardDeck.GetTopCardPosition(), Quaternion.Euler(DeckRotation)));
+        cardObj.SetPositionAndRotation(CardPositionData.Create(uiCardDeck.GetTopCardPosition(), Quaternion.Euler(DeckRotation)));
 
         cardList.Add(cardObj);
 
-        if (IsInteractable)
-        {
-            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObj.gameObject, OnUpCard);
-            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragStart, cardObj.gameObject, OnDragCardStart);
-            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, cardObj.gameObject, OnDragCardEnd);
-        }
+        RegisterCardCallback(cardObj.gameObject);
 
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 
@@ -59,7 +56,26 @@ public class UIPlayerHand : MonoBehaviour
         foreach(Card card in cards)
             AddCard(card);
     }
+    void RegisterDefaultCallbacks()
+    {
+        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiCardDeck.gameObject, OnStartHoverMainDeck);
+        inputController.RegisterTargetCallback(MouseEventType.EndHover, uiCardDeck.gameObject, OnEndHoverMainDeck);
 
+        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiGraveyardDeck.gameObject, OnStartHoverGraveyard);
+        inputController.RegisterTargetCallback(MouseEventType.EndHover, uiGraveyardDeck.gameObject, OnEndHoverGraveyard);
+
+        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiManaPool.gameObject, OnStartHoverManaPool);
+        inputController.RegisterTargetCallback(MouseEventType.EndHover, uiManaPool.gameObject, OnEndHoverManaPool);
+    }
+    void RegisterCardCallback(GameObject gameObject)
+    {
+        if (IsInteractable)
+        {
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, gameObject, OnUpCard);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragStart, gameObject, OnDragCardStart);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, gameObject, OnDragCardEnd);
+        }
+    }
     IEnumerator RefreshHandCardsPositions()
     {
         var numberOfCards = cardList.Count;
@@ -67,26 +83,15 @@ public class UIPlayerHand : MonoBehaviour
         if (numberOfCards <= 0)
             yield break;
 
-        var spaceBetween = 0.5f / numberOfCards;
-        var positionCount = spaceBetween;
-        var verticalBuildUp = 0.01f;
-
         for (int i = 0; i < numberOfCards; i++)
         {
             var card = cardList[i];
-            var normalizedPosition = positionCount * 2;
 
-            var position = bezierCurve.GetPointAt(normalizedPosition);
-            position.y += verticalBuildUp * i; //Rise every card by a little to avoid Z-fight
+            var cardHandIndex = GetCardIndexByObject(card);
 
-            var rotationValue = curveRange.Evaluate(normalizedPosition);
-            rotationValue *= 10;//Curve is stored in X/10 value
-
-            var rotation = Quaternion.Euler(-90, 0, rotationValue);
-
-            card.SetPositionAndRotation(CardObjectData.Create(position, rotation));
-
-            positionCount += spaceBetween;
+            var cardPosition = GetCardHandPosition(cardHandIndex);
+                
+            card.SetPositionAndRotation(cardPosition);
 
             yield return AwaitCardInPlace(card);
 
@@ -133,61 +138,149 @@ public class UIPlayerHand : MonoBehaviour
         if (!card.IsInPosition)
             return;
 
-        storedOriginalCardObjectData = CardObjectData.Create(card.transform.position, card.transform.localRotation);
+        var forwardCameraPosition = CalculateForwardCameraPosition();        
 
-        var mainCameraPosition = Camera.main.transform.position;
-        mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
-        mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
-
-        var data = CardObjectData.Create(mainCameraPosition, visualizeCardPositionOffset.Rotation);
+        var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
 
         currentTargetCard = card;
         currentTargetCard.SetPositionAndRotation(data);
         currentTargetCard.RegisterCloseCallback(CloseCardVisualization);
     }
+    Vector3 CalculateForwardCameraPosition()
+    {
+        var mainCameraPosition = Camera.main.transform.position;
+        mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
+        mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
+
+        return mainCameraPosition;
+    }
     void CloseCardVisualization()
     {
-        currentTargetCard.SetPositionAndRotation(storedOriginalCardObjectData);
-        currentTargetCard.RegisterCloseCallback(null);
-        currentTargetCard = null;
+        ReturnCurrentCardToHand();
     }
-
-
-
-    void OnDragCardStart(GameObject cardObject)
+    void OnDragCardStart(GameObject cardGameObject)
     {
-        if (currentTargetCard != null)
+        if (IsDraggingCard || currentTargetCard != null && cardGameObject != cardGameObject.gameObject)
             return;
 
-        var card = cardObject.GetComponent<CardObject>();
+        CardObject cardObject;
+        if (currentTargetCard == null)
+        {
+            cardObject = cardGameObject.GetComponent<CardObject>();
 
-        if (!card.IsInPosition)
-            return;
+            if (!cardObject.IsInPosition)
+                return;
+            currentTargetCard = cardObject;
+        }
+        else
+            cardObject = currentTargetCard;
 
-        Debug.Log("Dragging started");
-
-        currentTargetCard = card;
-        storedOriginalCardObjectData = CardObjectData.Create(card.transform.position, card.transform.localRotation);
-        currentTargetCard.SetPositionAndCallback(CalculateheldCardPosition);
+        IsDraggingCard = true;
+        StartCardDynamicDrag(cardObject);
     }
     void OnDragCardEnd(GameObject cardObject)
     {
-        if (currentTargetCard == null || currentTargetCard.gameObject != cardObject)
+        if (!IsDraggingCard || currentTargetCard == null || currentTargetCard.gameObject != cardObject)
             return;
 
-        Debug.Log("Dragging ended");
-
-        currentTargetCard.SetPositionAndCallback(null);
-        currentTargetCard.SetPositionAndRotation(storedOriginalCardObjectData);
+        IsDraggingCard = false;
+        StopCardDynamicDrag();
+        ReturnCurrentCardToHand();
+    }
+    void ReturnCurrentCardToHand()
+    {
+        var cardIndex = GetCardIndexByObject(currentTargetCard);
+        currentTargetCard.SetPositionAndRotation(GetCardHandPosition(cardIndex));
+        currentTargetCard.RegisterCloseCallback(null);
         currentTargetCard = null;
     }
-    CardObjectData CalculateheldCardPosition()
+    CardPositionData CalculateheldCardPosition()
     {
         var mousePosition = inputController.MousePosition;
 
         mousePosition += draggingCardRotationOffset.Position;
 
-        return CardObjectData.Create(Camera.main.ScreenToWorldPoint(mousePosition), draggingCardRotationOffset.Rotation);;
+        return CardPositionData.Create(Camera.main.ScreenToWorldPoint(mousePosition), draggingCardRotationOffset.Rotation);;
+    }
+    void StartCardDynamicDrag(CardObject cardObject)
+    {
+        currentTargetCard.SetPositionAndCallback(CalculateheldCardPosition);
+    }
+    void StopCardDynamicDrag()
+    {
+        currentTargetCard.SetPositionAndCallback(null);
+    }
+    void OnStartHoverMainDeck(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        GenericHoverPlace(gameObject);
+    }
+    void OnEndHoverMainDeck(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        StartCardDynamicDrag(currentTargetCard);
+    }
+    void OnStartHoverGraveyard(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        GenericHoverPlace(gameObject);
+    }
+    void OnEndHoverGraveyard(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        StartCardDynamicDrag(currentTargetCard);
+    }
+    void OnStartHoverManaPool(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        GenericHoverPlace(gameObject);
+    }
+    void OnEndHoverManaPool(GameObject gameObject)
+    {
+        if (!IsDraggingCard)
+            return;
+
+        StartCardDynamicDrag(currentTargetCard);
+    }
+    void GenericHoverPlace(GameObject gameObject)
+    {
+        ICardPlaceable cardPlaceable = gameObject.transform.GetComponent<ICardPlaceable>();
+
+        StopCardDynamicDrag();
+        currentTargetCard.SetPositionAndRotation(CardPositionData.Create(cardPlaceable.GetTopCardPosition(), cardPlaceable.GetRotationReference()));
+    }
+    int GetCardIndexByObject(CardObject card)
+    {
+        return cardList.IndexOf(card);
+    }
+    CardPositionData GetCardHandPosition(int cardIndex)
+    {
+        var numberOfCards = cardList.Count;
+        var spaceBetween = 0.5f / numberOfCards;
+        var positionCount = spaceBetween * cardIndex;
+        var verticalBuildUp = 0.01f;
+        var normalizedPosition = positionCount * 2;
+        
+
+        var position = bezierCurve.GetPointAt(normalizedPosition);
+        position.y += verticalBuildUp * cardIndex; //Rise every card by a little to avoid Z-fight
+
+        var rotationValue = curveRange.Evaluate(normalizedPosition);
+        rotationValue *= 10;//Curve is stored in X/10 value
+
+        var rotation = Quaternion.Euler(-90, 180, rotationValue);
+
+        return CardPositionData.Create(position, rotation);
     }
 }
 
