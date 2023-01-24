@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 4023595366195039226}
   - component: {fileID: 3912952147145587446}
   m_Layer: 0
-  m_Name: Player
+  m_Name: LocalPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
     uiPlayerHand: {fileID: 5859218327735603940}
     Cards: []
   conditionManager: {fileID: 0}
-  infinityHabilitiesPerTurn: 1
+  infinityHabilitiesPerTurn: 0
 --- !u!1 &4024835801678399008
 GameObject:
   m_ObjectHideFlags: 0

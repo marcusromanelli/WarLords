@@ -1202,12 +1202,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 286360841}
   m_Mesh: {fileID: 4300000, guid: ea782ccb689e7e04e9834261e9c83e95, type: 3}
---- !u!102 &294716439 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 102000010650052396, guid: 4c6cb34e3527ec14f9208abf976980ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 6851824715203774338}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &297159764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2747,25 +2741,6 @@ Transform:
   m_Father: {fileID: 222582008}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &650225069 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4524217467692053415, guid: 4c6cb34e3527ec14f9208abf976980ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 6851824715203774338}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &650225073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 650225069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a585e9779cdca0e479be4c6c7ac6a666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  conditions: []
 --- !u!1 &650818242
 GameObject:
   m_ObjectHideFlags: 0
@@ -15875,25 +15850,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1773413963 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1000010666410026, guid: 4c6cb34e3527ec14f9208abf976980ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 6851824715203774338}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1773413966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773413963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a585e9779cdca0e479be4c6c7ac6a666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  conditions: []
 --- !u!1 &1798736317
 GameObject:
   m_ObjectHideFlags: 0
@@ -17703,130 +17659,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: conditionManager
-      value: 
-      objectReference: {fileID: 1773413966}
-    - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: infinityHabilitiesPerTurn
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114000012439921640, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: inputController
       value: 
       objectReference: {fileID: 1218760873}
-    - target: {fileID: 4566562301832713259, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: conditionManager
-      value: 
-      objectReference: {fileID: 650225073}
-    - target: {fileID: 6128633028063076949, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: cardCounter
-      value: 
-      objectReference: {fileID: 294716439}
-    - target: {fileID: 6359655526031735865, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: IsInteractable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: DeckRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].value
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: visualizeCardPositionOffset.Position.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: visualizeCardPositionOffset.Position.z
-      value: 2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].inSlope
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].inSlope
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].inWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].outSlope
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].outSlope
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].outWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: draggingCardRotationOffset.EulerRotation.x
-      value: 270
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: draggingCardRotationOffset.EulerRotation.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: visualizeCardPositionOffset.EulerRotation.x
-      value: -50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: visualizeCardPositionOffset.EulerRotation.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: curveRange.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c6cb34e3527ec14f9208abf976980ff, type: 3}
