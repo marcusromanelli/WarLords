@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,27 +6,31 @@ using UnityEngine;
 public class UIPlayerHand : MonoBehaviour
 {
     public bool IsBusy => isBusy;
+
+
+    [SerializeField] bool IsInteractable = true;
     [SerializeField] float awaitTimeBetweenDraws = 0f;
-    [SerializeField] UICardDeck uiCardDeck;
-    [SerializeField] Vector3 DeckRotation;
-    [SerializeField] BezierCurve bezierCurve;
-	[SerializeField] AnimationCurve curveRange;
+    [SerializeField, ShowIf("IsInteractable")] UICardDeck uiCardDeck;
+    [SerializeField, ShowIf("IsInteractable")] BezierCurve bezierCurve;
+	[SerializeField, ShowIf("IsInteractable")] AnimationCurve curveRange;
+
+    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardObjectData visualizeCardPositionOffset;
+	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardObjectData draggingCardRotationOffset;
+    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] Vector3 DeckRotation;
 
     List<CardObject> cardList = new List<CardObject>();
     private bool isBusy;
     protected Civilization civilization;
 
     private InputController inputController;
-    private HandleMouseAction onPressedCard;
-    private HandleMouseAction onDownCard;
-    private HandleMouseAction onUpCard;
+    private CardObject currentTargetCard;
+    private CardObjectData storedOriginalCardObjectData;
+    private bool isDraggingObject;
 
-    public void PreSetup(InputController inputController, HandleMouseAction onDownCard, HandleMouseAction onPressedCard, HandleMouseAction onUpCard)
+
+    public void PreSetup(InputController inputController)
     {
         this.inputController = inputController;
-        this.onPressedCard = onPressedCard;
-        this.onDownCard = onDownCard;
-        this.onUpCard = onUpCard;
     }
     public void Setup(Civilization civilization)
     {
@@ -34,13 +39,16 @@ public class UIPlayerHand : MonoBehaviour
     public void AddCard(Card card)
     {
         var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition());
-        cardObj.SetPositionAndRotation(uiCardDeck.GetTopCardPosition(), Quaternion.Euler(DeckRotation));
+        cardObj.SetPositionAndRotation(CardObjectData.Create(uiCardDeck.GetTopCardPosition(), Quaternion.Euler(DeckRotation)));
 
         cardList.Add(cardObj);
 
-        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObj.gameObject, onUpCard);
-        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButton, cardObj.gameObject, onPressedCard);
-        inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, cardObj.gameObject, onDownCard);
+        if (IsInteractable)
+        {
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObj.gameObject, OnUpCard);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragStart, cardObj.gameObject, OnDragCardStart);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, cardObj.gameObject, OnDragCardEnd);
+        }
 
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 
@@ -59,7 +67,7 @@ public class UIPlayerHand : MonoBehaviour
         if (numberOfCards <= 0)
             yield break;
 
-        var spaceBetween = 0.5f/numberOfCards;
+        var spaceBetween = 0.5f / numberOfCards;
         var positionCount = spaceBetween;
         var verticalBuildUp = 0.01f;
 
@@ -76,7 +84,7 @@ public class UIPlayerHand : MonoBehaviour
 
             var rotation = Quaternion.Euler(-90, 0, rotationValue);
 
-            card.SetPositionAndRotation(position, rotation);
+            card.SetPositionAndRotation(CardObjectData.Create(position, rotation));
 
             positionCount += spaceBetween;
 
@@ -110,6 +118,76 @@ public class UIPlayerHand : MonoBehaviour
         }
 
         isBusy = false;
+    }
+    void OnUpCard(GameObject cardObject)
+    {
+        if (currentTargetCard != null)
+            return;
+
+        ShowVisualizingCard(cardObject);
+    }
+    void ShowVisualizingCard(GameObject cardObject)
+    {
+        var card = cardObject.GetComponent<CardObject>();
+
+        if (!card.IsInPosition)
+            return;
+
+        storedOriginalCardObjectData = CardObjectData.Create(card.transform.position, card.transform.localRotation);
+
+        var mainCameraPosition = Camera.main.transform.position;
+        mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
+        mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
+
+        var data = CardObjectData.Create(mainCameraPosition, visualizeCardPositionOffset.Rotation);
+
+        currentTargetCard = card;
+        currentTargetCard.SetPositionAndRotation(data);
+        currentTargetCard.RegisterCloseCallback(CloseCardVisualization);
+    }
+    void CloseCardVisualization()
+    {
+        currentTargetCard.SetPositionAndRotation(storedOriginalCardObjectData);
+        currentTargetCard.RegisterCloseCallback(null);
+        currentTargetCard = null;
+    }
+
+
+
+    void OnDragCardStart(GameObject cardObject)
+    {
+        if (currentTargetCard != null)
+            return;
+
+        var card = cardObject.GetComponent<CardObject>();
+
+        if (!card.IsInPosition)
+            return;
+
+        Debug.Log("Dragging started");
+
+        currentTargetCard = card;
+        storedOriginalCardObjectData = CardObjectData.Create(card.transform.position, card.transform.localRotation);
+        currentTargetCard.SetPositionAndCallback(CalculateheldCardPosition);
+    }
+    void OnDragCardEnd(GameObject cardObject)
+    {
+        if (currentTargetCard == null || currentTargetCard.gameObject != cardObject)
+            return;
+
+        Debug.Log("Dragging ended");
+
+        currentTargetCard.SetPositionAndCallback(null);
+        currentTargetCard.SetPositionAndRotation(storedOriginalCardObjectData);
+        currentTargetCard = null;
+    }
+    CardObjectData CalculateheldCardPosition()
+    {
+        var mousePosition = inputController.MousePosition;
+
+        mousePosition += draggingCardRotationOffset.Position;
+
+        return CardObjectData.Create(Camera.main.ScreenToWorldPoint(mousePosition), draggingCardRotationOffset.Rotation);;
     }
 }
 

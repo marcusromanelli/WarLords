@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa7dc61acf39ae448c089f4de32407c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputController: {fileID: 0}
   battlefield: {fileID: 3890160710468698059}
   LocalPlayer: {fileID: 114000012031043494}
   RemotePlayer: {fileID: 4566562301832713259}
@@ -4874,6 +4875,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LocalPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5859218327735603940, guid: d5c0ee78c6f4aaf489be1571962428bd,
+        type: 3}
+      propertyPath: IsInteractable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5413895399836921692, guid: d5c0ee78c6f4aaf489be1571962428bd, type: 3}

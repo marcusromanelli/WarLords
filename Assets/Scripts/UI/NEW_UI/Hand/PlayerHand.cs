@@ -11,16 +11,13 @@ public class PlayerHand
     public int Count => Cards.Count;
     protected Civilization civilization;
 
-    [SerializeField, ReorderableList] List<CardObject> hoveringCards = new List<CardObject>();
-    [SerializeField] CardObject currentHoveringCard => hoveringCards.Count > 0 ? hoveringCards[hoveringCards.Count - 1] : null;
-
     public PlayerHand()
     {
         Cards = new List<Card>();
     }
     public void PreSetup(InputController inputController)
     {
-        uiPlayerHand.PreSetup(inputController, OnDownCard, OnPressedCard, OnUpCard);
+        uiPlayerHand.PreSetup(inputController);
     }
     public void Setup(Civilization civilization)
     {
@@ -81,30 +78,5 @@ public class PlayerHand
     public System.Collections.IEnumerator IsUIUpdating()
     {
         yield return uiPlayerHand.IsResolving();
-    }
-    void OnClickCard(GameObject cardObject)
-    {
-        var card = cardObject.GetComponent<CardObject>();
-        Debug.Log("Clicked " + card.name);
-
-        if (currentHoveringCard != null && currentHoveringCard.gameObject == cardObject)
-            return;
-
-        hoveringCards.Add(cardObject.GetComponent<CardObject>());
-    }
-    void OnDownCard(GameObject cardObject)
-    {
-        var card = cardObject.GetComponent<CardObject>();
-        Debug.Log("Mouse DOWN " + card.name);
-    }
-    void OnUpCard(GameObject cardObject)
-    {
-        var card = cardObject.GetComponent<CardObject>();
-        Debug.Log("Mouse UP " + card.name);
-    }
-    void OnPressedCard(GameObject cardObject)
-    {
-        var card = cardObject.GetComponent<CardObject>();
-        Debug.Log("Mouse PRESSED " + card.name);
     }
 }

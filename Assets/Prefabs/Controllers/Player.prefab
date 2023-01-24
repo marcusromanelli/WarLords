@@ -1151,9 +1151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29191bff9dc67354ca760ff01fc23065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsInteractable: 0
   awaitTimeBetweenDraws: 0.2
   uiCardDeck: {fileID: 7121840362206527237}
-  DeckRotation: {x: 90, y: 180, z: 0}
   bezierCurve: {fileID: 1970712889526080668}
   curveRange:
     serializedVersion: 2
@@ -1179,6 +1179,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  visualizeCardPositionOffset:
+    Card: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    EulerRotation: {x: 0, y: 0, z: 0}
+  draggingCardRotationOffset:
+    Card: {fileID: 0}
+    Position: {x: 0, y: -50, z: 10}
+    EulerRotation: {x: -90, y: 0, z: 0}
+  DeckRotation: {x: 90, y: 180, z: 0}
 --- !u!1 &4024835804514363286
 GameObject:
   m_ObjectHideFlags: 0

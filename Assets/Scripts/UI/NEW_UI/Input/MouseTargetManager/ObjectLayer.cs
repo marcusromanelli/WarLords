@@ -10,12 +10,34 @@ class ObjectLayer
     public Dictionary<MouseEventType, HandleMouseAction>  Events;
     [ReadOnly] public bool IsHovering;
     [ReadOnly] public bool IsClicking;
+    [ReadOnly] public bool IsDragging;
+    [ReadOnly] public Vector3 lastMousePosition;
 
     public ObjectLayer(GameObject gameObject)
     {
         @object = gameObject;
         Events = new Dictionary<MouseEventType, HandleMouseAction>();
         IsHovering = false;
+    }
+    public void SetMousePosition(Vector3 mousePosition)
+    {
+        if (IsHovering && IsClicking)
+        {
+            if (!IsDragging)
+            {
+                IsDragging = true;
+                TriggerEventCallback(MouseEventType.LeftMouseDragStart);
+            }
+        }
+        else
+        {
+            if (IsDragging)
+            {
+                IsDragging = false;
+                TriggerEventCallback(MouseEventType.LeftMouseDragEnd);
+            }
+        }
+
     }
     public void SetHovering(bool value)
     {
@@ -31,6 +53,9 @@ class ObjectLayer
         }
 
         IsHovering = value;
+
+        if (!IsHovering)
+            IsClicking = false;
     }
     public void SetClick(bool clicking)
     {

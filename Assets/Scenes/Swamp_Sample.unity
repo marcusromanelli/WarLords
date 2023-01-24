@@ -14355,11 +14355,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df05fc33cab1bfc4f8e1ee61f7ef1ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minMouseMovement: 1
-  enableDebugMode: 1
-  ignoreLayerMask: 0
-  lastRecordedHitObjects: []
-  registeredLayerMask: 3584
+  mouseTargetManager:
+    minMouseMovement: 1
+    enableDebugMode: 0
+    ignoreLayerMask: 0
+    registeredLayerMask: 0
 --- !u!4 &1218760874
 Transform:
   m_ObjectHideFlags: 0
@@ -17664,15 +17664,5 @@ PrefabInstance:
       propertyPath: inputController
       value: 
       objectReference: {fileID: 1218760873}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: DeckRotation.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: DeckRotation.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c6cb34e3527ec14f9208abf976980ff, type: 3}

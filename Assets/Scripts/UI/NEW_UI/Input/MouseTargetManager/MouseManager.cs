@@ -17,6 +17,7 @@ public class MouseManager
     [BoxGroup("Debug")] public int registeredLayerMask;
     private Vector3 lastRecordedMousePosition;
     private Ray lastRaycast;
+    public Vector3 MousePosition => lastRecordedMousePosition;
 
     public MouseManager()
     {
@@ -30,6 +31,7 @@ public class MouseManager
         if (!MouseMoved())
             return;
 
+        UpdateMousePosition();
         UpdateRaycastCollisions();
     }
     void CheckClick()
@@ -37,6 +39,13 @@ public class MouseManager
         foreach (var obj in objectsToWatch)
         {
             obj.Value.SetClick(Input.GetMouseButton(0));
+        }
+    }
+    void UpdateMousePosition()
+    {
+        foreach (var obj in objectsToWatch)
+        {
+            obj.Value.SetMousePosition(lastRecordedMousePosition);
         }
     }
     bool MouseMoved()
@@ -64,7 +73,6 @@ public class MouseManager
     {
         registeredLayerMask = 0;
 
-        LayerMask aux;
         Dictionary<string, int> layers = new Dictionary<string, int>();
 
         foreach (var obj in objectsToWatch)

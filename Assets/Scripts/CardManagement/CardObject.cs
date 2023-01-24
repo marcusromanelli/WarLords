@@ -10,10 +10,13 @@ public enum ManaStatus
 	Active, Used, Preview
 }
 
+public delegate void OnClickCloseButton();
+public delegate CardObjectData OnGetPositionAndRotation();
 public class CardObject : MonoBehaviour, IPoolable
 {
 	[SerializeField] float cardMovementSpeed = 20;
 	[SerializeField] float cardRotationSpeed = 20;
+	[SerializeField] GameObject CloseButton;
 	/*Card originalCardData;
 	Card currentCardData;
 	bool isBeingHeld;
@@ -24,7 +27,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	public Player player;
 
-	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, CloseButton;
+	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;
 	public Hero Character;
 	public Vector3 originalPosition;*/
 	public List<GameObject> cardCoversPerCivilization;
@@ -32,10 +35,10 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	private Card originalCard;
 	private GameObject currentActiveCardCover;
-	private Vector3 targetPosition;
-	private Quaternion targetRotation;
+	private Nullable<CardObjectData> targetPositionAndRotation;
+	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = true;
-
+	private OnClickCloseButton closeCallback;
 	/*Vector3 offset;
 	Vector3 originalScale;
 	Vector3 lastKnownMousePosition;
@@ -51,14 +54,110 @@ public class CardObject : MonoBehaviour, IPoolable
 	Battlefield battlefield;*/
 	//HandController handController;
 
-	public void SetPositionAndRotation(Vector3 targetPosition, Quaternion targetRotation){
-		this.targetPosition = targetPosition;
-		this.targetRotation = targetRotation;
+	public void SetPositionAndRotation(CardObjectData cardData)
+	{
+		targetPositionAndRotation = cardData;
+
 		isInPosition = false;
 	}
-
-	void Awake()
+	public void SetPositionAndCallback(OnGetPositionAndRotation getPositionAndRotation)
 	{
+		targetPositionAndRotation = null;
+		getPositionAndRotationCallback = getPositionAndRotation;
+
+		isInPosition = false;
+	}
+	public void RegisterCloseCallback(OnClickCloseButton closeCallback)
+	{
+		this.closeCallback = closeCallback;
+	}
+	public void UnregisterCloseCallback()
+	{
+		this.closeCallback = null;
+	}
+	public void OnCloseButtonClick ()
+    {
+		closeCallback?.Invoke();
+	}
+
+	
+
+	void MoveToTargetPosition()
+    {
+		if (getPositionAndRotationCallback != null)
+        {
+			GoToDynamicTargetPosition();
+        }else
+			GoToPresetTargetPosition();
+	}
+	void GoToDynamicTargetPosition()
+	{
+		var targetPosition = getPositionAndRotationCallback();
+
+		transform.position = targetPosition.Position;
+		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPosition.Rotation, Time.deltaTime * cardRotationSpeed);
+	}
+	void GoToPresetTargetPosition()
+    {
+		if (isInPosition)
+			return;
+
+		transform.position = Vector3.MoveTowards(transform.position, targetPositionAndRotation.Value.Position, Time.deltaTime * cardMovementSpeed);
+		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPositionAndRotation.Value.Rotation, Time.deltaTime * cardRotationSpeed);
+
+		if (transform.position == targetPositionAndRotation.Value.Position && transform.localRotation == targetPositionAndRotation.Value.Rotation)
+			isInPosition = true;
+	}
+	void Update()
+	{
+		MoveToTargetPosition();
+	}
+
+    public void SetupCover(Civilization civilization)
+    {
+		var cardCover = cardCoversPerCivilization[(int)civilization];
+
+		cardCover.SetActive(true);
+
+		currentActiveCardCover = cardCover;
+	}
+
+    public void Pool()
+    {
+		currentActiveCardCover.SetActive(false);
+		closeCallback = null;
+	}
+	public void Setup(Card card)
+	{
+		originalCard = card;
+
+		LoadCardData();
+	}
+	private void LoadCardData()
+	{
+		GameObject cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
+
+		if (cardObj == null)
+		{
+			Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
+			return;
+		}
+
+		this.name = GetResourceName();
+		cardObj.transform.localPosition = Vector3.zero;
+		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
+	}
+	string GetCardResourcePath()
+	{
+		return "Prefabs/Cards/" + originalCard.civilization.ToString() + "/" + GetResourceName();
+	}
+	string GetResourceName()
+	{
+		return originalCard.name.Replace(" ", "");
+	}
+
+	// void Awake()
+	// {
 	//	if (transform.Find("Summon"))
 	//	{
 	//		summonButton = transform.Find("Summon").gameObject;
@@ -89,7 +188,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	//		CloseButton = transform.Find("CloseButton").gameObject;
 	//		CloseButton.SetActive(false);
 	//	}
-	}
+	// }
 
 	//void Start()
 	//{
@@ -142,21 +241,16 @@ public class CardObject : MonoBehaviour, IPoolable
 	//	}
 	//}
 
-	void MoveToTargetPosition()
-    {
-		if (isInPosition)
-			return;
-
-		transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * cardMovementSpeed);
-		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * cardRotationSpeed);
-
-		if(transform.position == targetPosition && transform.localRotation == targetRotation)
-			isInPosition = true;
+	/*string GetEmptyCardResourcePath(Civilization civilization)
+	{
+		return "Prefabs/Cards/" + civilizationName + "/" + GetResourceName();
 	}
-	void Update()
+	
+
+	/*void Update()
 	{
 		MoveToTargetPosition();
-		/*switch (SummonType)
+		*switch (SummonType)
 		{
 			case SummonType.Mana:
 
@@ -317,10 +411,10 @@ public class CardObject : MonoBehaviour, IPoolable
 					}
 				}
 				break;
-		}*/
+		}
 	}
 
-	/*public void OnMouseDown()
+	public void OnMouseDown()
 	{
 		if (player.hasCondition(ConditionType.PickSpawnArea) == false && player.GetPlayerType() == PlayerType.Local)
 		{
@@ -438,7 +532,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	//}
 
 
-	ParticleSystem system;
+	/*ParticleSystem system;
 	public void BecameMana()
 	{
 		system = GetComponentInChildren<ParticleSystem>();
@@ -446,7 +540,7 @@ public class CardObject : MonoBehaviour, IPoolable
 		system.transform.SetParent(null);
 		Destroy(gameObject);
 	}
-
+	*/
 
 	//public void SetPlayer(Player player)
 	//{
@@ -481,56 +575,8 @@ public class CardObject : MonoBehaviour, IPoolable
 	//	{
 	//		player.ResetPreviewMana();
 	//		isBeingVisualized = false;
- //       }
- //   }
-
-    public void SetupCover(Civilization civilization)
-    {
-		var cardCover = cardCoversPerCivilization[(int)civilization];
-
-		cardCover.SetActive(true);
-
-		currentActiveCardCover = cardCover;
-	}
-
-    public void Pool()
-    {
-		currentActiveCardCover.SetActive(false);
-    }
-	public void Setup(Card card)
-	{
-		originalCard = card;
-
-		LoadCardData();
-	}
-	private void LoadCardData()
-	{
-		GameObject cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
-
-		if (cardObj == null)
-		{
-			Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
-			return;
-		}
-
-		this.name = GetResourceName();
-		cardObj.transform.localPosition = Vector3.zero;
-		cardObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
-	}
-	string GetCardResourcePath()
-	{
-		return "Prefabs/Cards/" + originalCard.civilization.ToString() + "/" + GetResourceName();
-	}
-	string GetResourceName()
-	{
-		return originalCard.name.Replace(" ", "");
-	}
-	/*
-	 * 
-	string GetEmptyCardResourcePath(Civilization civilization)
-	{
-		return "Prefabs/Cards/" + civilizationName + "/" + GetResourceName();
-	}*/
+	//       }
+	//   }
 	/*string GetCharacterResourcePath()
 	{
 		return "Prefabs/Characters/" + civilizationName + "/" + GetResourceName();

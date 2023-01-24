@@ -5,6 +5,7 @@ public delegate void HandleMouseAction(GameObject obj);
 public class InputController : MonoBehaviour
 {
     [SerializeField] MouseManager mouseTargetManager;
+    public Vector3 MousePosition => mouseTargetManager.MousePosition;
 
     private void Awake()
     {

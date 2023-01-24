@@ -550,7 +550,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4000012283968968
 Transform:
   m_ObjectHideFlags: 0
@@ -640,6 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b921abbdc8c14794c9c53c25eb0494b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 114000011009465866}
 --- !u!1 &1000011500084202
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,8 +695,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5091c5826603908459d06cf60d18f9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardMovementSpeed: 10
-  cardRotationSpeed: 1000
+  cardMovementSpeed: 15
+  cardRotationSpeed: 500
+  CloseButton: {fileID: 0}
   cardCoversPerCivilization:
   - {fileID: 3369709561916968042}
   - {fileID: 1320688543516375476}
