@@ -21,6 +21,8 @@ class ObjectLayer
     }
     public void SetMousePosition(Vector3 mousePosition)
     {
+        //When arrives here, we already know that the mouse move the minimum amount, so we just do the necessary logic
+
         if (IsHovering && IsClicking)
         {
             if (!IsDragging)
@@ -39,20 +41,18 @@ class ObjectLayer
         }
 
     }
-    public void SetHovering(bool value)
+    public void SetHovering(bool hovering)
     {
-        if (IsHovering && !value)
+        if (IsHovering && !hovering)
         {
-            //Stopped
             TriggerEventCallback(MouseEventType.EndHover);
         }
-        else if (!IsHovering && value)
+        else if (!IsHovering && hovering)
         {
-            //Started
             TriggerEventCallback(MouseEventType.StartHover);
         }
 
-        IsHovering = value;
+        IsHovering = hovering;
 
         if (!IsHovering)
             IsClicking = false;
@@ -64,12 +64,10 @@ class ObjectLayer
 
         if (IsClicking && !clicking)
         {
-            //Stopped
             TriggerEventCallback(MouseEventType.LeftMouseButtonUp);
         }
         else if (!IsClicking && clicking)
         {
-            //Started
             TriggerEventCallback(MouseEventType.LeftMouseButtonDown);
         }
 

@@ -29,11 +29,11 @@ public class Player : MonoBehaviour
 	[Header("Game Logic")]
 	[SerializeField] CardDeck<Card> PlayDeck;
 	[SerializeField] CardDeck<Card> Graveyard;
+	[SerializeField] ManaPool ManaPool;
 	[SerializeField] PlayerHand Hand;
 
 
 	private InputController inputController;	
-	//[SerializeField] ManaPool ManaPool;
 	//[SerializeField] List<Condition> Conditions;
 
 

@@ -52,7 +52,7 @@ public class UIPlayerHand : MonoBehaviour
 
         GameConfiguration.PlaySFX(GameConfiguration.drawCard);
 
-        StartCoroutine(UpdatePositions());
+        StartCoroutine(RefreshHandCardsPositions());
     }
     public void AddCards(Card[] cards)
     {
@@ -60,7 +60,7 @@ public class UIPlayerHand : MonoBehaviour
             AddCard(card);
     }
 
-    IEnumerator UpdatePositions()
+    IEnumerator RefreshHandCardsPositions()
     {
         var numberOfCards = cardList.Count;
 

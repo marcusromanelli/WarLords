@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using NaughtyAttributes;
+using System;
 
-public class ManaPool : MonoBehaviour
+[Serializable]
+public class ManaPool
 {
 	[SerializeField] UIManaPool uiManaPool;
 	[SerializeField, ReadOnly] int maxManaAllowed = 12;
@@ -10,13 +12,16 @@ public class ManaPool : MonoBehaviour
 
 	public int MaxMana => maxMana;
 	public int CurrentMana => currentMana;
-
+	void Start()
+    {
+		uiManaPool.Setup(GetMaxMana, GetCurrentMana);
+    }
 	public void IncreaseMaxMana(int number = 1)
     {
 		SetMaxManaValue(maxMana + number);
 		SetCurrentManaValue(currentMana + number);
 
-		//UpdateManaOrbs();
+		uiManaPool.UpdateUI();
 	}
 
 	public void RestoreSpentMana(int number = -1)
@@ -30,15 +35,7 @@ public class ManaPool : MonoBehaviour
 
 		SetCurrentManaValue(currentMana + valueToRestore);
 
-		//UpdateManaOrbs();
-	}
-	void SetMaxManaValue(int newValue)
-	{
-		maxMana = Mathf.Clamp(newValue, 0, maxManaAllowed);
-	}	
-	void SetCurrentManaValue(int newValue)
-	{
-		currentMana = Mathf.Clamp(newValue, 0, maxMana);
+		uiManaPool.UpdateUI();
 	}
 	public void SpendMana(int number)
 	{
@@ -54,7 +51,7 @@ public class ManaPool : MonoBehaviour
 
 		SetCurrentManaValue(currentMana - number);
 
-		//UpdateManaOrbs();
+		uiManaPool.UpdateUI();
 	}
 	public bool HasManaSpace()
 	{
@@ -64,7 +61,20 @@ public class ManaPool : MonoBehaviour
 	{
 		return value <= currentMana;
 	}
-
-
-	
+	public int GetCurrentMana()
+	{
+		return CurrentMana;
+	}
+	public int GetMaxMana()
+	{
+		return MaxMana;
+	}
+	void SetMaxManaValue(int newValue)
+	{
+		maxMana = Mathf.Clamp(newValue, 0, maxManaAllowed);
+	}
+	void SetCurrentManaValue(int newValue)
+	{
+		currentMana = Mathf.Clamp(newValue, 0, maxMana);
+	}
 }

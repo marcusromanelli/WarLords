@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-public class Hero : MonoBehaviour, ICardPlaceable
+public class Hero : MonoBehaviour
 {
 
 	public bool doMoveForward;

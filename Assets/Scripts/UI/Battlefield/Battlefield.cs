@@ -6,7 +6,7 @@ using NaughtyAttributes;
 using System.Threading.Tasks;
 
 [ExecuteInEditMode]
-public class Battlefield : MonoBehaviour, ICardPlaceable
+public class Battlefield : MonoBehaviour
 {
 	[SerializeField] protected Player localPlayerController;
 	[SerializeField] protected Transform CardReferencePosition;

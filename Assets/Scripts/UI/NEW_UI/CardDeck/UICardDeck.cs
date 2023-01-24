@@ -7,7 +7,7 @@ public enum UIDeckType
 {
     MainDeck, ManaPool, Graveyard
 }
-public class UICardDeck : MonoBehaviour
+public class UICardDeck : MonoBehaviour, ICardPlaceable
 {    enum DeckActionType { AddCard, DrawCard }
 
     [SerializeField] UIDeckType type;

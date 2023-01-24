@@ -1,29 +1,56 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class UIManaPool : MonoBehaviour
+public delegate int GetMaxMana();
+public delegate int GetCurrentMana();
+
+public class UIManaPool : MonoBehaviour, ICardPlaceable
 {
-	[SerializeField] Transform BaseCenter;
+	[SerializeField] Transform cardReferencePosition;
 	[SerializeField] public float distanceBetweenColumns = 1f;
 	[SerializeField] float distanceBetweenLines = 1f;
 	[SerializeField] GameObject manaOrbAsset;
 
+	private List<ManaOrb> manaPoolElements = new List<ManaOrb>();
+	private GetMaxMana getMaxManaCallback;
+	private GetCurrentMana getCurrentManaCallback;
 
-	Vector3 baseCenterPosition;
-	List<ManaOrb> manaPoolElements = new List<ManaOrb>();
 
-	[SerializeField] protected Player localPlayerController;
-	public void Setup(Player player)
-    {
-		localPlayerController = player;
-    }
 	void Awake()
 	{
 		manaPoolElements = new List<ManaOrb>();
-
-		baseCenterPosition = BaseCenter.transform.position;
 	}
-	float CalculateRow(int number)
+	public void Setup(GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback)
+    {
+		this.getMaxManaCallback = getMaxManaCallback;
+		this.getCurrentManaCallback = getCurrentManaCallback;
+	}
+	public void UpdateUI()
+	{
+		while (manaPoolElements.Count < getMaxManaCallback())
+		{
+			AddOrb();
+		}
+
+		int c = 0;
+		for (int i = manaPoolElements.Count; i > 0; i--)
+		{
+			if (getCurrentManaCallback() >= i)
+				manaPoolElements[i - 1].SetStatus(ManaStatus.Active);
+			else
+				manaPoolElements[i - 1].SetStatus(ManaStatus.Used);
+		}
+	}
+	public Vector3 GetTopCardPosition()
+	{
+		return cardReferencePosition.position;
+	}
+	public Quaternion GetRotationReference()
+	{
+		return cardReferencePosition.transform.rotation;
+	}
+
+	float calculateRow(int number)
 	{
 		return (number % 6);
 	}
@@ -44,7 +71,7 @@ public class UIManaPool : MonoBehaviour
 			pos.x += distanceBetweenColumns;
 		}
 
-		pos.z += transform.forward.z * CalculateRow(value - 1) * distanceBetweenLines;
+		pos.z += transform.forward.z * calculateRow(value - 1) * distanceBetweenLines;
 		return pos;
 	}
 	void AddOrb()
@@ -60,29 +87,7 @@ public class UIManaPool : MonoBehaviour
 
 		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
 	}
-	public Vector3 GetBasePosition()
-	{
-		return baseCenterPosition;
-	}
-
-	void UpdateManaOrbs()
-	{
-		/*while (manaPoolElements.Count < maxMana)
-		{
-			AddOrb();
-		}
-
-		int c = 0;
-		for (int i = manaPoolElements.Count; i > 0; i--)
-		{
-			if (currentMana >= i)
-				manaPoolElements[i - 1].SetStatus(ManaStatus.Active);
-			else
-				manaPoolElements[i - 1].SetStatus(ManaStatus.Used);
-		}*/
-	}
-
-	public void PreviewMana(int number)
+	/*void PreviewMana(int number)
 	{
 		for (int i = 0; i < manaPoolElements.Count; i++)
 		{
@@ -104,7 +109,7 @@ public class UIManaPool : MonoBehaviour
 			}
 		}
 	}
-	public void RestorePreviewedMana()
+	void RestorePreviewedMana()
 	{
 		for (int i = 0; i < manaPoolElements.Count; i++)
 		{
@@ -113,5 +118,5 @@ public class UIManaPool : MonoBehaviour
 			if (manaOrb.ManaStatus == ManaStatus.Preview)
 				manaPoolElements[i].SetStatus(ManaStatus.Active);
 		}
-	}
+	}*/
 }

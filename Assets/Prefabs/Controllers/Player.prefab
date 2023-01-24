@@ -100,36 +100,6 @@ MonoBehaviour:
   - {fileID: 2389394335429636310}
   - {fileID: 6893453507033395625}
   - {fileID: 5973403736589196707}
---- !u!1 &4024137065332159076
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4024137065332159077}
-  m_Layer: 11
-  m_Name: Base
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4024137065332159077
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024137065332159076}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.37100005, y: 0.09799996, z: -0.4790002}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4023595366372166316}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4024137065786695529
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +638,11 @@ MonoBehaviour:
   Graveyard:
     uiCardDeck: {fileID: 0}
     NumberOfShuffles: 1
+  ManaPool:
+    uiManaPool: {fileID: 5353303773012978506}
+    maxManaAllowed: 12
+    currentMana: 0
+    maxMana: 0
   Hand:
     uiPlayerHand: {fileID: 5859218327735603940}
     Cards: []
@@ -925,7 +900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4023595366372166316}
   - component: {fileID: 3980749403499942338}
-  - component: {fileID: 733321029461912880}
+  - component: {fileID: 5353303773012978506}
   m_Layer: 11
   m_Name: Mana Pool
   m_TagString: Untagged
@@ -944,7 +919,6 @@ Transform:
   m_LocalPosition: {x: -0.12, y: -0.28, z: -1.102}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4024137065332159077}
   - {fileID: 4023595364013647548}
   - {fileID: 6634223155522149010}
   m_Father: {fileID: 4023595366195039226}
@@ -963,7 +937,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 2.83}
   m_Center: {x: 0, y: 0, z: 0.66}
---- !u!114 &733321029461912880
+--- !u!114 &5353303773012978506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,13 +946,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4024835802671291078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc1019e5464723499738eb0519a15f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f523443e92d21d4791405c8c4c39b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManaPool: {fileID: 0}
-  maxManaAllowed: 12
-  currentMana: 0
-  maxMana: 0
+  BaseCenter: {fileID: 0}
+  distanceBetweenColumns: 1
+  distanceBetweenLines: 1
+  manaOrbAsset: {fileID: 1000011447547414, guid: c3c0a5696d608524796375b662bcf708,
+    type: 3}
 --- !u!1 &4024835803019479762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +984,7 @@ Transform:
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children: []
   m_Father: {fileID: 4023595366372166316}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4012045374775687500
 MeshFilter:
@@ -1071,6 +1046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4023595363405912026}
   - component: {fileID: 3980749402927224574}
+  - component: {fileID: 6291344030914926754}
   m_Layer: 10
   m_Name: Graveyard
   m_TagString: Untagged
@@ -1107,6 +1083,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.5, z: 1}
   m_Center: {x: 0, y: 0.27, z: 0.47}
+--- !u!114 &6291344030914926754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024835803630256446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  cardReferencePosition: {fileID: 5522595699533326268}
+  distanceBetweenCards: 0.02
+  isBusy: 0
 --- !u!1 &4024835803731755698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,11 +1172,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   visualizeCardPositionOffset:
-    Card: {fileID: 0}
     Position: {x: 0, y: 0, z: 0}
     EulerRotation: {x: 0, y: 0, z: 0}
   draggingCardRotationOffset:
-    Card: {fileID: 0}
     Position: {x: 0, y: -50, z: 10}
     EulerRotation: {x: -90, y: 0, z: 0}
   DeckRotation: {x: 90, y: 180, z: 0}
@@ -1634,7 +1624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011953715102, guid: 1027968bf19a4fd47b54e05fd539e6d0, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000011953715102, guid: 1027968bf19a4fd47b54e05fd539e6d0, type: 3}
       propertyPath: m_LocalScale.x
@@ -1761,15 +1751,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0cd53e643890e664eac3739abeb0fbc6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d107fe97593d6d48ac5e10257f1e701, type: 3}
---- !u!1 &7551983596032364463 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 8d107fe97593d6d48ac5e10257f1e701,
-    type: 3}
-  m_PrefabInstance: {fileID: 7551983596032461071}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7551983596032070543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 8d107fe97593d6d48ac5e10257f1e701,
+    type: 3}
+  m_PrefabInstance: {fileID: 7551983596032461071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7551983596032364463 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 8d107fe97593d6d48ac5e10257f1e701,
     type: 3}
   m_PrefabInstance: {fileID: 7551983596032461071}
   m_PrefabAsset: {fileID: 0}
