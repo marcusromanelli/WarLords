@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -24,18 +22,16 @@ public class GameController : Singleton<GameController>
 			return Instance.currentPhase;
         }
     }
-	public bool matchHasStarted;
 	public static bool MatchHasStarted
 	{
 		get
 		{
-			return Instance.matchHasStarted;
+			return Phase != Phase.PreGame;
 		}
 	}
 	public static bool isExecutingMacro;
 
 
-	private Phase nextPhase;
 	private bool isChangingPhase;
 
 	enum Actions { Move, Attack }
@@ -77,10 +73,10 @@ public class GameController : Singleton<GameController>
 	}
 	void StartPreGame() {
 		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		LocalPlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 
 		RemotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		RemotePlayer.AddCondition(ConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		RemotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
 	IEnumerator AwaitForGameStart()
 	{
@@ -124,7 +120,6 @@ public class GameController : Singleton<GameController>
 	}
 	void StartGame()
 	{
-		matchHasStarted = true;
 		NextTurn(Phase.Draw);
 	}
 
@@ -132,6 +127,8 @@ public class GameController : Singleton<GameController>
 	{
 		if (Macros == null)
 			Macros = new List<MacroComponent>();
+
+		currentPhase = Phase.PreGame;
 
 		LocalPlayer.Setup(inputController);
 		RemotePlayer.Setup(inputController);
@@ -225,7 +222,7 @@ public class GameController : Singleton<GameController>
 		if (currentPlayer != player)
 			return;
 
-		nextPhase = phase;
+		currentPhase = phase;
 		StartCoroutine(startChangingPhases());
 	}
 
@@ -240,26 +237,22 @@ public class GameController : Singleton<GameController>
 	IEnumerator startChangingPhases()
 	{
 		isChangingPhase = true;
-		PhasesTitle.ChangePhase(nextPhase);
+		PhasesTitle.ChangePhase(currentPhase);
 
 		while (PhasesTitle.isFading)
 		{
 			yield return null;
 		}
 
-		Debug.LogWarning("New Phase: " + nextPhase.ToString());
-		currentPhase = nextPhase;
+		Debug.LogWarning("New Phase: " + currentPhase.ToString());
 		isChangingPhase = false;
-		finishChangeingPhases();
+		finishChangingPhases();
 	}
 
-	void finishChangeingPhases()
+	void finishChangingPhases()
 	{
 		switch (currentPhase)
 		{
-			case Phase.Action:
-				//
-				break;
 			case Phase.Movement:
 				StartCoroutine(AwaitMovementPhase());
 				break;
@@ -433,9 +426,9 @@ public class GameController : Singleton<GameController>
 
 			var conditions = player.GetConditions();
 
-			foreach (Condition cond in conditions)
+			foreach (MandatoryCondition cond in conditions)
 			{
-				final += cond.getDescription() + "\n";
+				final += cond.GetDescription() + "\n";
 			}
 		}
 		final += "\n\n";

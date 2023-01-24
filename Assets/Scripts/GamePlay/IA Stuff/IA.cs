@@ -3,16 +3,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public class IA : MonoBehaviour {
-
-	[SerializeField] GameController gameController;
-	[SerializeField] Battlefield battlefield;
-	Player player;
-
+public class IA : Player {
 	void Start () {
-		player = GetComponent<Player> ();
-		InvokeRepeating("solveCondition", 0, 0.5f);
-		InvokeRepeating("solvePhase", 0, 4f);
 	}
 
 

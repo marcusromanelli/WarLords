@@ -668,7 +668,7 @@ MonoBehaviour:
     uiCardDeck: {fileID: 7121840362206527237}
     NumberOfShuffles: 1
   Graveyard:
-    uiCardDeck: {fileID: 0}
+    uiCardDeck: {fileID: 6291344030914926754}
     NumberOfShuffles: 1
   ManaPool:
     uiManaPool: {fileID: 5353303773012978506}
@@ -678,6 +678,8 @@ MonoBehaviour:
   Hand:
     uiPlayerHand: {fileID: 5859218327735603940}
     Cards: []
+  conditionManager: {fileID: 0}
+  infinityHabilitiesPerTurn: 1
 --- !u!1 &4024835801678399008
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardCounter: {fileID: 0}
   cardReferencePosition: {fileID: 1561681325608008593}
   distanceBetweenCards: 0.01
   isBusy: 0
@@ -1126,6 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardCounter: {fileID: 0}
   cardReferencePosition: {fileID: 5522595699533326268}
   distanceBetweenCards: 0.02
   isBusy: 0

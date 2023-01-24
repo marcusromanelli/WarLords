@@ -1,3 +1,3 @@
 ﻿public enum Phase{
-	Draw=0, Action=1, Movement=2, Attack=3, End=4
+	PreGame, Draw, Action, Movement, Attack, End
 }

@@ -1,70 +1,44 @@
-﻿using UnityEngine;
-using System;
-using System.Linq;
+﻿using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	/*public delegate void ReleaseCard(CardObject card);
-	public event ReleaseCard OnReleaseCard;
+	public delegate void HandleOnDrawCard(int number);
+	public event HandleOnDrawCard OnDrawCard;
 
-	public delegate void HoldCard(CardObject card);
-	public event HoldCard OnHoldCard;
+	public delegate void HandleOnDiscardCard(int number);
+	public event HandleOnDiscardCard OnDiscardCard;
 
-	public delegate void ClickCard(CardObject card);
-	public event ClickCard OnClickCard;*/
+	public delegate void HandleOnSendCardToManaPool(int number);
+	public event HandleOnSendCardToManaPool OnSendCardToManaPool;
 
+	public delegate void HandleOnPickSpawnArea();
+	public event HandleOnPickSpawnArea OnPickSpawnArea;
 
-
-	//[SerializeField] List<int> RemainingCards;
-	//[SerializeField] List<int> Deck;
 
 
 	//In Game ONLY
 	private const string playerPropertiesTag = "Player Properties";
 	[BoxGroup(playerPropertiesTag), SerializeField] Civilization civilization;
-	//[SerializeField] int life;
-	//[SerializeField] PlayerType Type;
+
 	private const string gameLogicTag = "Game Logic";
 	[BoxGroup(gameLogicTag), SerializeField] CardDeck<Card> PlayDeck;
 	[BoxGroup(gameLogicTag), SerializeField] CardDeck<Card> Graveyard;
 	[BoxGroup(gameLogicTag), SerializeField] ManaPool ManaPool;
 	[BoxGroup(gameLogicTag), SerializeField] PlayerHand Hand;
+	[BoxGroup(gameLogicTag), SerializeField] MandatoryConditionManager conditionManager;
 
 	private const string debugTag = "Debug";
 	[BoxGroup(debugTag), SerializeField] bool infinityHabilitiesPerTurn;
 
-	private InputController inputController;
-	private ConditionManager conditionManager;
 
 	private bool HasUsedHability;
 
 
-	//[SerializeField] HandController HandObject;
-	//[SerializeField] UICardDeck DeckController;
-	//[SerializeField] ManaPool ManaPoolController;
-	//[SerializeField] GraveyardController GraveyardController;
-	//[SerializeField] LifePointsController LifePointsController;
-	//[SerializeField] Battlefield battlefield;
-
-	//Toss 1 card to draw 2
-	//or
-	//1 card = 1 mana
-	/*[SerializeField] bool hasUsedHability;
-	[SerializeField] bool hasDrawnCard;
-	[SerializeField] bool isSelectingCard;
-	[SerializeField] bool isDrawing;*/
-
-	//Action auxiliarAction;
-
-	bool isFillingDeck;
-
 	public void Setup(InputController inputController)
     {
-		this.inputController = inputController;
-
 		ManaPool.Setup();
 
 		Hand.PreSetup(inputController);
@@ -90,7 +64,7 @@ public class Player : MonoBehaviour
 	}
 	public void SetupConditions()
 	{
-		conditionManager = new ConditionManager();
+		conditionManager.Setup(this);
 	}
 	public IEnumerator IsInitialized()
     {
@@ -115,23 +89,17 @@ public class Player : MonoBehaviour
 
 		DoDrawCards(number);
 	}
-	public void AddCondition(ConditionType Type, int number = -1)
+	public void AddCondition(MandatoryConditionType Type, int number = -1)
 	{
-		/*Condition aux = gameObject.AddComponent<Condition>();
-		aux.SetValues(Type, number);
-		Conditions.Add(aux);
-		if (!Conditions[0].isChecking)
-		{
-			Conditions[0].setActive();
-		}*/
+		conditionManager.AddCondition(Type, number);
 	}
 	public bool CanUseHability()
 	{
-		return infinityHabilitiesPerTurn || (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(ConditionType.SendCardToManaPool));
+		return infinityHabilitiesPerTurn || (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(MandatoryConditionType.SendCardToManaPool));
 	}
 	public bool CanGenerateMana()
 	{
-		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(ConditionType.SendCardToManaPool);
+		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(MandatoryConditionType.SendCardToManaPool);
 	}
 	void DoDrawCards(int number)
 	{
@@ -140,6 +108,8 @@ public class Player : MonoBehaviour
 		Card[] cards = PlayDeck.DrawCards(number);
 
 		Hand.AddCards(cards);
+
+		OnDrawCard?.Invoke(number);
 	}
 	void TurnGraveyardIntoDeck()
 	{
@@ -169,12 +139,7 @@ public class Player : MonoBehaviour
 	void CreateMana()
     {
         if (!HasUsedHability)
-        {
 			HasUsedHability = true;
-        }else if (HasCondition(ConditionType.SendCardToManaPool))
-        {
-			RemoveCondition(ConditionType.SendCardToManaPool);
-        }
 
 		GenerateManaFromCurrentHoldingCard();
 	}
@@ -186,12 +151,14 @@ public class Player : MonoBehaviour
 		Graveyard.AddCard(currentCardData);
 
 		ManaPool.IncreaseMaxMana();
+
+		OnSendCardToManaPool?.Invoke(1);
 	}
 	void OnCardReleasedOnGraveyard(CardObject card)
 	{
-		UseDiscardOneToDrawTwohability();
+		UseDiscardOneToDrawTwoHability();
 	}
-	void UseDiscardOneToDrawTwohability()
+	void UseDiscardOneToDrawTwoHability()
     {
 		if (!CanUseHability())
 		{
@@ -202,6 +169,8 @@ public class Player : MonoBehaviour
 		HasUsedHability = true;
 
 		DiscardCurrentHoldingCard();
+
+		TryDrawCards(2);
 	}
 	void DiscardCurrentHoldingCard()
     {
@@ -210,9 +179,9 @@ public class Player : MonoBehaviour
 		Hand.DiscardCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 
-		TryDrawCards(2);
+		OnSendCardToManaPool?.Invoke(1);
 	}
-	public List<Condition> GetConditions()
+	public List<MandatoryCondition> GetConditions()
 	{
 		return conditionManager.Conditions;
 	}
@@ -220,7 +189,7 @@ public class Player : MonoBehaviour
 	{
 		return conditionManager.HasAny();
 	}
-	public bool HasCondition(ConditionType condition)
+	public bool HasCondition(MandatoryConditionType condition)
 	{
 		return conditionManager.Has(condition);
 	}
@@ -228,11 +197,11 @@ public class Player : MonoBehaviour
 	{
 		conditionManager.RemoveCurrent();
 	}
-	public void RemoveCondition(Condition condition)
+	public void RemoveCondition(MandatoryCondition condition)
 	{
 		conditionManager.Remove(condition);
 	}
-	public void RemoveCondition(ConditionType condition)
+	public void RemoveCondition(MandatoryConditionType condition)
 	{
 		conditionManager.Remove(condition);
 	}

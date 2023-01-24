@@ -2747,6 +2747,25 @@ Transform:
   m_Father: {fileID: 222582008}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &650225069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4524217467692053415, guid: 4c6cb34e3527ec14f9208abf976980ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 6851824715203774338}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &650225073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650225069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a585e9779cdca0e479be4c6c7ac6a666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditions: []
 --- !u!1 &650818242
 GameObject:
   m_ObjectHideFlags: 0
@@ -15140,18 +15159,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427806187}
   m_Mesh: {fileID: 4300000, guid: 4f71198e7dec1124692745a776121f59, type: 3}
---- !u!114 &1433792545 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6960246458939573746, guid: 4c6cb34e3527ec14f9208abf976980ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 6851824715203774338}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da5cc44d9520c924ab902855879e8f05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1439938881
 GameObject:
   m_ObjectHideFlags: 0
@@ -15868,6 +15875,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1773413963 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000010666410026, guid: 4c6cb34e3527ec14f9208abf976980ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 6851824715203774338}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1773413966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773413963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a585e9779cdca0e479be4c6c7ac6a666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditions: []
 --- !u!1 &1798736317
 GameObject:
   m_ObjectHideFlags: 0
@@ -17679,19 +17705,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
-      propertyPath: Graveyard.uiCardDeck
+      propertyPath: conditionManager
       value: 
-      objectReference: {fileID: 1433792545}
+      objectReference: {fileID: 1773413966}
     - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: infinityHabilitiesPerTurn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000012439921640, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: inputController
       value: 
       objectReference: {fileID: 1218760873}
+    - target: {fileID: 4566562301832713259, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: conditionManager
+      value: 
+      objectReference: {fileID: 650225073}
     - target: {fileID: 6128633028063076949, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: cardCounter
