@@ -1,4 +1,4 @@
 public enum MouseEventType
 {
-    StartHover, EndHover, LeftMouseButton, LeftMouseButtonDown, LeftMouseButtonUp, LeftMouseDragStart, LeftMouseDragEnd, MouseMove
+    StartHover, Hover, EndHover, LeftMouseButton, LeftMouseButtonDown, LeftMouseButtonUp, LeftMouseDragStart, LeftMouseDragEnd, MouseMove
 }

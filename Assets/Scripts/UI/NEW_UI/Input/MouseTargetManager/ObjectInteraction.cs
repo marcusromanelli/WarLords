@@ -11,7 +11,6 @@ class ObjectInteraction
     [ReadOnly] public bool IsHovering;
     [ReadOnly] public bool IsClicking;
     [ReadOnly] public bool IsDragging;
-    [ReadOnly] public Vector3 lastMousePosition;
 
     public ObjectInteraction(GameObject gameObject)
     {
@@ -39,6 +38,9 @@ class ObjectInteraction
         }
 
         IsHovering = hovering;
+
+        if(IsHovering)
+            TriggerEventCallback(MouseEventType.Hover);
     }
     public void SetClick(bool clicking)
     {

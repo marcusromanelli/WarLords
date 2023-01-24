@@ -58,13 +58,13 @@ public class UIPlayerHand : MonoBehaviour
     }
     void RegisterDefaultCallbacks()
     {
-        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiCardDeck.gameObject, OnStartHoverMainDeck);
+        inputController.RegisterTargetCallback(MouseEventType.Hover, uiCardDeck.gameObject, OnStartHoverMainDeck);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiCardDeck.gameObject, OnEndHoverMainDeck);
 
-        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiGraveyardDeck.gameObject, OnStartHoverGraveyard);
+        inputController.RegisterTargetCallback(MouseEventType.Hover, uiGraveyardDeck.gameObject, OnStartHoverGraveyard);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiGraveyardDeck.gameObject, OnEndHoverGraveyard);
 
-        inputController.RegisterTargetCallback(MouseEventType.StartHover, uiManaPool.gameObject, OnStartHoverManaPool);
+        inputController.RegisterTargetCallback(MouseEventType.Hover, uiManaPool.gameObject, OnStartHoverManaPool);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiManaPool.gameObject, OnEndHoverManaPool);
     }
     void RegisterCardCallback(GameObject gameObject)
