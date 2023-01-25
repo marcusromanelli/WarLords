@@ -267,7 +267,7 @@ public class Player : MonoBehaviour
 
 		TryDrawCards(2);
 	}
-	void DiscardCurrentHoldingCard()
+	public void DiscardCurrentHoldingCard()
     {
 		var currentCard = Hand.GetHoldingCard();
 		var currentCardData = currentCard.CardData;

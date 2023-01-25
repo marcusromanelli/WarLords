@@ -139,23 +139,31 @@ public class AIPlayer : Player
 				TryDrawCards ();
 				break;
 			case MandatoryConditionType.DiscartCard:
-				throw new NotImplementedException("AI cannot discard cards yet");
+				DiscardRandomCard();
+				break;
 			case MandatoryConditionType.SendCardToManaPool:
 				GenerateManaFromRandomCard();
 				break;
 		}
 	}
+	void DiscardRandomCard()
+	{
+		ActionOnRandomCard(() => { DiscardCurrentHoldingCard(); });
+	}
 	void GenerateManaFromRandomCard()
+	{
+		ActionOnRandomCard(() => { UseManaHability(); });
+	}
+	void ActionOnRandomCard(Action Action)
 	{
 		var currentCard = GetRandomCardFromHand();
 
 		Hand.HoldCard(currentCard);
 
-		UseManaHability();
+		Action();
 
 		Hand.CancelHandToCardInteraction();
 	}
-
 	Card GetRandomCardFromHand()
 	{
 		var handCards = Hand.GetCards();
