@@ -9,6 +9,7 @@ public class UIPlayerHand : MonoBehaviour
 
     [SerializeField] bool IsInteractable = true;
     [SerializeField] float awaitTimeBetweenDraws = 0f;
+    [SerializeField, ShowIf("IsInteractable")] Battlefield battlefield;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiCardDeck;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiGraveyardDeck;
     [SerializeField, ShowIf("IsInteractable")] UIManaPool uiManaPool;
@@ -119,6 +120,9 @@ public class UIPlayerHand : MonoBehaviour
     }
     void RegisterDefaultCallbacks()
     {
+        if (!IsInteractable)
+            return;
+
         inputController.RegisterTargetCallback(MouseEventType.Hover, uiCardDeck.gameObject, OnStartHoverMainDeck);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiCardDeck.gameObject, OnEndHoverMainDeck);
 
@@ -129,6 +133,13 @@ public class UIPlayerHand : MonoBehaviour
         inputController.RegisterTargetCallback(MouseEventType.Hover, uiManaPool.gameObject, OnStartHoverManaPool);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiManaPool.gameObject, OnEndHoverManaPool);
         inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, uiManaPool.gameObject, OnReleaseCardOnManaPool);
+
+        foreach(var field in battlefield.GetFields())
+        {
+            inputController.RegisterTargetCallback(MouseEventType.Hover, field.gameObject, OnStartHoverSpawnArea);
+            inputController.RegisterTargetCallback(MouseEventType.EndHover, field.gameObject, OnEndHoverSpawnArea);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, field.gameObject, OnReleaseHoverSpawnArea);
+        }
     }
     void RegisterCardCallback(GameObject gameObject)
     {
@@ -319,7 +330,22 @@ public class UIPlayerHand : MonoBehaviour
 
         GenericHoverPlace(gameObject);
     }
+    void OnStartHoverSpawnArea(GameObject gameObject)
+    {
+        if (!IsHoldingCard || !IsDraggingCard)
+            return;
+
+        HandleStartHoverSpawnArea(gameObject);
+    }
     void OnEndHoverManaPool(GameObject gameObject)
+    {
+        if (!IsHoldingCard || !IsDraggingCard)
+            return;
+
+        IsCardAwaitingRelease = false;
+        StartCardDynamicDrag(currentTargetCard);
+    }
+    void OnEndHoverSpawnArea(GameObject gameObject)
     {
         if (!IsHoldingCard || !IsDraggingCard)
             return;
@@ -353,10 +379,32 @@ public class UIPlayerHand : MonoBehaviour
 
         onCardReleasedOnManaPool?.Invoke(currentTargetCard);
     }
+    void OnReleaseHoverSpawnArea(GameObject gameObject)
+    {
+        if (IsRearragingCards || !IsCardAwaitingRelease)
+            return;
+
+        CancelDrag();
+        StopCardDynamicDrag();
+        ReturnCurrentCardToHand();
+    }
+    void HandleStartHoverSpawnArea(GameObject spawnAreaObject)
+    {
+        var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
+
+        if (!spawnArea.IsSummonable)
+            return;
+
+        GenericHoverPlace(spawnArea);
+    }
     void GenericHoverPlace(GameObject gameObject)
     {
-        ICardPlaceable cardPlaceable = gameObject.transform.GetComponent<ICardPlaceable>();
+        ICardPlaceable cardPlaceable = gameObject.GetComponent<ICardPlaceable>();
 
+        GenericHoverPlace(cardPlaceable);
+    }
+    void GenericHoverPlace(ICardPlaceable cardPlaceable)
+    {
         IsCardAwaitingRelease = true;
         StopCardDynamicDrag();
         currentTargetCard.SetPositionAndRotation(CardPositionData.Create(cardPlaceable.GetTopCardPosition(), cardPlaceable.GetRotationReference()));

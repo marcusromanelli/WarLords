@@ -2,16 +2,19 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class SpawnArea : MonoBehaviour
+public class SpawnArea : MonoBehaviour, ICardPlaceable
 {
-	[SerializeField] Battlefield battlefield;
-	[SerializeField] GameController gameController;
+	[SerializeField] Transform cardPositionDataReference;
 	[SerializeField] new Renderer renderer;
 	[SerializeField] Color defaultColor = Color.grey;
 	[SerializeField] Color selectedColor = Color.black;
 	[ReadOnly] public PlayerType playerType = PlayerType.None;
-	public bool IsTemporarilySummonable;
-	public Hero Hero = null;
+
+
+	private bool IsTemporarilySummonable;
+	private Hero Hero = null;
+	private GameController gameController;
+	private Battlefield battlefield;
 
 	Color lastUsedColor;
 	/// <summary>
@@ -69,16 +72,6 @@ public class SpawnArea : MonoBehaviour
 		renderer.material.color = color;
 		lastUsedColor = color;
 	}
-	protected void Update()
-	{
-		if (!Application.isPlaying)
-			return;
-
-		//CheckMouse();
-
-		//UpdateColor();
-	}
-
     /*void UpdateColor()
 	{
 		var player = gameController.GetCurrentPlayer();
@@ -142,4 +135,12 @@ public class SpawnArea : MonoBehaviour
     {
 		return Hero != null;
     }
+    public Vector3 GetTopCardPosition()
+    {
+		return cardPositionDataReference.transform.position;
+	}
+    public Quaternion GetRotationReference()
+	{
+		return cardPositionDataReference.transform.rotation;
+	}
 }

@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 [ExecuteInEditMode]
 public class Battlefield : MonoBehaviour
 {
-	[SerializeField] protected Player localPlayerController;
 	[SerializeField] protected Transform CardReferencePosition;
 	[SerializeField] List<SpawnArea> generatedTiles;
 	[SerializeField] GameController gameController;
-	[SerializeField] GameObject[] gridTiles;
-	[SerializeField] int numberOfLanes = 5;
-	[SerializeField] int numberOfSquares = 7;
-	[SerializeField] int numberOfSpawnAreasPerLane = 2;
 
-	[SerializeField] float squareSize = 0.8f;
+	[BoxGroup("Generation"), SerializeField] bool randomizeEveryGame;
+	[BoxGroup("Generation"), SerializeField] GameObject[] gridTiles;
+	[BoxGroup("Generation"), SerializeField] int numberOfLanes = 5;
+	[BoxGroup("Generation"), SerializeField] int numberOfSquares = 7;
+	[BoxGroup("Generation"), SerializeField] int numberOfSpawnAreasPerLane = 2;
+	[BoxGroup("Generation"), SerializeField] float squareSize = 0.8f;
 
 	SpawnArea selectedTile;
 	CardObject cardWaitingForSpawn;
@@ -29,6 +29,8 @@ public class Battlefield : MonoBehaviour
 		if (!Application.isPlaying)
 			return;
 
+		if(randomizeEveryGame)
+			Generate();
 		//localPlayerController.OnHoldCard += SetCardBeingHeld;
 		//localPlayerController.OnReleaseCard += SetCardBeingReleased;
 	}
@@ -61,7 +63,7 @@ public class Battlefield : MonoBehaviour
 			for (int i = 0; i < numberOfSquares; i++)
 			{
 				aux.z = i * squareSize;
-				GameObject aux2 = Instantiate(gridTiles[currentLane], Vector3.zero, Quaternion.identity);
+				GameObject aux2 = Instantiate(gridTiles[Random.Range(0, gridTiles.Length)], Vector3.zero, Quaternion.identity);
 				aux2.transform.position = aux;
 				aux2.transform.SetParent(lane.transform);
 
@@ -175,6 +177,10 @@ public class Battlefield : MonoBehaviour
 
 		return generatedTiles.FindAll(tile => tile.playerType == player.GetPlayerType()
 										&& tile.IsSummonArea);*/
+	}
+	public List<SpawnArea> GetFields()
+	{
+		return generatedTiles;
 	}
 
 	public int GetNumberOfSquares()
@@ -434,7 +440,7 @@ public class Battlefield : MonoBehaviour
 
 	public SpawnArea GetHeroTile(Player player, Hero hero)
 	{
-		return generatedTiles.First(tile => tile.Hero == hero);
+		return null;// generatedTiles.First(tile => tile.Hero == hero);
 	}
 	public SpawnArea GetTileByPosition(Vector2 position)
 	{
@@ -446,10 +452,10 @@ public class Battlefield : MonoBehaviour
     //}
 	public void SetHeroTile(Hero hero, SpawnArea spawnArea)
     {
-		if (spawnArea.Hero != null)
+		/*if (spawnArea.Hero != null)
 			Debug.LogError("[ERROR] TILE NOT EMPTY");
 
-		spawnArea.Hero = hero;
+		spawnArea.Hero = hero;*/
     }
 
     public void CheckMouseOver(bool requiresClick)

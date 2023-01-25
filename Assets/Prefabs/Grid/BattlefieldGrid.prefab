@@ -43,13 +43,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6aee61e8930fb4e86ab9a88c2f7086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localPlayerController: {fileID: 0}
+  CardReferencePosition: {fileID: 0}
+  generatedTiles: []
   gameController: {fileID: 0}
   gridTiles:
   - {fileID: 1000013507749054, guid: 59e9658de8d800d4990df3545f45d778, type: 3}
+  - {fileID: 1000014128719110, guid: 9a39420ee762fad48ae1df77dde8529b, type: 3}
+  - {fileID: 1000010245026100, guid: 762ee805b890ea641a8f6e8864f6ed22, type: 3}
   - {fileID: 1000010784588128, guid: 6ae331c930ec54745a94c6b95385661f, type: 3}
-  - {fileID: 1000013507749054, guid: 59e9658de8d800d4990df3545f45d778, type: 3}
-  - {fileID: 1000010784588128, guid: 6ae331c930ec54745a94c6b95385661f, type: 3}
-  - {fileID: 1000013507749054, guid: 59e9658de8d800d4990df3545f45d778, type: 3}
+  - {fileID: 1000010296629556, guid: 59af762e262549f4ba3e8bcb9d52867d, type: 3}
   numberOfLanes: 5
   numberOfSquares: 7
   numberOfSpawnAreasPerLane: 2
