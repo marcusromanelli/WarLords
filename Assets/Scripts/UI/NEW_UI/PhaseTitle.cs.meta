@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9d156b529f0648e42842c49696afc901
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - image: {instanceID: 0}
+  - Combat: {fileID: 21300000, guid: 9874d53c20076c84bb2923a1eb88994e, type: 3}
+  - Enemy: {fileID: 21300000, guid: 714975e57a96a44449760f6bdfe2eac4, type: 3}
+  - Movement: {instanceID: 0}
+  - Your: {instanceID: 0}
+  - Win: {instanceID: 0}
+  - Lose: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

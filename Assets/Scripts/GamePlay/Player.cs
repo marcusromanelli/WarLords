@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> Graveyard;
 	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
 	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand Hand;
+	[BoxGroup(gameLogicTag), SerializeField] protected NextPhaseButton nextPhaseButton;
 	[BoxGroup(gameLogicTag), SerializeField] protected MandatoryConditionManager conditionManager;
 
 	private const string debugTag = "Debug";
@@ -34,6 +35,8 @@ public class Player : MonoBehaviour
 
 	protected bool HasUsedHability;
 	protected GameController gameController;
+	protected bool IsReadyToEndActionPhase = true;
+	protected bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
 	public virtual void Setup(GameController gameController, InputController inputController)
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour
 
 		ManaPool.Setup();
 
-		Hand.PreSetup(inputController);
+		Hand.PreSetup(inputController, CanDiscardCard, CanGenerateMana);
 		Hand.OnCardReleasedOnGraveyard += OnCardReleasedOnGraveyard;
 		Hand.OnCardReleasedOnManaPool += OnCardReleasedOnManaPool;
 	}
@@ -71,13 +74,56 @@ public class Player : MonoBehaviour
     {
 		yield return PlayDeck.IsUIUpdating();
 	}
+	public int GetHandCardsNumber()
+    {
+		return Hand.Count;
+    }
 	protected virtual bool CanInteract()
     {
 		return gameController.CanPlayerInteract(this);
     }
 
-    #region CARD_DRAW
-    public void TryDrawCards(int number = 1)
+	#region ACTIONS
+
+	#region DRAW_PHASE
+	public void StartDrawPhase()
+    {
+		TryDrawCards();
+	}
+	public IEnumerator IsResolvingDrawPhase()
+	{
+		yield return null;
+	}
+	#endregion DRAW_PHASE
+
+	#region ACTION_PHASE
+	public void StartActionPhase()
+	{
+		SetUsedHability(false);
+		IsReadyToEndActionPhase = false;
+		nextPhaseButton?.Show();
+	}
+	public IEnumerator IsResolvingActionPhase()
+    {
+        while (!IsReadyToEndActionPhase)
+        {
+			yield return null;
+        }
+    }
+	public void OnClickNextPhase()
+    {
+		if (IsReadyToEndActionPhase)
+			return;
+
+		IsReadyToEndActionPhase = true;
+		nextPhaseButton?.Hide();
+	}
+	#endregion ACTION_PHASE
+
+	#endregion ACTIONS
+
+	#region CARD_DRAW
+	public void TryDrawCards(int number = 1)
 	{
 		if (!CanInteract())
 			return;
@@ -122,16 +168,23 @@ public class Player : MonoBehaviour
 
 	#region HABILITIES
 
+	void SetUsedHability(bool value)
+    {
+		HasUsedHability = value;
+    }
 	bool CanUseHability()
 	{
-		return infinityHabilitiesPerTurn || (CanInteract() && (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(MandatoryConditionType.SendCardToManaPool)));
+		return (infinityHabilitiesPerTurn || !HasUsedHability) && IsOnActionPhase;
 	}
 
 	#region CARD_TO_MANA_HABILITY
 
 	bool CanGenerateMana()
 	{
-		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(MandatoryConditionType.SendCardToManaPool);
+		var hasHabilityOrCondition = CanUseHability() || HasCondition(MandatoryConditionType.SendCardToManaPool);
+		var canHeUse = CanInteract() && ManaPool.HasManaSpace() && hasHabilityOrCondition;
+
+		return infinityHabilitiesPerTurn || canHeUse;
 	}
 	protected void OnCardReleasedOnManaPool(CardObject card)
 	{
@@ -149,8 +202,7 @@ public class Player : MonoBehaviour
 	}
 	void CreateMana()
     {
-        if (!HasUsedHability)
-			HasUsedHability = true;
+		SetUsedHability(true);
 
 		GenerateManaFromCurrentHoldingCard();
 	}
@@ -173,10 +225,33 @@ public class Player : MonoBehaviour
 	#endregion CARD_TO_MANA_HABILITY
 
 	#region 1_CARD_TO_TWO_HABILITY
+	public bool CanDiscardCard()
+	{
+		var hasHability = CanUseHability();
+		var hasCondition = HasCondition(MandatoryConditionType.DiscartCard);
 
+		return hasHability || hasCondition;
+	}
 	void OnCardReleasedOnGraveyard(CardObject card)
 	{
-		UseDiscardOneToDrawTwoHability();
+		CardOnGraveyardLogic();
+	}
+	void CardOnGraveyardLogic()
+    {
+        if (!IsReadyToEndActionPhase) {
+			//If is on action phase
+
+			UseDiscardOneToDrawTwoHability();
+			return;
+		}
+
+		if (CanDiscardCard())
+		{
+			DiscardCurrentHoldingCard();
+			return;
+		}
+
+		Debug.Log("You cannot discard a card right now.");
 	}
 	void UseDiscardOneToDrawTwoHability()
     {
@@ -186,7 +261,7 @@ public class Player : MonoBehaviour
 			return;
 		}
 
-		HasUsedHability = true;
+		SetUsedHability(true);
 
 		DiscardCurrentHoldingCard();
 
@@ -199,7 +274,7 @@ public class Player : MonoBehaviour
 		Hand.DiscardCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 
-		OnSendManaCreation?.Invoke(1);
+		OnDiscardCard?.Invoke(1);
 	}
 
     #endregion 1_CARD_TO_TWO_HABILITY
@@ -247,175 +322,7 @@ public class Player : MonoBehaviour
 	
 
 	/*
-	public void Setup()
-	{
-		//var startLife = GameConfiguration.startLife;
-		//LifePointsController.Setup(startLife);
-	}
 
-	public void StartTurn()
-	{
-		//ResetHabilities();
-		//RecoverMana();
-		//ResetPreviewMana();
-
-		//TryDrawCards();
-		//hasDrawnCard = true;
-		//EndPhase();
-	}
-	public void DiscartCardFromHand(Card nCard)
-	{
-		return;/*
-		Card card = Hand.Find(a => a.PlayID == nCard.PlayID);
-		if (card.CardID > 0)
-		{
-			Hand.Remove(card);
-			HandObject.RemoveCard(card.PlayID);
-			Graveyard.AddCard(card);
-			LogController.Log(Action.DiscartCard, this, 1);
-		}*
-	}
-
-	void ResetHabilities()
-	{
-		//hasUsedHability = false;
-		//hasDrawnCard = false;
-	}
-
-	public void SendCardToManaPool(Card card)
-	{
-		/*if (hasUsedHability)
-		{
-			if (!hasCondition(ConditionType.SendCardToManaPool))
-			{
-				GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-				Debug.Log(GetFormatedName() + " cannot use his hability because he already used this turn");
-				return;
-			}
-		}
-		if (!ManaPool.HasManaSpace())
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-			Debug.Log("You already have the maximum mana permitted.");
-			return;
-		}*/
-
-	/*var removedCard = Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0;
-	if (!removedCard)
-	{
-		Debug.LogError("Tried to remove a card from hand of " + GetFormatedName() + " that doesn't is there");
-		return;
-
-	}
-
-	HandObject.RemoveCard(card.PlayID);*/
-	/*ManaPool.IncreaseMaxMana();
-	hasUsedHability = true;
-	Debug.Log("Card ID nº " + card.PlayID + " became a Mana");*
-}
-
-public void DiscartCardToDrawTwo(Card card)
-{
-	/*if (hasUsedHability)
-	{
-		GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-		Debug.Log(GetFormatedName() + " cannot use his hability because he already used this turn");
-		return;
-	}*/
-
-	/*var hasDiscarted = Hand.RemoveAll(a => a.PlayID == card.PlayID) > 0;
-
-
-	if (!hasDiscarted)
-	{
-		Debug.LogError("Tried to remove a card from hand that doesn't is there");
-		return;
-	}*/
-
-	/*Graveyard.AddCard(card);
-	//HandObject.RemoveCard(card.PlayID);
-	TryDrawCards(2);
-	hasUsedHability = true;
-	LogController.Log(Action.ChangeCard, this);
-	Debug.Log("Card ID nº " + card + " has gone to Graveyard and " + GetFormatedName() + " drawed 2 cards");*
-}
-
-List<Card> shuffleCards(List<Card> cards)
-{
-	Card temp;
-	for (int i = 0; i < cards.Count; i++)
-	{
-		temp = cards[i];
-		int randomIndex = UnityEngine.Random.Range(i, cards.Count);
-		cards[i] = cards[randomIndex];
-		cards[randomIndex] = temp;
-	}
-	return cards;
-}
-
-Stack<Card> shuffleCards(Stack<Card> cards)
-{
-	List<Card> aux = new List<Card>(cards);
-	Card temp;
-	for (int i = 0; i < aux.Count; i++)
-	{
-		temp = aux[i];
-		int randomIndex = UnityEngine.Random.Range(i, aux.Count);
-		aux[i] = aux[randomIndex];
-		aux[randomIndex] = temp;
-	}
-	return new Stack<Card>(aux);
-}
-
-public bool CanSpendMana(int number)
-{
-	return false;
-	//return ManaPool.HasAvailableMana(number);
-}
-
-public void PreviewSpendMana(int number)
-{
-	//ManaPool.PreviewMana(number);
-}
-public void ResetPreviewMana()
-{
-	//ManaPool.RestorePreviewedMana();
-}
-public void AddMaxMana(int number)
-{
-	Debug.Log("Added " + number + " mana");
-
-	GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
-
-	//ManaPool.SpendMana(number);
-}
-public void SpendMana(int number)
-{
-	if (!CanSpendMana(number))
-	{
-		//Debug.LogWarning("Not have enough mana. Requested: " + number + " - You have: " + ManaPool.CurrentMana);
-		return;
-	}
-
-
-	Debug.Log("Spended " + number + " mana");
-	//ManaPool.SpendMana(number);
-}
-public void RecoverMana(int number = -1)
-{
-	Debug.Log("Recovered " + number + " mana");
-	//ManaPool.RestoreSpentMana(number);
-}
-
-public void setPlayerCivilization(Civilization civ)
-{
-	this.civilization = civ;
-}
-
-public void EndPhase()
-{
-	GameController.Singleton.NextPhase();
-}
 public void TakeDamage(int value)
 {
 	/*if (value < 0)
@@ -448,90 +355,11 @@ public int getNumberOfHeroes()
 	//return battlefield.GetHeroes(this).Count;
 }
 
-public void GetRandomCardFromGraveyard()
-{
-	/*if (Graveyard.Count > 0)
-	{
-		Card card = Graveyard.GetRandomCard();
-
-		Hand.AddCard(card);
-
-		GameConfiguration.PlaySFX(GameConfiguration.drawCard);
-	}*
-}
-
-public void GetRandomCardFromDeck(int number = 1)
-{
-	TryDrawCards(number);
-}
-
 public string getName()
 {
 	return civilization.ToString();
 }
 
-public void SetCivilization(Civilization civilization)
-{
-	this.civilization = civilization;
-}
-
-public Civilization GetCivilization()
-{
-	return civilization;
-}
-
-public int GetCurrentHandNumber()
-{
-	return 1;// Hand.Count;
-}
-
-public int GetCurrentManaPoolCount()
-{
-	return 1;// ManaPool.CurrentMana;
-}
-
-public int GetCurrentGraveyardCount()
-{
-	return 1;// Graveyard.Count;
-}
-public int GetCurrentPlayDeckCount()
-{
-	return PlayDeck.Count;
-}
-
-public int GetCurrentLife()
-{
-	return 1;// life;
-}
-
-public PlayerType GetPlayerType()
-{
-	return PlayerType.None;// Type;
-}
-
-public bool HasDrawnTurnCard()
-{
-	return false;// hasDrawnCard;
-}
-
-public void SetDrawnCard(bool value)
-{
-	//hasDrawnCard = value;
-}
-
-public List<Condition> GetConditionList()
-{
-	return null;// Conditions;
-}
-public bool HasUsedHability()
-{
-	return false;// hasUsedHability;
-}
-
-public override string ToString()
-{
-	return "".ToString();
-}
 
 public void Summon(CardObject cardObject)
 {
@@ -539,19 +367,5 @@ public void Summon(CardObject cardObject)
 
 	//Debug.Log(GetFormatedName() + " is summoning " + cardObject.GetCardData().name);
 }
-
-public void SetReleaseCard(CardObject card)
-{
-	OnReleaseCard?.Invoke(card);
-}
-
-public void SetHoldCard(CardObject card)
-{
-	OnHoldCard?.Invoke(card);
-}
-
-public void SetClickCard(CardObject card)
-{
-	OnClickCard?.Invoke(card);
-}*/
+*/
 }

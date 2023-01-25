@@ -34,12 +34,18 @@ public class UIPlayerHand : MonoBehaviour
     private bool IsNOTInteractable => !IsInteractable;
     HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard;
     HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool;
+    HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard;
+    HandleCanReleaseCardOnManaPool canReleasedOnManaPool;
 
-    public void PreSetup(InputController inputController, HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard, HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool)
+    public void PreSetup(InputController inputController, HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard, 
+        HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool, HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard, 
+        HandleCanReleaseCardOnManaPool canReleasedOnManaPool)
     {
         this.inputController = inputController;
         this.onCardReleasedOnGraveyard = onCardReleasedOnGraveyard;
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
+        this.canReleasedOnGraveyard = canReleasedOnGraveyard;
+        this.canReleasedOnManaPool = canReleasedOnManaPool;
 
         RegisterDefaultCallbacks();
     }
@@ -49,13 +55,15 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void Discard(CardObject cardObject)
     {
-        CancelHandToCardInteraction();
-
-        UnregisterCardCallback(cardObject.gameObject);
-
         RemoveCard(cardObject);
+        SendCardToPool(cardObject);
     }
     public void TurnCardIntoMana(CardObject cardObject)
+    {
+        RemoveCard(cardObject);
+        cardObject.BecameMana(() => { SendCardToPool(cardObject); });     
+    }
+    void RemoveCard(CardObject cardObject)
     {
         CancelHandToCardInteraction();
 
@@ -66,10 +74,8 @@ public class UIPlayerHand : MonoBehaviour
         cardList.RemoveAt(cardIndex);
 
         RefreshCardPositions();
-
-        cardObject.BecameMana(() => { RemoveCard(cardObject); });     
     }
-    public void RemoveCard(CardObject cardObject)
+    public void SendCardToPool(CardObject cardObject)
     {
         CardFactory.AddCardToPool(cardObject);
     }
@@ -328,6 +334,10 @@ public class UIPlayerHand : MonoBehaviour
         
         CancelDrag();
         StopCardDynamicDrag();
+
+        if (!canReleasedOnGraveyard())
+            ReturnCurrentCardToHand();
+
         onCardReleasedOnGraveyard?.Invoke(currentTargetCard);
     }
     void OnReleaseCardOnManaPool(GameObject gameObject)
@@ -337,6 +347,10 @@ public class UIPlayerHand : MonoBehaviour
 
         CancelDrag();
         StopCardDynamicDrag();
+
+        if (!canReleasedOnManaPool())
+            ReturnCurrentCardToHand();
+
         onCardReleasedOnManaPool?.Invoke(currentTargetCard);
     }
     void GenericHoverPlace(GameObject gameObject)
@@ -353,7 +367,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     CardPositionData GetCardHandPosition(int cardIndex)
     {
-        var verticalBuildUp = 0.001f;
+        var verticalBuildUp = 0.01f;
 
         var numberOfCards = cardList.Count; //5
         var sectionSize = (1f / numberOfCards); //0.2

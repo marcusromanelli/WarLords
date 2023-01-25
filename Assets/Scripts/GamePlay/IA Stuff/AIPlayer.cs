@@ -23,6 +23,7 @@ public class AIPlayer : Player
 
 	void HandlePhaseChange(Phase currentPhase)
     {
+		StopAllCoroutines();
 		StartCoroutine(SolvePhase(currentPhase));
 	}
     IEnumerator SolvePhase(Phase currentPhase)
@@ -38,33 +39,15 @@ public class AIPlayer : Player
 		switch (currentPhase)
         {
 			case Phase.PreGame:
-				yield return Hand.IsUIUpdating();
-
-				var hasConditions = HasConditions();
-
-				while (hasConditions)
-				{
-					if(!isActive)
-						while (!DoAction)
-						{
-							yield return null;
-						}
-
-					ExecuteAction(() =>
-					{
-						var condition = GetConditions()[0];
-
-						SolveCondition(condition);
-
-						hasConditions = HasConditions();
-					});
-
-					yield return new WaitForSecondsRealtime(awaitBetweenConditionSolving);
-				}
-
-
+				yield return ResolvePreGame();
 				break;
-        }
+			case Phase.Action:
+				yield return ResolveAction();
+				break;
+			case Phase.End:
+				yield return ResolveConditions();
+				break;
+		}
 
 		//var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.MatchHasStarted && gameController.GetCurrentPlayer() == player;
 
@@ -106,6 +89,50 @@ public class AIPlayer : Player
 		}*/
 	}
 
+	IEnumerator ResolveAction()
+    {
+		yield return new WaitForSeconds(2);
+
+		OnClickNextPhase();
+	}
+	IEnumerator ResolveConditions()
+    {
+		var hasConditions = HasConditions();
+
+		while (true)
+		{
+			hasConditions = HasConditions();
+
+			if (!hasConditions)
+			{
+				yield return null;
+				continue;
+			}
+
+			if (!isActive)
+				while (!DoAction)
+				{
+					yield return null;
+				}
+
+			ExecuteAction(() =>
+			{
+				var condition = GetConditions()[0];
+
+				SolveCondition(condition);
+
+				hasConditions = HasConditions();
+			});
+
+			yield return new WaitForSecondsRealtime(awaitBetweenConditionSolving);
+		}
+	}
+	IEnumerator ResolvePreGame()
+    {
+		yield return Hand.IsUIUpdating();
+
+		yield return ResolveConditions();
+	}
 	void SolveCondition(MandatoryCondition condition)	{
 		switch (condition.Type) {
 			case MandatoryConditionType.DrawCard:

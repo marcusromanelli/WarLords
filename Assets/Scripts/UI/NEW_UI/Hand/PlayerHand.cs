@@ -6,6 +6,8 @@ using UnityEngine;
 public delegate void HandleOnCardReleasedOnDeck(CardObject card);
 public delegate void HandleOnCardReleasedOnGraveyard(CardObject card);
 public delegate void HandleOnCardReleasedOnManaPool(CardObject card);
+public delegate bool HandleCanReleaseCardOnGraveyard();
+public delegate bool HandleCanReleaseCardOnManaPool();
 
 [Serializable]
 public class PlayerHand
@@ -25,9 +27,9 @@ public class PlayerHand
     {
         Cards = new List<Card>();
     }
-    public void PreSetup(InputController inputController)
+    public void PreSetup(InputController inputController, HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard, HandleCanReleaseCardOnManaPool canReleasedOnManaPool)
     {
-        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool);
+        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, canReleasedOnGraveyard, canReleasedOnManaPool);
     }
     public void Setup(Civilization civilization)
     {

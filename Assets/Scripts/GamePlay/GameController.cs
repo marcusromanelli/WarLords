@@ -10,6 +10,7 @@ public class GameController : Singleton<GameController>
 	public event HandleOnPhaseChange OnPhaseChange;
 
 	[SerializeField] InputController inputController;
+	[SerializeField] PhaseTitle phaseTitle;
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
 	[SerializeField] Player RemotePlayer;
@@ -20,6 +21,9 @@ public class GameController : Singleton<GameController>
 
 	public Phase Phase => currentPhase;
 	public bool MatchHasStarted => Phase != Phase.PreGame;
+
+	private bool IsChangingPhase;
+
 	IEnumerator Start()
 	{
 		Initialize();
@@ -39,16 +43,65 @@ public class GameController : Singleton<GameController>
 	}
 	IEnumerator SolveCurrentPhase()
     {
-		WatchEndGame();
+		var gameHasEnded = WatchEndGame();
 
-		switch (currentPhase)
+		while (!gameHasEnded)
 		{
-			case Phase.PreGame:
-				yield return AwaitForGameStart();
-				break;
+			switch (currentPhase)
+			{
+				case Phase.PreGame:
+					yield return ResolvePreGame();
+					break;
+				case Phase.Draw:
+					yield return ResolveDrawPhase();
+					break;
+				case Phase.Action:
+					yield return ResolveActionPhase();
+					break;
+				case Phase.Movement:
+					Debug.Log("Skipping Movement phase");
+					//StartCoroutine(AwaitMovementPhase());
+					break;
+				case Phase.Attack:
+					Debug.Log("Skipping Attack phase");
+					//StartCoroutine(AwaitAttackPhase());
+					break;
+				case Phase.End:
+					Debug.Log("Skipping End phase");
+					//Debug.LogError("Gone to next turn");
+					//GoToNextPhase();
+					break;
+			}
+
+			gameHasEnded = WatchEndGame();
+			yield return GoToNextPhase();
 		}
+
+
+		Debug.Log("Game ended");
+		yield break;
 	}
-	IEnumerator AwaitForGameStart()
+
+
+
+	#region DRAW_PHASE
+	IEnumerator ResolveDrawPhase()
+    {
+		currentPlayer.StartDrawPhase();
+		yield return currentPlayer.IsResolvingDrawPhase();
+    }
+	#endregion ACTION_PHASE
+
+	#region ACTION_PHASE
+	IEnumerator ResolveActionPhase()
+    {
+		currentPlayer.StartActionPhase();
+		yield return currentPlayer.IsResolvingActionPhase();
+    }
+	#endregion ACTION_PHASE
+
+	#region PRE_GAME_PHASE
+	IEnumerator ResolvePreGame()
 	{
 		yield return StartupPlayers();
 
@@ -56,9 +109,7 @@ public class GameController : Singleton<GameController>
 
 		SetPhase(Phase.PreGame);
 
-		yield return AwaitPreGame();
-
-		NextPhase();
+		yield return AwaitConditionsToSolve();
 	}
 	IEnumerator StartupPlayers()
 	{
@@ -80,7 +131,7 @@ public class GameController : Singleton<GameController>
 		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 		RemotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
-	IEnumerator AwaitPreGame()
+	IEnumerator AwaitConditionsToSolve()
 	{
 		var hasConditions = true;
 		while (hasConditions)
@@ -89,7 +140,10 @@ public class GameController : Singleton<GameController>
 			hasConditions = LocalPlayer.HasConditions() || RemotePlayer.HasConditions();
 		}
 	}
-	public bool CanPlayerInteract(Player player)
+    #endregion PRE_GAME_PHASE
+
+
+    public bool CanPlayerInteract(Player player)
     {
 		return Phase == Phase.PreGame || currentPlayer == player;
     }
@@ -97,10 +151,9 @@ public class GameController : Singleton<GameController>
 	{
 		WatchExitGame();
 	}
-	void WatchEndGame()
+	bool WatchEndGame()
 	{
-		if (Phase == Phase.PreGame)
-			return;
+		return false;
 
 		//TODO ARRRRG
 		/*if (LocalPlayer.GetCurrentLife() <= 0)
@@ -126,117 +179,78 @@ public class GameController : Singleton<GameController>
 		currentPhase = phase;
 		OnPhaseChange?.Invoke(phase);
     }
-	void NextTurn(Phase phase = Phase.Draw)
-	{
-		/*currentPhase = phase;
+	void NextTurn()
+	{		
 		if (currentPlayer == null)
 		{
 			currentPlayer = LocalPlayer;
-			currentPlayer.SetDrawnCard(true);
 		}
 		else
 		{
-			currentPlayer = (RemotePlayer) ? LocalPlayer : RemotePlayer;
+			currentPlayer = (currentPlayer == RemotePlayer) ? LocalPlayer : RemotePlayer;
 		}
 
-		currentPlayer.StartTurn();
-
-		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());*/
+		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());
 	}
-	void NextPhase()
+	IEnumerator GoToNextPhase()
 	{
+		Debug.LogWarning("There are players with conditions to solve.");
+
+		yield return AwaitConditionsToSolve();
+
 		Debug.Log("Going to next phase");
-		/*if (isChangingPhase)
-			return;
 
-		if (currentPhase == Phase.End)
+		if(currentPhase == Phase.PreGame)
+			NextTurn();
+		else if (currentPhase == Phase.End)
+			yield return SolveEndPhaseLogic();
+
+		yield return StartChangingPhases();
+
+		SetPhase(GetNextPhase());
+	}
+	IEnumerator SolveEndPhaseLogic()
+    {
+		var numberOfCardsInHand = currentPlayer.GetHandCardsNumber();
+
+		if (currentPhase != Phase.End)
+			yield break;
+
+		if (numberOfCardsInHand > GameConfiguration.maxNumberOfCardsInHand)
 		{
+			var numberOfCardsToDiscard = numberOfCardsInHand - GameConfiguration.maxNumberOfCardsInHand;
 
-			if (currentPlayer.GetCurrentHandNumber() > GameConfiguration.maxNumberOfCardsInHand)
-			{
-				if (!currentPlayer.hasCondition(ConditionType.DiscartCard))
-				{
-					currentPlayer.AddCondition(ConditionType.DiscartCard, (currentPlayer.GetCurrentHandNumber() - GameConfiguration.maxNumberOfCardsInHand));
-				}
-				Debug.LogWarning("Player " + currentPlayer + " have " + currentPlayer.GetCurrentHandNumber() + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
-				return;
-			}
-			else
-			{
-				NextTurn();
-			}
+			currentPlayer.AddCondition(MandatoryConditionType.DiscartCard, numberOfCardsToDiscard);
+
+			Debug.LogWarning("Player " + currentPlayer + " have " + numberOfCardsInHand + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
+
+			yield return AwaitConditionsToSolve();
 		}
-		else
-		{
 
-			int player = AllPlayersOk();
-			if (player < 0)
-			{
-				nextPhase = (Phase)((int)currentPhase) + 1;
-				if (Enum.GetNames(typeof(Phase)).Length < ((int)currentPhase + 2))
-				{
-					NextTurn();
-				}
-				else
-				{
-					if (!isChangingPhase)
-					{
-						StartCoroutine(startChangingPhases());
-					}
-				}
-			}
-			else
-			{
-				Debug.LogWarning("Cannot change phase. Waiting for Player " + player + " to finish it's conditions");
-			}
-		}*/
+		NextTurn();
 	}
-	void GoToPhase(Phase phase, Player player)
+	Phase GetNextPhase()
 	{
-		if (currentPlayer != player)
-			return;
+		if (Phase == Phase.End)
+			return Phase.Draw;
 
-		currentPhase = phase;
-		StartCoroutine(StartChangePhase());
-	}
-
-	Player GetCurrentPlayer()
-	{
-		if (MatchHasStarted)
-			return currentPlayer;
-
-		return null;
-	}
-
-	IEnumerator StartChangePhase()
-	{
-		PhasesTitle.ChangePhase(currentPhase);
-
-		while (PhasesTitle.isFading)
+		return (Phase)((int)Phase + 1);
+    }
+	IEnumerator AwaitPhaseChange()
+    {
+		while (phaseTitle.IsChanging)
 		{
 			yield return null;
 		}
-
-		Debug.LogWarning("New Phase: " + currentPhase.ToString());
-
-		EndPhaseChange();
 	}
-
-	void EndPhaseChange()
+	IEnumerator StartChangingPhases()
 	{
-		switch (currentPhase)
-		{
-			case Phase.Movement:
-				StartCoroutine(AwaitMovementPhase());
-				break;
-			case Phase.Attack:
-				StartCoroutine(AwaitAttackPhase());
-				break;
-			case Phase.End:
-				Debug.LogError("Gone to next turn");
-				NextPhase();
-				break;
-		}
+		var nextPhase = GetNextPhase();
+		phaseTitle.ChangePhase(nextPhase, currentPlayer == LocalPlayer);
+
+		yield return AwaitPhaseChange();		
+
+		Debug.LogWarning("New Phase: " + nextPhase.ToString());
 	}
 	void DisablePlayers()
 	{
@@ -256,52 +270,14 @@ public class GameController : Singleton<GameController>
 	{
 		yield return battlefield.MovementPhase();
 
-		NextPhase();
+		GoToNextPhase();
 	}
 	IEnumerator AwaitAttackPhase()
 	{
 		yield return battlefield.AttackPhase();
 
-		NextPhase();
+		GoToNextPhase();
 	}
-
-	/*IEnumerator doActions(Actions action)
-	{
-		DisablePlayers();
-
-		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.GetPlayer() != currentPlayer);
-
-		foreach (Hero hero in heroes)
-		{
-			if (hero != null)
-			{
-				switch (action)
-				{
-					case Actions.Attack:
-						hero.Attack();
-						while (hero.IsAttacking())
-						{
-							yield return null;
-						}
-						break;
-					case Actions.Move:
-						hero.moveForward();
-						while (hero.IsWalking())
-						{
-							yield return null;
-						}
-						break;
-				}
-				yield return new WaitForSeconds(1f);
-			}
-		}
-
-		EnablePlayers();
-
-		yield return new WaitForSeconds(1);
-		NextPhase();
-	}*/
 
 	void AttackPlayer(int damage)
 	{
@@ -344,6 +320,45 @@ public class GameController : Singleton<GameController>
 	{
 		return Macros.FindAll(macro => macro.GetPlayer() == player);
 	}
+
+
+	/*IEnumerator doActions(Actions action)
+	{
+		DisablePlayers();
+
+		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
+		heroes.RemoveAll(a => a.GetPlayer() != currentPlayer);
+
+		foreach (Hero hero in heroes)
+		{
+			if (hero != null)
+			{
+				switch (action)
+				{
+					case Actions.Attack:
+						hero.Attack();
+						while (hero.IsAttacking())
+						{
+							yield return null;
+						}
+						break;
+					case Actions.Move:
+						hero.moveForward();
+						while (hero.IsWalking())
+						{
+							yield return null;
+						}
+						break;
+				}
+				yield return new WaitForSeconds(1f);
+			}
+		}
+
+		EnablePlayers();
+
+		yield return new WaitForSeconds(1);
+		NextPhase();
+	}*/
 	void AddMacro(Skill skill, CardObject hero)
 	{
 		/*if (!IsMacroActive(hero, skill))

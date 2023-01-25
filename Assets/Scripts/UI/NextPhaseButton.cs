@@ -3,34 +3,63 @@ using System.Collections;
 
 public class NextPhaseButton : MonoBehaviour {
 
-	Vector3 originalPosition = new Vector3(0, 4, -3);
+	[SerializeField] Player player;
+	[SerializeField] float speed = 10f;
+
+	Vector3 showPosition = new Vector3(0, 4, -3);
 	Vector3 hiddenPosition = new Vector3(2, 4, -3);
 
-	Player player;
 	public bool isHidden;
 
-	void Start () {
-		player = GetComponentInParent<Player>();	
+	void Awake () {
 		isHidden = true;
 		transform.localPosition = hiddenPosition;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		/*if(GameController.MatchHasStarted && GameController.Instance.GetCurrentPlayer() == player && GameController.Phase == Phase.Action){
-			isHidden = false;
-		}else{
-			isHidden = true;
-		}
 
-		if(isHidden){
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, hiddenPosition, Time.deltaTime * 10);
-		}else{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, originalPosition, Time.deltaTime * 10);
-		}*/
+		Hide(false);
+	}
+	public void Hide(bool animate = true)
+	{
+		StopAllCoroutines();
+		if (!animate)
+			transform.localPosition = hiddenPosition;
+		else
+			StartCoroutine(AnimateHide());
+
+	}
+	IEnumerator AnimateHide()
+	{
+		var inPosition = false;
+
+		while (!inPosition)
+		{
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, hiddenPosition, Time.deltaTime * speed);
+
+			inPosition = transform.localPosition == hiddenPosition;
+			yield return null;
+		}
+	}
+	public void Show(bool animate = true)
+	{
+		StopAllCoroutines();
+		if (!animate)
+			transform.localPosition = hiddenPosition;
+		else
+			StartCoroutine(AnimateShow());
+	}
+	IEnumerator AnimateShow()
+	{
+		var inPosition = false;
+
+		while (!inPosition)
+		{
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, showPosition, Time.deltaTime * speed);
+
+			inPosition = transform.localPosition == showPosition;
+			yield return null;
+		}
 	}
 
 	void OnMouseDown(){
-		//player.EndPhase();
+		player.OnClickNextPhase();
 	}
 }
