@@ -65,13 +65,13 @@ public class UIPlayerHand : MonoBehaviour
 
         cardList.RemoveAt(cardIndex);
 
+        RefreshCardPositions();
+
         cardObject.BecameMana(() => { RemoveCard(cardObject); });     
     }
     public void RemoveCard(CardObject cardObject)
     {
         CardFactory.AddCardToPool(cardObject);
-
-        RefreshCardPositions();
     }
     public void AddCard(Card card)
     {
@@ -168,9 +168,9 @@ public class UIPlayerHand : MonoBehaviour
 
             card.SetPositionAndRotation(cardPosition);
 
-            yield return AwaitCardInPlace(card);
+            //yield return AwaitCardInPlace(card);
 
-            yield return new WaitForSeconds(awaitTimeBetweenDraws);
+            //yield return new WaitForSeconds(awaitTimeBetweenDraws);
         }
 
         IsRearragingCards = false;
@@ -353,17 +353,25 @@ public class UIPlayerHand : MonoBehaviour
     }
     CardPositionData GetCardHandPosition(int cardIndex)
     {
-        var numberOfCards = cardList.Count;
-        var spaceBetween = 0.5f / numberOfCards;
-        var positionCount = spaceBetween * cardIndex;
-        var verticalBuildUp = 0.01f;
-        var normalizedPosition = positionCount * 2;
+        var verticalBuildUp = 0.001f;
+
+        var numberOfCards = cardList.Count; //5
+        var sectionSize = (1f / numberOfCards); //0.2
+        var sectionSizeHalf = sectionSize / 2;
+        var currentCardSection = sectionSize * (cardIndex + 1);// Card 0 = 0.2, Card 1 = 0.4
+        var currentCardSectionMiddle = currentCardSection - sectionSizeHalf;
+
+
+
+
+        //var positionCount = spaceBetween * (cardIndex + 1);
+        //var normalizedPosition = positionCount * 2f;
         
 
-        var position = bezierCurve.GetPointAt(normalizedPosition);
-        position.y += verticalBuildUp * cardIndex; //Rise every card by a little to avoid Z-fight
+        var position = bezierCurve.GetPointAt(currentCardSectionMiddle);
+        position.y += verticalBuildUp * (cardIndex + 1); //Rise every card by a little to avoid Z-fight
 
-        var rotationValue = curveRange.Evaluate(normalizedPosition);
+        var rotationValue = curveRange.Evaluate(currentCardSectionMiddle);
         rotationValue *= 10;//Curve is stored in X/10 value
 
 

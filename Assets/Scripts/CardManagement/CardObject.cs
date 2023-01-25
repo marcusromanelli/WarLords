@@ -170,17 +170,10 @@ public class CardObject : MonoBehaviour, IPoolable
 			return;
 
 		if (fadeIntoManaParticle.isPlaying)
-		{
-			Debug.Log("Await finish play");
 			return;
-		}
-		else
-		{
 
-			Debug.Log("Finished Playing");
-			isBecamingMana = false;
-			onManaParticleEnd();
-		}
+		isBecamingMana = false;
+		onManaParticleEnd();
 	}
 	string GetCardResourcePath()
 	{
