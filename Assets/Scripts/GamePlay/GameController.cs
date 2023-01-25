@@ -6,6 +6,9 @@ using NaughtyAttributes;
 
 public class GameController : Singleton<GameController>
 {
+	public delegate void HandleOnPhaseChange(Phase newPhase);
+	public event HandleOnPhaseChange OnPhaseChange;
+
 	[SerializeField] InputController inputController;
 	[SerializeField] Battlefield battlefield;
 	[SerializeField] Player LocalPlayer;
@@ -13,42 +16,52 @@ public class GameController : Singleton<GameController>
 	[SerializeField, ReadOnly] Player currentPlayer;
 	[SerializeField, ReadOnly] Phase currentPhase;
 
+	List<MacroComponent> Macros;
 
-	protected List<MacroComponent> Macros;
-
-
-	public static Phase Phase
-    {
-        get
-        {
-			return Instance.currentPhase;
-        }
-    }
-	public static bool MatchHasStarted
-	{
-		get
-		{
-			return Phase != Phase.PreGame;
-		}
-	}
-	public static bool isExecutingMacro;
-
-	enum Actions { Move, Attack }
-
-
-
+	public Phase Phase => currentPhase;
+	public bool MatchHasStarted => Phase != Phase.PreGame;
 	IEnumerator Start()
 	{
 		Initialize();
 
-		yield return AwaitForGameStart();
+		yield return SolveCurrentPhase();
 	}
-
-	IEnumerator StartupPlayers()
+	void Initialize()
 	{
+		if (Macros == null)
+			Macros = new List<MacroComponent>();
+
+		LocalPlayer.Setup(this, inputController);
+		RemotePlayer.Setup(this, inputController);
+
 		LocalPlayer.SetupConditions();
 		RemotePlayer.SetupConditions();
+	}
+	IEnumerator SolveCurrentPhase()
+    {
+		WatchEndGame();
 
+		switch (currentPhase)
+		{
+			case Phase.PreGame:
+				yield return AwaitForGameStart();
+				break;
+		}
+	}
+	IEnumerator AwaitForGameStart()
+	{
+		yield return StartupPlayers();
+
+		StartPreGame();
+
+		SetPhase(Phase.PreGame);
+
+		yield return AwaitPreGame();
+
+		NextPhase();
+	}
+	IEnumerator StartupPlayers()
+	{
 		LocalPlayer.SetupPlayDeck();
 		RemotePlayer.SetupPlayDeck();
 
@@ -58,8 +71,14 @@ public class GameController : Singleton<GameController>
 		yield return LocalPlayer.IsInitialized();
 
 		yield return RemotePlayer.IsInitialized();
+	}
+	void StartPreGame() 
+	{
+		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
+		RemotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
 
-		currentPlayer = LocalPlayer;
+		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		RemotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
 	IEnumerator AwaitPreGame()
 	{
@@ -70,36 +89,21 @@ public class GameController : Singleton<GameController>
 			hasConditions = LocalPlayer.HasConditions() || RemotePlayer.HasConditions();
 		}
 	}
-	void StartPreGame() {
-		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-
-		RemotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		RemotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-	}
-	IEnumerator AwaitForGameStart()
-	{
-		yield return StartupPlayers();
-
-		StartPreGame();
-
-		yield return AwaitPreGame();
-
-		StartGame();
-	}
+	public bool CanPlayerInteract(Player player)
+    {
+		return Phase == Phase.PreGame || currentPlayer == player;
+    }
 	void Update()
 	{
 		WatchExitGame();
-
-		WatchEndGame();
 	}
 	void WatchEndGame()
 	{
-		/*if (!MatchHasStarted)
+		if (Phase == Phase.PreGame)
 			return;
 
 		//TODO ARRRRG
-		if (LocalPlayer.GetCurrentLife() <= 0)
+		/*if (LocalPlayer.GetCurrentLife() <= 0)
 		{
 			PhasesTitle.SetWinner(RemotePlayer);
 			LocalPlayer.enabled = false;
@@ -117,22 +121,11 @@ public class GameController : Singleton<GameController>
 		if (Input.GetKeyDown(KeyCode.Escape))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
-	void StartGame()
-	{
-		NextTurn(Phase.Draw);
-	}
-
-	void Initialize()
-	{
-		if (Macros == null)
-			Macros = new List<MacroComponent>();
-
-		currentPhase = Phase.PreGame;
-
-		LocalPlayer.Setup(inputController);
-		RemotePlayer.Setup(inputController);
-	}
-
+	void SetPhase(Phase phase)
+    {
+		currentPhase = phase;
+		OnPhaseChange?.Invoke(phase);
+    }
 	void NextTurn(Phase phase = Phase.Draw)
 	{
 		/*currentPhase = phase;
@@ -150,8 +143,9 @@ public class GameController : Singleton<GameController>
 
 		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());*/
 	}
-	public void NextPhase()
+	void NextPhase()
 	{
+		Debug.Log("Going to next phase");
 		/*if (isChangingPhase)
 			return;
 
@@ -197,26 +191,7 @@ public class GameController : Singleton<GameController>
 			}
 		}*/
 	}
-
-	public int AllPlayersOk()
-	{
-		/*var val = -1;
-
-		if (LocalPlayer.HasConditions())
-		{
-			return (int)LocalPlayer.GetCivilization();
-		}
-
-		if (RemotePlayer.HasConditions())
-		{
-			return (int)RemotePlayer.GetCivilization();
-		}
-
-		return val;*/
-		return 0;
-	}
-
-	public void GoToPhase(Phase phase, Player player)
+	void GoToPhase(Phase phase, Player player)
 	{
 		if (currentPlayer != player)
 			return;
@@ -225,7 +200,7 @@ public class GameController : Singleton<GameController>
 		StartCoroutine(StartChangePhase());
 	}
 
-	public Player GetCurrentPlayer()
+	Player GetCurrentPlayer()
 	{
 		if (MatchHasStarted)
 			return currentPlayer;
@@ -263,11 +238,11 @@ public class GameController : Singleton<GameController>
 				break;
 		}
 	}
-	public void DisablePlayers()
+	void DisablePlayers()
 	{
 		TogglePlayers(false);
 	}
-	public void EnablePlayers()
+	void EnablePlayers()
 	{
 		TogglePlayers(true);
 	}
@@ -328,7 +303,7 @@ public class GameController : Singleton<GameController>
 		NextPhase();
 	}*/
 
-	public void AttackPlayer(int damage)
+	void AttackPlayer(int damage)
 	{
 		/*Player target;
 
@@ -345,7 +320,7 @@ public class GameController : Singleton<GameController>
 			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));*/
 	}
 
-	public void SetTriggerType(TriggerType trigger, CardObject cardObject)
+	void SetTriggerType(TriggerType trigger, CardObject cardObject)
 	{
 		//List<Skill> aux = cardObject.GetCardData().hasSkillType(trigger);
 		//List<Skill> aux2 = cardObject.GetCardData().hasSkillType(TriggerType.Passive);
@@ -365,11 +340,11 @@ public class GameController : Singleton<GameController>
 		//}
 	}
 
-	public List<MacroComponent> GetMacrosFromPlayer(Player player)
+	List<MacroComponent> GetMacrosFromPlayer(Player player)
 	{
 		return Macros.FindAll(macro => macro.GetPlayer() == player);
 	}
-	public void AddMacro(Skill skill, CardObject hero)
+	void AddMacro(Skill skill, CardObject hero)
 	{
 		/*if (!IsMacroActive(hero, skill))
 		{
@@ -384,13 +359,13 @@ public class GameController : Singleton<GameController>
 		}*/
 	}
 
-	public bool IsMacroActive(CardObject card, Skill skill)
+	bool IsMacroActive(CardObject card, Skill skill)
 	{
 		return false;
 		//return Macros.FindAll(macro => macro.GetCardObject().GetCardData().PlayID == card.GetCardData().PlayID && macro.GetSkill().triggerType == skill.triggerType).Count > 0;
 	}
 
-	public static void RemoveMacro(MacroComponent condition)
+	static void RemoveMacro(MacroComponent condition)
 	{
 		/*Singleton.Macros.Remove(condition);
 		if (Singleton.Macros.Count > 0)
@@ -398,16 +373,16 @@ public class GameController : Singleton<GameController>
 	}
 
 
-	public Player GetOpponent(Player player)
+	Player GetOpponent(Player player)
 	{
 		return player == LocalPlayer ? RemotePlayer : LocalPlayer;
 	}
 
-	public Player GetLocalPlayer()
+	Player GetLocalPlayer()
 	{
 		return LocalPlayer;
 	}
-	public Player GetRemotePlayer()
+	Player GetRemotePlayer()
 	{
 		return RemotePlayer;
 	}

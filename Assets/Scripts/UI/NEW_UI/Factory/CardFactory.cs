@@ -9,11 +9,11 @@ public class CardFactory : Singleton<CardFactory>
 
     public static CardObject CreateCard(Card card, Transform transform, bool hideCardInfo)
     {
-        return CreateCard(card, transform, Vector3.zero, hideCardInfo);
+        return CreateCard(card, transform, Vector3.zero, Quaternion.identity, hideCardInfo);
     }
-    public static CardObject CreateCard(Card card, Transform transform, Vector3 position, bool hideCardInfo)
+    public static CardObject CreateCard(Card card, Transform transform, Vector3 position, Quaternion rotation, bool hideCardInfo)
     {
-        var cardObj = CreateEmptyCard(card.civilization, transform, position);
+        var cardObj = CreateEmptyCard(card.civilization, transform, position, rotation);
 
         cardObj.Setup(card, hideCardInfo);
 
@@ -21,9 +21,9 @@ public class CardFactory : Singleton<CardFactory>
     }
     public static CardObject CreateEmptyCard(Civilization civilization, Transform transform)
     {
-        return CreateEmptyCard(civilization, transform, Vector3.zero);
+        return CreateEmptyCard(civilization, transform, Vector3.zero, Quaternion.identity);
     }
-    public static CardObject CreateEmptyCard(Civilization civilization, Transform transform, Vector3 position)
+    public static CardObject CreateEmptyCard(Civilization civilization, Transform transform, Vector3 position, Quaternion rotation)
     {
         CardObject obj;
         if (PoolHasElements())
@@ -38,6 +38,7 @@ public class CardFactory : Singleton<CardFactory>
 
         obj.transform.SetParent(transform, false);
         obj.transform.position = position;
+        obj.transform.localRotation = rotation;
         obj.SetupCover(civilization);
 
         return obj;

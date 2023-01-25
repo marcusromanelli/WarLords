@@ -151,7 +151,7 @@ public class Hero : MonoBehaviour
 		targetPoint = battlefield.Normalize(pos);
 		isWalking = true;
 
-		gameController.SetTriggerType(TriggerType.OnBeforeWalk, CardObject);
+		//gameController.SetTriggerType(TriggerType.OnBeforeWalk, CardObject);
 	}
 
 	public void moveForward()

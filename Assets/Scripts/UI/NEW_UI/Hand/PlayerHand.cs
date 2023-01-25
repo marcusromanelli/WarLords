@@ -111,6 +111,10 @@ public class PlayerHand
     {
         return uiPlayerHand.CurrentHoldingCard;
     }
+    public void HoldCard(Card card)
+    {
+        uiPlayerHand.HoldCard(card);
+    }
     public void CancelHandToCardInteraction()
     {
         uiPlayerHand.CancelHandToCardInteraction();

@@ -326,9 +326,9 @@ public class Battlefield : MonoBehaviour
     }
 	IEnumerator DoMovement()
     {
-		gameController.DisablePlayers();
+		//gameController.DisablePlayers();
 
-		var currentPlayer = gameController.GetCurrentPlayer();
+		/*var currentPlayer = gameController.GetCurrentPlayer();
 
 		List<Hero> heroes = heroList[currentPlayer];
 
@@ -350,7 +350,7 @@ public class Battlefield : MonoBehaviour
 			yield return new WaitForSeconds(1f);
 		}
 
-		gameController.EnablePlayers();
+		gameController.EnablePlayers();*/
 
 		yield return new WaitForSeconds(1);
 	}
@@ -411,14 +411,14 @@ public class Battlefield : MonoBehaviour
 		if (cardWaitingForSpawn == null)
 			return;
 
-		var currentPlayer = gameController.GetCurrentPlayer();
+		//var currentPlayer = gameController.GetCurrentPlayer();
 
-        if (!CanSummon(currentPlayer, tile))
+        /*if (!CanSummon(currentPlayer, tile))
 		{
 			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
 			Debug.LogWarning("You cannot summon on this tile.");
 			return;
-		}
+		}*/
 
 		/*if (!currentPlayer.CanSpendMana(cardWaitingForSpawn.CalculateSummonCost()))
 		{

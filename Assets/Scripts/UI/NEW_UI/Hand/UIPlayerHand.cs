@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class UIPlayerHand : MonoBehaviour
 {
-    public bool IsBusy => isBusy;
     public CardObject CurrentHoldingCard => currentTargetCard;
 
     [SerializeField] bool IsInteractable = true;
@@ -22,6 +21,7 @@ public class UIPlayerHand : MonoBehaviour
     //[BoxGroup("Presets"), SerializeField] Vector3 DeckRotation;
 
     List<CardObject> cardList = new List<CardObject>();
+    Stack<CardObject> standByCards = new Stack<CardObject>();
     private bool isBusy;
     protected Civilization civilization;
 
@@ -30,6 +30,7 @@ public class UIPlayerHand : MonoBehaviour
     private bool IsHoldingCard => currentTargetCard != null;
     private bool IsCardAwaitingRelease;
     private bool IsDraggingCard;
+    private bool IsRearragingCards;
     private bool IsNOTInteractable => !IsInteractable;
     HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard;
     HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool;
@@ -60,22 +61,21 @@ public class UIPlayerHand : MonoBehaviour
 
         UnregisterCardCallback(cardObject.gameObject);
 
-        cardObject.BecameMana(() => { RemoveCard(cardObject); });     
-    }
-    public void RemoveCard(CardObject cardObject)
-    {
         var cardIndex = GetCardIndexByObject(cardObject);
 
         cardList.RemoveAt(cardIndex);
 
+        cardObject.BecameMana(() => { RemoveCard(cardObject); });     
+    }
+    public void RemoveCard(CardObject cardObject)
+    {
         CardFactory.AddCardToPool(cardObject);
 
         RefreshCardPositions();
     }
     public void AddCard(Card card)
     {
-        var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition(), !IsInteractable);
-        cardObj.SetPositionAndRotation(CardPositionData.Create(uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference()));
+        var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), !IsInteractable);
 
         cardList.Add(cardObj);
 
@@ -93,6 +93,23 @@ public class UIPlayerHand : MonoBehaviour
     public void CancelHandToCardInteraction()
     {
         currentTargetCard = null;
+    }
+    public void HoldCard(Card card)
+    {
+        CardObject cardObject = GetCardObjectByData(card);
+
+        currentTargetCard = cardObject;
+    }
+    public IEnumerator IsResolving()
+    {
+        while (IsRearragingCards)
+        {
+            yield return null;
+        }
+    }
+    CardObject GetCardObjectByData(Card card)
+    {
+        return cardList.Find(cardObj => cardObj.CardData == card);
     }
     void RegisterDefaultCallbacks()
     {
@@ -128,10 +145,14 @@ public class UIPlayerHand : MonoBehaviour
     [Button("Force Card Positions Refresh")]
     void RefreshCardPositions()
     {
+        StopAllCoroutines();
         StartCoroutine(DoRefreshHandCardsPositions());
     }
+
     IEnumerator DoRefreshHandCardsPositions()
     {
+        IsRearragingCards = true;
+
         var numberOfCards = cardList.Count;
 
         if (numberOfCards <= 0)
@@ -144,13 +165,15 @@ public class UIPlayerHand : MonoBehaviour
             var cardHandIndex = GetCardIndexByObject(card);
 
             var cardPosition = GetCardHandPosition(cardHandIndex);
-                
+
             card.SetPositionAndRotation(cardPosition);
 
             yield return AwaitCardInPlace(card);
 
             yield return new WaitForSeconds(awaitTimeBetweenDraws);
         }
+
+        IsRearragingCards = false;
     }
     IEnumerator AwaitCardInPlace(CardObject card)
     {
@@ -161,22 +184,6 @@ public class UIPlayerHand : MonoBehaviour
 
             yield return null;
         }
-    }
-    public IEnumerator IsResolving()
-    {
-        isBusy = true;
-        var cardsInPosition = false;
-
-        while (!cardsInPosition)
-        {
-            foreach(var card in cardList)
-            {
-                cardsInPosition = card.IsInPosition;
-            }
-            yield return null;
-        }
-
-        isBusy = false;
     }
     void OnUpCard(GameObject cardObject)
     {
@@ -271,7 +278,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void OnStartHoverMainDeck(GameObject gameObject)
     {
-        if (!IsBusy ||!IsHoldingCard || !IsDraggingCard)
+        if (!IsRearragingCards || !IsHoldingCard || !IsDraggingCard)
             return;
 
         GenericHoverPlace(gameObject);
@@ -316,7 +323,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void OnReleaseCardOnGraveyard(GameObject gameObject)
     {
-        if (IsBusy || !IsCardAwaitingRelease)
+        if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
         
         CancelDrag();
@@ -325,7 +332,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void OnReleaseCardOnManaPool(GameObject gameObject)
     {
-        if (IsBusy || !IsCardAwaitingRelease)
+        if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
         CancelDrag();

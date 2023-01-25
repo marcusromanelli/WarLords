@@ -13,7 +13,7 @@ public class MandatoryConditionManager : MonoBehaviour
     {
 		player.OnDrawCard += OnDrawCard;
 		player.OnDiscardCard += OnDiscardCard;
-		player.OnSendCardToManaPool += OnSendCardToManaPool;
+		player.OnSendManaCreation += OnSendCardToManaPool;
 		player.OnPickSpawnArea += OnPickSpawnArea;
     }
 	public bool HasAny()

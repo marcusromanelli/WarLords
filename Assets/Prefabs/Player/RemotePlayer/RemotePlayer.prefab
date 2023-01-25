@@ -66,6 +66,8 @@ MonoBehaviour:
     Cards: []
   conditionManager: {fileID: 8916673347036682317}
   infinityHabilitiesPerTurn: 0
+  awaitBetweenConditionSolving: 1
+  isActive: 1
 --- !u!114 &8916673347036682317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Deck
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606810755859391673, guid: 6583fd8c2967b1843ac4b0a2f200a8a8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6583fd8c2967b1843ac4b0a2f200a8a8, type: 3}

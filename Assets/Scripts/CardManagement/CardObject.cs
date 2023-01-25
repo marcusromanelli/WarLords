@@ -16,14 +16,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	[SerializeField] ParticleSystem fadeIntoManaParticle;
 
 	public Card CardData => originalCard;
-	/*Card originalCardData;
-	Card currentCardData;
-	bool isBeingHeld;
-	public bool isBeingVisualized;
-	public bool isBeingHeroVisualized;
-	public SummonType SummonType;
-	bool isMouseDown;
-
+	/*
 	public Player player;
 
 	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;
@@ -37,24 +30,10 @@ public class CardObject : MonoBehaviour, IPoolable
 	private GameObject currentActiveBackCover;
 	private Nullable<CardPositionData> targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
-	private bool isInPosition = true;
+	private bool isInPosition = false;
 	private OnClickCloseButton closeCallback;
 	private bool isBecamingMana = false;
 	private Action onManaParticleEnd;
-	/*Vector3 offset;
-	Vector3 originalScale;
-	Vector3 lastKnownMousePosition;
-	Vector3 destinyPosition, destinyScale;
-	Quaternion destinyRotation;
-	ActionType nextActionType;
-	string civilizationName;
-	Hero targetHero;*/
-	/*InteractiveDeck deckController;
-	BaseManaPool manaPoolController;
-	InteractiveDeck graveyardController;
-	GameController gameController;
-	Battlefield battlefield;*/
-	//HandController handController;
 
 	public void SetPositionAndRotation(CardPositionData cardData)
 	{
@@ -91,11 +70,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	}
 	public void Pool()
 	{
-		currentActiveBackCover?.SetActive(false);
-		currentActiveFrontCover?.SetActive(false);
-		closeCallback = null;
-		isBecamingMana = false;
-		isInPosition = true;
+		ResetCard();
 	}
 	public void Setup(Card card, bool hideInfo)
 	{
@@ -134,14 +109,26 @@ public class CardObject : MonoBehaviour, IPoolable
 	}
 	public void BecameMana(Action onFinishesAnimation)
 	{
+		isBecamingMana = true;
 		currentActiveFrontCover.SetActive(false);
 		currentActiveBackCover.SetActive(false);
 		fadeIntoManaParticle.Play();
 		onManaParticleEnd = onFinishesAnimation;
 	}
-
-
-
+	void ResetCard()
+	{
+		currentActiveBackCover?.SetActive(false);
+		currentActiveFrontCover?.SetActive(false);
+		currentActiveBackCover = null;
+		currentActiveFrontCover = null;
+		closeCallback = null;
+		isBecamingMana = false;
+		isInPosition = false;
+		targetPositionAndRotation = null;
+		originalCard = default(Card);
+		getPositionAndRotationCallback = null;
+		onManaParticleEnd = null;
+	}
 	void MoveToTargetPosition()
     {
 		if (isBecamingMana)
@@ -183,11 +170,17 @@ public class CardObject : MonoBehaviour, IPoolable
 			return;
 
 		if (fadeIntoManaParticle.isPlaying)
+		{
+			Debug.Log("Await finish play");
 			return;
+		}
+		else
+		{
 
-		Debug.Log("Finished Playing");
-		isBecamingMana = false;
-		onManaParticleEnd();
+			Debug.Log("Finished Playing");
+			isBecamingMana = false;
+			onManaParticleEnd();
+		}
 	}
 	string GetCardResourcePath()
 	{

@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void HandleOnDrawCard(int number);
+public delegate void HandleOnDiscardCard(int number);
+public delegate void HandleOnSendCardToManaPool(int number);
+public delegate void HandleOnPickSpawnArea();
+
 public class Player : MonoBehaviour
 {
-	public delegate void HandleOnDrawCard(int number);
 	public event HandleOnDrawCard OnDrawCard;
-
-	public delegate void HandleOnDiscardCard(int number);
 	public event HandleOnDiscardCard OnDiscardCard;
-
-	public delegate void HandleOnSendCardToManaPool(int number);
-	public event HandleOnSendCardToManaPool OnSendCardToManaPool;
-
-	public delegate void HandleOnPickSpawnArea();
+	public event HandleOnSendCardToManaPool OnSendManaCreation;
 	public event HandleOnPickSpawnArea OnPickSpawnArea;
 
 
@@ -24,21 +22,24 @@ public class Player : MonoBehaviour
 	[BoxGroup(playerPropertiesTag), SerializeField] Civilization civilization;
 
 	private const string gameLogicTag = "Game Logic";
-	[BoxGroup(gameLogicTag), SerializeField] CardDeck<Card> PlayDeck;
-	[BoxGroup(gameLogicTag), SerializeField] CardDeck<Card> Graveyard;
-	[BoxGroup(gameLogicTag), SerializeField] ManaPool ManaPool;
-	[BoxGroup(gameLogicTag), SerializeField] PlayerHand Hand;
-	[BoxGroup(gameLogicTag), SerializeField] MandatoryConditionManager conditionManager;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> PlayDeck;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> Graveyard;
+	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
+	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand Hand;
+	[BoxGroup(gameLogicTag), SerializeField] protected MandatoryConditionManager conditionManager;
 
 	private const string debugTag = "Debug";
-	[BoxGroup(debugTag), SerializeField] bool infinityHabilitiesPerTurn;
+	[BoxGroup(debugTag), SerializeField] protected bool infinityHabilitiesPerTurn;
 
 
-	private bool HasUsedHability;
+	protected bool HasUsedHability;
+	protected GameController gameController;
 
 
-	public void Setup(InputController inputController)
+	public virtual void Setup(GameController gameController, InputController inputController)
     {
+		this.gameController = gameController;
+
 		ManaPool.Setup();
 
 		Hand.PreSetup(inputController);
@@ -70,8 +71,17 @@ public class Player : MonoBehaviour
     {
 		yield return PlayDeck.IsUIUpdating();
 	}
-	public void TryDrawCards(int number = 1)
+	protected virtual bool CanInteract()
+    {
+		return gameController.CanPlayerInteract(this);
+    }
+
+    #region CARD_DRAW
+    public void TryDrawCards(int number = 1)
 	{
+		if (!CanInteract())
+			return;
+
 		number = Mathf.Clamp(number, 0, int.MaxValue);
 
 		var hasCardsOndeck = PlayDeck.Count >= number;
@@ -89,18 +99,6 @@ public class Player : MonoBehaviour
 
 		DoDrawCards(number);
 	}
-	public void AddCondition(MandatoryConditionType Type, int number = -1)
-	{
-		conditionManager.AddCondition(Type, number);
-	}
-	public bool CanUseHability()
-	{
-		return infinityHabilitiesPerTurn || (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(MandatoryConditionType.SendCardToManaPool));
-	}
-	public bool CanGenerateMana()
-	{
-		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(MandatoryConditionType.SendCardToManaPool);
-	}
 	void DoDrawCards(int number)
 	{
 		Debug.Log(GetFormatedName() + " drawed " + number + " cards");
@@ -108,7 +106,10 @@ public class Player : MonoBehaviour
 		Card[] cards = PlayDeck.DrawCards(number);
 
 		Hand.AddCards(cards);
-
+		TriggerCardDraw(number);
+	}
+	protected void TriggerCardDraw(int number)
+	{
 		OnDrawCard?.Invoke(number);
 	}
 	void TurnGraveyardIntoDeck()
@@ -117,16 +118,26 @@ public class Player : MonoBehaviour
 
 		Graveyard.Empty();
 	}
-	string GetFormatedName()
+	#endregion CARD_DRAW
+
+	#region HABILITIES
+
+	bool CanUseHability()
 	{
-		return "Player " + (civilization + 1);
+		return infinityHabilitiesPerTurn || (CanInteract() && (ManaPool.HasManaSpace() && !HasUsedHability || HasCondition(MandatoryConditionType.SendCardToManaPool)));
 	}
 
-	void OnCardReleasedOnManaPool(CardObject card)
+	#region CARD_TO_MANA_HABILITY
+
+	bool CanGenerateMana()
+	{
+		return CanUseHability() || ManaPool.HasManaSpace() || HasCondition(MandatoryConditionType.SendCardToManaPool);
+	}
+	protected void OnCardReleasedOnManaPool(CardObject card)
 	{
 		UseManaHability();
 	}
-	void UseManaHability()
+	protected void UseManaHability()
     {
 		if (!CanGenerateMana())
 		{
@@ -152,8 +163,17 @@ public class Player : MonoBehaviour
 
 		ManaPool.IncreaseMaxMana();
 
-		OnSendCardToManaPool?.Invoke(1);
+		TriggerManaCreation();
 	}
+	protected void TriggerManaCreation()
+    {
+		OnSendManaCreation?.Invoke(1);
+	}
+
+	#endregion CARD_TO_MANA_HABILITY
+
+	#region 1_CARD_TO_TWO_HABILITY
+
 	void OnCardReleasedOnGraveyard(CardObject card)
 	{
 		UseDiscardOneToDrawTwoHability();
@@ -179,7 +199,17 @@ public class Player : MonoBehaviour
 		Hand.DiscardCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 
-		OnSendCardToManaPool?.Invoke(1);
+		OnSendManaCreation?.Invoke(1);
+	}
+
+    #endregion 1_CARD_TO_TWO_HABILITY
+
+    #endregion	HABILITIES
+
+    #region MANDATORY_CONDITIONS
+    public void AddCondition(MandatoryConditionType Type, int number = -1)
+	{
+		conditionManager.AddCondition(Type, number);
 	}
 	public List<MandatoryCondition> GetConditions()
 	{
@@ -205,27 +235,18 @@ public class Player : MonoBehaviour
 	{
 		conditionManager.Remove(condition);
 	}
-	/*
-	
+	#endregion MANDATORY_CONDITIONS
 
-	
 
-	public bool hasCondition(ConditionType condition)
+
+
+	string GetFormatedName()
 	{
-		return true;// (Conditions.Count > 0 && Conditions[0].Type == condition);
-	}*/
-
-
-
-	/*void Start()
-	{
-		//ManaPool = new ManaPool();
-		//Graveyard = new CardDeck<Card>(civilization);
-		//Hand = new PlayerHand<Card>();
-
-		//life = GameConfiguration.startLife;
+		return "Player " + (civilization + 1);
 	}
+	
 
+	/*
 	public void Setup()
 	{
 		//var startLife = GameConfiguration.startLife;

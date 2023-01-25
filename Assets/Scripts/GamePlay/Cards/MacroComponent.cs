@@ -31,7 +31,7 @@ public class MacroComponent : MonoBehaviour
 		if (!IsResolving)
 			return;
 
-		var currentPlayer = GameController.GetCurrentPlayer();
+		//var currentPlayer = GameController.GetCurrentPlayer();
 
 		//switch (Skill.macroType)
 		//{
@@ -89,7 +89,7 @@ public class MacroComponent : MonoBehaviour
 
 	void RemoveMacro()
 	{
-		switch (Skill.macroType)
+		/*switch (Skill.macroType)
 		{
 			case MacroType.Invader:
 				var tiles = Battlefield.GetFields(GameController.GetRemotePlayer());
@@ -103,7 +103,7 @@ public class MacroComponent : MonoBehaviour
 
 		Debug.LogWarning("Macro " + Skill.macroType.ToString() + " removed");
 		GameController.RemoveMacro(this);
-		Destroy(this);
+		Destroy(this);*/
 	}
 	public void setActive()
 	{

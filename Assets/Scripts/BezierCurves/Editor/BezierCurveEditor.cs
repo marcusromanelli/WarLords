@@ -150,7 +150,7 @@ public class BezierCurveEditor : Editor
 		Vector3 newPointPos = EditorGUILayout.Vector3Field("Position : ", point.transform.localPosition);
 		if(newPointPos != point.transform.localPosition)
 		{
-			Undo.RegisterUndo(point.transform, "Move Bezier Point");
+			Undo.RegisterCompleteObjectUndo(point.transform, "Move Bezier Point");
 			point.transform.localPosition = newPointPos;
 		}
 		
