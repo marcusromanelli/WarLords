@@ -3,16 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void HandleOnDrawCard(int number);
-public delegate void HandleOnDiscardCard(int number);
-public delegate void HandleOnSendCardToManaPool(int number);
+public delegate void HandleCardAction(int number);
 public delegate void HandleOnPickSpawnArea();
 
 public class Player : MonoBehaviour
 {
-	public event HandleOnDrawCard OnDrawCard;
-	public event HandleOnDiscardCard OnDiscardCard;
-	public event HandleOnSendCardToManaPool OnSendManaCreation;
+	public event HandleCardAction OnDrawCard;
+	public event HandleCardAction OnDiscardCard;
+	public event HandleCardAction OnSendManaCreation;
 	public event HandleOnPickSpawnArea OnPickSpawnArea;
 
 
@@ -22,6 +20,7 @@ public class Player : MonoBehaviour
 	[BoxGroup(playerPropertiesTag), SerializeField] Civilization civilization;
 
 	private const string gameLogicTag = "Game Logic";
+	[BoxGroup(gameLogicTag), SerializeField] protected Battlefield Battlefield;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> PlayDeck;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> Graveyard;
 	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
@@ -45,9 +44,10 @@ public class Player : MonoBehaviour
 
 		ManaPool.Setup();
 
-		Hand.PreSetup(inputController, CanDiscardCard, CanGenerateMana);
+		Hand.PreSetup(inputController, CanDiscardCard, CanGenerateMana, CanSummonHero);
 		Hand.OnCardReleasedOnGraveyard += OnCardReleasedOnGraveyard;
 		Hand.OnCardReleasedOnManaPool += OnCardReleasedOnManaPool;
+		Hand.OnCardReleasedOnSpawnArea += OnCardReleasedOnSpawnArea;
 	}
 
     public void SetupPlayDeck()
@@ -118,9 +118,29 @@ public class Player : MonoBehaviour
 		IsReadyToEndActionPhase = true;
 		nextPhaseButton?.Hide();
 	}
-	#endregion ACTION_PHASE
+    #endregion ACTION_PHASE
 
-	#endregion ACTIONS
+    #endregion ACTIONS
+
+    #region SUMMON_HERO
+	protected bool CanSummonHero(Card card)
+    {
+		var playerCan = CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.manaCost);
+		var battleFieldCan = !Battlefield.PlayerHasHero(this, card) && Battlefield.CanSummonOnSelectedTile(this);
+		return playerCan && battleFieldCan;
+	}
+	void OnCardReleasedOnSpawnArea(CardObject card)
+    {
+		if(!CanSummonHero(card.Data))
+		{
+			Debug.Log("You cannot summon this hero right now.");
+			return;
+		}
+
+
+		Debug.Log("Summoned!");
+	}
+	#endregion SUMMON_HERO
 
 	#region CARD_DRAW
 	public void TryDrawCards(int number = 1)
@@ -209,7 +229,7 @@ public class Player : MonoBehaviour
 	void GenerateManaFromCurrentHoldingCard()
     {
 		var currentCard = Hand.GetHoldingCard();
-		var currentCardData = currentCard.CardData;
+		var currentCardData = currentCard.Data;
 		Hand.TurnCardIntoMana(currentCard);
 		Graveyard.AddCard(currentCardData);
 
@@ -270,7 +290,7 @@ public class Player : MonoBehaviour
 	public void DiscardCurrentHoldingCard()
     {
 		var currentCard = Hand.GetHoldingCard();
-		var currentCardData = currentCard.CardData;
+		var currentCardData = currentCard.Data;
 		Hand.DiscardCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 

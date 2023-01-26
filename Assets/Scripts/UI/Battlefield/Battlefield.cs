@@ -8,33 +8,39 @@ using System.Threading.Tasks;
 [ExecuteInEditMode]
 public class Battlefield : MonoBehaviour
 {
-	[SerializeField] protected Transform CardReferencePosition;
-	[SerializeField] List<SpawnArea> generatedTiles;
-	[SerializeField] GameController gameController;
+	[BoxGroup("Functionality"), SerializeField, ReadOnly] SpawnArea selectedTile;
+	[BoxGroup("Functionality"), SerializeField] List<SpawnArea> generatedTiles;
+
+	[BoxGroup("Components"), SerializeField] InputController inputController;
+    [BoxGroup("Components"), SerializeField] Transform CardReferencePosition;
+	[BoxGroup("Components"), SerializeField] GameController gameController;
 
 	[BoxGroup("Generation"), SerializeField] bool randomizeEveryGame;
-	[BoxGroup("Generation"), SerializeField] GameObject[] gridTiles;
+	[BoxGroup("Generation"), SerializeField] GameObject[] gridPrefabs;
 	[BoxGroup("Generation"), SerializeField] int numberOfLanes = 5;
 	[BoxGroup("Generation"), SerializeField] int numberOfSquares = 7;
 	[BoxGroup("Generation"), SerializeField] int numberOfSpawnAreasPerLane = 2;
 	[BoxGroup("Generation"), SerializeField] float squareSize = 0.8f;
 
-	SpawnArea selectedTile;
+	
 	CardObject cardWaitingForSpawn;
-	Dictionary<Player, List<Hero>> heroList = new Dictionary<Player, List<Hero>>();
+	Dictionary<Player, List<Card>> heroList = new Dictionary<Player, List<Card>>();
 
-
-    private void Awake()
-    {
-		if (!Application.isPlaying)
-			return;
-
-		if(randomizeEveryGame)
+    private void Start()
+	{
+		if (randomizeEveryGame)
 			Generate();
-		//localPlayerController.OnHoldCard += SetCardBeingHeld;
-		//localPlayerController.OnReleaseCard += SetCardBeingReleased;
-	}
 
+		RegisterCallbacks();
+    }
+
+	void RegisterCallbacks()
+	{
+		foreach (var tile in generatedTiles) {
+			inputController.RegisterTargetCallback(MouseEventType.StartHover, tile.gameObject, SetSelectedTile);
+			inputController.RegisterTargetCallback(MouseEventType.EndHover, tile.gameObject, SetUnselectedTile);
+		}
+	}
     [Button("Generate Grid")]
 	void Generate()
 	{
@@ -63,7 +69,7 @@ public class Battlefield : MonoBehaviour
 			for (int i = 0; i < numberOfSquares; i++)
 			{
 				aux.z = i * squareSize;
-				GameObject aux2 = Instantiate(gridTiles[Random.Range(0, gridTiles.Length)], Vector3.zero, Quaternion.identity);
+				GameObject aux2 = Instantiate(gridPrefabs[Random.Range(0, gridPrefabs.Length)], Vector3.zero, Quaternion.identity);
 				aux2.transform.position = aux;
 				aux2.transform.SetParent(lane.transform);
 
@@ -141,20 +147,19 @@ public class Battlefield : MonoBehaviour
 
 		return new Vector2(x, y);
 	}
-
-	public SpawnArea GetSelectedTile()
+	void SetSelectedTile(GameObject area)
 	{
-		return selectedTile;
+		if (selectedTile != null && selectedTile.gameObject == area.gameObject)
+			return;
+
+		var tile = area.GetComponent<SpawnArea>();
+
+		selectedTile = tile;
 	}
 
-	public void SetSelectedTile(SpawnArea area)
+	void SetUnselectedTile(GameObject area)
 	{
-		selectedTile = area;
-	}
-
-	public void SetUnselectedTile(SpawnArea area)
-	{
-		if (selectedTile != area)
+		if (selectedTile == null || selectedTile.gameObject != area.gameObject)
 			return;
 
 		selectedTile = null;
@@ -227,27 +232,13 @@ public class Battlefield : MonoBehaviour
 	{
 		return (YPosition >= GetRemotePlayerEdge());
 	}
-	public bool CanSummon(Player player, SpawnArea area)
-    {
-		/*if (area == null)
-			return false;
-
-		if (!area.IsSummonable)
-			return false;
-
-		if (!GameController.MatchHasStarted)
-			return false;
-
-		var type = gameController.GetCurrentPlayer().GetPlayerType();
-
-		if (area.IsSummonArea && area.playerType != type)
-			return false;
-		*/
-		return true;
+	public bool CanSummonAtTile(Player player, SpawnArea area)
+    {		
+		return area != null && area.IsSummonable;
     }
 	public bool CanSummonOnSelectedTile(Player player)
     {
-		return CanSummon(player, selectedTile);
+		return CanSummonAtTile(player, selectedTile);
     }
 
 
@@ -296,24 +287,16 @@ public class Battlefield : MonoBehaviour
 		//Destroy(card.gameObject);
 	}
 
-	public Vector3 getTopPosition()
-	{
-		return transform.position;
-	}
-
-	public Quaternion getTopRotation()
-	{
-		return Quaternion.Euler(90, 0, 0);
-	}
-
-	public Vector3 getTopScale()
-	{
-		return Vector3.one;
-	}
-
-	public List<Hero> GetHeroes(Player player)
+	public List<Card> GetHeroes(Player player)
     {
 		return heroList[player];
+	}
+	public bool PlayerHasHero(Player player, Card card)
+	{
+		if (!heroList.ContainsKey(player))
+			return false;
+
+		return heroList[player].Any(c => c.CardID == card.CardID);
 	}
 	public IEnumerator MovementPhase()
     {
@@ -386,10 +369,10 @@ public class Battlefield : MonoBehaviour
 
 		//player.Summon(heroCard);
 	}
-	void AddHero(Player player, Hero hero)
+	void AddHero(Player player, Card hero)
     {
 		if (!heroList.ContainsKey(player))
-			heroList.Add(player, new List<Hero>());
+			heroList.Add(player, new List<Card>());
 
 		heroList[player].Add(hero);
 	}
@@ -456,21 +439,6 @@ public class Battlefield : MonoBehaviour
 			Debug.LogError("[ERROR] TILE NOT EMPTY");
 
 		spawnArea.Hero = hero;*/
-    }
-
-    public void CheckMouseOver(bool requiresClick)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Vector3 GetTopPosition()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Quaternion GetTopRotation()
-    {
-        throw new System.NotImplementedException();
     }
 
     /*public void Attack()

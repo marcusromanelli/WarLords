@@ -3,19 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void HandleOnCardReleasedOnDeck(CardObject card);
-public delegate void HandleOnCardReleasedOnGraveyard(CardObject card);
-public delegate void HandleOnCardReleasedOnManaPool(CardObject card);
-public delegate bool HandleCanReleaseCardOnGraveyard();
-public delegate bool HandleCanReleaseCardOnManaPool();
+public delegate void HandleOnCardReleased(CardObject card);
+public delegate bool HandleCanReleaseCard();
+public delegate bool HandleCanSummonHero(Card cardData);
 
 [Serializable]
 public class PlayerHand
 {
-    public delegate void HandleOnCardReleasedOnGraveyard(CardObject card);
-    public event HandleOnCardReleasedOnGraveyard OnCardReleasedOnGraveyard;
-    public delegate void HandleOnCardReleasedOnManaPool(CardObject card);
-    public event HandleOnCardReleasedOnManaPool OnCardReleasedOnManaPool;
+    public event HandleOnCardReleased OnCardReleasedOnGraveyard;
+    public event HandleOnCardReleased OnCardReleasedOnManaPool;
+    public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
 
 
     [SerializeField] UIPlayerHand uiPlayerHand;
@@ -27,9 +24,9 @@ public class PlayerHand
     {
         Cards = new List<Card>();
     }
-    public void PreSetup(InputController inputController, HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard, HandleCanReleaseCardOnManaPool canReleasedOnManaPool)
+    public void PreSetup(InputController inputController, HandleCanReleaseCard canDiscardCard, HandleCanReleaseCard canGenerateMana, HandleCanSummonHero canSummonHero)
     {
-        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, canReleasedOnGraveyard, canReleasedOnManaPool);
+        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, canDiscardCard, canGenerateMana, canSummonHero);
     }
     public void Setup(Civilization civilization)
     {
@@ -57,7 +54,7 @@ public class PlayerHand
         if (Cards.Count <= 0)
             return;
 
-        Cards.Remove(cardObject.CardData);
+        Cards.Remove(cardObject.Data);
 
         uiPlayerHand.Discard(cardObject);
     }
@@ -66,7 +63,7 @@ public class PlayerHand
         if (Cards.Count <= 0)
             return;
 
-        Cards.Remove(cardObject.CardData);
+        Cards.Remove(cardObject.Data);
 
         uiPlayerHand.TurnCardIntoMana(cardObject);
     }
@@ -128,5 +125,9 @@ public class PlayerHand
     void onCardReleasedOnManaPool(CardObject cardObject)
     {
         OnCardReleasedOnManaPool?.Invoke(cardObject);
+    }
+    void onCardReleasedOnSpawnArea(CardObject cardObject)
+    {
+        OnCardReleasedOnSpawnArea?.Invoke(cardObject);
     }
 }

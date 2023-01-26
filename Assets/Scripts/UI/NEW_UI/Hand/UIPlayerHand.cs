@@ -8,7 +8,7 @@ public class UIPlayerHand : MonoBehaviour
     public CardObject CurrentHoldingCard => currentTargetCard;
 
     [SerializeField] bool IsInteractable = true;
-    [SerializeField] float awaitTimeBetweenDraws = 0f;
+    [SerializeField] float awaitTimeBetweenDraws = 0.05f;
     [SerializeField, ShowIf("IsInteractable")] Battlefield battlefield;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiCardDeck;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiGraveyardDeck;
@@ -33,20 +33,27 @@ public class UIPlayerHand : MonoBehaviour
     private bool IsDraggingCard;
     private bool IsRearragingCards;
     private bool IsNOTInteractable => !IsInteractable;
-    HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard;
-    HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool;
-    HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard;
-    HandleCanReleaseCardOnManaPool canReleasedOnManaPool;
+    HandleOnCardReleased onCardReleasedOnGraveyard;
+    HandleOnCardReleased onCardReleasedOnManaPool;
+    HandleOnCardReleased onCardReleasedOnSpawnArea;
+    HandleCanReleaseCard canDiscardCard;
+    HandleCanReleaseCard canGenerateMana;
+    HandleCanSummonHero canSummonHero;
 
-    public void PreSetup(InputController inputController, HandleOnCardReleasedOnGraveyard onCardReleasedOnGraveyard, 
-        HandleOnCardReleasedOnManaPool onCardReleasedOnManaPool, HandleCanReleaseCardOnGraveyard canReleasedOnGraveyard, 
-        HandleCanReleaseCardOnManaPool canReleasedOnManaPool)
+    public void PreSetup(InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
+        HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea,
+        HandleCanReleaseCard canDiscardCard, HandleCanReleaseCard canGenerateMana,
+        HandleCanSummonHero canSummonHero
+        )
     {
         this.inputController = inputController;
         this.onCardReleasedOnGraveyard = onCardReleasedOnGraveyard;
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
-        this.canReleasedOnGraveyard = canReleasedOnGraveyard;
-        this.canReleasedOnManaPool = canReleasedOnManaPool;
+        this.onCardReleasedOnSpawnArea = onCardReleasedOnSpawnArea;
+
+        this.canDiscardCard = canDiscardCard;
+        this.canGenerateMana = canGenerateMana;
+        this.canSummonHero = canSummonHero;
 
         RegisterDefaultCallbacks();
     }
@@ -116,15 +123,12 @@ public class UIPlayerHand : MonoBehaviour
     }
     CardObject GetCardObjectByData(Card card)
     {
-        return cardList.Find(cardObj => cardObj.CardData == card);
+        return cardList.Find(cardObj => cardObj.Data == card);
     }
     void RegisterDefaultCallbacks()
     {
         if (!IsInteractable)
             return;
-
-        inputController.RegisterTargetCallback(MouseEventType.Hover, uiCardDeck.gameObject, OnStartHoverMainDeck);
-        inputController.RegisterTargetCallback(MouseEventType.EndHover, uiCardDeck.gameObject, OnEndHoverMainDeck);
 
         inputController.RegisterTargetCallback(MouseEventType.Hover, uiGraveyardDeck.gameObject, OnStartHoverGraveyard);
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiGraveyardDeck.gameObject, OnEndHoverGraveyard);
@@ -187,7 +191,7 @@ public class UIPlayerHand : MonoBehaviour
 
             //yield return AwaitCardInPlace(card);
 
-            //yield return new WaitForSeconds(awaitTimeBetweenDraws);
+            yield return new WaitForSeconds(awaitTimeBetweenDraws);
         }
 
         IsRearragingCards = false;
@@ -293,20 +297,21 @@ public class UIPlayerHand : MonoBehaviour
     {
         currentTargetCard.SetPositionAndCallback(null);
     }
-    void OnStartHoverMainDeck(GameObject gameObject)
-    {
-        if (!IsRearragingCards || !IsHoldingCard || !IsDraggingCard)
-            return;
 
-        GenericHoverPlace(gameObject);
-    }
-    void OnEndHoverMainDeck(GameObject gameObject)
-    {
-        if (!IsHoldingCard || !IsDraggingCard)
-            return;
 
-        IsCardAwaitingRelease = false;
-        StartCardDynamicDrag(currentTargetCard);
+    #region GRAVEYARD_LOGIC
+    void OnReleaseCardOnGraveyard(GameObject gameObject)
+    {
+        if (IsRearragingCards || !IsCardAwaitingRelease)
+            return;
+        
+        CancelDrag();
+        StopCardDynamicDrag();
+
+        if (!canDiscardCard())
+            ReturnCurrentCardToHand();
+
+        onCardReleasedOnGraveyard?.Invoke(currentTargetCard);
     }
     void OnStartHoverGraveyard(GameObject gameObject)
     {
@@ -323,19 +328,29 @@ public class UIPlayerHand : MonoBehaviour
         IsCardAwaitingRelease = false;
         StartCardDynamicDrag(currentTargetCard);
     }
+    #endregion GRAVEYARD_LOGIC
+
+    #region MANA_POOL_LOGIC
+
+    void OnReleaseCardOnManaPool(GameObject gameObject)
+    {
+        if (IsRearragingCards || !IsCardAwaitingRelease)
+            return;
+
+        CancelDrag();
+        StopCardDynamicDrag();
+
+        if (!canGenerateMana())
+            ReturnCurrentCardToHand();
+
+        onCardReleasedOnManaPool?.Invoke(currentTargetCard);
+    }
     void OnStartHoverManaPool(GameObject gameObject)
     {
         if (!IsHoldingCard || !IsDraggingCard)
             return;
 
         GenericHoverPlace(gameObject);
-    }
-    void OnStartHoverSpawnArea(GameObject gameObject)
-    {
-        if (!IsHoldingCard || !IsDraggingCard)
-            return;
-
-        HandleStartHoverSpawnArea(gameObject);
     }
     void OnEndHoverManaPool(GameObject gameObject)
     {
@@ -345,40 +360,10 @@ public class UIPlayerHand : MonoBehaviour
         IsCardAwaitingRelease = false;
         StartCardDynamicDrag(currentTargetCard);
     }
-    void OnEndHoverSpawnArea(GameObject gameObject)
-    {
-        if (!IsHoldingCard || !IsDraggingCard)
-            return;
 
-        IsCardAwaitingRelease = false;
-        StartCardDynamicDrag(currentTargetCard);
-    }
-    void OnReleaseCardOnGraveyard(GameObject gameObject)
-    {
-        if (IsRearragingCards || !IsCardAwaitingRelease)
-            return;
-        
-        CancelDrag();
-        StopCardDynamicDrag();
+    #endregion MANA_POOL_LOGIC
 
-        if (!canReleasedOnGraveyard())
-            ReturnCurrentCardToHand();
-
-        onCardReleasedOnGraveyard?.Invoke(currentTargetCard);
-    }
-    void OnReleaseCardOnManaPool(GameObject gameObject)
-    {
-        if (IsRearragingCards || !IsCardAwaitingRelease)
-            return;
-
-        CancelDrag();
-        StopCardDynamicDrag();
-
-        if (!canReleasedOnManaPool())
-            ReturnCurrentCardToHand();
-
-        onCardReleasedOnManaPool?.Invoke(currentTargetCard);
-    }
+    #region SPAWN_AREA_LOGIC
     void OnReleaseHoverSpawnArea(GameObject gameObject)
     {
         if (IsRearragingCards || !IsCardAwaitingRelease)
@@ -386,7 +371,13 @@ public class UIPlayerHand : MonoBehaviour
 
         CancelDrag();
         StopCardDynamicDrag();
-        ReturnCurrentCardToHand();
+
+        var cardData = currentTargetCard.Data;
+
+        if(!canSummonHero(cardData))
+            ReturnCurrentCardToHand();
+
+        onCardReleasedOnSpawnArea?.Invoke(currentTargetCard);
     }
     void HandleStartHoverSpawnArea(GameObject spawnAreaObject)
     {
@@ -397,6 +388,25 @@ public class UIPlayerHand : MonoBehaviour
 
         GenericHoverPlace(spawnArea);
     }
+    void OnEndHoverSpawnArea(GameObject gameObject)
+    {
+        if (!IsHoldingCard || !IsDraggingCard)
+            return;
+
+        IsCardAwaitingRelease = false;
+        StartCardDynamicDrag(currentTargetCard);
+    }
+    void OnStartHoverSpawnArea(GameObject gameObject)
+    {
+        if (!IsHoldingCard || !IsDraggingCard)
+            return;
+
+        HandleStartHoverSpawnArea(gameObject);
+    }
+
+    #endregion SPAWN_AREA_LOGIC
+
+
     void GenericHoverPlace(GameObject gameObject)
     {
         ICardPlaceable cardPlaceable = gameObject.GetComponent<ICardPlaceable>();
@@ -421,21 +431,13 @@ public class UIPlayerHand : MonoBehaviour
         var sectionSize = (1f / numberOfCards); //0.2
         var sectionSizeHalf = sectionSize / 2;
         var currentCardSection = sectionSize * (cardIndex + 1);// Card 0 = 0.2, Card 1 = 0.4
-        var currentCardSectionMiddle = currentCardSection - sectionSizeHalf;
-
-
-
-
-        //var positionCount = spaceBetween * (cardIndex + 1);
-        //var normalizedPosition = positionCount * 2f;
-        
+        var currentCardSectionMiddle = currentCardSection - sectionSizeHalf;        
 
         var position = bezierCurve.GetPointAt(currentCardSectionMiddle);
         position.y += verticalBuildUp * (cardIndex + 1); //Rise every card by a little to avoid Z-fight
 
         var rotationValue = curveRange.Evaluate(currentCardSectionMiddle);
         rotationValue *= 10;//Curve is stored in X/10 value
-
 
         var rotation = Quaternion.Euler(HandRotation.x, HandRotation.y, rotationValue);
 

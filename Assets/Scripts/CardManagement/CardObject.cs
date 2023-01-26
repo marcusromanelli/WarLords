@@ -15,7 +15,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	[SerializeField] float cardRotationSpeed = 20;
 	[SerializeField] ParticleSystem fadeIntoManaParticle;
 
-	public Card CardData => originalCard;
+	public Card Data => originalCard;
 	/*
 	public Player player;
 
