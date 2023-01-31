@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Geometry/Cards/Template.meta
 guid: f11cc695ae3bdd14e80b108f69c642d9
+========
+guid: 8e7e8f5a82a3a134e91c54efd2274ea9
+>>>>>>>> e03da24df6462ef91801fd223481d414d250426e:Assets/TextMesh Pro/Documentation.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
