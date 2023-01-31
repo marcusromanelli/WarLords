@@ -19,9 +19,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	/*
 	public Player player;
 
-	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;
-	public Hero Character;
-	public Vector3 originalPosition;*/
+	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;*/
 	public List<GameObject> cardCoversPerCivilization;
 	public bool IsInPosition => isInPosition;
 

@@ -8,15 +8,11 @@ public class UIBattlefield : MonoBehaviour
 	[BoxGroup("Functionality"), SerializeField, ReadOnly] SpawnArea selectedTile;
 
 	private InputController inputController;
-	private GameController gameController;
-	private HandleIsHoldingCard isHoldingCard;
 	private HandleCanSummonHero canSummonHero;
 
-	public void Setup(InputController InputController, GameController GameController, HandleIsHoldingCard IsHoldingCard, HandleCanSummonHero CanSummonHero)
+	public void Setup(InputController InputController, HandleCanSummonHero CanSummonHero)
     {
 		inputController = InputController;
-		gameController = GameController;
-		isHoldingCard = IsHoldingCard;
 		canSummonHero = CanSummonHero;
 	}
 
