@@ -9,7 +9,6 @@ public class UIPlayerHand : MonoBehaviour
 
     [SerializeField] bool IsInteractable = true;
     [SerializeField] float awaitTimeBetweenDraws = 0.05f;
-    [SerializeField, ShowIf("IsInteractable")] Battlefield battlefield;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiCardDeck;
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiGraveyardDeck;
     [SerializeField, ShowIf("IsInteractable")] UIManaPool uiManaPool;
@@ -19,15 +18,24 @@ public class UIPlayerHand : MonoBehaviour
     [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData visualizeCardPositionOffset;
 	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
     [BoxGroup("Presets"), SerializeField] Vector3 HandRotation;
-    //[BoxGroup("Presets"), SerializeField] Vector3 DeckRotation;
 
+    Battlefield battlefield;
     List<CardObject> cardList = new List<CardObject>();
-    Stack<CardObject> standByCards = new Stack<CardObject>();
-    private bool isBusy;
     protected Civilization civilization;
 
     private InputController inputController;
-    private CardObject currentTargetCard;
+    private CardObject _currentTargetCard;
+    private CardObject currentTargetCard
+    {
+        get { return _currentTargetCard; }
+        set {
+            if (value == _currentTargetCard)
+                return;
+
+            _currentTargetCard = value;
+            onCardBeingHeld?.Invoke(value);
+        }
+    }
     private bool IsHoldingCard => currentTargetCard != null;
     private bool IsCardAwaitingRelease;
     private bool IsDraggingCard;
@@ -36,23 +44,20 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnCardReleased onCardReleasedOnGraveyard;
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
-    HandleCanReleaseCard canDiscardCard;
-    HandleCanReleaseCard canGenerateMana;
+    HandleOnHoldingCard onCardBeingHeld;
     HandleCanSummonHero canSummonHero;
 
-    public void PreSetup(InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
-        HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea,
-        HandleCanReleaseCard canDiscardCard, HandleCanReleaseCard canGenerateMana,
+    public void PreSetup(Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
+        HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea, HandleOnHoldingCard onCardBeingHeld,
         HandleCanSummonHero canSummonHero
         )
     {
+        this.battlefield = battlefield;
         this.inputController = inputController;
         this.onCardReleasedOnGraveyard = onCardReleasedOnGraveyard;
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
         this.onCardReleasedOnSpawnArea = onCardReleasedOnSpawnArea;
-
-        this.canDiscardCard = canDiscardCard;
-        this.canGenerateMana = canGenerateMana;
+        this.onCardBeingHeld = onCardBeingHeld;
         this.canSummonHero = canSummonHero;
 
         RegisterDefaultCallbacks();
@@ -140,11 +145,12 @@ public class UIPlayerHand : MonoBehaviour
         inputController.RegisterTargetCallback(MouseEventType.EndHover, uiManaPool.gameObject, OnEndHoverManaPool);
         inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, uiManaPool.gameObject, OnReleaseCardOnManaPool);
 
+
         foreach(var field in battlefield.GetFields())
         {
             inputController.RegisterTargetCallback(MouseEventType.Hover, field.gameObject, OnStartHoverSpawnArea);
             inputController.RegisterTargetCallback(MouseEventType.EndHover, field.gameObject, OnEndHoverSpawnArea);
-            inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, field.gameObject, OnReleaseHoverSpawnArea);
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, field.gameObject, OnReleaseHoverSpawnArea);
         }
     }
     void RegisterCardCallback(GameObject gameObject)
@@ -349,14 +355,12 @@ public class UIPlayerHand : MonoBehaviour
 
         onCardReleasedOnSpawnArea?.Invoke(currentTargetCard);
     }
-    void HandleStartHoverSpawnArea(GameObject spawnAreaObject)
+    void OnStartHoverSpawnArea(GameObject gameObject)
     {
-        var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
-
-        if (!spawnArea.IsSpawnArea)
+        if (!IsHoldingCard || !IsDraggingCard)
             return;
 
-        GenericHoverPlace(spawnArea);
+        HandleStartHoverSpawnArea(gameObject);
     }
     void OnEndHoverSpawnArea(GameObject gameObject)
     {
@@ -366,12 +370,14 @@ public class UIPlayerHand : MonoBehaviour
         IsCardAwaitingRelease = false;
         StartCardDynamicDrag(currentTargetCard);
     }
-    void OnStartHoverSpawnArea(GameObject gameObject)
+    void HandleStartHoverSpawnArea(GameObject spawnAreaObject)
     {
-        if (!IsHoldingCard || !IsDraggingCard)
+        var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
+
+        if (!spawnArea.IsSpawnArea || !canSummonHero(currentTargetCard.Data))
             return;
 
-        HandleStartHoverSpawnArea(gameObject);
+        GenericHoverPlace(spawnArea);
     }
 
     #endregion SPAWN_AREA_LOGIC

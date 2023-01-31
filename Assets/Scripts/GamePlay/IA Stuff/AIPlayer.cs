@@ -10,9 +10,9 @@ public class AIPlayer : Player
 
 
 	private bool DoAction = false;
-	public override void Setup(GameController gameController, InputController inputController)
+	public override void Setup(Battlefield battlefield, GameController gameController, InputController inputController)
     {
-        base.Setup(gameController, inputController);
+        base.Setup(battlefield, gameController, inputController);
 
 		gameController.OnPhaseChange += HandlePhaseChange;
 	}

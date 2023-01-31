@@ -128,7 +128,7 @@ public class ManaOrb : MonoBehaviour
 			if (!renderer.material.HasColor("_Color") && !renderer.material.HasColor("_EmissionColor"))
 				continue;
 
-			if (materialColor != lastUsedMaterialColor);
+			if (materialColor != lastUsedMaterialColor)
 				renderer.material.color = Color.Lerp(renderer.material.color, materialColor, interpolation);
 
 			if (materialColor != lastUsedEmissionColor)

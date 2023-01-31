@@ -13,7 +13,7 @@ public class Hero : MonoBehaviour
 
 	public static Hero selectedHero;
 
-	Battlefield battlefield;
+	//Battlefield battlefield;
 	GameController gameController;
 	Player Player;
 
@@ -134,7 +134,7 @@ public class Hero : MonoBehaviour
 		}*/
 	}
 
-	public void Setup(GameController gameController, Battlefield battlefield, CardObject card)
+	public void Setup(GameController gameController, /*Battlefield battlefield, */CardObject card)
 	{
 		//this.CardObject = card;
 

@@ -49,7 +49,7 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 			return;
 		}
 
-		SetColor(selectedColor);
+		SetColor(spawnAreaColor);
 
 	}
 	void SetColor(Color color)

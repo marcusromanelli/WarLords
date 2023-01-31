@@ -99,7 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderer: {fileID: 23000013017878320}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  spawnAreaColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+  selectedColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   cardPositionDataReference: {fileID: 2646328291477264585}
   isSpawnArea: 0
 --- !u!65 &-7354279543079754580

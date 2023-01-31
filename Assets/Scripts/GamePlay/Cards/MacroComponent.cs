@@ -7,7 +7,7 @@ public class MacroComponent : MonoBehaviour
 {
 	Player Player;
 	GameController GameController;
-	Battlefield Battlefield;
+	//Battlefield Battlefield;
 	public bool IsResolving { get; private set; }
 
 	CardObject CardObject;

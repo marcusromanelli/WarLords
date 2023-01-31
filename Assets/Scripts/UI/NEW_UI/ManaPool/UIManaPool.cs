@@ -37,7 +37,6 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 			AddOrb();
 		}
 
-		int c = 0;
 		for (int i = manaOrbs.Count; i > 0; i--)
 		{
 			var manaOrb = manaOrbs[i - 1];

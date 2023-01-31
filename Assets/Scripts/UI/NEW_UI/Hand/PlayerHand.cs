@@ -13,6 +13,7 @@ public class PlayerHand
     public event HandleOnCardReleased OnCardReleasedOnGraveyard;
     public event HandleOnCardReleased OnCardReleasedOnManaPool;
     public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
+    public event HandleOnHoldingCard OnHoldCard;
 
 
     [SerializeField] UIPlayerHand uiPlayerHand;
@@ -24,9 +25,9 @@ public class PlayerHand
     {
         Cards = new List<Card>();
     }
-    public void PreSetup(InputController inputController, HandleCanReleaseCard canDiscardCard, HandleCanReleaseCard canGenerateMana, HandleCanSummonHero canSummonHero)
+    public void PreSetup(Battlefield battlefield, InputController inputController, HandleCanSummonHero canSummonHero)
     {
-        uiPlayerHand.PreSetup(inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, canDiscardCard, canGenerateMana, canSummonHero);
+        uiPlayerHand.PreSetup(battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
     }
     public void Setup(Civilization civilization)
     {
@@ -129,5 +130,9 @@ public class PlayerHand
     void onCardReleasedOnSpawnArea(CardObject cardObject)
     {
         OnCardReleasedOnSpawnArea?.Invoke(cardObject);
+    }
+    void onCardBeingHold(CardObject cardObject)
+    {
+        OnHoldCard?.Invoke(cardObject);
     }
 }

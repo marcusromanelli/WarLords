@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466308203092360739}
-  - component: {fileID: 4651315747617979332}
-  - component: {fileID: 3600295544023292053}
+  - component: {fileID: 4830459570426529744}
   m_Layer: 0
   m_Name: BattlefieldGrid
   m_TagString: Untagged
@@ -32,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4651315747617979332
+--- !u!114 &4830459570426529744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,24 +40,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8463361048544547839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e6aee61e8930fb4e86ab9a88c2f7086, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a5949870c0c3b74f81c5bb705976a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   battlefieldData: {fileID: 11400000, guid: c7accc20bd02eca4fbc3b32b18f56d83, type: 2}
-  uiBattlefield: {fileID: 3600295544023292053}
   selectedTile: {fileID: 0}
-  inputController: {fileID: 0}
-  CardReferencePosition: {fileID: 0}
-  gameController: {fileID: 0}
---- !u!114 &3600295544023292053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8463361048544547839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9f329d27137f3d49a4ceebda2c74b3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

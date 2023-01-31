@@ -4,18 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 
+
 public class GameController : Singleton<GameController>
 {
 	public delegate void HandleOnPhaseChange(Phase newPhase);
 	public event HandleOnPhaseChange OnPhaseChange;
 
-	[SerializeField] InputController inputController;
-	[SerializeField] PhaseTitle phaseTitle;
-	[SerializeField] Battlefield battlefield;
-	[SerializeField] Player LocalPlayer;
-	[SerializeField] Player RemotePlayer;
-	[SerializeField, ReadOnly] Player currentPlayer;
-	[SerializeField, ReadOnly] Phase currentPhase;
+	public static Player LocalPlayer => Instance.localPlayer;
+
+
+	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
+	[BoxGroup("Components"), SerializeField] InputController inputController;
+	[BoxGroup("Components"), SerializeField] PhaseTitle phaseTitle;
+	[BoxGroup("Components"), SerializeField] Player localPlayer;
+	[BoxGroup("Components"), SerializeField] Player remotePlayer;
+
+	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player currentPlayer;
+	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Phase currentPhase;
 
 	List<MacroComponent> Macros;
 
@@ -35,11 +40,14 @@ public class GameController : Singleton<GameController>
 		if (Macros == null)
 			Macros = new List<MacroComponent>();
 
-		LocalPlayer.Setup(this, inputController);
-		RemotePlayer.Setup(this, inputController);
+		battlefield.Setup(inputController, this, CanSummonHero);
+
+		LocalPlayer.Setup(battlefield, this, inputController);
+
+		remotePlayer.Setup(battlefield, this, inputController);
 
 		LocalPlayer.SetupConditions();
-		RemotePlayer.SetupConditions();
+		remotePlayer.SetupConditions();
 	}
 	IEnumerator SolveCurrentPhase()
     {
@@ -114,22 +122,22 @@ public class GameController : Singleton<GameController>
 	IEnumerator StartupPlayers()
 	{
 		LocalPlayer.SetupPlayDeck();
-		RemotePlayer.SetupPlayDeck();
+		remotePlayer.SetupPlayDeck();
 
 		LocalPlayer.SetupHand();
-		RemotePlayer.SetupHand();
+		remotePlayer.SetupHand();
 
 		yield return LocalPlayer.IsInitialized();
 
-		yield return RemotePlayer.IsInitialized();
+		yield return remotePlayer.IsInitialized();
 	}
 	void StartPreGame() 
 	{
 		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		RemotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
+		remotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
 
 		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-		RemotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		remotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
 	IEnumerator AwaitConditionsToSolve()
 	{
@@ -137,13 +145,19 @@ public class GameController : Singleton<GameController>
 		while (hasConditions)
 		{
 			yield return null;
-			hasConditions = LocalPlayer.HasConditions() || RemotePlayer.HasConditions();
+			hasConditions = LocalPlayer.HasConditions() || remotePlayer.HasConditions();
 		}
 	}
-    #endregion PRE_GAME_PHASE
+	#endregion PRE_GAME_PHASE
 
+	#region BATTLEFIELD_INTERFACE
+	bool CanSummonHero(Card card)
+    {
+		return LocalPlayer.CanPlayerSummonHero(card);
+    }
+	#endregion BATTLEFIELD_INTERFACE
 
-    public bool CanPlayerInteract(Player player)
+	public bool CanPlayerInteract(Player player)
     {
 		return Phase == Phase.PreGame || currentPlayer == player;
     }
@@ -187,7 +201,7 @@ public class GameController : Singleton<GameController>
 		}
 		else
 		{
-			currentPlayer = (currentPlayer == RemotePlayer) ? LocalPlayer : RemotePlayer;
+			currentPlayer = (currentPlayer == remotePlayer) ? LocalPlayer : remotePlayer;
 		}
 
 		Debug.Log("Turno do jogador: " + currentPlayer + " começando na fase: " + currentPhase.ToString());
@@ -263,7 +277,7 @@ public class GameController : Singleton<GameController>
 	void TogglePlayers(bool value)
 	{
 		LocalPlayer.enabled = value;
-		RemotePlayer.enabled = value;
+		remotePlayer.enabled = value;
 	}
 
 	IEnumerator AwaitMovementPhase()
@@ -387,10 +401,14 @@ public class GameController : Singleton<GameController>
 			Singleton.Macros[0].setActive();*/
 	}
 
+	public PlayerType GetPlayerType(Player player)
+    {
+		return player == LocalPlayer ? PlayerType.Local : PlayerType.Remote;
+    }
 
 	Player GetOpponent(Player player)
 	{
-		return player == LocalPlayer ? RemotePlayer : LocalPlayer;
+		return player == LocalPlayer ? remotePlayer : LocalPlayer;
 	}
 
 	Player GetLocalPlayer()
@@ -399,9 +417,10 @@ public class GameController : Singleton<GameController>
 	}
 	Player GetRemotePlayer()
 	{
-		return RemotePlayer;
+		return remotePlayer;
 	}
 
+	#region HELPER_GUI
 	string GetPlayerConditionPrint(Player player)
     {
 		string final = "";
@@ -426,7 +445,7 @@ public class GameController : Singleton<GameController>
 
 	string GetPlayersConditionsPrint()
 	{
-		return GetPlayerConditionPrint(LocalPlayer) + GetPlayerConditionPrint(RemotePlayer);
+		return GetPlayerConditionPrint(LocalPlayer) + GetPlayerConditionPrint(remotePlayer);
 	}
 
 	int GetPlayerConditionsNumber(Player player)
@@ -436,7 +455,7 @@ public class GameController : Singleton<GameController>
 
 	int GetPlayersConditionsNumber()
 	{
-		return GetPlayerConditionsNumber(LocalPlayer) + GetPlayerConditionsNumber(RemotePlayer);
+		return GetPlayerConditionsNumber(LocalPlayer) + GetPlayerConditionsNumber(remotePlayer);
 	}
 
 	void OnGUI()
@@ -474,4 +493,5 @@ public class GameController : Singleton<GameController>
 			GUI.Box(derp, final);
 		}
 	}
+	#endregion HELPER_GUI
 }

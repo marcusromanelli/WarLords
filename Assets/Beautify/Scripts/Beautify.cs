@@ -1141,7 +1141,7 @@ namespace BeautifyEffect {
 																				BlurThisDoF (rtDB, 14 + rpassMinus);
 
 																				if (_depthOfFieldDebug) {
-																								source.MarkRestoreExpected ();
+																								//source.MarkRestoreExpected ();
 																								Graphics.Blit (rtDB, destination, bMat, 13 + rpassMinus);
 																								return;
 																				}
@@ -1208,7 +1208,7 @@ namespace BeautifyEffect {
 																				if (_bloom) {
 																								if (quality == BEAUTIFY_QUALITY.BestQuality) {
 																												for (int k = 5; k > 0; k--) {
-																																rt [k - 1].MarkRestoreExpected ();
+																																//rt [k - 1].MarkRestoreExpected ();
 																																Graphics.Blit (rt [k], rt [k - 1], bMat, 8);
 																												}
 																												if (_bloomCustomize) {
@@ -1254,7 +1254,7 @@ namespace BeautifyEffect {
 																				}
 
 																				for (int k = 5; k > 0; k--) {
-																								rtAF [k - 1].MarkRestoreExpected ();
+																								//rtAF [k - 1].MarkRestoreExpected ();
 																								if (k == 1) {
 																												Graphics.Blit (rtAF [k], rtAF [k - 1], bMat, 10); // applies intensity in last stage
 																								} else {
@@ -1262,7 +1262,7 @@ namespace BeautifyEffect {
 																								}
 																				}
 																				if (_bloom) {
-																								rtBloom.MarkRestoreExpected ();
+																								//rtBloom.MarkRestoreExpected ();
 																								Graphics.Blit (rtAF [0], rtBloom, bMat, 11);
 																				} else {
 																								rtBloom = rtAF [0];
