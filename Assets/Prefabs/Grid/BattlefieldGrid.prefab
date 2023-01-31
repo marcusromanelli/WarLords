@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8466308203092360739}
   - component: {fileID: 4651315747617979332}
+  - component: {fileID: 3600295544023292053}
   m_Layer: 0
   m_Name: BattlefieldGrid
   m_TagString: Untagged
@@ -43,54 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6aee61e8930fb4e86ab9a88c2f7086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battlefieldData: {fileID: 11400000, guid: c7accc20bd02eca4fbc3b32b18f56d83, type: 2}
+  uiBattlefield: {fileID: 3600295544023292053}
   selectedTile: {fileID: 0}
-  generatedTiles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   inputController: {fileID: 0}
   CardReferencePosition: {fileID: 0}
   gameController: {fileID: 0}
-  randomizeEveryGame: 1
-  gridPrefabs:
-  - {fileID: 1000013507749054, guid: 59e9658de8d800d4990df3545f45d778, type: 3}
-  - {fileID: 1000014128719110, guid: 9a39420ee762fad48ae1df77dde8529b, type: 3}
-  - {fileID: 1000010245026100, guid: 762ee805b890ea641a8f6e8864f6ed22, type: 3}
-  - {fileID: 1000010784588128, guid: 6ae331c930ec54745a94c6b95385661f, type: 3}
-  - {fileID: 1000010296629556, guid: 59af762e262549f4ba3e8bcb9d52867d, type: 3}
-  numberOfLanes: 5
-  numberOfSquares: 7
-  numberOfSpawnAreasPerLane: 2
-  squareSize: 0.8
+--- !u!114 &3600295544023292053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8463361048544547839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9f329d27137f3d49a4ceebda2c74b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

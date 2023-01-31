@@ -97,11 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed543676da031d4090d249aeca0cd0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPositionDataReference: {fileID: 2173375004310748634}
   renderer: {fileID: 23000010177635006}
-  defaultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  selectedColor: {r: 0, g: 0, b: 0, a: 1}
-  playerType: 2
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  cardPositionDataReference: {fileID: 2173375004310748634}
+  isSpawnArea: 0
 --- !u!65 &-2147176806695912357
 BoxCollider:
   m_ObjectHideFlags: 0

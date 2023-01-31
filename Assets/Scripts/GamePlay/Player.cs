@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 	protected bool HasUsedHability;
 	protected GameController gameController;
 	protected bool IsReadyToEndActionPhase = true;
-	protected bool IsOnActionPhase => !IsReadyToEndActionPhase;
+	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
 	public virtual void Setup(GameController gameController, InputController inputController)
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
 	protected bool CanSummonHero(Card card)
     {
 		var playerCan = CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.manaCost);
-		var battleFieldCan = !Battlefield.PlayerHasHero(this, card) && Battlefield.CanSummonOnSelectedTile(this);
+		var battleFieldCan = !Battlefield.PlayerHasHero(this, card) && Battlefield.CanSummonOnSelectedTile();
 		return playerCan && battleFieldCan;
 	}
 	void OnCardReleasedOnSpawnArea(CardObject card)
@@ -237,7 +237,7 @@ public class Player : MonoBehaviour
 
 		TriggerManaCreation();
 	}
-	protected void TriggerManaCreation()
+	protected void TriggerManaCreation()	
     {
 		OnSendManaCreation?.Invoke(1);
 	}

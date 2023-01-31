@@ -353,7 +353,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
 
-        if (!spawnArea.IsSummonable)
+        if (!spawnArea.IsSpawnArea)
             return;
 
         GenericHoverPlace(spawnArea);

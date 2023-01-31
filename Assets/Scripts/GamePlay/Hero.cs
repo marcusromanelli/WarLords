@@ -29,14 +29,14 @@ public class Hero : MonoBehaviour
 	int walkSpeed = 1;
 	int numberOfAttacks = 1;
 
-	public Vector2 GridPosition
+	/*public Vector2 GridPosition
 	{
 		get
 		{
 			return battlefield.UnityToGrid(transform.position);
 		}
 	}
-
+	*/
 	TextMesh Life, _Attack;
 
 	int layerMask;
@@ -146,13 +146,13 @@ public class Hero : MonoBehaviour
 	}
 
 
-	void WalkTo(Vector2 pos)
+	/*void WalkTo(Vector2 pos)
 	{
 		targetPoint = battlefield.Normalize(pos);
 		isWalking = true;
 
 		//gameController.SetTriggerType(TriggerType.OnBeforeWalk, CardObject);
-	}
+	}*/
 
 	public void moveForward()
 	{
@@ -223,7 +223,7 @@ public class Hero : MonoBehaviour
 			numberOfAttacks = 1;
 	}
 
-	Vector2 calculateEndPosition()
+	/*Vector2 calculateEndPosition()
 	{
 		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
 		gridPos.y += movementDirection() * calculateWalkSpeed();
@@ -237,7 +237,7 @@ public class Hero : MonoBehaviour
 		gridPos.y += movementDirection();
 
 		return gridPos;
-	}
+	}*/
 
 	public Vector3 GetTopPosition()
 	{
@@ -268,7 +268,7 @@ public class Hero : MonoBehaviour
 		//CardObject.isBeingHeroVisualized = true;
 	}
 
-	Hero checkForEnemiesInFront()
+	/*Hero checkForEnemiesInFront()
 	{
 		Vector2 aux = calculateNextForward();
 		int layerMask = 1 << gameObject.layer;
@@ -281,7 +281,7 @@ public class Hero : MonoBehaviour
 		}
 
 		return null;
-	}
+	}*/
 	public Vector3 GetPivotPosition()
 	{
 		return pivot.transform.position;
