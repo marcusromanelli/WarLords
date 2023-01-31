@@ -10,12 +10,9 @@ public class CardDeck<T>
     [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
-    protected Civilization civilization;
-
-    public void Setup(Civilization civilization)
+    public void Setup()
     {
         Cards = new Stack<T>();
-        uiCardDeck.Setup(civilization);
     }
     public void AddCard(T card)
     {

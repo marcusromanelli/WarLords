@@ -124,9 +124,6 @@ public class GameController : Singleton<GameController>
 		LocalPlayer.SetupPlayDeck();
 		remotePlayer.SetupPlayDeck();
 
-		LocalPlayer.SetupHand();
-		remotePlayer.SetupHand();
-
 		yield return LocalPlayer.IsInitialized();
 
 		yield return remotePlayer.IsInitialized();

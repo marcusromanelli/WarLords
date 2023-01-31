@@ -13,13 +13,9 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
 
     List<DeckActionType> remainingActions = new List<DeckActionType>();
     List<CardObject> deckObjects = new List<CardObject>();
-    Civilization civilization;
     public bool IsBusy => isBusy;
     private int targetDeckSize;
-    public void Setup(Civilization civilization)
-    {
-        this.civilization = civilization;
-    }
+
     public void UpdateDeckSize(int newSize)
     {
         if (newSize == targetDeckSize)

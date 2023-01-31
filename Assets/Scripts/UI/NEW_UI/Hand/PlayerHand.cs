@@ -19,7 +19,6 @@ public class PlayerHand
     [SerializeField] UIPlayerHand uiPlayerHand;
     [SerializeField, ReadOnly] List<Card> Cards;
     public int Count => Cards.Count;
-    protected Civilization civilization;
 
     public PlayerHand()
     {
@@ -28,10 +27,6 @@ public class PlayerHand
     public void PreSetup(Battlefield battlefield, InputController inputController, HandleCanSummonHero canSummonHero)
     {
         uiPlayerHand.PreSetup(battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
-    }
-    public void Setup(Civilization civilization)
-    {
-        uiPlayerHand.Setup(civilization);
     }
     public void AddCard(Card card)
     {

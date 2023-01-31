@@ -21,7 +21,6 @@ public class UIPlayerHand : MonoBehaviour
 
     Battlefield battlefield;
     List<CardObject> cardList = new List<CardObject>();
-    protected Civilization civilization;
 
     private InputController inputController;
     private CardObject _currentTargetCard;
@@ -61,10 +60,6 @@ public class UIPlayerHand : MonoBehaviour
         this.canSummonHero = canSummonHero;
 
         RegisterDefaultCallbacks();
-    }
-    public void Setup(Civilization civilization)
-    {
-        this.civilization = civilization;
     }
     public void Discard(CardObject cardObject)
     {

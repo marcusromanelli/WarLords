@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
 	//In Game ONLY
 	private const string playerPropertiesTag = "Player Properties";
 	[BoxGroup(playerPropertiesTag), SerializeField] Card[] deckStartCards;
-	[BoxGroup(playerPropertiesTag), SerializeField] Civilization civilization;
 
 	private const string gameLogicTag = "Game Logic";
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> PlayDeck;
@@ -57,17 +56,13 @@ public class Player : MonoBehaviour
 
     public void SetupPlayDeck()
 	{
-		PlayDeck.Setup(civilization);
+		PlayDeck.Setup();
 
 		PlayDeck.Empty();
 
 		PlayDeck.AddCards(deckStartCards);
 
 		PlayDeck.Shuffle();
-	}
-	public void SetupHand()
-	{
-		Hand.Setup(civilization);
 	}
 	public void SetupConditions()
 	{
@@ -362,7 +357,7 @@ public class Player : MonoBehaviour
 
 	string GetFormatedName()
 	{
-		return "Player " + (civilization + 1);
+		return "Player " + (name);
 	}
 	
 
