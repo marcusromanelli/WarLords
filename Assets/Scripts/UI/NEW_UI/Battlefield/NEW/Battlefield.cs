@@ -11,7 +11,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 {
 	[SerializeField] UIBattlefield uiBattlefield;
 
-	Dictionary<Player, List<Hero>> heroList = new Dictionary<Player, List<Hero>>();
+	Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
 	GameController gameController;
 
 	public void Setup(InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
@@ -82,9 +82,29 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public List<Hero> GetHeroes(Player player)
+	public void Summon(Player player, Card card)
 	{
-		return heroList[player];
+		var areaPosition = uiBattlefield.SelectedTile;
+
+		var hero = HeroFactory.Create(card, areaPosition.transform);
+
+		//hero.Setup(gameController, this, heroCard);
+
+		//GameConfiguration.PlaySFX(GameConfiguration.Summon);
+
+		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, heroCard);
+
+		//player.SpendMana(heroCard.CalculateSummonCost());
+
+		//AddHero(player, hero);
+
+		//ReorderHeroList(player);
+
+		//SetHeroTile(hero, spawnArea);
+
+		//heroCard.transform.SetParent(hero.transform, true);
+
+		//player.Summon(heroCard);
 	}
 	public bool PlayerHasHeroSummoned(Player player, Card card)
 	{
@@ -95,10 +115,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		return heroList[player].Any(c => c.CardObject.Data.CardID == card.CardID);
 	}
-	void AddHero(Player player, Hero hero)
+	List<HeroObject> GetHeroes(Player player)
+	{
+		return heroList[player];
+	}
+	void AddHero(Player player, HeroObject hero)
 	{
 		if (!heroList.ContainsKey(player))
-			heroList.Add(player, new List<Hero>());
+			heroList.Add(player, new List<HeroObject>());
 
 		heroList[player].Add(hero);
 	}

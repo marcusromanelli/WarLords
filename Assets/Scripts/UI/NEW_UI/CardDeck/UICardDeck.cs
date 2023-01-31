@@ -110,7 +110,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         var lastPosition = deckObjects.Count - 1;
         var card = deckObjects[lastPosition];
 
-        CardFactory.AddCardToPool(card);
+        CardFactory.AddToPool(card);
 
         deckObjects.RemoveAt(lastPosition);
 

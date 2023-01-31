@@ -148,14 +148,21 @@ public class Player : MonoBehaviour
 		var battleFieldCan = !battlefield.PlayerHasHeroSummoned(this, card) && battlefield.CanSummonOnSelectedTile();
 		return playerCan && battleFieldCan;
 	}
-	void OnCardReleasedOnSpawnArea(CardObject card)
-    {
-		if(!CanSummonHero(card.Data))
+	void OnCardReleasedOnSpawnArea(CardObject cardObject)
+	{
+		var cardData = cardObject.Data;
+
+		if (!CanSummonHero(cardData))
 		{
 			Debug.Log("You cannot summon this hero right now.");
 			return;
 		}
 
+		ManaPool.SpendMana(cardData.CalculateSummonCost());
+
+		Hand.TurnCardIntoCharacter(cardObject);
+
+		gameController.Summon(this, cardData);
 
 		Debug.Log("Summoned!");
 	}

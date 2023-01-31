@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardFactory : Singleton<CardFactory>
+public class CardFactory : PoolableFactory<CardObject> 
 {
-    [SerializeField] CardObject CardTemplate;
-
-    Stack<CardObject> cardPool = new Stack<CardObject>();
 
     public static CardObject CreateCard(Card card, Transform transform, bool hideCardInfo)
     {
@@ -25,16 +22,7 @@ public class CardFactory : Singleton<CardFactory>
     }
     public static CardObject CreateEmptyCard(Civilization civilization, Transform transform, Vector3 position, Quaternion rotation)
     {
-        CardObject obj;
-        if (PoolHasElements())
-        {
-            obj = GetPoolElement();
-        }
-        else {
-            var cardTemplate = Instance.CardTemplate;
-
-            obj = ElementFactory.CreatePrefab<CardObject>(cardTemplate, transform);
-        }
+        var obj = CreateDefault(transform, position, rotation);
 
         obj.transform.SetParent(transform, false);
         obj.transform.position = position;
@@ -42,33 +30,5 @@ public class CardFactory : Singleton<CardFactory>
         obj.SetupCover(civilization);
 
         return obj;
-    }
-    public static void AddCardToPool(CardObject cardObject)
-    {
-        var cardPool = GetPool();
-
-        cardObject.transform.SetParent(Instance.transform);
-        cardObject.gameObject.SetActive(false);
-        cardObject.Pool();
-        cardPool.Push(cardObject);
-    }
-
-    static bool PoolHasElements()
-    {
-        return GetPool().Count > 0;
-    }
-
-    static CardObject GetPoolElement()
-    {
-        var cardObject = GetPool().Pop();
-
-        cardObject.gameObject.SetActive(true);
-
-        return cardObject;
-    }
-
-    static Stack<CardObject> GetPool()
-    {
-        return Instance.cardPool;
     }
 }

@@ -151,6 +151,10 @@ public class GameController : Singleton<GameController>
 	#endregion PRE_GAME_PHASE
 
 	#region BATTLEFIELD_INTERFACE
+	public void Summon(Player player, Card card)
+    {
+		battlefield.Summon(player, card);
+    }
 	bool CanSummonHero(Card card)
     {
 		return LocalPlayer.CanPlayerSummonHero(card);
@@ -165,7 +169,10 @@ public class GameController : Singleton<GameController>
 	{
 		WatchExitGame();
 	}
-	bool WatchEndGame()
+
+
+    #region PHASE_LOGIC
+    bool WatchEndGame()
 	{
 		return false;
 
@@ -266,6 +273,24 @@ public class GameController : Singleton<GameController>
 
 		Debug.LogWarning("New Phase: " + nextPhase.ToString());
 	}
+	IEnumerator AwaitMovementPhase()
+	{
+		yield return battlefield.MovementPhase();
+
+		GoToNextPhase();
+	}
+	IEnumerator AwaitAttackPhase()
+	{
+		yield return battlefield.AttackPhase();
+
+		GoToNextPhase();
+	}
+	#endregion PHASE_LOGIC
+
+
+
+
+
 	void DisablePlayers()
 	{
 		TogglePlayers(false);
@@ -278,19 +303,6 @@ public class GameController : Singleton<GameController>
 	{
 		LocalPlayer.enabled = value;
 		remotePlayer.enabled = value;
-	}
-
-	IEnumerator AwaitMovementPhase()
-	{
-		yield return battlefield.MovementPhase();
-
-		GoToNextPhase();
-	}
-	IEnumerator AwaitAttackPhase()
-	{
-		yield return battlefield.AttackPhase();
-
-		GoToNextPhase();
 	}
 
 	void AttackPlayer(int damage)
