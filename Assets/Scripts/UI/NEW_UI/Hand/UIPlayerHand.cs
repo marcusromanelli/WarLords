@@ -71,10 +71,14 @@ public class UIPlayerHand : MonoBehaviour
         RemoveCard(cardObject);
         SendCardToPool(cardObject);
     }
+    public void TurnCardIntoCharacter(CardObject cardObject)
+    {
+        RemoveCard(cardObject);
+    }
     public void TurnCardIntoMana(CardObject cardObject)
     {
         RemoveCard(cardObject);
-        cardObject.BecameMana(() => { SendCardToPool(cardObject); });     
+        cardObject.BecameMana(() => { SendCardToPool(cardObject); });
     }
     void RemoveCard(CardObject cardObject)
     {
@@ -90,7 +94,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void SendCardToPool(CardObject cardObject)
     {
-        CardFactory.AddCardToPool(cardObject);
+        CardFactory.AddToPool(cardObject);
     }
     public void AddCard(Card card)
     {

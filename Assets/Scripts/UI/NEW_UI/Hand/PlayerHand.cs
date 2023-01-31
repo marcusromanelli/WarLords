@@ -68,6 +68,15 @@ public class PlayerHand
 
         uiPlayerHand.TurnCardIntoMana(cardObject);
     }
+    public void TurnCardIntoCharacter(CardObject cardObject)
+    {
+        if (Cards.Count <= 0)
+            return;
+
+        Cards.Remove(cardObject.Data);
+
+        uiPlayerHand.TurnCardIntoCharacter(cardObject);
+    }
     public Card DiscardCard()
     {
         if (Cards.Count <= 0)

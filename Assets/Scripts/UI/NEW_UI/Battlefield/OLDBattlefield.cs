@@ -127,12 +127,7 @@ public class OLD____Battlefield : MonoBehaviour
 		//cardWaitingForSpawn = hero;
 	}
 
-	public void Summon(CardObject cardObject, SpawnArea area)
-	{
-		cardObject.transform.SetParent(transform);
 
-		SummonCard(cardObject, area);
-	}
 
 	public void Kill(CardObject card)
 	{
@@ -145,32 +140,6 @@ public class OLD____Battlefield : MonoBehaviour
 	public List<Card> GetHeroes(Player player)
     {
 		return heroList[player];
-	}
-	public void SummonCard(CardObject heroCard, SpawnArea spawnArea)
-	{
-		//var player = heroCard.player;
-		//var areaPosition = spawnArea.transform.position;
-		//var hero = heroCard.GetCharacterResource();
-				
-		//hero = Instantiate(hero, areaPosition, Quaternion.identity);
-
-		//hero.Setup(gameController, this, heroCard);
-
-		//GameConfiguration.PlaySFX(GameConfiguration.Summon);
-
-		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, heroCard);
-
-		//player.SpendMana(heroCard.CalculateSummonCost());
-
-		//AddHero(player, hero);
-
-		//ReorderHeroList(player);
-
-		//SetHeroTile(hero, spawnArea);
-
-		//heroCard.transform.SetParent(hero.transform, true);
-
-		//player.Summon(heroCard);
 	}
 	void AddHero(Player player, Card hero)
     {

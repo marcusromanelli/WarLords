@@ -12,8 +12,8 @@ public class ActionComponent
 	public Action action;
 	public int number;
 	public MacroType macro;
-	public Hero attacked;
-	public Hero attacker;
+	public HeroObject attacked;
+	public HeroObject attacker;
 	public Player playerAttacker;
 	public Player playerAttacked;
 	/// <summary>
@@ -36,7 +36,7 @@ public class ActionComponent
 		this.playerAttacker = player;
 	}
 
-	public ActionComponent(Action action, int number, Hero attacker, Hero attacked)
+	public ActionComponent(Action action, int number, HeroObject attacker, HeroObject attacked)
 	{
 		this.action = action;
 		this.attacked = attacked;
@@ -44,7 +44,7 @@ public class ActionComponent
 		this.number = number;
 	}
 
-	public ActionComponent(Action action, Hero attacker)
+	public ActionComponent(Action action, HeroObject attacker)
 	{
 		this.action = action;
 		this.attacker = attacker;
@@ -195,7 +195,7 @@ public class LogController : MonoBehaviour
 		Singleton.AddLog(new ActionComponent(action, player, macro));
 	}
 
-	public static void Log(Action action, int number, Hero attacker, Hero attacked)
+	public static void Log(Action action, int number, HeroObject attacker, HeroObject attacked)
 	{
 		Singleton.AddLog(new ActionComponent(action, number, attacker, attacked));
 	}
@@ -205,7 +205,7 @@ public class LogController : MonoBehaviour
 		Singleton.AddLog(new ActionComponent(action, number, attacker, attacked));
 	}
 
-	public static void Log(Action action, Hero attacker)
+	public static void Log(Action action, HeroObject attacker)
 	{
 		Singleton.AddLog(new ActionComponent(action, attacker));
 	}

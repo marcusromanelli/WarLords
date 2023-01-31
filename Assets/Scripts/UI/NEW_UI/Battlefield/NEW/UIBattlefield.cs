@@ -7,6 +7,8 @@ public class UIBattlefield : MonoBehaviour
 	[BoxGroup("Functionality"), SerializeField] SpawnArea[,] battlefieldTiles;
 	[BoxGroup("Functionality"), SerializeField, ReadOnly] SpawnArea selectedTile;
 
+	public SpawnArea SelectedTile => selectedTile;
+
 	private InputController inputController;
 	private HandleCanSummonHero canSummonHero;
 
