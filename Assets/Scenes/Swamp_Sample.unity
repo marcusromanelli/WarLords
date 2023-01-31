@@ -1335,8 +1335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582ea4fb9075b8e40ad0e37d862c9ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardTemplate: {fileID: 114000011009465866, guid: e2e4e2862d2f8b4449f7f849de361454,
-    type: 3}
+  Template: {fileID: 114000011009465866, guid: e2e4e2862d2f8b4449f7f849de361454, type: 3}
 --- !u!4 &1949342893
 Transform:
   m_ObjectHideFlags: 0

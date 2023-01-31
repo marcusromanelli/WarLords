@@ -7,7 +7,7 @@ using System.Collections.Generic;
 [Serializable]
 public class CardCollection : ISaveable {
 
-	public List<Card> Cards;
+	/*public List<Card> Cards;
 
 	public static CardCollection Load(bool loadFromBuild = false){
 		CardCollection aux=CardCollection.Load<CardCollection>(loadFromBuild);
@@ -18,8 +18,8 @@ public class CardCollection : ISaveable {
 		for(int i=0;i<aux.Cards.Count; i++){
 
 			aux2 = aux.Cards [i];
-			aux2.CardID = c;
-			aux2.updateData ();
+			//aux2.CardID = c;
+			//aux2.updateData ();
 
 			aux.Cards [i] = aux2;
 			c++;
@@ -35,5 +35,5 @@ public class CardCollection : ISaveable {
 	public static Card FindCardByID(int id){
 		
 		return CardsLibrary.Singleton.Cards.Cards.Find (a => a.CardID == id);
-	}
+	}*/
 }

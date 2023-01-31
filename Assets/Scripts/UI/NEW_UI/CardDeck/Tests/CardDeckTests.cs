@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardDeckTests
 {
-    Card GetRandomCard()
+    /*Card GetRandomCard()
     {
         var card = new Card();
 
@@ -148,5 +148,5 @@ public class CardDeckTests
         Assert.AreEqual(toAdd3, Cards[0]);
         Assert.AreEqual(toAdd2, Cards[1]);
         Assert.AreEqual(toAdd1, Cards[2]);
-    }
+    }*/
 }

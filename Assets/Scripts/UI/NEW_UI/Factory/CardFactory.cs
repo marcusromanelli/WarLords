@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CardFactory : PoolableFactory<CardObject> 
@@ -10,24 +9,23 @@ public class CardFactory : PoolableFactory<CardObject>
     }
     public static CardObject CreateCard(Card card, Transform transform, Vector3 position, Quaternion rotation, bool hideCardInfo)
     {
-        var cardObj = CreateEmptyCard(card.civilization, transform, position, rotation);
+        var cardObj = CreateEmptyCard(transform, position, rotation);
 
         cardObj.Setup(card, hideCardInfo);
 
         return cardObj;
     }
-    public static CardObject CreateEmptyCard(Civilization civilization, Transform transform)
+    public static CardObject CreateEmptyCard(Transform transform)
     {
-        return CreateEmptyCard(civilization, transform, Vector3.zero, Quaternion.identity);
+        return CreateEmptyCard(transform, Vector3.zero, Quaternion.identity);
     }
-    public static CardObject CreateEmptyCard(Civilization civilization, Transform transform, Vector3 position, Quaternion rotation)
+    public static CardObject CreateEmptyCard(Transform transform, Vector3 position, Quaternion rotation)
     {
         var obj = CreateDefault(transform, position, rotation);
 
         obj.transform.SetParent(transform, false);
         obj.transform.position = position;
         obj.transform.localRotation = rotation;
-        obj.SetupCover(civilization);
 
         return obj;
     }

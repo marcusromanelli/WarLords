@@ -94,7 +94,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     }
     void AddCardAction()
     {
-        CardObject cardObject = CardFactory.CreateEmptyCard(civilization, transform);
+        CardObject cardObject = CardFactory.CreateEmptyCard(transform);
         cardObject.transform.rotation = GetRotationReference();
         cardObject.transform.position = GetTopCardPosition();
 

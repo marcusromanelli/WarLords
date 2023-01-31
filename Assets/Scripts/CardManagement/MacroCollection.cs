@@ -7,7 +7,7 @@ using System.Linq;
 [Serializable]
 public class MacroCollection : ISaveable {
 
-	public Macro[] Macros;
+	/*public Macro[] Macros;
 
 	public static MacroCollection Load(bool loadFromBuild = false){
 		MacroCollection aux=MacroCollection.Load<MacroCollection>(loadFromBuild);
@@ -18,6 +18,6 @@ public class MacroCollection : ISaveable {
 		base.Write<MacroCollection>(saveOutsideBuild);
 	}
 	public Macro findMacro(MacroType type){
-		return Macros.ToList ().Find (a => a.macroType == type);
-	}
+		return Macros.ToList ().Find (a => a.MacroType == type);
+	}*/
 }

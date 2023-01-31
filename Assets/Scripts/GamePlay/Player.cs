@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
 	//In Game ONLY
 	private const string playerPropertiesTag = "Player Properties";
+	[BoxGroup(playerPropertiesTag), SerializeField] Card[] deckStartCards;
 	[BoxGroup(playerPropertiesTag), SerializeField] Civilization civilization;
 
 	private const string gameLogicTag = "Game Logic";
@@ -60,9 +61,7 @@ public class Player : MonoBehaviour
 
 		PlayDeck.Empty();
 
-		var civCards = CardsLibrary.Singleton.Cards.Cards.FindAll(a => a.civilization == civilization).ToArray();
-
-		PlayDeck.AddCards(civCards);
+		PlayDeck.AddCards(deckStartCards);
 
 		PlayDeck.Shuffle();
 	}
@@ -140,7 +139,7 @@ public class Player : MonoBehaviour
     }
 	public bool CanPlayerSummonHero(Card card)
     {
-		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.manaCost);
+		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.ManaCost);
 	}
 	public bool CanSummonHero(Card card)
     {

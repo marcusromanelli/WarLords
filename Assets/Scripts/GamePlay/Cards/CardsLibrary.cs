@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CardsLibrary : MonoBehaviour {
 
-	private static CardsLibrary _singleton;
+	/*private static CardsLibrary _singleton;
 	public static CardsLibrary Singleton{
 		get{
 			if (_singleton == null) {
@@ -53,5 +53,5 @@ public class CardsLibrary : MonoBehaviour {
 	void doLoad(){
 		Macros = MacroCollection.Load (true);
 		Cards = CardCollection.Load (true);
-	}
+	}*/
 }

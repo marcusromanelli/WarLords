@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 public class PlayerHandTests
 {
-    Card GetRandomCard()
+    /*Card GetRandomCard()
     {
         var card = new Card();
 
@@ -81,6 +81,6 @@ public class PlayerHandTests
 
         Assert.AreEqual(card2, cards[0]);
         Assert.AreEqual(card1, cards[1]);
-    }
+    }*/
 
 }

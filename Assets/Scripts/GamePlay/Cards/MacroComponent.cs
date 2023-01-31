@@ -125,7 +125,7 @@ public class MacroComponent : MonoBehaviour
 
 	public string getDescription()
 	{
-		return Skill.name + " - " + Skill.description;
+		return Skill.ToString();
 	}
 	public void Unenchant()
 	{

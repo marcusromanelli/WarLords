@@ -113,7 +113,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		if (!heroList.ContainsKey(player))
 			return false;
 
-		return heroList[player].Any(c => c.CardObject.Data.CardID == card.CardID);
+		return heroList[player].Any(c => c.CardObject.Data == card);
 	}
 	List<HeroObject> GetHeroes(Player player)
 	{

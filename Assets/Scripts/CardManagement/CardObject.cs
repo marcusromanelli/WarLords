@@ -89,7 +89,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 			if (cardObj == null)
 			{
-				Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.civilization.ToString());
+				Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.ToString());
 				return;
 			}
 
@@ -175,11 +175,11 @@ public class CardObject : MonoBehaviour, IPoolable
 	}
 	string GetCardResourcePath()
 	{
-		return "Prefabs/Cards/" + originalCard.civilization.ToString() + "/" + GetResourceName();
+		return "Prefabs/Cards/" + originalCard.ToString() + "/" + GetResourceName();
 	}
 	string GetResourceName()
 	{
-		return originalCard.name.Replace(" ", "");
+		return originalCard.ToString();
 	}
 
 	// void Awake()
