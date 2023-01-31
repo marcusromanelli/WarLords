@@ -124,18 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &11898558 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3890160710468698059, guid: 4c6cb34e3527ec14f9208abf976980ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 6851824715203774338}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e6aee61e8930fb4e86ab9a88c2f7086, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &103036135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1720,6 +1708,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4680837b290d595429c1a58b155b1a9d, type: 3}
+--- !u!1001 &5115313019981978819
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1000011447547414, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_Name
+      value: ManaOrb
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.004371792
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 24.43244
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.000385046
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011205192888, guid: c3c0a5696d608524796375b662bcf708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c3c0a5696d608524796375b662bcf708, type: 3}
 --- !u!1001 &6851824715203774338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1795,7 +1840,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Battlefield
       value: 
-      objectReference: {fileID: 11898558}
+      objectReference: {fileID: 0}
     - target: {fileID: 114000012439921640, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: phaseTitle
@@ -1920,7 +1965,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Battlefield
       value: 
-      objectReference: {fileID: 11898558}
+      objectReference: {fileID: 0}
     - target: {fileID: 6736299145605027769, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1955,7 +2000,7 @@ PrefabInstance:
         type: 3}
       propertyPath: battlefield
       value: 
-      objectReference: {fileID: 11898558}
+      objectReference: {fileID: 0}
     - target: {fileID: 7388361147987349428, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: awaitTimeBetweenDraws

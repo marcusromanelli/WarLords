@@ -136,7 +136,7 @@ public class CardObject : MonoBehaviour, IPoolable
 			GoToDynamicTargetPosition();
 			return;
         }
-		if (!isInPosition &&targetPositionAndRotation != null)
+		if (!isInPosition && targetPositionAndRotation != null)
 		{
 			GoToPresetTargetPosition();
 		}

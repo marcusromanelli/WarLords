@@ -14,6 +14,8 @@ public class UIBattlefield : MonoBehaviour
     {
 		inputController = InputController;
 		canSummonHero = CanSummonHero;
+
+		Generate();
 	}
 
     #region FIELD_GENERATION

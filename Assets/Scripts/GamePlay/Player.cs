@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
-		ManaPool.Setup();
+		ManaPool.Setup(CanPlayerSummonHero);
 
 		Hand.PreSetup(battlefield, inputController, CanSummonHero);
 		Hand.OnCardReleasedOnGraveyard += OnCardReleasedOnGraveyard;

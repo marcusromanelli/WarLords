@@ -13,9 +13,11 @@ public class ManaPool
 	public int MaxMana => maxMana;
 	public int CurrentMana => currentMana;
 
-	public void Setup()
-    {
-		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana);
+	public void Setup(HandleCanSummonHero CanSummonHero)
+	{
+		GameController.LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+
+		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana, CanSummonHero);
     }
 	public void IncreaseMaxMana(int number = 1)
     {
@@ -82,4 +84,11 @@ public class ManaPool
 	{
 		currentMana = Mathf.Clamp(newValue, 0, maxMana);
 	}
+
+	#region UI_MANAPOOL_INTERFACE
+	void OnLocalPlayerHoldingCard(CardObject cardObject)
+	{
+		uiManaPool.OnLocalPlayerHoldCard(cardObject);
+	}
+	#endregion UI_MANAPOOL_INTERFACE
 }

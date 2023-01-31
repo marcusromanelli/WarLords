@@ -21,8 +21,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		GameController.LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
 
 		uiBattlefield.Setup(InputController, CanSummonHero);
-
-		uiBattlefield.Generate();
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE

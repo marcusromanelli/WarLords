@@ -17,17 +17,19 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	private GetMaxMana getMaxManaCallback;
 	private GetCurrentMana getCurrentManaCallback;
 	private GetMaxAllowedMana getMaxAllowedManaCallback;
+	private HandleCanSummonHero canSummonHero;
 
 
 	void Awake()
 	{
 		manaOrbs = new List<ManaOrb>();
 	}
-	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback)
+	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanSummonHero CanSummonHero)
     {
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxManaCallback = getMaxManaCallback;
 		this.getCurrentManaCallback = getCurrentManaCallback;
+		this.canSummonHero = CanSummonHero;
 	}
 	[Button("Force Refresh UI")]
 	public void UpdateUI()
@@ -93,11 +95,24 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 
 		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
 	}
-	/*void PreviewMana(int number)
+#region FIELD_INTERACTION
+	public void OnLocalPlayerHoldCard(CardObject cardObject)
 	{
-		for (int i = 0; i < manaPoolElements.Count; i++)
+		if (cardObject == null || !canSummonHero(cardObject.Data))
 		{
-			var manaOrb = manaPoolElements[i];
+			RestorePreviewedMana();
+			return;
+		}
+
+		var manaCost = cardObject.Data.CalculateSummonCost();
+
+		PreviewMana(manaCost);
+	}
+	void PreviewMana(int number)
+	{
+		for (int i = 0; i < manaOrbs.Count; i++)
+		{
+			var manaOrb = manaOrbs[i];
 
 			switch (manaOrb.ManaStatus)
 			{
@@ -117,12 +132,14 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	}
 	void RestorePreviewedMana()
 	{
-		for (int i = 0; i < manaPoolElements.Count; i++)
+		for (int i = 0; i < manaOrbs.Count; i++)
 		{
-			var manaOrb = manaPoolElements[i];
+			var manaOrb = manaOrbs[i];
 
 			if (manaOrb.ManaStatus == ManaStatus.Preview)
-				manaPoolElements[i].SetStatus(ManaStatus.Active);
+				manaOrbs[i].SetStatus(ManaStatus.Active);
 		}
-	}*/
+	}
+
+	#endregion FIELD_INTERACTION
 }
