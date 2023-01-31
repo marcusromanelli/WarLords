@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
+  m_Name: Nikaella_Halth_Data
+  m_EditorClassIdentifier: 
+  Id: 1806a70e-6fb7-49ff-8e6a-b19c387de506
+  ManaCost: 3
+  Attack: 4
+  Defense: 3
+  Skills:
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: fefd91036bdcd9441ba7d71aa1ac7a9a, type: 2}
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: 68a99c5a3f8c23449af948872b4c10ab, type: 2}

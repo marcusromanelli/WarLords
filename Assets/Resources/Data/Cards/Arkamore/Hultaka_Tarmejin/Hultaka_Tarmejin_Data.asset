@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Hultaka_Tarmejin_Data
   m_EditorClassIdentifier: 
-  Id: e47b9d19-8b38-460a-8021-320f72fa5ce1
+  Id: 8f2f70c9-4827-43c4-9445-92d79a89d40a
   ManaCost: 0
   Attack: 1
   Defense: 1

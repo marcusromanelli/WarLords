@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Amber_Gonerjin_Data
   m_EditorClassIdentifier: 
-  Id: eec17239-0628-4140-a350-47a05803aeaa
+  Id: 69c09f79-b897-49e0-b7e9-c969fe12362c
   ManaCost: 2
   Attack: 3
   Defense: 2

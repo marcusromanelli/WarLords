@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Rashka_Bullseye_Data
   m_EditorClassIdentifier: 
-  Id: ad5b43fd-4ebc-4c47-851a-49f45841e700
+  Id: 08502e0f-16ff-4fdc-9760-b2b8ab56c5f0
   ManaCost: 2
   Attack: 3
   Defense: 4

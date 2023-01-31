@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Name: Nataleph_ORaki
+  m_EditorClassIdentifier: 
+  Name: Nataleph O'Raki
+  FrontCover: {fileID: 2800000, guid: 48c8d44a6f768304f85ec183b8bb8f04, type: 3}
+  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
+  Data: {fileID: 11400000, guid: 730f968279fc3db4784c18fa6e1b39da, type: 2}

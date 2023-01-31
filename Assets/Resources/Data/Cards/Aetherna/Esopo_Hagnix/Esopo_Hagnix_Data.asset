@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
+  m_Name: Esopo_Hagnix_Data
+  m_EditorClassIdentifier: 
+  Id: b0c65f82-9adc-41dd-9405-8146743055ca
+  ManaCost: 3
+  Attack: 4
+  Defense: 4
+  Skills:
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: 204145aef008fa5408cec3cfd058f01e, type: 2}
+  - ManaCost: 4
+    Data: {fileID: 11400000, guid: 0c8f39949852cda46b70aaf9b94345d5, type: 2}

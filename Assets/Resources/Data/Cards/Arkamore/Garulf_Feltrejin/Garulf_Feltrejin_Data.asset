@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Garulf_Feltrejin_Data
   m_EditorClassIdentifier: 
-  Id: 2ff57599-2da8-4b82-91ca-65ee41843e61
+  Id: cb0f7042-d9ba-446e-80f6-5ca21247dfa0
   ManaCost: 0
   Attack: 1
   Defense: 2

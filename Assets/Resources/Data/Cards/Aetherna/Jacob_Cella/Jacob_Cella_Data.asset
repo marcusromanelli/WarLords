@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
+  m_Name: Jacob_Cella_Data
+  m_EditorClassIdentifier: 
+  Id: 53f9bb74-2561-45f4-9c5f-208692c2b745
+  ManaCost: 2
+  Attack: 3
+  Defense: 3
+  Skills:
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: 65589321f0f4c6e4d812d3e9e2191525, type: 2}
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: fa6aa45a23fd7cc4cb374ffc5a28090d, type: 2}

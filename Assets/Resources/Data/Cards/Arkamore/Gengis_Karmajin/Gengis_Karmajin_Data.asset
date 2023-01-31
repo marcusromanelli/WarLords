@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Gengis_Karmajin_Data
   m_EditorClassIdentifier: 
-  Id: c1aade66-a6eb-4dfc-bc0d-9d52bd5762a7
+  Id: d1cc5b7d-5de2-4b0b-a4dd-5c810cee312c
   ManaCost: 2
   Attack: 3
   Defense: 3

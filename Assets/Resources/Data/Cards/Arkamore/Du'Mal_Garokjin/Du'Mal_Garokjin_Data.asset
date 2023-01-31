@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Du'Mal_Garokjin_Data
   m_EditorClassIdentifier: 
-  Id: ea77c0d3-8dea-4b32-98d7-030d0471bfd8
+  Id: 3486f27b-1294-4a6b-bb64-24a5adc276f1
   ManaCost: 2
   Attack: 1
   Defense: 4

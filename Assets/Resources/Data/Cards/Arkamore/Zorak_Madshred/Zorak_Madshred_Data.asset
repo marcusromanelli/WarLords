@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Zorak_Madshred_Data
   m_EditorClassIdentifier: 
-  Id: e99cc35a-1f42-44db-b997-8b6fa6ec70e7
+  Id: f9d3b403-0a53-461a-a3a3-160c45c343ec
   ManaCost: 2
   Attack: 2
   Defense: 4

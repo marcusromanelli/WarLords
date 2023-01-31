@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Mirra_Severjin_Data
   m_EditorClassIdentifier: 
-  Id: ade98b1f-bc3b-4dd0-ad63-d384b879e37c
+  Id: 3b477c83-73cb-4d7a-9059-2033fcd8b0bb
   ManaCost: 4
   Attack: 7
   Defense: 3

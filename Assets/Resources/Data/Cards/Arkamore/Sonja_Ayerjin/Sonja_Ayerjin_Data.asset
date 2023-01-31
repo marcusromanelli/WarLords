@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Sonja_Ayerjin_Data
   m_EditorClassIdentifier: 
-  Id: 07199257-6868-4df1-a84c-6e86147915cf
+  Id: 56f7c5b9-28cb-4696-98d7-26f82d010a34
   ManaCost: 2
   Attack: 2
   Defense: 4

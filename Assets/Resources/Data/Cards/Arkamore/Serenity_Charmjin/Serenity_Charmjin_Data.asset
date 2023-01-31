@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Serenity_Charmjin_Data
   m_EditorClassIdentifier: 
-  Id: a239fe5d-583d-4137-bc45-bd6d89d63e3f
+  Id: 6134690f-2c1a-487f-be57-a3b336c91cb3
   ManaCost: 0
   Attack: 1
   Defense: 1

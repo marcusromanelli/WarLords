@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Inorrom_Viperjin_Data
   m_EditorClassIdentifier: 
-  Id: 4e8821ab-f62a-4bc5-8c36-eef8f1669223
+  Id: a31cad70-2135-4c1c-bb76-bdb59b00961d
   ManaCost: 3
   Attack: 4
   Defense: 1

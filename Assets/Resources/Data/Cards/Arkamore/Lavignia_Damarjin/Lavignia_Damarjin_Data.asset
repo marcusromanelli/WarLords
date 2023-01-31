@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Lavignia_Damarjin_Data
   m_EditorClassIdentifier: 
-  Id: d9b1a393-2964-472f-a41f-87f6d1d86e9f
+  Id: 48837ccb-b016-4e0c-abb9-675dad5db864
   ManaCost: 1
   Attack: 2
   Defense: 1
