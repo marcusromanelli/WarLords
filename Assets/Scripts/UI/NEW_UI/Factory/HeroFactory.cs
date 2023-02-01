@@ -5,7 +5,13 @@ public class HeroFactory : PoolableFactory<HeroObject>
 {
     public static HeroObject Create(Card card, Transform transform)
     {
-        return null;
+        var prefab = CreateDefault(transform, Vector3.zero, Quaternion.identity);
+
+        prefab.Setup(card);
+
+        prefab.name = card.Name;
+
+        return prefab;
     }
 
     /*public static HeroObject CreateCard(Card card, Transform transform, bool hideCardInfo)

@@ -56,7 +56,7 @@ public class UIBattlefield : MonoBehaviour
 	}
 	SpawnArea GenerateTile(SpawnArea prefab, Vector3 position, bool isSpawnArea)
 	{
-		var tile = ElementFactory.CreatePrefab<SpawnArea>(prefab, transform);
+		var tile = ElementFactory.CreateGameObject<SpawnArea>(prefab, transform);
 		tile.transform.position = position;
 
 		tile.SetSpawnArea(isSpawnArea);

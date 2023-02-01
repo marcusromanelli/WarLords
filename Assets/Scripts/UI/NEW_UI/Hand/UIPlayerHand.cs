@@ -66,10 +66,6 @@ public class UIPlayerHand : MonoBehaviour
         RemoveCard(cardObject);
         SendCardToPool(cardObject);
     }
-    public void TurnCardIntoCharacter(CardObject cardObject)
-    {
-        RemoveCard(cardObject);
-    }
     public void TurnCardIntoMana(CardObject cardObject)
     {
         RemoveCard(cardObject);

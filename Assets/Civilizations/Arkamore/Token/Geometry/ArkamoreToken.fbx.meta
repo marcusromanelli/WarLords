@@ -3,7 +3,32 @@ guid: 58aaf2a2a581950498e46dbe8580c664
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arkamore_Base.001
+    second: {fileID: 2100000, guid: daa62019eea81e0469376d22b55d770b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arkamore_Bones.001
+    second: {fileID: 2100000, guid: dfd0547dc39d9eb4aa5c69568e9f2433, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arkamore_Frame.001
+    second: {fileID: 2100000, guid: 8394f81c05a8eae498be4e6331db0633, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arkamore_Frame_Character.001
+    second: {fileID: 2100000, guid: 7327a0b4e910aa241a08f71e9c12af2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arkamore_Sticks.001
+    second: {fileID: 2100000, guid: 9922f45ebff47aa47884714694b1b0be, type: 2}
   materials:
     materialImportMode: 0
     materialName: 0
@@ -34,7 +59,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -63,7 +88,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -85,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

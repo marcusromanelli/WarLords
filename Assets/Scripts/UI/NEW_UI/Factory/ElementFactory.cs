@@ -10,7 +10,11 @@ public class ElementFactory : Singleton<ElementFactory>
     {
         return Instantiate(gameObject, transform);
     }
-    public static T CreatePrefab<T>(Component gameObject, Transform transform) where T : Component
+    public static T CreateGameObject<T>(GameObject gameObject, Transform transform) where T : Component
+    {
+        return Instantiate(gameObject, transform).GetComponent<T>();
+    }
+    public static T CreateGameObject<T>(Component gameObject, Transform transform) where T : Component
     {
         return Instantiate(gameObject, transform).GetComponent<T>();
     }

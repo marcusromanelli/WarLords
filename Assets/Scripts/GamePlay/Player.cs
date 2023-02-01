@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
 
 		ManaPool.SpendMana(cardData.CalculateSummonCost());
 
-		Hand.TurnCardIntoCharacter(cardObject);
+		Hand.DiscardCard(cardObject);
 
 		gameController.Summon(this, cardData);
 

@@ -5,6 +5,8 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "Card", menuName = "ScriptableObjects/Card/Main Card", order = 1)]
 public class Card : ScriptableObject
 {
+	public string Id => Data.Id;
+
 	public string Name;
 	public Sprite FrontCover;
 	[Expandable] public CivilizationData Civilization;

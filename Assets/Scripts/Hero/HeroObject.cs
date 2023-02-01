@@ -4,8 +4,15 @@ using System.Collections.Generic;
 
 public class HeroObject : MonoBehaviour, IPoolable
 {
+	public string Id => cardData.Data.Id;
 
-	public bool doMoveForward;
+	[SerializeField] ParticleSystem summonParticleSystem;
+
+	private Card cardData;
+	private Token tokenObject;
+
+
+	/*public bool doMoveForward;
 	public bool activateSkill1;
 	public bool activateSkill2;
 
@@ -29,7 +36,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 	int walkSpeed = 1;
 	int numberOfAttacks = 1;
 
-	/*public Vector2 GridPosition
+	public Vector2 GridPosition
 	{
 		get
 		{
@@ -41,9 +48,38 @@ public class HeroObject : MonoBehaviour, IPoolable
 
 	int layerMask;
 
+
+	public void Setup(Card card)
+	{
+		cardData = card;
+
+		if (tokenObject == null)
+		{			
+			var token = ElementFactory.CreateGameObject<Token>(card.Civilization.Token, transform);
+
+			tokenObject = token;
+		}
+
+		summonParticleSystem.Play();
+
+		UpdateVisuals();
+	}
+	public void Pool()
+	{
+		throw new System.NotImplementedException();
+	}
+	void UpdateVisuals()
+    {
+		tokenObject.transform.localPosition = Vector3.zero;
+		tokenObject.transform.rotation = Quaternion.identity;
+
+		tokenObject.Setup(cardData.FrontCover);
+	}
+
+	/*
 	void Start()
 	{
-		GameObject aux = new GameObject();
+		/*GameObject aux = new GameObject();
 		aux.transform.SetParent(this.transform);
 		Vector3 aux2 = Vector3.zero;
 		aux2.y = GetComponent<Renderer>().bounds.size.y;
@@ -53,7 +89,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		Life = transform.Find("Status/Life/Value").GetComponent<TextMesh>();
 		_Attack = transform.Find("Status/Attack/Value").GetComponent<TextMesh>();
 
-		pivot = transform.GetChild(0);
+		pivot = transform.GetChild(0);*
 	}
 
 	void Update()
@@ -131,20 +167,8 @@ public class HeroObject : MonoBehaviour, IPoolable
 			{
 				selectedHero = null;
 			}
-		}*/
+		}*
 	}
-
-	public void Setup(GameController gameController, /*Battlefield battlefield, */CardObject card)
-	{
-		//this.CardObject = card;
-
-		//Player = CardObject.player;
-		//this.battlefield = battlefield;
-		//this.gameController = gameController;
-
-		//Instantiate(Resources.Load<GameObject>("Prefabs/Particles/Smoke"), transform.position, Quaternion.identity);
-	}
-
 
 	/*void WalkTo(Vector2 pos)
 	{
@@ -152,7 +176,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		isWalking = true;
 
 		//gameController.SetTriggerType(TriggerType.OnBeforeWalk, CardObject);
-	}*/
+	}*
 
 	public void moveForward()
 	{
@@ -186,44 +210,45 @@ public class HeroObject : MonoBehaviour, IPoolable
 	{
 		//CardObject.Die();
 	}
-	public void AddWalkSpeed(int number)
-	{
-		if (number < 0)
-			number = 0;
 
-		if (walkSpeed == 1)
-		{
-			GameConfiguration.PlaySFX(GameConfiguration.movementBuff);
-			walkSpeed += number;
-		}
-	}
-	public void RemoveWalkSpeed(int number)
-	{
-		if (number < 0)
-			number = 0;
+    /*public void AddWalkSpeed(int number)
+{
+    if (number < 0)
+        number = 0;
 
-		walkSpeed -= number;
-		if (walkSpeed <= 0)
-			walkSpeed = 1;
-	}
+    if (walkSpeed == 1)
+    {
+        GameConfiguration.PlaySFX(GameConfiguration.movementBuff);
+        walkSpeed += number;
+    }
+}
+public void RemoveWalkSpeed(int number)
+{
+    if (number < 0)
+        number = 0;
 
-	public void AddNumberOfAttacks(int number)
-	{
-		if (number < 0)
-			number = 0;
-		numberOfAttacks += number;
-	}
-	public void RemoveNumberOfAttacks(int number)
-	{
-		if (number < 0)
-			number = 0;
+    walkSpeed -= number;
+    if (walkSpeed <= 0)
+        walkSpeed = 1;
+}
 
-		numberOfAttacks -= number;
-		if (numberOfAttacks <= 0)
-			numberOfAttacks = 1;
-	}
+public void AddNumberOfAttacks(int number)
+{
+    if (number < 0)
+        number = 0;
+    numberOfAttacks += number;
+}
+public void RemoveNumberOfAttacks(int number)
+{
+    if (number < 0)
+        number = 0;
 
-	/*Vector2 calculateEndPosition()
+    numberOfAttacks -= number;
+    if (numberOfAttacks <= 0)
+        numberOfAttacks = 1;
+}*
+
+    *Vector2 calculateEndPosition()
 	{
 		Vector2 gridPos = battlefield.UnityToGrid(transform.position);
 		gridPos.y += movementDirection() * calculateWalkSpeed();
@@ -239,7 +264,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		return gridPos;
 	}*/
 
-	public Vector3 GetTopPosition()
+	/*public Vector3 GetTopPosition()
 	{
 		return pivot.transform.position;
 	}
@@ -248,7 +273,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 	public int calculateWalkSpeed()
 	{
 		return walkSpeed;
-	}
+	}*
 
 	int movementDirection()
 	{
@@ -259,7 +284,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		else
 		{
 			return 1;
-		}*/
+		}*
 		return 1;
 	}
 
@@ -281,7 +306,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		}
 
 		return null;
-	}*/
+	}*
 	public Vector3 GetPivotPosition()
 	{
 		return pivot.transform.position;
@@ -301,7 +326,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 	public int GetLastGivenDamage()
     {
 		return lastGivenDamage;
-	}*/
+	}*
 	public bool IsAttacking()
 	{
 		return isAttacking;
@@ -324,5 +349,5 @@ public class HeroObject : MonoBehaviour, IPoolable
     public void Pool()
     {
         throw new System.NotImplementedException();
-    }
+    }*/
 }

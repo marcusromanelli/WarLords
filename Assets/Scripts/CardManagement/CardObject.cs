@@ -139,8 +139,6 @@ public class CardObject : MonoBehaviour, IPoolable
 
 		if (currentBackground == texture) return;
 
-		Texture material = cardRenderer.material.GetTexture("_MainTex");
-
 		cardRenderer.material.SetTexture("_MainTex", texture);
 
 		currentBackground = texture;

@@ -16,9 +16,9 @@ public class PoolableFactory<T> : Singleton<PoolableFactory<T>> where T : MonoBe
             obj = GetPoolElement();
         }
         else {
-            var cardTemplate = Instance.Template;
+            var template = Instance.Template;
 
-            obj = ElementFactory.CreatePrefab<T>(cardTemplate, transform);
+            obj = ElementFactory.CreateGameObject<T>(template, transform);
         }
 
         return obj;
