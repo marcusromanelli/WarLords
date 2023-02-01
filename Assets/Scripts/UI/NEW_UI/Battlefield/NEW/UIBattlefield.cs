@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIBattlefield : MonoBehaviour
@@ -59,8 +60,6 @@ public class UIBattlefield : MonoBehaviour
 		var tile = ElementFactory.CreateGameObject<SpawnArea>(prefab, transform);
 		tile.transform.position = position;
 
-		tile.SetSpawnArea(isSpawnArea);
-
 		return tile;
 	}
 	SpawnArea GetRandomTilePrefab()
@@ -70,13 +69,29 @@ public class UIBattlefield : MonoBehaviour
 	#endregion FIELD_GENERATION
 
 	#region SUMMON_HELPER
+	public bool CanPlayerSummonOnTile(Player player, SpawnArea spawnArea)
+    {
+		var isLocalPlayer = player == GameController.LocalPlayer;
+		var gridPosition = UnityToGrid(spawnArea.transform.position);
+
+		if (spawnArea == null)
+			return false;
+
+		if (isLocalPlayer)
+			return IsLocalSpawnRow((int)gridPosition.y);
+
+		return IsRemoteSpawnRow((int)gridPosition.y);
+	}
 	public bool CanSummonOnSelectedTile()
 	{
-		return CanSummonAtTile(selectedTile);
+		if (selectedTile == null)
+			return false;
+
+		return CanPlayerSummonOnTile(GameController.CurrentPlayer, selectedTile);
 	}
-	public bool CanSummonAtTile(SpawnArea area)
+	public bool CanCurrentPlayerSummonOnTile(SpawnArea spawnArea)
 	{
-		return area != null && area.IsSpawnArea;
+		return CanPlayerSummonOnTile(GameController.CurrentPlayer, spawnArea);
 	}
 	public SpawnArea[,] GetFields()
 	{
@@ -84,8 +99,18 @@ public class UIBattlefield : MonoBehaviour
 	}
 	#endregion SUMMON_HELPER
 
-
 	#region FIELD_INTERACTION
+	public List<SpawnArea> GetEmptyFields(Player player)
+	{
+		var isRemote = player != GameController.LocalPlayer;
+		List<SpawnArea> result = new List<SpawnArea>();
+
+		foreach (var tile in battlefieldTiles)
+			if(CanPlayerSummonOnTile(player, tile))
+				result.Add(tile);
+
+		return result;
+	}
 	void SetSelectedTile(GameObject area)
 	{
 
@@ -104,7 +129,8 @@ public class UIBattlefield : MonoBehaviour
 	{
 		foreach (var tile in battlefieldTiles)
 		{
-			tile.SetSelectingSpawnArea();
+			if(CanCurrentPlayerSummonOnTile(tile))
+				tile.SetSelectingSpawnArea();
 		}
 	}
 	void HideSpawnTiles()
@@ -142,14 +168,25 @@ public class UIBattlefield : MonoBehaviour
 	}
 	#endregion FIELD_INTERACTION
 
-
-
 	#region FIELD_HELPER
+	public SpawnArea GetTileByPosition(Vector3 unityPosition)
+	{
+		var position = UnityToGrid(unityPosition);
+
+		return battlefieldTiles[(int)position.x, (int)position.y];
+	}
+	public SpawnArea GetHeroTile(Player player, HeroObject hero)
+	{
+		foreach (var tile in battlefieldTiles)
+			if (tile.Hero == hero)
+				return tile;
+
+		return null;
+	}
 	public Vector3 GridToUnity(Vector2 pos)
 	{
 		return new Vector3((pos.x * battlefieldData.squareSize) + transform.position.x, transform.position.y, (pos.y * battlefieldData.squareSize) + transform.position.z);
 	}
-
 	public Vector2 UnityToGrid(Vector3 pos)
 	{
 		float x = Mathf.RoundToInt((pos.x - (transform.position.x)) / battlefieldData.squareSize);
@@ -163,7 +200,6 @@ public class UIBattlefield : MonoBehaviour
 
 		return new Vector2(x, y);
 	}
-
 	public Vector2 Normalize(Vector2 pos)
 	{
 		float x = pos.x;
@@ -177,7 +213,6 @@ public class UIBattlefield : MonoBehaviour
 
 		return new Vector2(x, y);
 	}
-
 	public float GetRemotePlayerEdge()
 	{
 		return battlefieldData.rowNumber - battlefieldData.spawnAreaSize;

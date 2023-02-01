@@ -8,17 +8,20 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	[SerializeField] Color spawnAreaColor = Color.gray;
 	[SerializeField] Color selectedColor = Color.black;
 	[SerializeField] Transform cardPositionDataReference;
-	[SerializeField, ReadOnly] bool isSpawnArea;
+	[SerializeField, ReadOnly] bool isTemporarySpawnArea;
+	[SerializeField, ReadOnly] HeroObject hero = null;
+
+	public HeroObject Hero => hero;
 
 	bool IsSelectingSpawnArea;
 	Color lastUsedColor;
 
-	public bool IsSpawnArea => isSpawnArea;
+	/*public bool IsSpawnArea => isSpawnArea;
 
 	public void SetSpawnArea(bool value)
     {
 		isSpawnArea = value;
-	}
+	}*/
 	public void SetSelectingSpawnArea()
     {
 		IsSelectingSpawnArea = true;
@@ -37,7 +40,7 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	}
 	void UpdateColor(bool isSelected = false)
 	{
-		if (!isSpawnArea || !IsSelectingSpawnArea)
+		if (!IsSelectingSpawnArea)
 		{
 			SetColor(defaultColor);
 			return;
@@ -60,34 +63,14 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 		renderer.material.color = color;
 		lastUsedColor = color;
 	}
+	public void SetHero(HeroObject hero)
+	{
+		this.hero = hero;
+	}
 	/*
-
-
 	private bool IsTemporarilySummonable;
-	private Hero Hero = null;
-	private Battlefield battlefield;
+	private Battlefield battlefield;*/
 
-	private void Awake()
-    {
-		if (renderer == null)
-			renderer = gameObject.GetComponent<Renderer>();
-	}
-	public void MarkAsSummonArea()
-	{
-		SetColor(selectedColor);
-	}
-	public void MarkAsNormalArea()
-	{
-		SetColor(defaultColor);
-	}
-	public void SetHero(Hero hero)
-	{
-		Hero = hero;
-	}
-	public bool HasHero()
-    {
-		return Hero != null;
-    }*/
 	public Vector3 GetTopCardPosition()
     {
 		return cardPositionDataReference.transform.position;

@@ -32,15 +32,7 @@ public class OLD____Battlefield : MonoBehaviour
 
 	/*
 
-	/*public List<SpawnArea> GetEmptyFields(Player player)
-	{
-		return null;
-		var isLocalPlayer = player == gameController.GetLocalPlayer();
-		var isRemotePlayer = player == gameController.GetRemotePlayer();
-
-		return generatedTiles.FindAll(tile => tile.playerType == player.GetPlayerType()
-										&& tile.IsSummonArea && tile.HasHero() == false);*
-	}
+	/*
 	public List<SpawnArea> GetFields(Player player)
 	{
 		return null;
@@ -193,25 +185,13 @@ public class OLD____Battlefield : MonoBehaviour
 	cardWaitingForSpawn = null;
 }
 
-public SpawnArea GetHeroTile(Player player, Hero hero)
-{
-	return null;// generatedTiles.First(tile => tile.Hero == hero);
-}
-public SpawnArea GetTileByPosition(Vector2 position)
-{
-	return generatedTiles.First(tile => UnityToGrid(tile.transform.position) == position);
-}
+
+
 //public bool HasSummonedHero(Player player, int cardId)
 //{
 	//return heroList[player].Any(hero => hero.CardObject.GetCardData().CardID == cardId);
 //}
-public void SetHeroTile(Hero hero, SpawnArea spawnArea)
-{
-	/*if (spawnArea.Hero != null)
-		Debug.LogError("[ERROR] TILE NOT EMPTY");
 
-	spawnArea.Hero = hero;*
-}
 
 /*public void Attack()
 {

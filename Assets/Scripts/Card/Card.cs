@@ -15,7 +15,11 @@ public class Card : ScriptableObject
 
 	public int CalculateSummonCost()
 	{
-		return ManaCost + Data.SummonCost();
+		return ManaCost + Data.CalculateSummonCost();
+	}
+	public int CalculateWalkSpeed()
+	{
+		return Data.CalculateWalkSpeed();
 	}
 
 	/*public void UpdateData()

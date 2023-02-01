@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class HeroFactory : PoolableFactory<HeroObject> 
 {
-    public static HeroObject Create(Card card, Transform transform)
+    public static HeroObject Create(Card card, Transform transform, Vector3 position, Quaternion rotation)
     {
-        var prefab = CreateDefault(transform, Vector3.zero, Quaternion.identity);
+        var prefab = CreateDefault(transform, position, rotation);
 
         prefab.Setup(card);
 

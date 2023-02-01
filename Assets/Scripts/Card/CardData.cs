@@ -9,6 +9,7 @@ public class CardData : ScriptableObject
     public int ManaCost;
 	public int Attack;
 	public int Defense;
+	public int WalkSpeed = 1;
 	[ReorderableList] public SkillData[] Skills;
 
 	[Button]
@@ -16,8 +17,8 @@ public class CardData : ScriptableObject
     {
 		Id = Guid.NewGuid().ToString();
 	}
-	public int SummonCost()
-    {
+	public int CalculateSummonCost()
+	{
 		int cost = 0;
 		/*foreach (Skill skill in Skills)
 		{
@@ -26,5 +27,9 @@ public class CardData : ScriptableObject
 		}*/
 
 		return cost;
+	}
+	public int CalculateWalkSpeed()
+	{
+		return WalkSpeed;
 	}
 }

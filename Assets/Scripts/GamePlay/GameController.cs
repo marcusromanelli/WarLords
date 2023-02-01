@@ -11,6 +11,7 @@ public class GameController : Singleton<GameController>
 	public event HandleOnPhaseChange OnPhaseChange;
 
 	public static Player LocalPlayer => Instance.localPlayer;
+	public static Player CurrentPlayer => Instance.currentPlayer;
 
 
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
@@ -59,7 +60,9 @@ public class GameController : Singleton<GameController>
 
 		SetPhase(Phase.PreGame);
 
-		yield return AwaitConditionsToSolve();
+		OnPhaseChange?.Invoke(Phase.PreGame);
+
+		yield return AwaitPreGameConditionsToSolve();
 	}
 	IEnumerator StartupPlayers()
 	{
@@ -78,7 +81,7 @@ public class GameController : Singleton<GameController>
 		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 		remotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 	}
-	IEnumerator AwaitConditionsToSolve()
+	IEnumerator AwaitPreGameConditionsToSolve()
 	{
 		var hasConditions = true;
 		while (hasConditions)
@@ -91,8 +94,12 @@ public class GameController : Singleton<GameController>
 
 	#region DRAW_PHASE
 	IEnumerator ResolveDrawPhase()
-    {
+	{
+		EnablePlayers();
 		currentPlayer.StartDrawPhase();
+
+		OnPhaseChange?.Invoke(Phase.Draw);
+
 		yield return currentPlayer.IsResolvingDrawPhase();
     }
 	#endregion ACTION_PHASE
@@ -101,15 +108,29 @@ public class GameController : Singleton<GameController>
 	IEnumerator ResolveActionPhase()
     {
 		currentPlayer.StartActionPhase();
+
+		OnPhaseChange?.Invoke(Phase.Action);
+
 		yield return currentPlayer.IsResolvingActionPhase();
     }
 	#endregion ACTION_PHASE
 
-	#region BATTLEFIELD_INTERFACE
-	public void Summon(Player player, Card card)
+	#region MOVEMENT_PHASE
+	IEnumerator ResolveMovementPhase()
     {
-		battlefield.Summon(player, card);
-    }
+		DisablePlayers();
+
+		OnPhaseChange?.Invoke(Phase.Movement);
+
+		yield return battlefield.MovementPhase();
+	}
+	#endregion MOVEMENT_PHASE
+
+	#region BATTLEFIELD_INTERFACE
+	public void Summon(Player player, Card card, SpawnArea spawnArea = null)
+	{
+		battlefield.Summon(player, card, spawnArea);
+	}
 	bool CanSummonHero(Card card)
     {
 		return LocalPlayer.CanPlayerSummonHero(card);
@@ -136,8 +157,7 @@ public class GameController : Singleton<GameController>
 					yield return ResolveActionPhase();
 					break;
 				case Phase.Movement:
-					Debug.Log("Skipping Movement phase");
-					//StartCoroutine(AwaitMovementPhase());
+					yield return ResolveMovementPhase();
 					break;
 				case Phase.Attack:
 					Debug.Log("Skipping Attack phase");
@@ -184,7 +204,6 @@ public class GameController : Singleton<GameController>
 	void SetPhase(Phase phase)
     {
 		currentPhase = phase;
-		OnPhaseChange?.Invoke(phase);
     }
 	void NextTurn()
 	{		
@@ -203,7 +222,7 @@ public class GameController : Singleton<GameController>
 	{
 		Debug.LogWarning("There are players with conditions to solve.");
 
-		yield return AwaitConditionsToSolve();
+		yield return AwaitPreGameConditionsToSolve();
 
 		Debug.Log("Going to next phase");
 
@@ -231,7 +250,7 @@ public class GameController : Singleton<GameController>
 
 			Debug.LogWarning("Player " + currentPlayer + " have " + numberOfCardsInHand + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
 
-			yield return AwaitConditionsToSolve();
+			yield return AwaitPreGameConditionsToSolve();
 		}
 
 		NextTurn();

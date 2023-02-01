@@ -37,33 +37,53 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	IEnumerator DoMovement()
 	{
-		//gameController.DisablePlayers();
+		var currentPlayer = GameController.CurrentPlayer;
 
-		/*var currentPlayer = gameController.GetCurrentPlayer();
+		if(!heroList.ContainsKey(currentPlayer))
+			yield break;
 
-		List<Hero> heroes = heroList[currentPlayer];
+		List<HeroObject> heroes = heroList[currentPlayer];
 
-		foreach (Hero hero in heroes)
+		foreach (HeroObject hero in heroes)
 		{
-			var tile = GetHeroTile(currentPlayer, hero);
-			tile.SetHero(null);
-
-			hero.moveForward();
-			while (hero.IsWalking())
-			{
-				yield return null;
-			}
-
-
-			var newTile = GetTileByPosition(hero.GridPosition);
-			SetHeroTile(hero, newTile);
-
-			yield return new WaitForSeconds(1f);
+			yield return MoveHero(currentPlayer, hero);
 		}
+	}
+	IEnumerator MoveHero(Player currentPlayer, HeroObject hero)
+    {
+		var tile = GetHeroTile(currentPlayer, hero);
+		tile.SetHero(null);
+		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(hero));
+		var newPosition = uiBattlefield.GridToUnity(newGridPosition);
 
-		gameController.EnablePlayers();*/
+		hero.Move(newPosition);
 
-		yield return new WaitForSeconds(1);
+		yield return hero.IsWalking();
+
+		var newTile = GetTileByPosition(newPosition);
+		hero.SetPosition(newGridPosition);
+
+		SetHeroTile(hero, newTile);
+	}
+	SpawnArea GetTileByPosition(Vector3 position)
+	{
+		return uiBattlefield.GetTileByPosition(position);
+	}
+	Vector2 CalculateHeroEndPosition(HeroObject hero)
+	{
+		Vector2 gridPos = hero.GridPosition;
+		gridPos.y += GetHeroMovementDirection() * hero.GetWalkSpeed();
+
+
+		return gridPos;
+	}
+	int GetHeroMovementDirection()
+	{
+		return GameController.CurrentPlayer == GameController.LocalPlayer ? 1 : -1;
+	}
+	public SpawnArea GetHeroTile(Player player, HeroObject hero)
+	{
+		return uiBattlefield.GetHeroTile(player, hero);
 	}
 	#endregion MOVEMENT_PHASE
 
@@ -82,29 +102,23 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public void Summon(Player player, Card card)
+	public void Summon(Player player, Card card, SpawnArea spawnArea = null)
 	{
-		var areaPosition = uiBattlefield.SelectedTile;
+		var areaPosition = spawnArea ?? uiBattlefield.SelectedTile;
 
-		var hero = HeroFactory.Create(card, areaPosition.transform);
+		var hero = HeroFactory.Create(card, transform, areaPosition.transform.position, Quaternion.identity);
 
-		//hero.Setup(gameController, this, heroCard);
+		hero.SetPosition(uiBattlefield.UnityToGrid(areaPosition.transform.position));
 
-		//GameConfiguration.PlaySFX(GameConfiguration.Summon);
+		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 
 		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, heroCard);
 
-		//player.SpendMana(heroCard.CalculateSummonCost());
+		AddHero(player, hero);
 
-		//AddHero(player, hero);
+		ReorderHeroList(player);
 
-		//ReorderHeroList(player);
-
-		//SetHeroTile(hero, spawnArea);
-
-		//heroCard.transform.SetParent(hero.transform, true);
-
-		//player.Summon(heroCard);
+		SetHeroTile(hero, areaPosition);
 	}
 	public bool PlayerHasHeroSummoned(Player player, Card card)
 	{
@@ -112,6 +126,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 			return false;
 
 		return heroList[player].Any(c => c.Id == card.Id);
+	}
+	public bool CanSummonOnSelectedTile()
+	{
+		return uiBattlefield.CanSummonOnSelectedTile();
+	}
+	public bool CanSummonOnTile(SpawnArea spawnArea)
+	{
+		return uiBattlefield.CanCurrentPlayerSummonOnTile(spawnArea);
 	}
 	List<HeroObject> GetHeroes(Player player)
 	{
@@ -131,9 +153,12 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - uiBattlefield.UnityToGrid(hero.transform.position).y));
 	}
-	public bool CanSummonOnSelectedTile()
+	void SetHeroTile(HeroObject hero, SpawnArea spawnArea)
 	{
-		return uiBattlefield.CanSummonOnSelectedTile();
+		if (spawnArea.Hero != null)
+			Debug.LogError("[ERROR] TILE NOT EMPTY");
+
+		spawnArea.SetHero(hero);
 	}
 	#endregion HERO_LOGIC
 

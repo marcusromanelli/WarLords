@@ -19,6 +19,9 @@ public class PoolableFactory<T> : Singleton<PoolableFactory<T>> where T : MonoBe
             var template = Instance.Template;
 
             obj = ElementFactory.CreateGameObject<T>(template, transform);
+
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
         }
 
         return obj;

@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
+using System.Collections;
 
 public class HeroObject : MonoBehaviour, IPoolable
 {
 	public string Id => cardData.Data.Id;
 
 	[SerializeField] ParticleSystem summonParticleSystem;
+	[SerializeField] float walkSpeed = 0.5f;
 
+	public Vector2 GridPosition => position;
+
+	private Vector2 position;
 	private Card cardData;
 	private Token tokenObject;
-
+	private bool isWalking;
+	private Vector3 targetPosition;
 
 	/*public bool doMoveForward;
 	public bool activateSkill1;
@@ -28,7 +33,6 @@ public class HeroObject : MonoBehaviour, IPoolable
 	Vector2 nextPoint;
 	bool attack;
 	Vector2 targetPoint;
-	bool isWalking;
 	bool isAttacking;
 	bool isDying;
 	int diretion;
@@ -44,9 +48,8 @@ public class HeroObject : MonoBehaviour, IPoolable
 		}
 	}
 	*/
-	TextMesh Life, _Attack;
+	//TextMesh Life, _Attack;
 
-	int layerMask;
 
 
 	public void Setup(Card card)
@@ -68,6 +71,44 @@ public class HeroObject : MonoBehaviour, IPoolable
 	{
 		throw new System.NotImplementedException();
 	}
+	public void Move(Vector3 position)
+	{
+		isWalking = true;
+		targetPosition = position;
+	}
+	public int GetWalkSpeed()
+	{
+		return cardData.CalculateWalkSpeed();
+	}
+	public IEnumerator IsWalking()
+    {
+		while (isWalking)
+			yield return null;
+	}
+	public void SetPosition(Vector2 position)
+    {
+		this.position = position;
+    }
+	void Update() {
+		DoMovement();
+	}
+	void DoMovement()
+    {
+		if (!isWalking)
+			return;
+
+        if (transform.position != targetPosition)
+        {
+            GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * 0.5f);
+
+			return;
+        }
+
+        //gameController.SetTriggerType(TriggerType.OnAfterWalk, CardObject);
+
+        isWalking = false;
+    }
 	void UpdateVisuals()
     {
 		tokenObject.transform.localPosition = Vector3.zero;
@@ -178,25 +219,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		//gameController.SetTriggerType(TriggerType.OnBeforeWalk, CardObject);
 	}*
 
-	public void moveForward()
-	{
-		////if (!isWalking) {
-		//Vector2 newPos = calculateEndPosition();
 
-		//Hero aux = checkForEnemiesInFront();
-
-
-		//if (aux == null)
-		//{
-
-		//	WalkTo(newPos);
-		//}
-		//else
-		//{
-		//	Debug.Log(CardObject.GetCardData().name + " - achou " + aux.name);
-		//}
-		//}
-	}
 
 	
 	public void doDamage(int value)
@@ -267,26 +290,9 @@ public void RemoveNumberOfAttacks(int number)
 	/*public Vector3 GetTopPosition()
 	{
 		return pivot.transform.position;
-	}
-
-
-	public int calculateWalkSpeed()
-	{
-		return walkSpeed;
 	}*
 
-	int movementDirection()
-	{
-		/*if (Player.GetPlayerType() == PlayerType.Remote)
-		{
-			return -1;
-		}
-		else
-		{
-			return 1;
-		}*
-		return 1;
-	}
+
 
 	void OnMouseDown()
 	{

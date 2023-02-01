@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc2c67e945ddef4095e75a38aa84a10, type: 3}
   m_Name: BattlefieldData
   m_EditorClassIdentifier: 
-  pivotPosition: {x: 0, y: 0, z: 0}
   generateEveryGame: 1
   tilePrefabs:
   - {fileID: -7195998472493038724, guid: 59e9658de8d800d4990df3545f45d778, type: 3}

@@ -61,6 +61,12 @@ public class UIPlayerHand : MonoBehaviour
 
         RegisterDefaultCallbacks();
     }
+    public void Discard(Card cardData)
+    {
+        var cardObject = GetCardObjectByData(cardData);
+
+        Discard(cardObject);
+    }
     public void Discard(CardObject cardObject)
     {
         RemoveCard(cardObject);
@@ -369,7 +375,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
 
-        if (!spawnArea.IsSpawnArea || !canSummonHero(currentTargetCard.Data))
+        if (/*!spawnArea.IsSpawnArea || */!canSummonHero(currentTargetCard.Data))
             return;
 
         GenericHoverPlace(spawnArea);

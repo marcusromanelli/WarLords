@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
     }
 	protected virtual bool CanInteract()
     {
-		return gameController.CanPlayerInteract(this);
+		return gameController.CanPlayerInteract(this) && enabled;
     }
 
     #region INTERACTION
@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
 	#region ACTION_PHASE
 	public void StartActionPhase()
 	{
+		ManaPool.RestoreSpentMana();
 		SetUsedHability(false);
 		IsReadyToEndActionPhase = false;
 		nextPhaseButton?.Show();
@@ -137,16 +138,32 @@ public class Player : MonoBehaviour
 		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.ManaCost);
 	}
 	public bool CanSummonHero(Card card)
+	{
+		return CanSummonHero(card, null);
+	}
+	public bool CanSummonHero(Card card, SpawnArea spawnArea = null)
     {
 		var playerCan = CanPlayerSummonHero(card);
-		var battleFieldCan = !battlefield.PlayerHasHeroSummoned(this, card) && battlefield.CanSummonOnSelectedTile();
+
+		var playerCanSummonHero = !battlefield.PlayerHasHeroSummoned(this, card);
+		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(spawnArea);
+		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile();
+
+		var battleFieldCan = playerCanSummonHero && (canSummonOnSelectedTile || canSummonOnPassedSpawnArea);
+
 		return playerCan && battleFieldCan;
 	}
 	void OnCardReleasedOnSpawnArea(CardObject cardObject)
 	{
-		var cardData = cardObject.Data;
-
-		if (!CanSummonHero(cardData))
+		TrySummonHero(cardObject);
+	}
+	protected void TrySummonHero(CardObject cardObject)
+	{
+		TrySummonHero(cardObject.Data, null);
+	}
+	protected void TrySummonHero(Card cardData, SpawnArea spawnArea)
+	{
+		if (!CanSummonHero(cardData, spawnArea))
 		{
 			Debug.Log("You cannot summon this hero right now.");
 			return;
@@ -154,9 +171,9 @@ public class Player : MonoBehaviour
 
 		ManaPool.SpendMana(cardData.CalculateSummonCost());
 
-		Hand.DiscardCard(cardObject);
+		Hand.DiscardCard(cardData);
 
-		gameController.Summon(this, cardData);
+		gameController.Summon(this, cardData, spawnArea);
 
 		Debug.Log("Summoned!");
 	}
@@ -242,7 +259,8 @@ public class Player : MonoBehaviour
 	}
 	void CreateMana()
     {
-		SetUsedHability(true);
+		if(!HasCondition(MandatoryConditionType.SendCardToManaPool))
+			SetUsedHability(true);
 
 		GenerateManaFromCurrentHoldingCard();
 	}

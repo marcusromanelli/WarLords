@@ -1,10 +1,12 @@
 ﻿using NaughtyAttributes;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AIPlayer : Player
 {
+	[BoxGroup("AI Behavior"), SerializeField] protected UIBattlefield uiBattlefield;
 	[BoxGroup("AI Behavior"), SerializeField] protected float awaitBetweenConditionSolving = 1f;
 	[BoxGroup("AI Behavior"), SerializeField] protected bool isActive = true;
 
@@ -42,58 +44,41 @@ public class AIPlayer : Player
 				yield return ResolvePreGame();
 				break;
 			case Phase.Action:
-				yield return ResolveAction();
+				yield return ResolveActionPhase();
 				break;
 			case Phase.End:
 				yield return ResolveConditions();
 				break;
 		}
-
-		//var AIWillPlay = !player.HasConditions() && !player.IsDrawing() && GameController.MatchHasStarted && gameController.GetCurrentPlayer() == player;
-
-		//if (!AIWillPlay)
-		//	return;
-
-/*
-		switch (GameController.Singleton.currentPhase) {
-			case Phase.Draw:
-				//if(!player.hasDrawnCard){
-					//player.DrawCard ();
-				//}
-				break;
-			case Phase.Action:
-				if (!player.HasUsedHability()) {
-					if (player.GetCurrentHandNumber() <= 2) {
-						player.DiscartCardToDrawTwo (getRandomCardFromHand ());
-					} else {
-						player.SendCardToManaPool (getRandomCardFromHand ());
-					}
-				}
-
-				Card cd = getRandomCardFromHand ();
-				int cost = cd.CalculateSummonCost ();
-
-				if (player.CanSpendMana (cost)) {
-					List<SpawnArea> emptyTiles = battlefield.GetEmptyFields(gameController.GetLocalPlayer());
-					//test.RemoveAll (spawnArea => spawnArea.player.GetPlayerType() == PlayerType.Remote || spawnArea.Hero == null);
-
-					/*CardObject cardObject = player.GetHandObject().cards.Find (a => a.GetCardData().PlayID == cd.PlayID);
-
-					var tile = emptyTiles[Random.Range(0, emptyTiles.Count)];
-					
-					battlefield.Summon (cardObject, tile);*
-				}
-
-				player.EndPhase ();
-				break;
-		}*/
 	}
 
-	IEnumerator ResolveAction()
+	IEnumerator ResolveActionPhase()
     {
-		yield return new WaitForSeconds(2);
+		if (!HasUsedHability)
+			if (GetHandCardsNumber() <= 2)
+				DiscardRandomCard();
+			else
+				GenerateManaFromRandomCard();
+
+		yield return new WaitForSeconds(awaitBetweenConditionSolving);
+
+		TrySummoning();
 
 		OnClickNextPhase();
+	}
+	void TrySummoning() {
+		var tile = GetRandomTile();
+		Card card = GetRandomCardFromHand();
+
+		if (tile != null && CanSummonHero(card, tile))
+			TrySummonHero(card, tile);
+	}
+	SpawnArea GetRandomTile()
+    {
+		List<SpawnArea> emptyTiles = uiBattlefield.GetEmptyFields(this);
+		emptyTiles.RemoveAll(spawnArea => spawnArea.Hero != null);
+
+		return emptyTiles[UnityEngine.Random.Range(0, emptyTiles.Count)];
 	}
 	IEnumerator ResolveConditions()
     {
