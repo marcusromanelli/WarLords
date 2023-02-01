@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Kaiser Svarius
   FrontCover: {fileID: 21300000, guid: dd18d845d6d27744b875882f302caae6, type: 3}
-  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
+  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
   Data: {fileID: 11400000, guid: 4abf3cbc10948ed4c97a4e08a99e0f33, type: 2}

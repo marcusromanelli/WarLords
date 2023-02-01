@@ -135,7 +135,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	void UpdateBackCardCover()
 	{
 		cardRenderer.gameObject.SetActive(true);
-		var texture = originalCard.BackCover;
+		var texture = originalCard.Civilization.BackCover;
 
 		if (currentBackground == texture) return;
 

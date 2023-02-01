@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Nikaella Halth
   FrontCover: {fileID: 21300000, guid: d854e69be450ae14c925b09bd728911f, type: 3}
-  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
+  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
   Data: {fileID: 11400000, guid: c725929b5cb22154799517bd742abedc, type: 2}

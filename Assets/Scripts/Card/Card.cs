@@ -7,7 +7,7 @@ public class Card : ScriptableObject
 {
 	public string Name;
 	public Sprite FrontCover;
-	public Texture BackCover;
+	[Expandable] public CivilizationData Civilization;
 	[Expandable] public CardData Data;
 	public int ManaCost => Data.ManaCost;
 

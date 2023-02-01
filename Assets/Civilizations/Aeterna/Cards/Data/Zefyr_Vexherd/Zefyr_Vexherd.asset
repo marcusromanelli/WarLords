@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Zefyr_Vexherd
   FrontCover: {fileID: 21300000, guid: 526fcf6248081f6478164b2462fd25fd, type: 3}
-  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
+  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
   Data: {fileID: 11400000, guid: 6f4527a9dbfe2424991471531b15792a, type: 2}

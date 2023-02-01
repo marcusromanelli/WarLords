@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 0b4674bc232c61144b76e2ebcf3dc280
+guid: 58aaf2a2a581950498e46dbe8580c664
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Aeterna_Frame_Base
-    second: {fileID: 2100000, guid: b5504ec600a6c084b86e6306477143b8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Aeterna_Frame_Character
-    second: {fileID: 2100000, guid: a9c861eb44a11784c8cd46d51312b283, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Aeterna_Frame_Top
-    second: {fileID: 2100000, guid: 357825b9f080483479decd052080e50b, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 0
     materialName: 0
@@ -78,7 +63,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
