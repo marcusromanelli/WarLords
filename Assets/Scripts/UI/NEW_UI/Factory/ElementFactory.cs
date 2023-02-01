@@ -14,10 +14,4 @@ public class ElementFactory : Singleton<ElementFactory>
     {
         return Instantiate(gameObject, transform).GetComponent<T>();
     }
-    public static T LoadResource<T>(string resourcePath, Transform transform) where T : Object
-    {
-        T cardObj = Resources.Load<T>(resourcePath);
-
-        return Instantiate(cardObj, transform);
-    }
 }

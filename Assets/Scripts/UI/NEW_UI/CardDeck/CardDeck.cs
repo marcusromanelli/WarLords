@@ -3,56 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CardDeck<T>
+public class CardDeck
 {
     [SerializeField] protected UICardDeck uiCardDeck;
-    [SerializeField] protected Stack<T> Cards = new Stack<T>();
+    [SerializeField] protected Stack<Card> Cards = new Stack<Card>();
     [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
     public void Setup()
     {
-        Cards = new Stack<T>();
+        Cards = new Stack<Card>();
     }
-    public void AddCard(T card)
+    public void AddCard(Card card)
     {
         if (card == null)
             return;
 
         Cards.Push(card);
 
-        UpdateUI();
+        uiCardDeck.Add(card);
     }
-    public void AddCards(T[] cards)
+    public void AddCards(Card[] cards)
     {
         if (cards == null)
             return;
 
         for (int i = 0; i < cards.Length; i++) {
             var card = cards[i];
-            Cards.Push(card);
+
+            AddCard(card);        
         }
     }
-    public T DrawCard()
+    public Card DrawCard()
     {
         if (Cards.Count <= 0)
-            return default(T);
+            return default(Card);
 
         return Cards.Pop();
     }
-    public T[] DrawCards(int number)
+    public Card[] DrawCards(int number)
     {
         if (Cards.Count < number)
-            return new T[0];
+            return new Card[0];
 
-        T[] cardList = new T[number];
+        Card[] cardList = new Card[number];
 
         for(int i = 0; i < number; i++)
         {
-            cardList[i] = Cards.Pop();
+            cardList[i] = DrawCard();
         }
 
-        UpdateUI();
+        uiCardDeck.RemoveCards(number);
 
         return cardList;
     } 
@@ -60,16 +61,17 @@ public class CardDeck<T>
     {
         return Cards.Count;
     }
-    public T[] GetAllCards()
+    public Card[] GetAllCards()
     {
         return Cards.ToArray();
     }
     public void Empty()
     {
         Cards.Clear();
-        UpdateUI();
+
+        uiCardDeck.RemoveAll();
     }
-    public T GetRandomCard()
+    public Card GetRandomCard()
     {
         Shuffle();
 
@@ -77,13 +79,13 @@ public class CardDeck<T>
     }
     public void Shuffle()
     {
-        T[] tempList = Cards.ToArray();
+        Card[] tempList = Cards.ToArray();
 
         for (int shuffle = 0; shuffle < NumberOfShuffles; shuffle++)
         {
             for (int i = 0; i < tempList.Length; i++)
             {
-                T temp = tempList[i];
+                Card temp = tempList[i];
 
                 int randomIndex = UnityEngine.Random.Range(i, tempList.Length);
 
@@ -100,9 +102,5 @@ public class CardDeck<T>
     public System.Collections.IEnumerator IsUIUpdating()
     {
         yield return uiCardDeck.IsResolving();
-    }
-    void UpdateUI()
-    {
-        uiCardDeck.UpdateDeckSize(GetCardCount());
     }
 }

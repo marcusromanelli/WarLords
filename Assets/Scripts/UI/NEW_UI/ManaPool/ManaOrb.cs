@@ -1,8 +1,10 @@
 using NaughtyAttributes;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
+public enum ManaStatus
+{
+	Active, Used, Preview
+}
 public class ManaOrb : MonoBehaviour
 {
 	public ManaStatus ManaStatus { get; private set; } = ManaStatus.Active;
@@ -16,7 +18,6 @@ public class ManaOrb : MonoBehaviour
 		ManaStatus = status;
 		UpdateVisuals();
 	}
-
 	void UpdateVisuals()
 	{
 		switch (ManaStatus)

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using System;
+using UnityEngine;
 
 [Serializable]
 public class ManaPool

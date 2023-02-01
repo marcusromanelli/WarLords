@@ -49,8 +49,77 @@ public class GameController : Singleton<GameController>
 		LocalPlayer.SetupConditions();
 		remotePlayer.SetupConditions();
 	}
-	IEnumerator SolveCurrentPhase()
+
+	#region PRE_GAME_PHASE
+	IEnumerator ResolvePreGame()
+	{
+		yield return StartupPlayers();
+
+		StartPreGame();
+
+		SetPhase(Phase.PreGame);
+
+		yield return AwaitConditionsToSolve();
+	}
+	IEnumerator StartupPlayers()
+	{
+		LocalPlayer.SetupPlayDeck();
+		remotePlayer.SetupPlayDeck();
+
+		yield return LocalPlayer.IsInitialized();
+
+		yield return remotePlayer.IsInitialized();
+	}
+	void StartPreGame()
+	{
+		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
+		remotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
+
+		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		remotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+	}
+	IEnumerator AwaitConditionsToSolve()
+	{
+		var hasConditions = true;
+		while (hasConditions)
+		{
+			yield return null;
+			hasConditions = LocalPlayer.HasConditions() || remotePlayer.HasConditions();
+		}
+	}
+	#endregion PRE_GAME_PHASE
+
+	#region DRAW_PHASE
+	IEnumerator ResolveDrawPhase()
     {
+		currentPlayer.StartDrawPhase();
+		yield return currentPlayer.IsResolvingDrawPhase();
+    }
+	#endregion ACTION_PHASE
+
+	#region ACTION_PHASE
+	IEnumerator ResolveActionPhase()
+    {
+		currentPlayer.StartActionPhase();
+		yield return currentPlayer.IsResolvingActionPhase();
+    }
+	#endregion ACTION_PHASE
+
+	#region BATTLEFIELD_INTERFACE
+	public void Summon(Player player, Card card)
+    {
+		battlefield.Summon(player, card);
+    }
+	bool CanSummonHero(Card card)
+    {
+		return LocalPlayer.CanPlayerSummonHero(card);
+    }
+	#endregion BATTLEFIELD_INTERFACE
+
+	#region PHASE_LOGIC
+
+	IEnumerator SolveCurrentPhase()
+	{
 		var gameHasEnded = WatchEndGame();
 
 		while (!gameHasEnded)
@@ -89,87 +158,7 @@ public class GameController : Singleton<GameController>
 		Debug.Log("Game ended");
 		yield break;
 	}
-
-
-
-	#region DRAW_PHASE
-	IEnumerator ResolveDrawPhase()
-    {
-		currentPlayer.StartDrawPhase();
-		yield return currentPlayer.IsResolvingDrawPhase();
-    }
-	#endregion ACTION_PHASE
-
-	#region ACTION_PHASE
-	IEnumerator ResolveActionPhase()
-    {
-		currentPlayer.StartActionPhase();
-		yield return currentPlayer.IsResolvingActionPhase();
-    }
-	#endregion ACTION_PHASE
-
-	#region PRE_GAME_PHASE
-	IEnumerator ResolvePreGame()
-	{
-		yield return StartupPlayers();
-
-		StartPreGame();
-
-		SetPhase(Phase.PreGame);
-
-		yield return AwaitConditionsToSolve();
-	}
-	IEnumerator StartupPlayers()
-	{
-		LocalPlayer.SetupPlayDeck();
-		remotePlayer.SetupPlayDeck();
-
-		yield return LocalPlayer.IsInitialized();
-
-		yield return remotePlayer.IsInitialized();
-	}
-	void StartPreGame() 
-	{
-		LocalPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		remotePlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-
-		LocalPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-		remotePlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-	}
-	IEnumerator AwaitConditionsToSolve()
-	{
-		var hasConditions = true;
-		while (hasConditions)
-		{
-			yield return null;
-			hasConditions = LocalPlayer.HasConditions() || remotePlayer.HasConditions();
-		}
-	}
-	#endregion PRE_GAME_PHASE
-
-	#region BATTLEFIELD_INTERFACE
-	public void Summon(Player player, Card card)
-    {
-		battlefield.Summon(player, card);
-    }
-	bool CanSummonHero(Card card)
-    {
-		return LocalPlayer.CanPlayerSummonHero(card);
-    }
-	#endregion BATTLEFIELD_INTERFACE
-
-	public bool CanPlayerInteract(Player player)
-    {
-		return Phase == Phase.PreGame || currentPlayer == player;
-    }
-	void Update()
-	{
-		WatchExitGame();
-	}
-
-
-    #region PHASE_LOGIC
-    bool WatchEndGame()
+	bool WatchEndGame()
 	{
 		return false;
 
@@ -286,6 +275,15 @@ public class GameController : Singleton<GameController>
 
 
 
+
+	public bool CanPlayerInteract(Player player)
+	{
+		return Phase == Phase.PreGame || currentPlayer == player;
+	}
+	void Update()
+	{
+		WatchExitGame();
+	}
 
 
 	void DisablePlayers()

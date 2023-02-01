@@ -13,20 +13,13 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
 
     List<DeckActionType> remainingActions = new List<DeckActionType>();
     List<CardObject> deckObjects = new List<CardObject>();
+    List<Card> cardsToAdd = new List<Card>();
     public bool IsBusy => isBusy;
-    private int targetDeckSize;
 
-    public void UpdateDeckSize(int newSize)
+    public void Add(Card card)
     {
-        if (newSize == targetDeckSize)
-            return;
-
-        var deltaSize = targetDeckSize - newSize;
-
-        if (deltaSize < 0)
-            AddCards(Mathf.Abs(deltaSize));
-        else
-            RemoveCards(deltaSize);
+        remainingActions.Add(DeckActionType.AddCard);
+        cardsToAdd.Add(card);
 
         StartSolvingActions();
     }
@@ -45,19 +38,16 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         cardCounter.text = deckObjects.Count.ToString();
     }
 
-    void AddCards(int count)
+    public void RemoveCards(int count)
     {
-        targetDeckSize += count;
-
-        for (int i = 0; i < count; i++)
-            remainingActions.Add(DeckActionType.AddCard);
-    }
-    void RemoveCards(int count)
-    {
-        targetDeckSize -= count; 
-
         for (int i = 0; i < count; i++)
             remainingActions.Add(DeckActionType.DrawCard);
+
+        StartSolvingActions();
+    }
+    public void RemoveAll()
+    {
+        RemoveCards(deckObjects.Count);
     }
     void StartSolvingActions()
     {
@@ -90,7 +80,10 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     }
     void AddCardAction()
     {
-        CardObject cardObject = CardFactory.CreateEmptyCard(transform);
+        var card = cardsToAdd[0];
+        CardObject cardObject = CardFactory.CreateCard(card, transform, true);
+        cardsToAdd.RemoveAt(0);
+
         cardObject.transform.rotation = GetRotationReference();
         cardObject.transform.position = GetTopCardPosition();
 
@@ -123,7 +116,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         return cardReferencePosition.transform.rotation;
     }
 
-    [Button("Add 1 Card", EButtonEnableMode.Playmode)]
+    /*[Button("Add 1 Card", EButtonEnableMode.Playmode)]
     public void Editor_Add_1_Card()
     {
         UpdateDeckSize(deckObjects.Count + 1);
@@ -142,5 +135,5 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     public void Editor_Draw_2_Card()
     {
         UpdateDeckSize(deckObjects.Count - 2);
-    }
+    }*/
 }

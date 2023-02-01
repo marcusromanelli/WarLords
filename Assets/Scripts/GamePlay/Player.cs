@@ -23,8 +23,8 @@ public class Player : MonoBehaviour
 	[BoxGroup(playerPropertiesTag), SerializeField] Card[] deckStartCards;
 
 	private const string gameLogicTag = "Game Logic";
-	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> PlayDeck;
-	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck<Card> Graveyard;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck PlayDeck;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck Graveyard;
 	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
 	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand Hand;
 	[BoxGroup(gameLogicTag), SerializeField] protected NextPhaseButton nextPhaseButton;

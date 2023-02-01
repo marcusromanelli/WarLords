@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3125707002135416595, guid: e5c03f4075b67fd44874ccda68a3b8b8,
         type: 3}
       propertyPath: m_Name
-      value: Deck
+      value: Deck Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3129163404921785551, guid: e5c03f4075b67fd44874ccda68a3b8b8,
         type: 3}
@@ -66,6 +66,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315581164276345992, guid: e5c03f4075b67fd44874ccda68a3b8b8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315581164276345992, guid: e5c03f4075b67fd44874ccda68a3b8b8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315581164276345992, guid: e5c03f4075b67fd44874ccda68a3b8b8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315581164276345992, guid: e5c03f4075b67fd44874ccda68a3b8b8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315581164276345992, guid: e5c03f4075b67fd44874ccda68a3b8b8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5c03f4075b67fd44874ccda68a3b8b8, type: 3}

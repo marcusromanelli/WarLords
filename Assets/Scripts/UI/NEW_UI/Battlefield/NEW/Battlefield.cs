@@ -108,8 +108,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	public bool PlayerHasHeroSummoned(Player player, Card card)
 	{
-		return false;
-
 		if (!heroList.ContainsKey(player))
 			return false;
 

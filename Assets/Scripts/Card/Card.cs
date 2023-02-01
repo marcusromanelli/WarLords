@@ -6,7 +6,7 @@ using NaughtyAttributes;
 public class Card : ScriptableObject
 {
 	public string Name;
-	public Texture FrontCover;
+	public Sprite FrontCover;
 	public Texture BackCover;
 	[Expandable] public CardData Data;
 	public int ManaCost => Data.ManaCost;
@@ -77,23 +77,23 @@ public class Card : ScriptableObject
 	}
 	*/
 
-	public static bool operator ==(Card a, Card b)
+	/*public static bool operator ==(Card a, Card b)
 	{
-		return ((a).Data.Id == (b).Data.Id);
+		return a.Equals(b);
 	}
 
 	public static bool operator !=(Card a, Card b)
 	{
-		return ((a).Data.Id != (b).Data.Id);
+		return a.Equals(b);
 	}
 
 	public override bool Equals(object obj)
 	{
-		return ((obj.GetType() == typeof(Card)) && (((Card)obj).Data.Id == this.Data.Id));
+		return ((obj.GetType() == typeof(Card)) && (((Card)obj) == this));
 	}
 
 	public override int GetHashCode()
 	{
 		return base.GetHashCode();
-	}
+	}*/
 }

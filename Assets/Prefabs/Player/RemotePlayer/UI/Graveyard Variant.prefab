@@ -7,10 +7,40 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514933248268115219, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 270
+      objectReference: {fileID: 0}
     - target: {fileID: 5670301201399560972, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
         type: 3}
       propertyPath: m_Name
-      value: Graveyard
+      value: Graveyard Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5673775333891124712, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
         type: 3}

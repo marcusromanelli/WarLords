@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Name: Garulf_Feltrejin
+  m_EditorClassIdentifier: 
+  Name: Garulf Feltrejin
+  FrontCover: {fileID: 21300000, guid: 9543452521ac56943974f980e15b3c2e, type: 3}
+  BackCover: {fileID: 2800000, guid: 2bc19ce120662dc4a8afec0367a5d295, type: 3}
+  Data: {fileID: 11400000, guid: 741010ea8bc59ae48b951b02b651eb05, type: 2}

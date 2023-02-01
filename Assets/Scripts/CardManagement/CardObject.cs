@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NaughtyAttributes;
+using System;
 using UnityEngine;
+using TMPro;
 
-public enum ManaStatus
-{
-	Active, Used, Preview
-}
 
 public delegate void OnClickCloseButton();
 public delegate CardPositionData OnGetPositionAndRotation();
@@ -13,25 +10,40 @@ public class CardObject : MonoBehaviour, IPoolable
 {
 	[SerializeField] float cardMovementSpeed = 20;
 	[SerializeField] float cardRotationSpeed = 20;
-	[SerializeField] ParticleSystem fadeIntoManaParticle;
+
+	[BoxGroup("Components"), SerializeField] GameObject cardContents;
+	[BoxGroup("Components"), SerializeField] TMP_Text nameText;
+	[BoxGroup("Components"), SerializeField] TMP_Text manaCostText;
+	[BoxGroup("Components"), SerializeField] TMP_Text attackText;
+	[BoxGroup("Components"), SerializeField] TMP_Text defenseText;
+	[BoxGroup("Components"), SerializeField] TMP_Text skill1DescriptionText;
+	[BoxGroup("Components"), SerializeField] TMP_Text skill1CostText;
+	[BoxGroup("Components"), SerializeField] TMP_Text skill2DescriptionText;
+	[BoxGroup("Components"), SerializeField] TMP_Text skill2CostText;
+	[BoxGroup("Components"), SerializeField] SpriteRenderer backgroundImageSpriteRenderer;
+	[BoxGroup("Components"), SerializeField] Renderer cardRenderer;
+	[BoxGroup("Components"), SerializeField] ParticleSystem fadeIntoManaParticle;
+	[BoxGroup("Components"), SerializeField] GameObject closeButton;
+
+
+	[BoxGroup("Game"), Expandable, SerializeField] private Card originalCard;
 
 	public Card Data => originalCard;
 	/*
 	public Player player;
 
 	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;*/
-	public List<GameObject> cardCoversPerCivilization;
 	public bool IsInPosition => isInPosition;
 
-	private Card originalCard;
-	private GameObject currentActiveFrontCover;
-	private GameObject currentActiveBackCover;
+
 	private Nullable<CardPositionData> targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = false;
 	private OnClickCloseButton closeCallback;
 	private bool isBecamingMana = false;
 	private Action onManaParticleEnd;
+	private Sprite currentCover;
+	private Texture currentBackground;
 
 	public void SetPositionAndRotation(CardPositionData cardData)
 	{
@@ -49,22 +61,16 @@ public class CardObject : MonoBehaviour, IPoolable
 	public void RegisterCloseCallback(OnClickCloseButton closeCallback)
 	{
 		this.closeCallback = closeCallback;
+		closeButton.SetActive(true);
 	}
 	public void UnregisterCloseCallback()
 	{
 		this.closeCallback = null;
+		closeButton.SetActive(false);
 	}
 	public void OnCloseButtonClick ()
     {
 		closeCallback?.Invoke();
-	}
-	public void SetupCover(Civilization civilization)
-	{
-		var cardCover = cardCoversPerCivilization[(int)civilization];
-
-		cardCover.SetActive(true);
-
-		currentActiveBackCover = cardCover;
 	}
 	public void Pool()
 	{
@@ -74,51 +80,89 @@ public class CardObject : MonoBehaviour, IPoolable
 	{
 		originalCard = card;
 
-		LoadCardData(hideInfo);
+		UpdateCardData(hideInfo);
 	}
-	private void LoadCardData(bool hideInfo)
+	private void UpdateCardData(bool hideInfo)
 	{
-		GameObject cardObj;
+		UpdateBackCardCover();
 
-		//Turn the cover 180 degrees to show on the front and on the back
-		var rotation = hideInfo ? Quaternion.Euler(Vector3.up * 180f) : Quaternion.identity;
-
-		if (!hideInfo)
+		if (hideInfo)
 		{
-			cardObj = ElementFactory.LoadResource<GameObject>(GetCardResourcePath(), transform);
-
-			if (cardObj == null)
-			{
-				Debug.LogError(GetResourceName() + " não invocado. Civ:" + originalCard.ToString());
-				return;
-			}
-
-			name = GetResourceName();
-		}
-        else
-        {
-			cardObj = ElementFactory.CreateGameObject(currentActiveBackCover, transform);
+			cardContents.SetActive(false);
+			return;
 		}
 
-		cardObj.transform.localRotation = rotation;
-		cardObj.transform.localPosition = Vector3.zero;
-
-		currentActiveFrontCover = cardObj;
+		cardContents.SetActive(true);
+		UpdateCardName();
+		UpdateManaCost();
+		UpdateAttack();
+		UpdateDefense();
+		UpdateSkills();
+		UpdateFrontCardCover();
 	}
 	public void BecameMana(Action onFinishesAnimation)
 	{
 		isBecamingMana = true;
-		currentActiveFrontCover.SetActive(false);
-		currentActiveBackCover.SetActive(false);
+		cardContents.SetActive(false);
+		cardRenderer.gameObject.SetActive(false);
 		fadeIntoManaParticle.Play();
 		onManaParticleEnd = onFinishesAnimation;
 	}
+	void UpdateCardName()
+    {
+		nameText.text = originalCard.Name;
+	}
+	void UpdateManaCost()
+    {
+		SetTextValue(manaCostText, originalCard.CalculateSummonCost());
+	}
+	void UpdateAttack()
+	{
+		SetTextValue(attackText, originalCard.Data.Attack);
+	}
+	void UpdateDefense()
+	{
+		SetTextValue(defenseText, originalCard.Data.Defense);
+	}
+	void UpdateSkills()
+	{
+		SetTextValue(skill1DescriptionText, originalCard.Data.Skills[0]);
+		SetTextValue(skill1CostText, originalCard.Data.Skills[0].ManaCost);
+
+		SetTextValue(skill2DescriptionText, originalCard.Data.Skills[1]);
+		SetTextValue(skill2CostText, originalCard.Data.Skills[1].ManaCost);
+	}
+	void UpdateBackCardCover()
+	{
+		cardRenderer.gameObject.SetActive(true);
+		var texture = originalCard.BackCover;
+
+		if (currentBackground == texture) return;
+
+		Texture material = cardRenderer.material.GetTexture("_MainTex");
+
+		cardRenderer.material.SetTexture("_MainTex", texture);
+
+		currentBackground = texture;
+	}
+	void UpdateFrontCardCover()
+	{
+		var texture = originalCard.FrontCover;
+
+		if (currentCover == texture) return;
+
+		backgroundImageSpriteRenderer.sprite = texture;
+
+		currentCover = texture;
+	}
+
+	void SetTextValue(TMP_Text component, object value)
+    {
+		component.text = value.ToString();
+    }
+
 	void ResetCard()
 	{
-		currentActiveBackCover?.SetActive(false);
-		currentActiveFrontCover?.SetActive(false);
-		currentActiveBackCover = null;
-		currentActiveFrontCover = null;
 		closeCallback = null;
 		isBecamingMana = false;
 		isInPosition = false;
@@ -173,48 +217,8 @@ public class CardObject : MonoBehaviour, IPoolable
 		isBecamingMana = false;
 		onManaParticleEnd();
 	}
-	string GetCardResourcePath()
-	{
-		return "Prefabs/Cards/" + originalCard.ToString() + "/" + GetResourceName();
-	}
-	string GetResourceName()
-	{
-		return originalCard.ToString();
-	}
 
-	// void Awake()
-	// {
-	//	if (transform.Find("Summon"))
-	//	{
-	//		summonButton = transform.Find("Summon").gameObject;
-	//		summonButton.SetActive(false);
-	//	}
-	//	if (transform.Find("Skill1Button"))
-	//	{
-	//		skillButton1 = transform.Find("Skill1Button").gameObject;
-	//		skillButton1.SetActive(false);
-	//	}
-	//	if (transform.Find("Skill2Button"))
-	//	{
-	//		skillButton2 = transform.Find("Skill2Button").gameObject;
-	//		skillButton2.SetActive(false);
-	//	}
-	//	if (transform.Find("Skills"))
-	//	{
-	//		SkillsTree = transform.Find("Skills").gameObject;
-	//		SkillsTree.SetActive(false);
-	//	}
-	//	if (transform.Find("Status"))
-	//	{
-	//		Status = transform.Find("Status").gameObject;
-	//		Status.SetActive(false);
-	//	}
-	//	if (transform.Find("CloseButton"))
-	//	{
-	//		CloseButton = transform.Find("CloseButton").gameObject;
-	//		CloseButton.SetActive(false);
-	//	}
-	// }
+
 
 	//void Start()
 	//{
@@ -266,11 +270,6 @@ public class CardObject : MonoBehaviour, IPoolable
 	//		CloseButton.SetActive(false);
 	//	}
 	//}
-
-	/*string GetEmptyCardResourcePath(Civilization civilization)
-	{
-		return "Prefabs/Cards/" + civilizationName + "/" + GetResourceName();
-	}
 	
 
 	/*void Update()
@@ -450,36 +449,7 @@ public class CardObject : MonoBehaviour, IPoolable
 		}
 	}*/
 
-	/*void CheckDeckInteraction()
-	{
-		if (!deckController.IsMouseOver)
-			return;
-
-
-
-
-		destinyPosition = deckController.GetTopPosition();
-		destinyRotation = deckController.GetTopRotation();
-	}
-	void CheckManaPoolInteraction()
-	{
-		if (!manaPoolController.IsMouseOver)
-			return;
-
-
-		destinyPosition = manaPoolController.GetBasePosition();
-		destinyRotation = manaPoolController.GetTopRotation();
-	}
-	void CheckGraveyardInteraction()
-	{
-		if (!graveyardController.IsMouseOver)
-			return;
-
-
-
-		destinyPosition = graveyardController.GetTopPosition();
-		destinyRotation = graveyardController.GetTopRotation();
-	}
+	/*
 	void CheckHeroInteraction()
 	{
 		if (Hero.selectedHero == null || isBeingVisualized || !isBeingHeld)
@@ -519,27 +489,8 @@ public class CardObject : MonoBehaviour, IPoolable
 		}
 	}
 
-	public void OnMouseUp()
-	{
-		isMouseDown = false;
-
-		CheckDeckInteraction();
-
-		CheckManaPoolInteraction();
-
-		CheckGraveyardInteraction();
-
-		CheckHeroInteraction();
-
-		CheckClickInteraction();
-
-		if(!isBeingVisualized)
-			SetCardBeingHeld(false);
-	}*/
-	//public int CalculateSummonCost()
-	//{
-	//	return currentCardData.CalculateSummonCost();
-	//}
+	*/
+	
 
 	//public void AddSKill(int number)
 	//{
@@ -559,19 +510,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 
 	/*ParticleSystem system;
-	public void BecameMana()
-	{
-		system = GetComponentInChildren<ParticleSystem>();
-		system.Play();
-		system.transform.SetParent(null);
-		Destroy(gameObject);
-	}
-	*/
-
-	//public void SetPlayer(Player player)
-	//{
-	//	this.player = player;
-	//}
+	
 
 	//public void Die()
 	//{
@@ -603,39 +542,8 @@ public class CardObject : MonoBehaviour, IPoolable
 	//		isBeingVisualized = false;
 	//       }
 	//   }
-	/*string GetCharacterResourcePath()
-	{
-		return "Prefabs/Characters/" + civilizationName + "/" + GetResourceName();
-	}
-	public Hero GetCharacterResource()
-    {
-		var path = GetCharacterResourcePath();
-		Hero hero = Resources.Load<Hero>(path);
 
-		if (hero == null)
-		{
-			Debug.LogError("Could not instantiate: " + civilizationName + "/" + path);
-			return null;
-		}
-	
-		return hero;
-	}
-	public void SummonClick()
-    {
-		SetCardBeingHeld(true);
-    }
-	void SetCardBeingHeld(bool value)
-    {
-		if (!isBeingHeld && !value)
-			return;
 
-		isBeingHeld = value;
-
-		if(value)
-			handController.SetCardBeingHeld(this);
-		else
-			handController.SetCardBeingHeld(null);
-	}
 	public void AddAttack(int number)
 	{
 		if (number < 0) number = 0;

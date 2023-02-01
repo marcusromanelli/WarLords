@@ -640,6 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b921abbdc8c14794c9c53c25eb0494b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 0}
 --- !u!1 &1000011500084202
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,13 +693,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5091c5826603908459d06cf60d18f9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBeingVisualized: 0
-  isBeingHeroVisualized: 0
-  SummonType: 0
   cardMovementSpeed: 20
-  player: {fileID: 0}
-  Character: {fileID: 0}
-  originalPosition: {x: 0, y: 0, z: 0}
+  cardRotationSpeed: 20
+  cardContents: {fileID: 0}
+  nameText: {fileID: 0}
+  manaCostText: {fileID: 0}
+  attackText: {fileID: 0}
+  defenseText: {fileID: 0}
+  skill1DescriptionText: {fileID: 0}
+  skill1CostText: {fileID: 0}
+  skill2DescriptionText: {fileID: 0}
+  skill2CostText: {fileID: 0}
+  backgroundImageSpriteRenderer: {fileID: 0}
+  cardRenderer: {fileID: 0}
+  fadeIntoManaParticle: {fileID: 0}
+  originalCard: {fileID: 0}
 --- !u!65 &65000013358346654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1758,7 +1767,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 82465378a18cf5f4dbe1804539ae715b, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
