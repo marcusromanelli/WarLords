@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void HandleOnHoldingCard(CardObject cardObject);
+public delegate void HandleOnHoldingCard(Player player, CardObject cardObject);
 public delegate bool HandleIsHoldingCard();
 public delegate void HandleCardAction(int number);
 public delegate void HandleOnPickSpawnArea();
@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 	public event HandleCardAction OnDrawCard;
 	public event HandleCardAction OnDiscardCard;
 	public event HandleCardAction OnSendManaCreation;
-	public event HandleOnPickSpawnArea OnPickSpawnArea;
 	public event HandleOnHoldingCard OnHoldCard;
 
 
@@ -40,33 +39,29 @@ public class Player : MonoBehaviour
 	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
-	public virtual void Setup(Battlefield battlefield, GameController gameController, InputController inputController)
+	public virtual void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController)
     {
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
 		ManaPool.Setup(CanPlayerSummonHero);
 
-		Hand.PreSetup(battlefield, inputController, CanSummonHero);
+		Hand.PreSetup(this, battlefield, inputController, CanSummonHero);
 		Hand.OnCardReleasedOnGraveyard += OnCardReleasedOnGraveyard;
 		Hand.OnCardReleasedOnManaPool += OnCardReleasedOnManaPool;
 		Hand.OnCardReleasedOnSpawnArea += OnCardReleasedOnSpawnArea;
 		Hand.OnHoldCard += OnCardBeingHeld;
+
+		conditionManager.Setup(this);
 	}
 
     public void SetupPlayDeck()
 	{
 		PlayDeck.Setup();
 
-		PlayDeck.Empty();
-
 		PlayDeck.AddCards(deckStartCards);
 
 		PlayDeck.Shuffle();
-	}
-	public void SetupConditions()
-	{
-		conditionManager.Setup(this);
 	}
 	public IEnumerator IsInitialized()
     {
@@ -82,9 +77,9 @@ public class Player : MonoBehaviour
     }
 
     #region INTERACTION
-	void OnCardBeingHeld(CardObject cardObject)
+	void OnCardBeingHeld(Player player, CardObject cardObject)
     {
-		OnHoldCard?.Invoke(cardObject);
+		OnHoldCard?.Invoke(this, cardObject);
 	}
 	#endregion INTERACTION
 
@@ -146,8 +141,8 @@ public class Player : MonoBehaviour
 		var playerCan = CanPlayerSummonHero(card);
 
 		var playerCanSummonHero = !battlefield.PlayerHasHeroSummoned(this, card);
-		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(spawnArea);
-		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile();
+		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(this, spawnArea);
+		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile(this);
 
 		var battleFieldCan = playerCanSummonHero && (canSummonOnSelectedTile || canSummonOnPassedSpawnArea);
 

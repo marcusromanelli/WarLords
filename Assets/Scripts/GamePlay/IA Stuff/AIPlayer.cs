@@ -7,28 +7,29 @@ using UnityEngine;
 public class AIPlayer : Player
 {
 	[BoxGroup("AI Behavior"), SerializeField] protected UIBattlefield uiBattlefield;
+	[BoxGroup("AI Behavior"), SerializeField] protected PhaseManager phaseManager;
 	[BoxGroup("AI Behavior"), SerializeField] protected float awaitBetweenConditionSolving = 1f;
 	[BoxGroup("AI Behavior"), SerializeField] protected bool isActive = true;
 
 
 	private bool DoAction = false;
-	public override void Setup(Battlefield battlefield, GameController gameController, InputController inputController)
+	public override void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController)
     {
-        base.Setup(battlefield, gameController, inputController);
+        base.PreSetup(battlefield, gameController, inputController);
 
-		gameController.OnPhaseChange += HandlePhaseChange;
+		phaseManager.OnPhaseChange += HandlePhaseChange;
 	}
 	protected override bool CanInteract()
 	{
 		return isActive && base.CanInteract();
 	}
 
-	void HandlePhaseChange(Phase currentPhase)
+	void HandlePhaseChange(PhaseType currentPhase)
     {
 		StopAllCoroutines();
 		StartCoroutine(SolvePhase(currentPhase));
 	}
-    IEnumerator SolvePhase(Phase currentPhase)
+    IEnumerator SolvePhase(PhaseType currentPhase)
 	{
 		var IsAITurn = CanInteract();
 
@@ -40,13 +41,13 @@ public class AIPlayer : Player
 
 		switch (currentPhase)
         {
-			case Phase.PreGame:
+			case PhaseType.PreGame:
 				yield return ResolvePreGame();
 				break;
-			case Phase.Action:
+			case PhaseType.Action:
 				yield return ResolveActionPhase();
 				break;
-			case Phase.End:
+			case PhaseType.End:
 				yield return ResolveConditions();
 				break;
 		}

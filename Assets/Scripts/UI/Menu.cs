@@ -9,6 +9,6 @@ public class Menu : MonoBehaviour {
 	}
 	
 	public void Play(){
-		GlobalController.Singleton.LoadLevel(StageNames.Swamp, 1f, 3f);
+		SceneController.Singleton.LoadLevel(StageNames.Swamp, 1f, 3f);
 	}
 }

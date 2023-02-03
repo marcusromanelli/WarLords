@@ -82,17 +82,6 @@ public class UIBattlefield : MonoBehaviour
 
 		return IsRemoteSpawnRow((int)gridPosition.y);
 	}
-	public bool CanSummonOnSelectedTile()
-	{
-		if (selectedTile == null)
-			return false;
-
-		return CanPlayerSummonOnTile(GameController.CurrentPlayer, selectedTile);
-	}
-	public bool CanCurrentPlayerSummonOnTile(SpawnArea spawnArea)
-	{
-		return CanPlayerSummonOnTile(GameController.CurrentPlayer, spawnArea);
-	}
 	public SpawnArea[,] GetFields()
 	{
 		return battlefieldTiles;
@@ -125,13 +114,11 @@ public class UIBattlefield : MonoBehaviour
 		selectedTile = tile;
 		selectedTile.SetSelected(true);
 	}
-	void ShowSpawnTiles()
+	void ShowSpawnTiles(Player player)
 	{
 		foreach (var tile in battlefieldTiles)
-		{
-			if(CanCurrentPlayerSummonOnTile(tile))
+			if(CanPlayerSummonOnTile(player, tile))
 				tile.SetSelectingSpawnArea();
-		}
 	}
 	void HideSpawnTiles()
 	{
@@ -156,7 +143,7 @@ public class UIBattlefield : MonoBehaviour
 	{
 		return (rowNumber >= battlefieldData.rowNumber - battlefieldData.spawnAreaSize);
 	}
-	public void OnLocalPlayerHoldCard(CardObject cardObject)
+	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
 		if(cardObject == null || !canSummonHero(cardObject.Data))
 		{
@@ -164,7 +151,7 @@ public class UIBattlefield : MonoBehaviour
 			return;
 		}
 
-        ShowSpawnTiles();
+        ShowSpawnTiles(player);
 	}
 	#endregion FIELD_INTERACTION
 

@@ -100,7 +100,7 @@ public class HeroObject : MonoBehaviour, IPoolable
         if (transform.position != targetPosition)
         {
             GameConfiguration.PlaySFX(GameConfiguration.denyAction);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * 0.5f);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * walkSpeed);
 
 			return;
         }

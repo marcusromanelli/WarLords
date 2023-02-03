@@ -2,15 +2,15 @@
 using System;
 using System.Collections;
 
-public class GlobalController : MonoBehaviour {
+public class SceneController : MonoBehaviour {
 
-	private static GlobalController _singleton;
-	public static GlobalController Singleton{
+	private static SceneController _singleton;
+	public static SceneController Singleton{
 		get{
 			if (_singleton == null) {
-				GlobalController aux = GameObject.FindObjectOfType<GlobalController> ();
+				SceneController aux = GameObject.FindObjectOfType<SceneController> ();
 				if (aux == null) {
-					_singleton = (new GameObject ("-----Global Controller-----", typeof(GlobalController))).GetComponent<GlobalController> ();
+					_singleton = (new GameObject ("-----Global Controller-----", typeof(SceneController))).GetComponent<SceneController> ();
 				} else {
 					_singleton = aux;
 				}

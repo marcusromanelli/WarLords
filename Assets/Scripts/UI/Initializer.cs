@@ -26,7 +26,7 @@ public class Initializer : MonoBehaviour {
 	}
 
 	void finish(){
-		GlobalController.Singleton.LoadLevel(MenuScreens.Menu, 1f, 3f);
+		SceneController.Singleton.LoadLevel(MenuScreens.Menu, 1f, 3f);
 	}
 	IEnumerator fadeIn(){
 		fading=true;

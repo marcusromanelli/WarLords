@@ -24,9 +24,9 @@ public class PlayerHand
     {
         Cards = new List<Card>();
     }
-    public void PreSetup(Battlefield battlefield, InputController inputController, HandleCanSummonHero canSummonHero)
+    public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleCanSummonHero canSummonHero)
     {
-        uiPlayerHand.PreSetup(battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
+        uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
     }
     public void AddCard(Card card)
     {
@@ -132,8 +132,8 @@ public class PlayerHand
     {
         OnCardReleasedOnSpawnArea?.Invoke(cardObject);
     }
-    void onCardBeingHold(CardObject cardObject)
+    void onCardBeingHold(Player player, CardObject cardObject)
     {
-        OnHoldCard?.Invoke(cardObject);
+        OnHoldCard?.Invoke(player, cardObject);
     }
 }

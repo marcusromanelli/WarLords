@@ -56,10 +56,6 @@ public class CardDeck
         uiCardDeck.RemoveCards(number);
 
         return cardList;
-    } 
-    public int GetCardCount()
-    {
-        return Cards.Count;
     }
     public Card[] GetAllCards()
     {
@@ -70,12 +66,6 @@ public class CardDeck
         Cards.Clear();
 
         uiCardDeck.RemoveAll();
-    }
-    public Card GetRandomCard()
-    {
-        Shuffle();
-
-        return DrawCard();
     }
     public void Shuffle()
     {
@@ -95,7 +85,7 @@ public class CardDeck
             }
         }
 
-        Cards.Clear();
+        Empty();
 
         AddCards(tempList);
     }

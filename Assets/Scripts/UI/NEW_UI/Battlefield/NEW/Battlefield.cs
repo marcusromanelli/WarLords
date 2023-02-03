@@ -14,7 +14,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
 	GameController gameController;
 
-	public void Setup(InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
+	public void PreSetup(InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
 	{
 		gameController = GameController;
 
@@ -24,21 +24,19 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE
-	void OnLocalPlayerHoldingCard(CardObject cardObject)
+	void OnLocalPlayerHoldingCard(Player player, CardObject cardObject)
     {
-		uiBattlefield.OnLocalPlayerHoldCard(cardObject);
+		uiBattlefield.OnLocalPlayerHoldCard(player, cardObject);
 	}
 	#endregion UI_BATTLEFIELD_INTERFACE
 
 	#region MOVEMENT_PHASE
-	public IEnumerator MovementPhase()
+	public IEnumerator MovementPhase(Player player)
 	{
-		yield return DoMovement();
+		yield return DoMovement(player);
 	}
-	IEnumerator DoMovement()
+	IEnumerator DoMovement(Player currentPlayer)
 	{
-		var currentPlayer = GameController.CurrentPlayer;
-
 		if(!heroList.ContainsKey(currentPlayer))
 			yield break;
 
@@ -53,7 +51,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
     {
 		var tile = GetHeroTile(currentPlayer, hero);
 		tile.SetHero(null);
-		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(hero));
+		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(currentPlayer, hero));
 		var newPosition = uiBattlefield.GridToUnity(newGridPosition);
 
 		hero.Move(newPosition);
@@ -69,17 +67,17 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	{
 		return uiBattlefield.GetTileByPosition(position);
 	}
-	Vector2 CalculateHeroEndPosition(HeroObject hero)
+	Vector2 CalculateHeroEndPosition(Player currentPlayer, HeroObject hero)
 	{
 		Vector2 gridPos = hero.GridPosition;
-		gridPos.y += GetHeroMovementDirection() * hero.GetWalkSpeed();
+		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
 
 
 		return gridPos;
 	}
-	int GetHeroMovementDirection()
+	int GetHeroMovementDirection(Player player)
 	{
-		return GameController.CurrentPlayer == GameController.LocalPlayer ? 1 : -1;
+		return player == GameController.LocalPlayer ? 1 : -1;
 	}
 	public SpawnArea GetHeroTile(Player player, HeroObject hero)
 	{
@@ -127,13 +125,13 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		return heroList[player].Any(c => c.Id == card.Id);
 	}
-	public bool CanSummonOnSelectedTile()
+	public bool CanSummonOnSelectedTile(Player player)
 	{
-		return uiBattlefield.CanSummonOnSelectedTile();
+		return CanSummonOnTile(player, uiBattlefield.SelectedTile);
 	}
-	public bool CanSummonOnTile(SpawnArea spawnArea)
+	public bool CanSummonOnTile(Player player, SpawnArea spawnArea)
 	{
-		return uiBattlefield.CanCurrentPlayerSummonOnTile(spawnArea);
+		return uiBattlefield.CanPlayerSummonOnTile(player, spawnArea);
 	}
 	List<HeroObject> GetHeroes(Player player)
 	{
@@ -146,10 +144,9 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		heroList[player].Add(hero);
 	}
-
 	void ReorderHeroList(Player player)
 	{
-		var targetEdge = GetPlayerType(player) == PlayerType.Local ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
+		var targetEdge = player == GameController.LocalPlayer ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
 
 		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - uiBattlefield.UnityToGrid(hero.transform.position).y));
 	}
@@ -165,9 +162,5 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	public SpawnArea[,] GetFields()
 	{
 		return uiBattlefield.GetFields();
-	}
-	PlayerType GetPlayerType(Player player)
-	{
-		return gameController.GetPlayerType(player);
 	}
 }

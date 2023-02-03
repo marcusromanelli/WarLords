@@ -19,9 +19,9 @@ public class UIPlayerHand : MonoBehaviour
 	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
     [BoxGroup("Presets"), SerializeField] Vector3 HandRotation;
 
-    Battlefield battlefield;
-    List<CardObject> cardList = new List<CardObject>();
-
+    private Player player;
+    private Battlefield battlefield;
+    private List<CardObject> cardList = new List<CardObject>();
     private InputController inputController;
     private CardObject _currentTargetCard;
     private CardObject currentTargetCard
@@ -32,7 +32,7 @@ public class UIPlayerHand : MonoBehaviour
                 return;
 
             _currentTargetCard = value;
-            onCardBeingHeld?.Invoke(value);
+            onCardBeingHeld?.Invoke(player, value);
         }
     }
     private bool IsHoldingCard => currentTargetCard != null;
@@ -46,11 +46,12 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnHoldingCard onCardBeingHeld;
     HandleCanSummonHero canSummonHero;
 
-    public void PreSetup(Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
+    public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
         HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea, HandleOnHoldingCard onCardBeingHeld,
         HandleCanSummonHero canSummonHero
         )
     {
+        this.player = player;
         this.battlefield = battlefield;
         this.inputController = inputController;
         this.onCardReleasedOnGraveyard = onCardReleasedOnGraveyard;

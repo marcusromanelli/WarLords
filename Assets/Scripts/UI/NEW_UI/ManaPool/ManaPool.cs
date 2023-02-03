@@ -86,9 +86,9 @@ public class ManaPool
 	}
 
 	#region UI_MANAPOOL_INTERFACE
-	void OnLocalPlayerHoldingCard(CardObject cardObject)
+	void OnLocalPlayerHoldingCard(Player player, CardObject cardObject)
 	{
-		uiManaPool.OnLocalPlayerHoldCard(cardObject);
+		uiManaPool.OnLocalPlayerHoldCard(player, cardObject);
 	}
 	#endregion UI_MANAPOOL_INTERFACE
 }

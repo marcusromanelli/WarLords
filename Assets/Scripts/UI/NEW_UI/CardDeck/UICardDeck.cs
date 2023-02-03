@@ -11,17 +11,18 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;
 
-    List<DeckActionType> remainingActions = new List<DeckActionType>();
+    //List<DeckActionType> remainingActions = new List<DeckActionType>();
     List<CardObject> deckObjects = new List<CardObject>();
-    List<Card> cardsToAdd = new List<Card>();
+    //List<Card> cardsToAdd = new List<Card>();
     public bool IsBusy => isBusy;
 
-    public void Add(Card card)
+    public void Add(Card cards)
     {
-        remainingActions.Add(DeckActionType.AddCard);
-        cardsToAdd.Add(card);
+        AddCardAction(cards);
+        //remainingActions.Add(DeckActionType.AddCard);
+        //cardsToAdd.Add(card);
 
-        StartSolvingActions();
+        //StartSolvingActions();
     }
     public IEnumerator IsResolving()
     {
@@ -41,18 +42,17 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     public void RemoveCards(int count)
     {
         for (int i = 0; i < count; i++)
-            remainingActions.Add(DeckActionType.DrawCard);
+            RemoveCardAction();
 
-        StartSolvingActions();
+        //StartSolvingActions();
     }
     public void RemoveAll()
     {
         RemoveCards(deckObjects.Count);
     }
-    void StartSolvingActions()
+    /*void StartSolvingActions()
     {
-        if (IsBusy)
-            return;
+        StopAllCoroutines();
 
         StartCoroutine(SolveActions());
     }
@@ -77,12 +77,13 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         }
 
         isBusy = false;
-    }
-    void AddCardAction()
+    }*/
+    void AddCardAction(Card card)
     {
-        var card = cardsToAdd[0];
         CardObject cardObject = CardFactory.CreateCard(card, transform, true);
-        cardsToAdd.RemoveAt(0);
+
+        /*var card = cardsToAdd[0];
+        cardsToAdd.RemoveAt(0);*/
 
         cardObject.transform.rotation = GetRotationReference();
         cardObject.transform.position = GetTopCardPosition();

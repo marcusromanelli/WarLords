@@ -116,7 +116,6 @@ Shader "Hidden/LensAberrations"
                 #pragma fragment frag_blur_prepass
                 #pragma multi_compile __ CHROMATIC_ABERRATION
                 #pragma multi_compile __ DISTORT UNDISTORT
-                #pragma
 
                 half2 _BlurPass;
 

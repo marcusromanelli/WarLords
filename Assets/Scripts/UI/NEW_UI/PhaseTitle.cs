@@ -26,7 +26,7 @@ public class PhaseTitle : MonoBehaviour
 			StartCoroutine(Fade());
 		}*/
 	}
-	public void ChangePhase(Phase nextPhase, bool localPlayer) 
+	public void ChangePhase(PhaseType nextPhase, bool localPlayer) 
 	{
 		SetImage(nextPhase, localPlayer);
 		StopAllCoroutines();
@@ -77,18 +77,18 @@ public class PhaseTitle : MonoBehaviour
 		isChanging = false;
 	}
 
-	void SetImage(Phase next, bool localPlayer)
+	void SetImage(PhaseType next, bool localPlayer)
 	{
 		image.enabled = true;
 		switch (next)
 		{
-			case Phase.Draw:
+			case PhaseType.Draw:
 				image.sprite = localPlayer ? Your : Enemy;
 				break;
-			case Phase.Movement:
+			case PhaseType.Movement:
 				image.sprite = Movement;
 				break;
-			case Phase.Attack:
+			case PhaseType.Attack:
 				image.sprite = Combat;
 				break;
 			default:
