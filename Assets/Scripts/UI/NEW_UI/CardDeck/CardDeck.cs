@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -85,11 +86,11 @@ public class CardDeck
             }
         }
 
-        Empty();
+        Cards = new Stack<Card>(tempList);
 
-        AddCards(tempList);
+        uiCardDeck.Shuffle(tempList);
     }
-    public System.Collections.IEnumerator IsUIUpdating()
+    public IEnumerator IsUIUpdating()
     {
         yield return uiCardDeck.IsResolving();
     }

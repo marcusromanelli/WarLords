@@ -1,6 +1,8 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UICardDeck : MonoBehaviour, ICardPlaceable
@@ -11,25 +13,23 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;
 
-    //List<DeckActionType> remainingActions = new List<DeckActionType>();
+    List<DeckActionType> remainingActions = new List<DeckActionType>();
     List<CardObject> deckObjects = new List<CardObject>();
-    //List<Card> cardsToAdd = new List<Card>();
+    List<Card> cardsToAdd = new List<Card>();
     public bool IsBusy => isBusy;
 
-    public void Add(Card cards)
+    public void Add(Card card)
     {
-        AddCardAction(cards);
-        //remainingActions.Add(DeckActionType.AddCard);
-        //cardsToAdd.Add(card);
+        //AddCardAction(cards);
+        remainingActions.Add(DeckActionType.AddCard);
+        cardsToAdd.Add(card);
 
-        //StartSolvingActions();
+        StartSolvingActions();
     }
     public IEnumerator IsResolving()
     {
-        while (IsBusy)
-        {
+        while (IsBusy && remainingActions.Count <= 0 && cardsToAdd.Count <= 0)
             yield return null;
-        }
     }
     void UpdateCardCount()
     {
@@ -42,48 +42,58 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     public void RemoveCards(int count)
     {
         for (int i = 0; i < count; i++)
-            RemoveCardAction();
+            remainingActions.Add(DeckActionType.DrawCard);
 
-        //StartSolvingActions();
+        StartSolvingActions();
     }
     public void RemoveAll()
     {
-        RemoveCards(deckObjects.Count);
+        RemoveCards(deckObjects.Count + cardsToAdd.Count);
     }
-    /*void StartSolvingActions()
+    public void Shuffle(Card[] cards)
     {
-        StopAllCoroutines();
-
-        StartCoroutine(SolveActions());
+        var cardList = cards.ToList();
+        deckObjects.OrderBy(cardObject => cardList.FindIndex(card => card == cardObject.Data));
+    }
+    void StartSolvingActions()
+    {
+        if(!isBusy)
+            StartCoroutine(SolveActions());
     }
     IEnumerator SolveActions()
     {
         isBusy = true;
 
-        while (remainingActions.Count > 0)
+        while (true)
         {
-            var nextAction = remainingActions[0];
-            switch (nextAction)
+            try
             {
-                case DeckActionType.AddCard:
-                    AddCardAction();
-                    break;
-                case DeckActionType.DrawCard:
-                    RemoveCardAction();
-                    break;
+                DeckActionType nextAction = remainingActions[0];
+
+                switch (nextAction)
+                {
+                    case DeckActionType.AddCard:
+                        AddCardAction();
+                        break;
+                    case DeckActionType.DrawCard:
+                        RemoveCardAction();
+                        break;
+                }
+
+                remainingActions.RemoveAt(0);
             }
+            catch (Exception)
+            {
+            }
+
             yield return null;
-            remainingActions.RemoveAt(0);
         }
-
-        isBusy = false;
-    }*/
-    void AddCardAction(Card card)
+    }
+    void AddCardAction()
     {
+        var card = cardsToAdd[0];
         CardObject cardObject = CardFactory.CreateCard(card, transform, true);
-
-        /*var card = cardsToAdd[0];
-        cardsToAdd.RemoveAt(0);*/
+        cardsToAdd.RemoveAt(0);
 
         cardObject.transform.rotation = GetRotationReference();
         cardObject.transform.position = GetTopCardPosition();

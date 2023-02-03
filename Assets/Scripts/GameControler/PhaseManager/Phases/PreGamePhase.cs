@@ -27,7 +27,7 @@ public class PreGamePhase : Phase
 		if (didRun)
 			yield break;
 
-		//StartPreGame(currentPlayer, enemyPlayer);
+		StartPreGame(currentPlayer, enemyPlayer);
 
 		yield break;
 	}
