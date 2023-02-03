@@ -46,6 +46,22 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 	{
 		TogglePlayer(player, true);
 	}
+	public
+	void NextTurn()
+	{
+		if (CurrentPlayer == null)
+		{
+			CurrentPlayer = localPlayer;
+			EnemyPlayer = remotePlayer;
+		}
+		else
+		{
+			CurrentPlayer = (CurrentPlayer == remotePlayer) ? localPlayer : remotePlayer;
+			EnemyPlayer = (CurrentPlayer == localPlayer) ? remotePlayer : localPlayer;
+		}
+
+		Debug.Log("Player " + CurrentPlayer + " turn.");
+	}
 	#endregion PHASES_INTERFACE
 
 
@@ -72,21 +88,6 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 			RemotePlayer.enabled = false;
 		}*/
 	}
-	void NextTurn()
-	{
-		if (CurrentPlayer == null)
-		{
-			CurrentPlayer = localPlayer;
-			EnemyPlayer = remotePlayer;
-		}
-		else
-		{
-			CurrentPlayer = (CurrentPlayer == remotePlayer) ? localPlayer : remotePlayer;
-			EnemyPlayer = (CurrentPlayer == localPlayer) ? remotePlayer : localPlayer;
-		}
-
-		Debug.Log("Player " + CurrentPlayer + " turn.");
-	}
 
 	#endregion PHASE_LOGIC
 
@@ -106,12 +107,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
     }
 	void NextPhase()
     {
-		currentPhaseIndex += 1;
-		if (currentPhaseIndex > phaseCycle.Length)
-		{
-			currentPhaseIndex = 0;
-			NextTurn();
-		}
+		currentPhaseIndex = (currentPhaseIndex + 1) % phaseCycle.Length;
 	}
 	IEnumerator PhaseCycle()
     {
@@ -168,7 +164,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 
 		yield return AwaitPhaseChange();
 
-		Debug.LogWarning("New Phase: " + CurrentPhase.GetPhaseType().ToString());
+		Debug.LogWarning("New Phase: " + CurrentPhase.GetPhaseType().ToString() + " player: " + CurrentPlayer.name);
 	}
 	IEnumerator AwaitPhaseChange()
 	{

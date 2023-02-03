@@ -5,9 +5,9 @@ public abstract class Phase : ScriptableObject, IPhase
 {
     [SerializeField] PhaseType type;
 
-    protected bool HasRan;
-    protected bool isResolving;
-    protected PhaseManager phaseManager;
+    [HideInInspector] protected bool HasRan;
+    [HideInInspector] protected bool isResolving;
+    [HideInInspector] protected PhaseManager phaseManager;
 
     public virtual void Setup(PhaseManager phaseManager)
     {

@@ -23,6 +23,8 @@ public class EndPhase : Phase
 			Debug.LogWarning("Player " + currentPlayer + " have " + numberOfCardsInHand + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
 		}
 
+		phaseManager.NextTurn();
+
 		yield break;
 	}
 }

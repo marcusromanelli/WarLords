@@ -34,10 +34,7 @@ public class AIPlayer : Player
 		var IsAITurn = CanInteract();
 
 		if (!IsAITurn)
-		{
-			Debug.Log("Its not my turn. Ignoring");
 			yield break;
-		}
 
 		switch (currentPhase)
         {

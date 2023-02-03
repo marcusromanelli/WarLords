@@ -5,7 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Pre-Game Phase", menuName = "ScriptableObjects/Phases/Pre-Game", order = 1)]
 public class PreGamePhase : Phase
 {
-	private bool didRun;
+	[HideInInspector] bool didRun = false;
+
+	public override void Setup(PhaseManager phaseManager)
+	{
+		base.Setup(phaseManager);
+
+		didRun = false;
+	}
 
 	public override IEnumerator PrePhase(Player currentPlayer, Player enemyPlayer)
 	{
@@ -38,5 +45,7 @@ public class PreGamePhase : Phase
 
 		currentPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
 		enemyPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+
+		didRun = true;
 	}
 }
