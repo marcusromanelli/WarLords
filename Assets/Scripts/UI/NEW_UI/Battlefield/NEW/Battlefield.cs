@@ -131,6 +131,9 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	public bool CanSummonOnTile(Player player, SpawnArea spawnArea)
 	{
+		if (spawnArea == null)
+			return false;
+
 		return uiBattlefield.CanPlayerSummonOnTile(player, spawnArea);
 	}
 	List<HeroObject> GetHeroes(Player player)
