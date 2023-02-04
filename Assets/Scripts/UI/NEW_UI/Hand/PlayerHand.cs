@@ -45,29 +45,23 @@ public class PlayerHand
         for (int i = 0; i < cards.Length; i++)
             AddCard(cards[i]);
     }
-    public void DiscardCard(Card cardData)
-    {
-        if (Cards.Count <= 0)
-            return;
-
-        Cards.Remove(cardData);
-
-        uiPlayerHand.Discard(cardData);
-    }
     public void DiscardCard(CardObject cardObject)
-    {
-        var data = cardObject.Data;
-
-        DiscardCard(data);
-    }
-    public void TurnCardIntoMana(CardObject cardObject)
     {
         if (Cards.Count <= 0)
             return;
 
         Cards.Remove(cardObject.Data);
 
-        uiPlayerHand.TurnCardIntoMana(cardObject);
+        uiPlayerHand.Discard(cardObject);
+    }
+    public void TurnCardIntoMana(CardObject cardObject, Action onFinishAnimation)
+    {
+        if (Cards.Count <= 0)
+            return;
+
+        Cards.Remove(cardObject.Data);
+
+        uiPlayerHand.TurnCardIntoMana(cardObject, onFinishAnimation);
     }
     public Card DiscardCard()
     {
@@ -100,9 +94,9 @@ public class PlayerHand
 
         return cards;
     }
-    public Card[] GetCards()
+    public List<CardObject> GetCards()
     {
-        return Cards.ToArray();
+        return uiPlayerHand.GetCards();
     }
     public System.Collections.IEnumerator IsUIUpdating()
     {
@@ -112,9 +106,9 @@ public class PlayerHand
     {
         return uiPlayerHand.CurrentHoldingCard;
     }
-    public void HoldCard(Card card)
+    public void HoldCard(CardObject cardObject)
     {
-        uiPlayerHand.HoldCard(card);
+        uiPlayerHand.HoldCard(cardObject);
     }
     public void CancelHandToCardInteraction()
     {

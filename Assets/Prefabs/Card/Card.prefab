@@ -695,6 +695,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardMovementSpeed: 15
   cardRotationSpeed: 500
+  dissolveSpeed: 1.2
+  dissolveMin: 0.5
   cardContents: {fileID: 3843214398931485633}
   nameText: {fileID: 2086716761882728841}
   manaCostText: {fileID: 2261349641975526663}
@@ -2730,7 +2732,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -3612,7 +3614,7 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
+          time: 0.71429443
           value: 0
           inSlope: -2
           outSlope: -2
@@ -3942,7 +3944,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 50115
+        atime1: 36430
         atime2: 65535
         atime3: 0
         atime4: 0
@@ -7542,6 +7544,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2712838252092466824, guid: 7338a613db59c8d489bc3b187504332d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2818381053693223691, guid: 7338a613db59c8d489bc3b187504332d,
         type: 3}

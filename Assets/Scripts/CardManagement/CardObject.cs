@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 using TMPro;
-
+using System.Collections;
 
 public delegate void OnClickCloseButton();
 public delegate CardPositionData OnGetPositionAndRotation();
@@ -10,6 +10,8 @@ public class CardObject : MonoBehaviour, IPoolable
 {
 	[SerializeField] float cardMovementSpeed = 20;
 	[SerializeField] float cardRotationSpeed = 20;
+	[SerializeField] float dissolveSpeed = 20;
+	[SerializeField] float dissolveMin = 0.7f;
 
 	[BoxGroup("Components"), SerializeField] GameObject cardContents;
 	[BoxGroup("Components"), SerializeField] TMP_Text nameText;
@@ -44,6 +46,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	private Action onManaParticleEnd;
 	private Sprite currentCover;
 	private Texture currentBackground;
+	private float dissolveT = 0;
 
 	public void SetPositionAndRotation(CardPositionData cardData)
 	{
@@ -104,9 +107,10 @@ public class CardObject : MonoBehaviour, IPoolable
 	{
 		isBecamingMana = true;
 		cardContents.SetActive(false);
-		cardRenderer.gameObject.SetActive(false);
+		
 		fadeIntoManaParticle.Play();
 		onManaParticleEnd = onFinishesAnimation;
+		StartCoroutine(AwaitManaParticleEnd());
 	}
 	void UpdateCardName()
     {
@@ -168,6 +172,8 @@ public class CardObject : MonoBehaviour, IPoolable
 		originalCard = default(Card);
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
+		dissolveT = 0;
+		ResetDissolve();
 	}
 	void MoveToTargetPosition()
     {
@@ -201,19 +207,35 @@ public class CardObject : MonoBehaviour, IPoolable
 	void Update()
 	{
 		MoveToTargetPosition();
-
-		AwaitManaParticleEnd();
 	}
-	void AwaitManaParticleEnd()
+	IEnumerator AwaitManaParticleEnd()
     {
 		if (!isBecamingMana)
-			return;
+			yield break;
 
-		if (fadeIntoManaParticle.isPlaying)
-			return;
+		while(dissolveT < dissolveMin)
+		{
+			DissolveCard();
+			yield return null;
+		}
 
 		isBecamingMana = false;
 		onManaParticleEnd();
+	}
+	void DissolveCard()
+	{
+		dissolveT += dissolveSpeed * Time.deltaTime;
+		dissolveT = Mathf.Clamp(dissolveT, 0, 1);
+
+		SetDissolveCard(dissolveT);
+	}
+	void ResetDissolve()
+    {
+		SetDissolveCard(0);
+    }
+	void SetDissolveCard(float value)
+	{
+		cardRenderer.material.SetFloat("_DissolveAmount", value);
 	}
 
 

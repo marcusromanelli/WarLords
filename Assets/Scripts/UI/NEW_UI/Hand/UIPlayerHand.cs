@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -62,21 +63,19 @@ public class UIPlayerHand : MonoBehaviour
 
         RegisterDefaultCallbacks();
     }
-    public void Discard(Card cardData)
-    {
-        var cardObject = GetCardObjectByData(cardData);
-
-        Discard(cardObject);
-    }
     public void Discard(CardObject cardObject)
     {
         RemoveCard(cardObject);
         SendCardToPool(cardObject);
     }
-    public void TurnCardIntoMana(CardObject cardObject)
+    public void TurnCardIntoMana(CardObject cardObject, Action onFinishAnimation)
     {
         RemoveCard(cardObject);
-        cardObject.BecameMana(() => { SendCardToPool(cardObject); });
+        cardObject.BecameMana(() => { SendCardToPool(cardObject); onFinishAnimation(); });
+    }
+    public List<CardObject> GetCards()
+    {
+        return cardList;
     }
     void RemoveCard(CardObject cardObject)
     {
@@ -117,10 +116,8 @@ public class UIPlayerHand : MonoBehaviour
         IsCardAwaitingRelease = false;
         IsDraggingCard = false;
     }
-    public void HoldCard(Card card)
+    public void HoldCard(CardObject cardObject)
     {
-        CardObject cardObject = GetCardObjectByData(card);
-
         currentTargetCard = cardObject;
     }
     public IEnumerator IsResolving()

@@ -66,10 +66,10 @@ public class AIPlayer : Player
 	}
 	void TrySummoning() {
 		var tile = GetRandomTile();
-		Card card = GetRandomCardFromHand();
+		CardObject cardObject = GetRandomCardFromHand();
 
-		if (tile != null && CanSummonHero(card, tile))
-			TrySummonHero(card, tile);
+		if (tile != null && CanSummonHero(cardObject.Data, tile))
+			TrySummonHero(cardObject, tile);
 	}
 	SpawnArea GetRandomTile()
     {
@@ -147,11 +147,11 @@ public class AIPlayer : Player
 
 		Hand.CancelHandToCardInteraction();
 	}
-	Card GetRandomCardFromHand()
+	CardObject GetRandomCardFromHand()
 	{
 		var handCards = Hand.GetCards();
 
-		return handCards[UnityEngine.Random.Range(0, handCards.Length - 1)];
+		return handCards[UnityEngine.Random.Range(0, handCards.Count - 1)];
 	}
 	[Button]
 	void Action()

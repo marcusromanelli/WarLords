@@ -154,10 +154,12 @@ public class Player : MonoBehaviour
 	}
 	protected void TrySummonHero(CardObject cardObject)
 	{
-		TrySummonHero(cardObject.Data, null);
+		TrySummonHero(cardObject, null);
 	}
-	protected void TrySummonHero(Card cardData, SpawnArea spawnArea)
+	protected void TrySummonHero(CardObject cardObject, SpawnArea spawnArea)
 	{
+		var cardData = cardObject.Data;
+
 		if (!CanSummonHero(cardData, spawnArea))
 		{
 			Debug.Log("You cannot summon this hero right now.");
@@ -166,11 +168,9 @@ public class Player : MonoBehaviour
 
 		ManaPool.SpendMana(cardData.CalculateSummonCost());
 
-		Hand.DiscardCard(cardData);
+		Hand.DiscardCard(cardObject);
 
 		gameController.Summon(this, cardData, spawnArea);
-
-		Debug.Log("Summoned!");
 	}
 	#endregion SUMMON_HERO
 
@@ -263,8 +263,9 @@ public class Player : MonoBehaviour
     {
 		var currentCard = Hand.GetHoldingCard();
 		var currentCardData = currentCard.Data;
-		Hand.TurnCardIntoMana(currentCard);
-		Graveyard.AddCard(currentCardData);
+		Hand.TurnCardIntoMana(currentCard, () => {
+			Graveyard.AddCard(currentCardData);
+		});
 
 		ManaPool.IncreaseMaxMana();
 
