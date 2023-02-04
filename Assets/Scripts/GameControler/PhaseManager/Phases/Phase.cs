@@ -8,10 +8,12 @@ public abstract class Phase : ScriptableObject, IPhase
     [HideInInspector] protected bool HasRan;
     [HideInInspector] protected bool isResolving;
     [HideInInspector] protected PhaseManager phaseManager;
+    [HideInInspector] protected Battlefield battlefield;
 
-    public virtual void Setup(PhaseManager phaseManager)
+    public virtual void Setup(PhaseManager phaseManager, Battlefield battlefield)
     {
         this.phaseManager = phaseManager;
+        this.battlefield = battlefield;
     }
 
     public virtual IEnumerator IsResolving()

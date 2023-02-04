@@ -3,11 +3,8 @@ using UnityEngine.SceneManagement;
 using NaughtyAttributes;
 
 
-public class GameController : Singleton<GameController>
+public class GameController : MonoBehaviour
 {
-	public static Player LocalPlayer => Instance.localPlayer;
-
-
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
 	[BoxGroup("Components"), SerializeField] InputController inputController;
 	[BoxGroup("Components"), SerializeField] PhaseManager phaseManager;
@@ -28,9 +25,9 @@ public class GameController : Singleton<GameController>
         //if (Macros == null)
         //			Macros = new List<MacroComponent>();
 
-        phaseManager.Setup(localPlayer, remotePlayer);
+        phaseManager.Setup(localPlayer, remotePlayer, battlefield);
 
-        battlefield.PreSetup(inputController, this, CanSummonHero);
+        battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonHero);
 
 		localPlayer.PreSetup(battlefield, this, inputController);
 
@@ -54,7 +51,7 @@ public class GameController : Singleton<GameController>
 	}
 	bool CanSummonHero(Card card)
 	{
-		return LocalPlayer.CanPlayerSummonHero(card);
+		return localPlayer.CanPlayerSummonHero(card);
 	}
 	#endregion BATTLEFIELD_INTERFACE
 
@@ -197,7 +194,7 @@ public class GameController : Singleton<GameController>
 
 	string GetPlayersConditionsPrint()
 	{
-		return GetPlayerConditionPrint(LocalPlayer) + GetPlayerConditionPrint(remotePlayer);
+		return GetPlayerConditionPrint(localPlayer) + GetPlayerConditionPrint(remotePlayer);
 	}
 
 	int GetPlayerConditionsNumber(Player player)
@@ -207,7 +204,7 @@ public class GameController : Singleton<GameController>
 
 	int GetPlayersConditionsNumber()
 	{
-		return GetPlayerConditionsNumber(LocalPlayer) + GetPlayerConditionsNumber(remotePlayer);
+		return GetPlayerConditionsNumber(localPlayer) + GetPlayerConditionsNumber(remotePlayer);
 	}
 
 	void OnGUI()

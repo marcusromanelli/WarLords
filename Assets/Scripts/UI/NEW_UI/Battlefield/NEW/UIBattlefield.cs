@@ -12,9 +12,11 @@ public class UIBattlefield : MonoBehaviour
 
 	private InputController inputController;
 	private HandleCanSummonHero canSummonHero;
+	private Player localPlayer;
 
-	public void Setup(InputController InputController, HandleCanSummonHero CanSummonHero)
+	public void Setup(Player LocalPlayer, InputController InputController, HandleCanSummonHero CanSummonHero)
     {
+		localPlayer = LocalPlayer;
 		inputController = InputController;
 		canSummonHero = CanSummonHero;
 
@@ -49,6 +51,7 @@ public class UIBattlefield : MonoBehaviour
 				battlefieldTiles[x, y] = GenerateTile(prefab, tilePosition, IsLocalSpawnRow(y));
 
 				var tile = battlefieldTiles[x, y];
+				tile.SetPosition(x, y);
 
 				inputController.RegisterTargetCallback(MouseEventType.StartHover, tile.gameObject, SetSelectedTile);
 				inputController.RegisterTargetCallback(MouseEventType.EndHover, tile.gameObject, SetUnselectedTile);
@@ -71,7 +74,7 @@ public class UIBattlefield : MonoBehaviour
 	#region SUMMON_HELPER
 	public bool CanPlayerSummonOnTile(Player player, SpawnArea spawnArea)
     {
-		var isLocalPlayer = player == GameController.LocalPlayer;
+		var isLocalPlayer = player == localPlayer;
 		var gridPosition = UnityToGrid(spawnArea.transform.position);
 
 		if (spawnArea == null)
@@ -91,7 +94,7 @@ public class UIBattlefield : MonoBehaviour
 	#region FIELD_INTERACTION
 	public List<SpawnArea> GetEmptyFields(Player player)
 	{
-		var isRemote = player != GameController.LocalPlayer;
+		var isRemote = player != localPlayer;
 		List<SpawnArea> result = new List<SpawnArea>();
 
 		foreach (var tile in battlefieldTiles)
@@ -143,6 +146,14 @@ public class UIBattlefield : MonoBehaviour
 	{
 		return (rowNumber >= battlefieldData.rowNumber - battlefieldData.spawnAreaSize);
 	}
+	bool IsLocalEdge(int rowNumber)
+	{
+		return rowNumber < GetLocalPlayerEdge();
+	}
+	bool IsRemoteEdge(int rowNumber)
+	{
+		return rowNumber > GetRemotePlayerEdge();
+	}
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
 		if(cardObject == null || !canSummonHero(cardObject.Data))
@@ -156,6 +167,18 @@ public class UIBattlefield : MonoBehaviour
 	#endregion FIELD_INTERACTION
 
 	#region FIELD_HELPER
+	public bool IsOnEnemyEdge(Player player, SpawnArea spawnArea)
+    {
+		var isLocalPlayer = player == localPlayer;
+
+		if (isLocalPlayer && IsRemoteEdge((int)spawnArea.GridPosition.y))
+			return true;
+
+		if (!isLocalPlayer && IsLocalEdge((int)spawnArea.GridPosition.y))
+			return true;
+
+		return false;
+	}
 	public SpawnArea GetTileByPosition(Vector3 unityPosition)
 	{
 		var position = UnityToGrid(unityPosition);

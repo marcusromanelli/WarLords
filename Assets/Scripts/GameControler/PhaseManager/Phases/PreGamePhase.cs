@@ -7,9 +7,9 @@ public class PreGamePhase : Phase
 {
 	[HideInInspector] bool didRun = false;
 
-	public override void Setup(PhaseManager phaseManager)
+	public override void Setup(PhaseManager phaseManager, Battlefield battlefield)
 	{
-		base.Setup(phaseManager);
+		base.Setup(phaseManager, battlefield);
 
 		didRun = false;
 	}

@@ -11,16 +11,20 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 {
 	[SerializeField] UIBattlefield uiBattlefield;
 
-	Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
-	GameController gameController;
+	private Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
+	private GameController gameController;
+	private Player localPlayer, remotePlayer;
 
-	public void PreSetup(InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
+	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
 	{
 		gameController = GameController;
 
-		GameController.LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+		localPlayer = LocalPlayer;
+		remotePlayer = RemotePlayer;
 
-		uiBattlefield.Setup(InputController, CanSummonHero);
+		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;		
+
+		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonHero);
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE
@@ -70,14 +74,30 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	Vector2 CalculateHeroEndPosition(Player currentPlayer, HeroObject hero)
 	{
 		Vector2 gridPos = hero.GridPosition;
-		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+		var currentField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
+		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
+		{
+			hero.SetPlayerTarget(currentPlayer == localPlayer ? remotePlayer : localPlayer);
+			return hero.GridPosition;
+		}
+
+		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+		var targetField = GetFields()[(int)gridPos.x, (int)gridPos.y];
+
+		if (targetField.Hero != null)
+		{
+			hero.SetHeroTarget(targetField.Hero);
+			return hero.GridPosition;
+		}
+
+		hero.ResetTargets();
 
 		return gridPos;
 	}
 	int GetHeroMovementDirection(Player player)
 	{
-		return player == GameController.LocalPlayer ? 1 : -1;
+		return player == localPlayer ? 1 : -1;
 	}
 	public SpawnArea GetHeroTile(Player player, HeroObject hero)
 	{
@@ -149,7 +169,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	void ReorderHeroList(Player player)
 	{
-		var targetEdge = player == GameController.LocalPlayer ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
+		var targetEdge = player == localPlayer ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
 
 		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - uiBattlefield.UnityToGrid(hero.transform.position).y));
 	}

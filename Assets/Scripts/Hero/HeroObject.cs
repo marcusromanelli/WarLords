@@ -16,6 +16,8 @@ public class HeroObject : MonoBehaviour, IPoolable
 	private Token tokenObject;
 	private bool isWalking;
 	private Vector3 targetPosition;
+	private HeroObject heroTarget;
+	private Player playerTarget;
 
 	/*public bool doMoveForward;
 	public bool activateSkill1;
@@ -89,6 +91,21 @@ public class HeroObject : MonoBehaviour, IPoolable
     {
 		this.position = position;
     }
+	public void SetHeroTarget(HeroObject hero)
+	{
+		playerTarget = null;
+		heroTarget = hero;
+	}
+	public void SetPlayerTarget(Player player)
+	{
+		heroTarget = null;
+		playerTarget = player;
+	}
+	public void ResetTargets()
+	{
+		playerTarget = null;
+		heroTarget = null;
+	}
 	void Update() {
 		DoMovement();
 	}

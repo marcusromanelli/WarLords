@@ -10,6 +10,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
     [BoxGroup("Components"), SerializeField] PhaseTitle phaseTitle;
     [BoxGroup("Components"), SerializeField, Expandable] Phase[] phaseCycle;
 
+	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Battlefield battlefield;
 	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player CurrentPlayer;
 	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player EnemyPlayer;
 
@@ -20,10 +21,11 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 
 
 	#region GAMECONTROLLER_INTERFACE
-	public void Setup(Player LocalPlayer, Player RemotePlayer)
+	public void Setup(Player LocalPlayer, Player RemotePlayer, Battlefield Battlefield)
     {
 		localPlayer = LocalPlayer;
 		remotePlayer = RemotePlayer;
+		battlefield = Battlefield;
 
 		InitializePhases();
 	}
@@ -95,7 +97,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 	void InitializePhases()
     {
 		foreach (var phase in phaseCycle)
-			phase.Setup(this);
+			phase.Setup(this, battlefield);
     }
 	void TogglePlayer(Player player, bool value)
 	{

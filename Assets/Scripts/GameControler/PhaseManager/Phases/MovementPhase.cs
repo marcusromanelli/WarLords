@@ -12,7 +12,6 @@ public class MovementPhase : Phase
 
     public override IEnumerator Resolve(Player currentPlayer, Player enemyPlayer)
 	{
-		//yield return battlefield.MovementPhase();
-		yield break;
+		yield return battlefield.MovementPhase(currentPlayer);
 	}
 }

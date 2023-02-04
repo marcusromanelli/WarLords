@@ -13,9 +13,9 @@ public class ManaPool
 	public int MaxMana => maxMana;
 	public int CurrentMana => currentMana;
 
-	public void Setup(HandleCanSummonHero CanSummonHero)
+	public void Setup(Player LocalPlayer, HandleCanSummonHero CanSummonHero)
 	{
-		GameController.LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+		LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
 
 		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana, CanSummonHero);
     }

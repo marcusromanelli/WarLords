@@ -12,8 +12,10 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	[SerializeField, ReadOnly] HeroObject hero = null;
 
 	public HeroObject Hero => hero;
+	public Vector2 GridPosition => gridPosition;
 
-	bool IsSelectingSpawnArea;
+	private Vector2 gridPosition;
+	private bool isSelectingSpawnArea;
 	Color lastUsedColor;
 
 	/*public bool IsSpawnArea => isSpawnArea;
@@ -22,15 +24,20 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
     {
 		isSpawnArea = value;
 	}*/
+
+	public void SetPosition(int x, int y)
+    {
+		gridPosition = new Vector2(x, y);
+    }
 	public void SetSelectingSpawnArea()
     {
-		IsSelectingSpawnArea = true;
+		isSelectingSpawnArea = true;
 
 		UpdateColor();
 	}
 	public void StopSelectingSpawnArea()
 	{
-		IsSelectingSpawnArea = false;
+		isSelectingSpawnArea = false;
 
 		UpdateColor();
 	}
@@ -40,7 +47,7 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	}
 	void UpdateColor(bool isSelected = false)
 	{
-		if (!IsSelectingSpawnArea)
+		if (!isSelectingSpawnArea)
 		{
 			SetColor(defaultColor);
 			return;
