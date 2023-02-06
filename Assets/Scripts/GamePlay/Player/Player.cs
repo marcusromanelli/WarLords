@@ -1,4 +1,5 @@
 ﻿using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,9 @@ public class Player : MonoBehaviour
 	public event HandleCardAction OnDiscardCard;
 	public event HandleCardAction OnSendManaCreation;
 	public event HandleOnHoldingCard OnHoldCard;
-
+	public event HandleOnCardReleased OnCardReleasedOnGraveyard;
+	public event HandleOnCardReleased OnCardReleasedOnManaPool;
+	public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
 
 
 	//In Game ONLY
@@ -28,6 +31,7 @@ public class Player : MonoBehaviour
 	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand Hand;
 	[BoxGroup(gameLogicTag), SerializeField] protected NextPhaseButton nextPhaseButton;
 	[BoxGroup(gameLogicTag), SerializeField] protected MandatoryConditionManager conditionManager;
+	[BoxGroup(gameLogicTag), SerializeField] protected HabilityManager habilityManager;
 
 	private const string debugTag = "Debug";
 	[BoxGroup(debugTag), SerializeField] protected bool infinityHabilitiesPerTurn;
@@ -44,12 +48,14 @@ public class Player : MonoBehaviour
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
+		habilityManager.Setup(this);
+
 		ManaPool.Setup(this, CanPlayerSummonHero);
 
 		Hand.PreSetup(this, battlefield, inputController, CanSummonHero);
-		Hand.OnCardReleasedOnGraveyard += OnCardReleasedOnGraveyard;
-		Hand.OnCardReleasedOnManaPool += OnCardReleasedOnManaPool;
-		Hand.OnCardReleasedOnSpawnArea += OnCardReleasedOnSpawnArea;
+		Hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
+		Hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
+		Hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
 		Hand.OnHoldCard += OnCardBeingHeld;
 
 		conditionManager.Setup(this);
@@ -67,63 +73,73 @@ public class Player : MonoBehaviour
     {
 		yield return PlayDeck.IsUIUpdating();
 	}
-	public int GetHandCardsNumber()
-    {
-		return Hand.Count;
-    }
-	protected virtual bool CanInteract()
-    {
-		return gameController.CanPlayerInteract(this) && enabled;
-    }
 
     #region INTERACTION
 	void OnCardBeingHeld(Player player, CardObject cardObject)
     {
 		OnHoldCard?.Invoke(this, cardObject);
 	}
-	#endregion INTERACTION
-
-	#region ACTIONS
-
-	#region DRAW_PHASE
-	public void StartDrawPhase()
-    {
-		TryDrawCards();
-	}
-	public IEnumerator IsResolvingDrawPhase()
+	public void DiscardCurrentHoldingCard()
 	{
-		yield return null;
+		var currentCard = Hand.GetHoldingCard();
+		var currentCardData = currentCard.Data;
+		Hand.DiscardCard(currentCard);
+		Graveyard.AddCard(currentCardData);
+
+		OnDiscardCard?.Invoke(1);
 	}
-	#endregion DRAW_PHASE
+	public bool HasManaSpace()
+    {
+		return ManaPool.HasManaSpace();
+    }
+	public void TurnHoldinCardIntoMana()
+    {
+		var currentCard = Hand.GetHoldingCard();
+		var currentCardData = currentCard.Data;
+		Hand.TurnCardIntoMana(currentCard, () => {
+			Graveyard.AddCard(currentCardData);
+		});
+
+		ManaPool.IncreaseMaxMana();
+
+		TriggerManaCreation();
+	}
+	public int GetHandCardsNumber()
+	{
+		return Hand.Count;
+	}
+	public virtual bool CanInteract()
+	{
+		return gameController.CanPlayerInteract(this) && enabled;
+	}
+	#endregion INTERACTION
 
 	#region ACTION_PHASE
 	public void StartActionPhase()
 	{
 		ManaPool.RestoreSpentMana();
-		SetUsedHability(false);
+		habilityManager.RestoreUniqueHability();
 		IsReadyToEndActionPhase = false;
 		nextPhaseButton?.Show();
 	}
 	public IEnumerator IsResolvingActionPhase()
-    {
-        while (!IsReadyToEndActionPhase)
-        {
+	{
+		while (!IsReadyToEndActionPhase)
+		{
 			yield return null;
-        }
-    }
+		}
+	}
 	public void OnClickNextPhase()
-    {
+	{
 		if (IsReadyToEndActionPhase)
 			return;
 
 		IsReadyToEndActionPhase = true;
 		nextPhaseButton?.Hide();
 	}
-    #endregion ACTION_PHASE
+	#endregion ACTION_PHASE
 
-    #endregion ACTIONS
-
-    #region SUMMON_HERO
+	#region SUMMON_HERO
 	public CardObject IsHoldingCard()
     {
 		return Hand.GetHoldingCard();
@@ -147,10 +163,6 @@ public class Player : MonoBehaviour
 		var battleFieldCan = playerCanSummonHero && (canSummonOnSelectedTile || canSummonOnPassedSpawnArea);
 
 		return playerCan && battleFieldCan;
-	}
-	void OnCardReleasedOnSpawnArea(CardObject cardObject)
-	{
-		TrySummonHero(cardObject);
 	}
 	protected void TrySummonHero(CardObject cardObject)
 	{
@@ -218,127 +230,10 @@ public class Player : MonoBehaviour
 	}
 	#endregion CARD_DRAW
 
-	#region HABILITIES
-
-	void SetUsedHability(bool value)
-    {
-		HasUsedHability = value;
-    }
-	bool CanUseHability()
+	#region MANDATORY_CONDITIONS
+	public void AddCondition(MandatoryConditionType Type, int targetNumber = -1)
 	{
-		return (infinityHabilitiesPerTurn || !HasUsedHability) && IsOnActionPhase;
-	}
-
-	#region CARD_TO_MANA_HABILITY
-
-	bool CanGenerateMana()
-	{
-		var hasHabilityOrCondition = CanUseHability() || HasCondition(MandatoryConditionType.SendCardToManaPool);
-		var canHeUse = CanInteract() && ManaPool.HasManaSpace() && hasHabilityOrCondition;
-
-		return infinityHabilitiesPerTurn || canHeUse;
-	}
-	protected void OnCardReleasedOnManaPool(CardObject card)
-	{
-		UseManaHability();
-	}
-	protected void UseManaHability()
-    {
-		if (!CanGenerateMana())
-		{
-			Debug.Log("You cannot create mana right now.");
-			return;
-		}
-
-		CreateMana();
-	}
-	void CreateMana()
-    {
-		if(!HasCondition(MandatoryConditionType.SendCardToManaPool))
-			SetUsedHability(true);
-
-		GenerateManaFromCurrentHoldingCard();
-	}
-	void GenerateManaFromCurrentHoldingCard()
-    {
-		var currentCard = Hand.GetHoldingCard();
-		var currentCardData = currentCard.Data;
-		Hand.TurnCardIntoMana(currentCard, () => {
-			Graveyard.AddCard(currentCardData);
-		});
-
-		ManaPool.IncreaseMaxMana();
-
-		TriggerManaCreation();
-	}
-	protected void TriggerManaCreation()	
-    {
-		OnSendManaCreation?.Invoke(1);
-	}
-
-	#endregion CARD_TO_MANA_HABILITY
-
-	#region 1_CARD_TO_TWO_HABILITY
-	public bool CanDiscardCard()
-	{
-		var hasHability = CanUseHability();
-		var hasCondition = HasCondition(MandatoryConditionType.DiscartCard);
-
-		return hasHability || hasCondition;
-	}
-	void OnCardReleasedOnGraveyard(CardObject card)
-	{
-		CardOnGraveyardLogic();
-	}
-	void CardOnGraveyardLogic()
-    {
-        if (!IsReadyToEndActionPhase) {
-			//If is on action phase
-
-			UseDiscardOneToDrawTwoHability();
-			return;
-		}
-
-		if (CanDiscardCard())
-		{
-			DiscardCurrentHoldingCard();
-			return;
-		}
-
-		Debug.Log("You cannot discard a card right now.");
-	}
-	void UseDiscardOneToDrawTwoHability()
-    {
-		if (!CanUseHability())
-		{
-			Debug.Log("You cannot use this hability right now.");
-			return;
-		}
-
-		SetUsedHability(true);
-
-		DiscardCurrentHoldingCard();
-
-		TryDrawCards(2);
-	}
-	public void DiscardCurrentHoldingCard()
-    {
-		var currentCard = Hand.GetHoldingCard();
-		var currentCardData = currentCard.Data;
-		Hand.DiscardCard(currentCard);
-		Graveyard.AddCard(currentCardData);
-
-		OnDiscardCard?.Invoke(1);
-	}
-
-    #endregion 1_CARD_TO_TWO_HABILITY
-
-    #endregion	HABILITIES
-
-    #region MANDATORY_CONDITIONS
-    public void AddCondition(MandatoryConditionType Type, int number = -1)
-	{
-		conditionManager.AddCondition(Type, number);
+		conditionManager.AddCondition(Type, targetNumber);
 	}
 	public List<MandatoryCondition> GetConditions()
 	{
@@ -348,9 +243,9 @@ public class Player : MonoBehaviour
 	{
 		return conditionManager.HasAny();
 	}
-	public bool HasCondition(MandatoryConditionType condition)
+	public bool HasCondition(MandatoryConditionType condition, int targetNumber = -1)
 	{
-		return conditionManager.Has(condition);
+		return conditionManager.Has(condition, targetNumber);
 	}
 	public void RemoveCurrentCondition()
 	{
@@ -367,8 +262,22 @@ public class Player : MonoBehaviour
 	#endregion MANDATORY_CONDITIONS
 
 
-
-
+	protected void TriggerManaCreation()
+	{
+		OnSendManaCreation?.Invoke(1);
+	}
+	void onCardReleasedOnGraveyard(CardObject cardObject)
+	{
+		OnCardReleasedOnGraveyard?.Invoke(cardObject);
+	}
+	void onCardReleasedOnSpawnArea(CardObject cardObject)
+	{
+		TrySummonHero(cardObject);
+	}
+	void onCardReleasedOnManaPool(CardObject cardObject)
+	{
+		OnCardReleasedOnManaPool?.Invoke(cardObject);
+	}
 	string GetFormatedName()
 	{
 		return "Player " + (name);
@@ -401,25 +310,6 @@ public void killCard(CardObject cardObject)
 {
 	//battlefield.Kill(cardObject);
 	//Graveyard.AddCard(cardObject.GetCardData());
-}
-
-public int getNumberOfHeroes()
-{
-	return 0;
-	//return battlefield.GetHeroes(this).Count;
-}
-
-public string getName()
-{
-	return civilization.ToString();
-}
-
-
-public void Summon(CardObject cardObject)
-{
-	//Hand.DiscardCard(cardObject.GetCardData());
-
-	//Debug.Log(GetFormatedName() + " is summoning " + cardObject.GetCardData().name);
 }
 */
 }

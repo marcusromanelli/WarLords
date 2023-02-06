@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5915370931475101019}
   - component: {fileID: 6020372690311758935}
+  - component: {fileID: 3131217483398067460}
   - component: {fileID: 5915948120655185343}
   m_Layer: 0
   m_Name: LocalPlayer
@@ -50,8 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97ba632cd5a1b948a5f31a04a94e6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  civilization: 0
-  Battlefield: {fileID: 0}
+  deckStartCards: []
   PlayDeck:
     uiCardDeck: {fileID: 510292400452911524}
     NumberOfShuffles: 1
@@ -68,7 +68,27 @@ MonoBehaviour:
     Cards: []
   nextPhaseButton: {fileID: 5915948121182391627}
   conditionManager: {fileID: 5915948120655185343}
+  habilityManager: {fileID: 3131217483398067460}
   infinityHabilitiesPerTurn: 0
+--- !u!114 &3131217483398067460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5916083913682707419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18a9236bf662f148bae36d0f035c011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mandatoryConditionManager: {fileID: 5915948120655185343}
+  hasInfinityHabilitiesPerTurn: 0
+  allowedHabilities:
+  - {fileID: 11400000, guid: b684d200a65ea3a4882492c74858f815, type: 2}
+  - {fileID: 11400000, guid: 5f8cdf018ad0ac24ba6461be9b66702d, type: 2}
+  - {fileID: 11400000, guid: 6e01ab6e8e7b5e14681a1e59eaac4553, type: 2}
+  - {fileID: 11400000, guid: c70ccd2a681dcad49829a9903852e3bf, type: 2}
 --- !u!114 &5915948120655185343
 MonoBehaviour:
   m_ObjectHideFlags: 0

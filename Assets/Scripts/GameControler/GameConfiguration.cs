@@ -21,6 +21,7 @@ public class GameConfiguration : MonoBehaviour {
 	//Components
 	AudioSource audioSource;
 
+	public static int numberOfCardsToDrawEveryTurn = 1;
 	public static int numberOfInitialDrawnCards = 8;
 	public static int numberOfInitialMana = 3;
 	public static int maxNumberOfCardsInHand = 8;

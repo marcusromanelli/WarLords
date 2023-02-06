@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8912719144120805545}
   - component: {fileID: 8192998750778342233}
+  - component: {fileID: 3104873644544912153}
   - component: {fileID: 8916673347036682317}
   m_Layer: 0
   m_Name: RemotePlayer
@@ -49,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966215ff92d38f049800ae92579d2564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  civilization: 0
+  deckStartCards: []
   PlayDeck:
     uiCardDeck: {fileID: 3365073403211521110}
     NumberOfShuffles: 1
@@ -64,10 +65,34 @@ MonoBehaviour:
   Hand:
     uiPlayerHand: {fileID: 2105107900512989623}
     Cards: []
+  nextPhaseButton: {fileID: 0}
   conditionManager: {fileID: 8916673347036682317}
+  habilityManager: {fileID: 3104873644544912153}
   infinityHabilitiesPerTurn: 0
+  aiHabilityManager: {fileID: 3104873644544912153}
+  uiBattlefield: {fileID: 0}
+  phaseManager: {fileID: 0}
   awaitBetweenConditionSolving: 1
   isActive: 1
+--- !u!114 &3104873644544912153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8916545259453791785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0b6ed2775fd6742a4e175be6f0b6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mandatoryConditionManager: {fileID: 8916673347036682317}
+  hasInfinityHabilitiesPerTurn: 0
+  allowedHabilities:
+  - {fileID: 11400000, guid: b684d200a65ea3a4882492c74858f815, type: 2}
+  - {fileID: 11400000, guid: 5f8cdf018ad0ac24ba6461be9b66702d, type: 2}
+  - {fileID: 11400000, guid: 6e01ab6e8e7b5e14681a1e59eaac4553, type: 2}
+  - {fileID: 11400000, guid: c70ccd2a681dcad49829a9903852e3bf, type: 2}
 --- !u!114 &8916673347036682317
 MonoBehaviour:
   m_ObjectHideFlags: 0

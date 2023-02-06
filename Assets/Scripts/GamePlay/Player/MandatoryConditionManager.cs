@@ -20,9 +20,9 @@ public class MandatoryConditionManager : MonoBehaviour
 	{
 		return conditions.Count > 0;
 	}
-	public bool Has(MandatoryConditionType condition)
+	public bool Has(MandatoryConditionType condition, int targetNumber = -1)
 	{
-		return CurrentType == condition;
+		return HasAny() && CurrentType == condition && Current.targetQuantity >= targetNumber;
 	}
 	public void Remove(MandatoryConditionType conditionType)
 	{

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class AIPlayer : Player
 {
+	[BoxGroup("AI Behavior"), SerializeField] protected AIHabilityManager aiHabilityManager;
 	[BoxGroup("AI Behavior"), SerializeField] protected UIBattlefield uiBattlefield;
 	[BoxGroup("AI Behavior"), SerializeField] protected PhaseManager phaseManager;
 	[BoxGroup("AI Behavior"), SerializeField] protected float awaitBetweenConditionSolving = 1f;
@@ -19,7 +20,7 @@ public class AIPlayer : Player
 
 		phaseManager.OnPhaseChange += HandlePhaseChange;
 	}
-	protected override bool CanInteract()
+	public override bool CanInteract()
 	{
 		return isActive && base.CanInteract();
 	}
@@ -131,19 +132,19 @@ public class AIPlayer : Player
 	}
 	void DiscardRandomCard()
 	{
-		ActionOnRandomCard(() => { DiscardCurrentHoldingCard(); });
+		ActionOnRandomCard(card => { DiscardCurrentHoldingCard(); });
 	}
 	void GenerateManaFromRandomCard()
 	{
-		ActionOnRandomCard(() => { UseManaHability(); });
+		ActionOnRandomCard(card => { aiHabilityManager.UseManaHability(card); });
 	}
-	void ActionOnRandomCard(Action Action)
+	void ActionOnRandomCard(Action<CardObject> Action)
 	{
 		var currentCard = GetRandomCardFromHand();
 
 		Hand.HoldCard(currentCard);
 
-		Action();
+		Action(currentCard);
 
 		Hand.CancelHandToCardInteraction();
 	}

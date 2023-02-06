@@ -8,7 +8,7 @@ public class DrawPhase : Phase
     {
         phaseManager.EnablePlayer(currentPlayer);
 
-        currentPlayer.StartDrawPhase();
+        currentPlayer.TryDrawCards(GameConfiguration.numberOfCardsToDrawEveryTurn);
 
         yield break;
     }
@@ -16,6 +16,6 @@ public class DrawPhase : Phase
     public override IEnumerator Resolve(Player currentPlayer, Player enemyPlayer)
     {
 
-		yield return currentPlayer.IsResolvingDrawPhase();
+		yield return null;
 	}
 }
