@@ -18,8 +18,13 @@ public class HabilityManager : MonoBehaviour
     {
 		this.player = player;
 
+		this.player.OnStartActionPhase += OnStartActionPhase;
 		this.player.OnCardReleasedOnGraveyard += OnReleasedOnGraveyard;
 		this.player.OnCardReleasedOnManaPool += OnReleasedOnManaPool;
+	}
+	protected void OnStartActionPhase()
+    {
+		RestoreUniqueHability();
 	}
 	protected void OnReleasedOnManaPool(CardObject cardObject)
     {
@@ -29,11 +34,11 @@ public class HabilityManager : MonoBehaviour
     {
 		UseGraveyardHability();
 	}
-	public void RestoreUniqueHability()
+	void RestoreUniqueHability()
 	{
 		hasUniqueHability = true;
 	}
-	public bool CanUseAnyHability()
+	bool CanUseAnyHability()
 	{
 		return HasCondition() || (player.IsOnActionPhase && hasUniqueHability);
 	}

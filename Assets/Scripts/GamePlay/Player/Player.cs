@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 	public event HandleOnCardReleased OnCardReleasedOnGraveyard;
 	public event HandleOnCardReleased OnCardReleasedOnManaPool;
 	public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
+	public event Action OnStartActionPhase;
 
 
 	//In Game ONLY
@@ -117,8 +118,8 @@ public class Player : MonoBehaviour
 	#region ACTION_PHASE
 	public void StartActionPhase()
 	{
-		ManaPool.RestoreSpentMana();
-		habilityManager.RestoreUniqueHability();
+		OnStartActionPhase?.Invoke();
+		ManaPool.RestoreSpentMana();		
 		IsReadyToEndActionPhase = false;
 		nextPhaseButton?.Show();
 	}
