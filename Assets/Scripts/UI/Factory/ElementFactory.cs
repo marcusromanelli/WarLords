@@ -6,15 +6,23 @@ public class ElementFactory : Singleton<ElementFactory>
     {
         return (new GameObject(typeof(T).Name, typeof(T))).GetComponent<T>();
     }
-    public static GameObject CreateGameObject(GameObject gameObject, Transform transform)
+    public static Object CreateObject(Object gameObject, Transform transform)
     {
         return Instantiate(gameObject, transform);
     }
-    public static T CreateGameObject<T>(GameObject gameObject, Transform transform) where T : Component
+    public static T CreateObject<T>(T gameObject) where T : Object
+    {
+        return Instantiate(gameObject);
+    }
+    public static T CreateObject<T>(GameObject gameObject) where T : Component
+    {
+        return Instantiate(gameObject).GetComponent<T>();
+    }
+    public static T CreateObject<T>(GameObject gameObject, Transform transform) where T : Component
     {
         return Instantiate(gameObject, transform).GetComponent<T>();
     }
-    public static T CreateGameObject<T>(Component gameObject, Transform transform) where T : Component
+    public static T CreateObject<T>(Component gameObject, Transform transform) where T : Component
     {
         return Instantiate(gameObject, transform).GetComponent<T>();
     }

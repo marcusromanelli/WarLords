@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Linq;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class HeroObject : MonoBehaviour, IPoolable
+public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 {
 	public string Id => cardData.Data.Id;
 
+	[SerializeField] Life Life;
 	[SerializeField] ParticleSystem summonParticleSystem;
 	[SerializeField] float walkSpeed = 0.5f;
 
@@ -16,8 +16,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 	private Token tokenObject;
 	private bool isWalking;
 	private Vector3 targetPosition;
-	private HeroObject heroTarget;
-	private Player playerTarget;
+	private IAttackable target;
 
 	/*public bool doMoveForward;
 	public bool activateSkill1;
@@ -55,12 +54,12 @@ public class HeroObject : MonoBehaviour, IPoolable
 
 
 	public void Setup(Card card)
-	{
-		cardData = card;
+    {
+        cardData = ElementFactory.CreateObject(card);
 
-		if (tokenObject == null)
+        if (tokenObject == null)
 		{			
-			var token = ElementFactory.CreateGameObject<Token>(card.Civilization.Token, transform);
+			var token = ElementFactory.CreateObject<Token>(card.Civilization.Token, transform);
 
 			tokenObject = token;
 		}
@@ -78,7 +77,7 @@ public class HeroObject : MonoBehaviour, IPoolable
 		isWalking = true;
 		targetPosition = position;
 	}
-	public int GetWalkSpeed()
+	public uint GetWalkSpeed()
 	{
 		return cardData.CalculateWalkSpeed();
 	}
@@ -91,20 +90,32 @@ public class HeroObject : MonoBehaviour, IPoolable
     {
 		this.position = position;
     }
-	public void SetHeroTarget(HeroObject hero)
+	public void SetTarget(IAttackable hero)
 	{
-		playerTarget = null;
-		heroTarget = hero;
+		target = hero;
 	}
-	public void SetPlayerTarget(Player player)
+	public bool HasTarget()
 	{
-		heroTarget = null;
-		playerTarget = player;
+		return target != null;
+	}
+	public void Attack()
+	{
+		if (target == null)
+			return;
+
+		target.TakeDamage(cardData.CalculateAttack());
 	}
 	public void ResetTargets()
 	{
-		playerTarget = null;
-		heroTarget = null;
+		target = null;
+	}
+	public void TakeDamage(uint damage)
+	{
+		Life.TakeDamage(damage);
+	}
+	public void Heal(uint health)
+	{
+		Life.Heal(health);
 	}
 	void Update() {
 		DoMovement();

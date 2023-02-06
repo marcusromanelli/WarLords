@@ -19,6 +19,6 @@ public class DiscardCardHability : HabilityBase
 		var player = getPlayer();
 		var habilityManager = getHabilityManager();
 
-		return !habilityManager.HasUniqueHability && player.HasCondition(MandatoryConditionType.DiscartCard);
+		return player.HasCondition(MandatoryConditionType.DiscartCard);
 	}
 }

@@ -60,7 +60,7 @@ public class UIBattlefield : MonoBehaviour
 	}
 	SpawnArea GenerateTile(SpawnArea prefab, Vector3 position, bool isSpawnArea)
 	{
-		var tile = ElementFactory.CreateGameObject<SpawnArea>(prefab, transform);
+		var tile = ElementFactory.CreateObject<SpawnArea>(prefab, transform);
 		tile.transform.position = position;
 
 		return tile;
@@ -167,17 +167,21 @@ public class UIBattlefield : MonoBehaviour
 	#endregion FIELD_INTERACTION
 
 	#region FIELD_HELPER
-	public bool IsOnEnemyEdge(Player player, SpawnArea spawnArea)
-    {
+	public bool IsOnEnemyEdge(Player player, Vector2 position)
+	{
 		var isLocalPlayer = player == localPlayer;
 
-		if (isLocalPlayer && IsRemoteEdge((int)spawnArea.GridPosition.y))
+		if (isLocalPlayer && IsRemoteEdge((int)position.y))
 			return true;
 
-		if (!isLocalPlayer && IsLocalEdge((int)spawnArea.GridPosition.y))
+		if (!isLocalPlayer && IsLocalEdge((int)position.y))
 			return true;
 
 		return false;
+	}
+	public bool IsOnEnemyEdge(Player player, SpawnArea spawnArea)
+    {
+		return IsOnEnemyEdge(player, spawnArea.GridPosition);
 	}
 	public SpawnArea GetTileByPosition(Vector3 unityPosition)
 	{

@@ -6,14 +6,13 @@ public class Life
 {
 	[SerializeField] UILife uiLife;
 
-	private uint startLife;
 	private uint currentLife;
 
 	public uint Current => currentLife;
 
 	public void Setup(uint startLife)
 	{
-		this.startLife = startLife;
+		currentLife = startLife;
 
 		uiLife.Setup(startLife);
 	}
@@ -25,7 +24,7 @@ public class Life
 		uiLife.SetLife(currentLife);
 	}
 
-	public void AddLife(uint value)
+	public void Heal(uint value)
 	{
 		currentLife = (uint)Mathf.Clamp(currentLife + value, 0, currentLife);
 

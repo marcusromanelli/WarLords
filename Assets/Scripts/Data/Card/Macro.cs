@@ -14,9 +14,9 @@ public class Macro : ScriptableObject
 	/// </summary>
 	/// <returns>The name formated.</returns>	
 	/// <param name="level">Level.</param>
-	public string GetName(int level = 1)
+	public string GetName(uint level = 1)
 	{
-		level = Mathf.Clamp(level, 1, level);
+		level = (uint)Mathf.Clamp(level, 1, level);
 
 		CheckParameters();
 
@@ -28,9 +28,9 @@ public class Macro : ScriptableObject
 	/// </summary>
 	/// <returns>The description.</returns>
 	/// <param name="level">Level.</param>
-	public string GetDescription(int level = 1)
+	public string GetDescription(uint level = 1)
 	{
-		level = Mathf.Clamp(level, 1, level);
+		level = (uint)Mathf.Clamp(level, 1, level);
 
 		CheckParameters();
 

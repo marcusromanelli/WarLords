@@ -6,12 +6,12 @@ using UnityEngine;
 public class ManaPool
 {
 	[SerializeField] UIManaPool uiManaPool;
-	[SerializeField, ReadOnly] int maxAllowedMana = 12;
-	[SerializeField, ReadOnly] int currentMana;
-	[SerializeField, ReadOnly] int maxMana;
+	[SerializeField, ReadOnly] uint maxAllowedMana = 12;
+	[SerializeField, ReadOnly] uint currentMana;
+	[SerializeField, ReadOnly] uint maxMana;
 
-	public int MaxMana => maxMana;
-	public int CurrentMana => currentMana;
+	public uint MaxMana => maxMana;
+	public uint CurrentMana => currentMana;
 
 	public void Setup(Player LocalPlayer, HandleCanSummonHero CanSummonHero)
 	{
@@ -19,20 +19,20 @@ public class ManaPool
 
 		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana, CanSummonHero);
     }
-	public void IncreaseMaxMana(int number = 1)
+	public void IncreaseMaxMana(uint number = 1)
     {
 		SetMaxManaValue(maxMana + number);
 		SetCurrentManaValue(currentMana + number);
 
 		uiManaPool.UpdateUI();
 	}
-
-	public void RestoreSpentMana(int number = -1)
+	public void RestoreSpentMana( )
+	{
+		RestoreSpentMana(maxMana);
+	}
+	public void RestoreSpentMana(uint number)
     {
-		var valueToRestore = number == -1 ? maxMana - currentMana : number;
-
-		if (valueToRestore <= 0)
-			return;
+		var valueToRestore = number;
 
 		GameConfiguration.PlaySFX(GameConfiguration.energyToCard);
 
@@ -40,15 +40,12 @@ public class ManaPool
 
 		uiManaPool.UpdateUI();
 	}
-	public void SpendMana(int number)
+	public void SpendMana(uint number)
 	{
 		if (currentMana < number)
 		{
 			return;
 		}
-
-		if (number <= 0)
-			return;
 
 		GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
 
@@ -60,29 +57,29 @@ public class ManaPool
 	{
 		return maxMana < maxAllowedMana;
 	}
-	public bool HasAvailableMana(int value)
+	public bool HasAvailableMana(uint value)
 	{
 		return value <= currentMana;
 	}
-	public int GetCurrentMana()
+	public uint GetCurrentMana()
 	{
 		return CurrentMana;
 	}
-	public int GetMaxMana()
+	public uint GetMaxMana()
 	{
 		return MaxMana;
 	}
-	public int GetMaxAllowedMana()
+	public uint GetMaxAllowedMana()
 	{
 		return maxAllowedMana;
 	}
-	void SetMaxManaValue(int newValue)
+	void SetMaxManaValue(uint newValue)
 	{
-		maxMana = Mathf.Clamp(newValue, 0, maxAllowedMana);
+		maxMana = (uint)Mathf.Clamp(newValue, 0, maxAllowedMana);
 	}
-	void SetCurrentManaValue(int newValue)
+	void SetCurrentManaValue(uint newValue)
 	{
-		currentMana = Mathf.Clamp(newValue, 0, maxMana);
+		currentMana = (uint)Mathf.Clamp(newValue, 0, maxMana);
 	}
 
 	#region UI_MANAPOOL_INTERFACE

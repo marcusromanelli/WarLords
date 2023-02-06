@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public struct SkillData
 {
-	public int ManaCost;
+	public uint ManaCost;
 	public Skill Data;
 	public override string ToString()
 	{
@@ -17,7 +17,7 @@ public struct SkillData
 public class Skill : ScriptableObject
 {
 
-	public int Level = 1;
+	public uint Level = 1;
 
 	public Macro Macro;
 

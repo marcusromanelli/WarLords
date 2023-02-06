@@ -6,10 +6,10 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
 	[ReadOnly] public string Id = Guid.NewGuid().ToString();
-    public int ManaCost;
-	public int Attack;
-	public int Defense;
-	public int WalkSpeed = 1;
+    public uint ManaCost;
+	public uint Attack;
+	public uint Defense;
+	public uint WalkSpeed = 1;
 	[ReorderableList] public SkillData[] Skills;
 
 	[Button]
@@ -17,9 +17,9 @@ public class CardData : ScriptableObject
     {
 		Id = Guid.NewGuid().ToString();
 	}
-	public int CalculateSummonCost()
+	public uint CalculateSummonCost()
 	{
-		int cost = 0;
+		uint cost = 0;
 		/*foreach (Skill skill in Skills)
 		{
 			if (skill.isActive)
@@ -28,7 +28,15 @@ public class CardData : ScriptableObject
 
 		return cost;
 	}
-	public int CalculateWalkSpeed()
+	public uint CalculateAttack()
+	{
+		return Attack;
+	}
+	public uint CalculateDefense()
+	{
+		return Defense;
+	}
+	public uint CalculateWalkSpeed()
 	{
 		return WalkSpeed;
 	}

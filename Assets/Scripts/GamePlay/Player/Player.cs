@@ -9,7 +9,7 @@ public delegate bool HandleIsHoldingCard();
 public delegate void HandleCardAction(int number);
 public delegate void HandleOnPickSpawnArea();
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IAttackable
 {
 	public event HandleCardAction OnDrawCard;
 	public event HandleCardAction OnDiscardCard;
@@ -139,6 +139,14 @@ public class Player : MonoBehaviour
 
 		IsReadyToEndActionPhase = true;
 		nextPhaseButton?.Hide();
+	}
+	public void TakeDamage(uint damage)
+	{
+		Life.TakeDamage(damage);
+	}
+	public void Heal(uint health)
+	{
+		Life.Heal(health);
 	}
 	#endregion ACTION_PHASE
 
@@ -285,5 +293,4 @@ public class Player : MonoBehaviour
 	{
 		return "Player " + (name);
 	}
-	
 }

@@ -22,6 +22,6 @@ public class CardToGraveyardHability : HabilityBase
 		var player = getPlayer();
 		var habilityManager = getHabilityManager();
 
-		return !player.HasCondition(MandatoryConditionType.DiscartCard, NumberOfCardsToDiscard) && habilityManager.HasUniqueHability;
+		return !player.HasCondition(MandatoryConditionType.DiscartCard) && habilityManager.HasUniqueHability;
 	}
 }

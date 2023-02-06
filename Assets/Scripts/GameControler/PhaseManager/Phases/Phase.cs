@@ -5,7 +5,6 @@ public abstract class Phase : ScriptableObject, IPhase
 {
     [SerializeField] PhaseType type;
 
-    [HideInInspector] protected bool HasRan;
     [HideInInspector] protected bool isResolving;
     [HideInInspector] protected PhaseManager phaseManager;
     [HideInInspector] protected Battlefield battlefield;

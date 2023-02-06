@@ -11,13 +11,17 @@ public class Card : ScriptableObject
 	public Sprite FrontCover;
 	[Expandable] public CivilizationData Civilization;
 	[Expandable] public CardData Data;
-	public int ManaCost => Data.ManaCost;
+	public uint ManaCost => Data.ManaCost;
 
-	public int CalculateSummonCost()
+	public uint CalculateAttack()
+	{
+		return Data.CalculateAttack();
+	}
+	public uint CalculateSummonCost()
 	{
 		return ManaCost + Data.CalculateSummonCost();
 	}
-	public int CalculateWalkSpeed()
+	public uint CalculateWalkSpeed()
 	{
 		return Data.CalculateWalkSpeed();
 	}

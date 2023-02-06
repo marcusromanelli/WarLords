@@ -35,9 +35,9 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion UI_BATTLEFIELD_INTERFACE
 
 	#region MOVEMENT_PHASE
-	public IEnumerator MovementPhase(Player player)
+	public IEnumerator MovementPhase(Player currentPlayer)
 	{
-		yield return DoMovement(player);
+		yield return DoMovement(currentPlayer);
 	}
 	IEnumerator DoMovement(Player currentPlayer)
 	{
@@ -76,22 +76,29 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		Vector2 gridPos = hero.GridPosition;
 		var currentField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
+		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+
+		var targetField = GetFields()[(int)gridPos.x, (int)gridPos.y];
+		var targetPlayer = currentPlayer == localPlayer ? remotePlayer : localPlayer;
+
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
 		{
-			hero.SetPlayerTarget(currentPlayer == localPlayer ? remotePlayer : localPlayer);
+			hero.SetTarget(targetPlayer);
 			return hero.GridPosition;
 		}
-
-		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
-		var targetField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
 		if (targetField.Hero != null)
 		{
-			hero.SetHeroTarget(targetField.Hero);
+			hero.SetTarget(targetField.Hero);
 			return hero.GridPosition;
 		}
 
-		hero.ResetTargets();
+		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, targetField))
+		{
+			hero.SetTarget(targetPlayer);
+		}
+		else
+			hero.ResetTargets();
 
 		return gridPos;
 	}
@@ -106,16 +113,24 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion MOVEMENT_PHASE
 
 	#region ATTACK_PHASE
-	public async Task AttackPhase()
+	public IEnumerator AttackPhase(Player currentPlayer)
 	{
-		/*hasFinishedAttack = false;
+		yield return DoAttack(currentPlayer);
+	}
+	IEnumerator DoAttack(Player currentPlayer)
+	{
+ 		if (!heroList.ContainsKey(currentPlayer))
+			yield break;
 
-		//StartCoroutine(DoMovement());
+		List<HeroObject> heroes = heroList[currentPlayer];
 
-		while (!hasFinishedAttack)
+		foreach (HeroObject hero in heroes)
 		{
-			await Task.Delay(25);
-		};*/
+			if(!hero.HasTarget())
+				continue;
+
+			hero.Attack();
+		}
 	}
 	#endregion ATTACK_PHASE
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 
-public delegate int GetMaxAllowedMana();
-public delegate int GetMaxMana();
-public delegate int GetCurrentMana();
+public delegate uint GetMaxAllowedMana();
+public delegate uint GetMaxMana();
+public delegate uint GetCurrentMana();
 
 public class UIManaPool : MonoBehaviour, ICardPlaceable
 {
@@ -68,7 +68,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	Vector3 CalculateOrbPosition(int index)
 	{
 		var maxMana = getMaxAllowedManaCallback();
-		int value = Mathf.Clamp(index, 0, maxMana);
+		int value = Mathf.Clamp(index, 0, (int)maxMana);
 
 		Vector3 pos = transform.position;
 		var isLeftPosition = value < maxMana / 2;
@@ -108,7 +108,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 
 		PreviewMana(manaCost);
 	}
-	void PreviewMana(int number)
+	void PreviewMana(uint number)
 	{
 		for (int i = 0; i < manaOrbs.Count; i++)
 		{
