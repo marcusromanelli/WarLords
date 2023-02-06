@@ -21,11 +21,11 @@ public class Player : MonoBehaviour
 	public event Action OnStartActionPhase;
 
 
-	//In Game ONLY
 	private const string playerPropertiesTag = "Player Properties";
 	[BoxGroup(playerPropertiesTag), SerializeField] Card[] deckStartCards;
 
 	private const string gameLogicTag = "Game Logic";
+	[BoxGroup(gameLogicTag), SerializeField] protected Life Life;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck PlayDeck;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck Graveyard;
 	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
     {
 		this.battlefield = battlefield;
 		this.gameController = gameController;
+
+		Life.Setup(GameConfiguration.startLife);
 
 		habilityManager.Setup(this);
 
@@ -284,33 +286,4 @@ public class Player : MonoBehaviour
 		return "Player " + (name);
 	}
 	
-
-	/*
-
-public void TakeDamage(int value)
-{
-	/*if (value < 0)
-		value = 0;
-
-	life -= value;
-	if (life < 0) life = 0;
-	LifePointsController.SetLife(life);*
-}
-
-public void AddLife(int value)
-{
-	/*if (value < 0)
-		value = 0;
-	life += value;
-
-	GameConfiguration.PlaySFX(GameConfiguration.heal);
-	LifePointsController.SetLife(life);*
-}
-
-public void killCard(CardObject cardObject)
-{
-	//battlefield.Kill(cardObject);
-	//Graveyard.AddCard(cardObject.GetCardData());
-}
-*/
 }

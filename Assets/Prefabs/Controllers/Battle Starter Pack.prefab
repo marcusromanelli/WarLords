@@ -404,6 +404,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d0990810bf26bbf4da045341ed027036, type: 2}
   - {fileID: 11400000, guid: 4d1e5af5de1926148bba9352ffc60f11, type: 2}
   - {fileID: 11400000, guid: 93a1684e327680e4a813d3aa6c492986, type: 2}
+  battlefield: {fileID: 0}
   CurrentPlayer: {fileID: 0}
   EnemyPlayer: {fileID: 0}
 --- !u!1 &3612986160575545613
@@ -1201,6 +1202,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8912719147317742035, guid: 81dab4872332c894b9eb5508878f006f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.00000004371139
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912719147317742035, guid: 81dab4872332c894b9eb5508878f006f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912719147317742035, guid: 81dab4872332c894b9eb5508878f006f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912719147317742035, guid: 81dab4872332c894b9eb5508878f006f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 8916545259453791785, guid: 81dab4872332c894b9eb5508878f006f,
         type: 3}
       propertyPath: m_Name
@@ -1296,6 +1317,26 @@ PrefabInstance:
     - target: {fileID: 5915370931475101019, guid: 4585b61231e510e4d83cb052878d7ea3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915370932387976225, guid: 4585b61231e510e4d83cb052878d7ea3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915370932387976225, guid: 4585b61231e510e4d83cb052878d7ea3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915370932387976225, guid: 4585b61231e510e4d83cb052878d7ea3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915370932387976225, guid: 4585b61231e510e4d83cb052878d7ea3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5916083913682707419, guid: 4585b61231e510e4d83cb052878d7ea3,

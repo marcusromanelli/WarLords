@@ -26,7 +26,7 @@ public class GameConfiguration : MonoBehaviour {
 	public static int numberOfInitialMana = 3;
 	public static int maxNumberOfCardsInHand = 8;
 	public static int maxNumberOfCardsInManaPool = 12;
-	public static int startLife = 15;
+	public static uint startLife = 15;
 
 	//OST
 	public static AudioClip backgroundMusic;

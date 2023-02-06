@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deckStartCards: []
+  Life:
+    uiLife: {fileID: 1566704411265935500}
   PlayDeck:
     uiCardDeck: {fileID: 3365073403211521110}
     NumberOfShuffles: 1
@@ -410,6 +412,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5346465725257872427}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1566704411265935500 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6885013292281027751, guid: 18461e95ffbf9bf468e230905cc6c3bc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5346465725257872427}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e21da557c181b4d964f20fc3a9969c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7704581262850737310
 PrefabInstance:
   m_ObjectHideFlags: 0
