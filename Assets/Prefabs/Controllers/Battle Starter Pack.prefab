@@ -909,6 +909,7 @@ GameObject:
   - component: {fileID: 1965973046812497047}
   - component: {fileID: 6458509789582713896}
   - component: {fileID: 374631605680078248}
+  - component: {fileID: 1127589630970740709}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1019,8 +1020,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 374631605680078248}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1127589630970740709}
+        m_TargetAssemblyTypeName: FastForward, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -1044,6 +1045,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 8257950581326620269}
+--- !u!114 &1127589630970740709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6880733725736315895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3560bd87d648e541bfa6fb76a0a25b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSpeed: 2
 --- !u!1 &8257950581326620269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,6 +1248,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81dab4872332c894b9eb5508878f006f, type: 3}
+--- !u!4 &5920476389304695554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8912719144120805545, guid: 81dab4872332c894b9eb5508878f006f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2997593325939397547}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6353162679450839282 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8192998750778342233, guid: 81dab4872332c894b9eb5508878f006f,
@@ -1246,12 +1266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966215ff92d38f049800ae92579d2564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5920476389304695554 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8912719144120805545, guid: 81dab4872332c894b9eb5508878f006f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2997593325939397547}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5915948120247559153
 PrefabInstance:
   m_ObjectHideFlags: 0

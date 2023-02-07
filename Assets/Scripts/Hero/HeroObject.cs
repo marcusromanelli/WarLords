@@ -7,6 +7,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 
 	[SerializeField] TokenStatus Status;
 	[SerializeField] ParticleSystem summonParticleSystem;
+	[SerializeField] DamageCounter damageCounter;
 	[SerializeField] float walkSpeed = 0.5f;
 
 	public Vector2 GridPosition => position;
@@ -17,40 +18,6 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	private bool isWalking;
 	private Vector3 targetPosition;
 	private IAttackable target;
-
-	/*public bool doMoveForward;
-	public bool activateSkill1;
-	public bool activateSkill2;
-
-	public CardObject CardObject { get; private set; }
-
-	public static HeroObject selectedHero;
-
-	//Battlefield battlefield;
-	GameController gameController;
-	Player Player;
-
-	Transform pivot;
-	Vector2 nextPoint;
-	bool attack;
-	Vector2 targetPoint;
-	bool isAttacking;
-	bool isDying;
-	int diretion;
-	int lastGivenDamage;
-	int walkSpeed = 1;
-	int numberOfAttacks = 1;
-
-	public Vector2 GridPosition
-	{
-		get
-		{
-			return battlefield.UnityToGrid(transform.position);
-		}
-	}
-	*/
-	//TextMesh Life, _Attack;
-
 
 
 	public void Setup(Card card)
@@ -112,6 +79,8 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	public void TakeDamage(uint damage)
 	{
 		Status.TakeDamage(damage);
+
+		damageCounter.Show(damage);
 	}
 	public void Heal(uint health)
 	{

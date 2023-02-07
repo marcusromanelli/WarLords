@@ -1197,6 +1197,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.993
       objectReference: {fileID: 0}
+    - target: {fileID: 1127589630970740709, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: gameSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2482802478275307201, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: m_LocalPosition.y
