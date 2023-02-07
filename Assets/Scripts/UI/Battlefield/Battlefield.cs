@@ -54,7 +54,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	IEnumerator MoveHero(Player currentPlayer, HeroObject hero)
 	{
 		var tile = GetHeroTile(currentPlayer, hero);
-		tile.SetHero(null);
+		tile.RemoteHero();
 		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(currentPlayer, hero));
 		var newPosition = uiBattlefield.GridToUnity(newGridPosition);
 
@@ -104,13 +104,16 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
 		var nextField = GetFields()[(int)gridPos.x, (int)gridPos.y];
+		var targetHero = nextField.Hero;
 
-		if (nextField.Hero != null)
-		{
-			hero.SetTarget(nextField.Hero);
-		}
+		if (targetHero != null && !PlayerHasHero(currentPlayer, targetHero))
+			hero.SetTarget(targetHero);
 		else
 			hero.ResetTargets();
+	}
+	bool PlayerHasHero(Player currentPlayer, HeroObject hero)
+	{
+		return PlayerHasHeroSummoned(currentPlayer, hero.OriginalCardData);
 	}
 	int GetHeroMovementDirection(Player player)
 	{
@@ -233,6 +236,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	void DestroyHero(HeroObject heroObject, Player ownerPlayer)
     {
 		var tile = uiBattlefield.GetHeroTile(ownerPlayer, heroObject);
+		tile.RemoteHero();
 
 		RemoveHero(ownerPlayer, heroObject);
 
