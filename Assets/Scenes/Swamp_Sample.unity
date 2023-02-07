@@ -1041,10 +1041,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 4.795
       objectReference: {fileID: 0}
-    - target: {fileID: 4000014052595708, guid: 4c6cb34e3527ec14f9208abf976980ff, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.988
-      objectReference: {fileID: 0}
     - target: {fileID: 114000012031043494, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: Battlefield
@@ -1284,11 +1280,6 @@ PrefabInstance:
         type: 3}
       propertyPath: _handle2.z
       value: 0.23130214
-      objectReference: {fileID: 0}
-    - target: {fileID: 5920476389091588692, guid: 4c6cb34e3527ec14f9208abf976980ff,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.928
       objectReference: {fileID: 0}
     - target: {fileID: 5920476390469229176, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
