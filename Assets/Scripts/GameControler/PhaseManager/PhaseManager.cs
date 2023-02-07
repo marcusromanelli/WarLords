@@ -68,32 +68,23 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 
 
 
-
-	#region PHASE_LOGIC
-
-
-	bool WatchEndGame()
+	bool HasGameEnded()
 	{
-		return false;
-
-		//TODO ARRRRG
-		/*if (LocalPlayer.GetCurrentLife() <= 0)
+		if (CurrentPlayer.GetLife() <= 0)
 		{
-			PhasesTitle.SetWinner(RemotePlayer);
-			LocalPlayer.enabled = false;
-			RemotePlayer.enabled = false;
+			phaseTitle.SetWinner(EnemyPlayer == localPlayer);
 		}
-		else if (RemotePlayer.GetCurrentLife() <= 0)
+
+		if (EnemyPlayer.GetLife() <= 0)
 		{
-			PhasesTitle.SetWinner(LocalPlayer);
-			LocalPlayer.enabled = false;
-			RemotePlayer.enabled = false;
-		}*/
+			phaseTitle.SetWinner(CurrentPlayer == localPlayer);
+		}
+
+		CurrentPlayer.enabled = false;
+		EnemyPlayer.enabled = false;
+
+		return CurrentPlayer.GetLife() <= 0 || EnemyPlayer.GetLife() <= 0;
 	}
-
-	#endregion PHASE_LOGIC
-
-
 	void InitializePhases()
     {
 		foreach (var phase in phaseCycle)
@@ -119,9 +110,13 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
         {
 			yield return ResolvePhase(CurrentPhase);
 
+			GameHasEnded = HasGameEnded();
+
+			if (GameHasEnded)
+				break;
+
 			yield return FinishCurrentPhase();
 		}
-
 
 		Debug.Log("Game ended");
 	}

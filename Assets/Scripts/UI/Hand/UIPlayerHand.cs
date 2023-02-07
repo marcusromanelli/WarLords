@@ -286,11 +286,11 @@ public class UIPlayerHand : MonoBehaviour
     }
     void StartCardDynamicDrag(CardObject cardObject)
     {
-        currentTargetCard.SetPositionAndCallback(CalculateheldCardPosition);
+        currentTargetCard.SetPositionCallback(CalculateheldCardPosition);
     }
     void StopCardDynamicDrag()
     {
-        currentTargetCard.SetPositionAndCallback(null);
+        currentTargetCard.SetPositionCallback(null);
     }
 
 

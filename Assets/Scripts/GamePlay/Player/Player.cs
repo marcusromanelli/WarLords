@@ -115,6 +115,10 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		return gameController.CanPlayerInteract(this) && enabled;
 	}
+	public void OnHeroDied(Card cardData, SpawnArea tile)
+	{
+		Graveyard.SendCardToDeckFromPosition(cardData, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
+	}
 	#endregion INTERACTION
 
 	#region ACTION_PHASE
@@ -293,4 +297,8 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		return "Player " + (name);
 	}
+    public uint GetLife()
+    {
+		return Life.Current;
+    }
 }

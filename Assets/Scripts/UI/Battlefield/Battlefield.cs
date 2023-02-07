@@ -22,14 +22,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		localPlayer = LocalPlayer;
 		remotePlayer = RemotePlayer;
 
-		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;		
+		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
 
 		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonHero);
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE
 	void OnLocalPlayerHoldingCard(Player player, CardObject cardObject)
-    {
+	{
 		uiBattlefield.OnLocalPlayerHoldCard(player, cardObject);
 	}
 	#endregion UI_BATTLEFIELD_INTERFACE
@@ -41,7 +41,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	IEnumerator DoMovement(Player currentPlayer)
 	{
-		if(!heroList.ContainsKey(currentPlayer))
+		if (!heroList.ContainsKey(currentPlayer))
 			yield break;
 
 		List<HeroObject> heroes = heroList[currentPlayer];
@@ -52,7 +52,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		}
 	}
 	IEnumerator MoveHero(Player currentPlayer, HeroObject hero)
-    {
+	{
 		var tile = GetHeroTile(currentPlayer, hero);
 		tile.SetHero(null);
 		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(currentPlayer, hero));
@@ -123,24 +123,42 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion MOVEMENT_PHASE
 
 	#region ATTACK_PHASE
-	public IEnumerator AttackPhase(Player currentPlayer)
+	public IEnumerator AttackPhase(Player currentPlayer, Player enemyPlayer)
 	{
-		yield return DoAttack(currentPlayer);
+		yield return DoAttack(currentPlayer, enemyPlayer);
 	}
-	IEnumerator DoAttack(Player currentPlayer)
+	IEnumerator DoAttack(Player currentPlayer, Player enemyPlayer)
 	{
- 		if (!heroList.ContainsKey(currentPlayer))
+		if (!heroList.ContainsKey(currentPlayer))
 			yield break;
 
 		List<HeroObject> heroes = heroList[currentPlayer];
 
 		foreach (HeroObject hero in heroes)
-		{
-			if(!hero.HasTarget())
-				continue;
+			HeroAttack(hero, enemyPlayer);
+	}
+	void HeroAttack(HeroObject hero, Player enemyPlayer)
+	{
+		if (!hero.HasTarget())
+			return;
 
-			hero.Attack();
-		}
+		var target = hero.GetTarget();
+		hero.Attack();
+
+		CheckTargetIntegrity(target, enemyPlayer);
+	}
+	void CheckTargetIntegrity(IAttackable target, Player ownerPlayer)
+	{
+		if (target.GetLife() > 0)
+			return;
+
+
+		if (!(target is HeroObject))
+			return;
+
+		var heroObject = target as HeroObject;
+
+		DestroyHero(heroObject, ownerPlayer);
 	}
 	#endregion ATTACK_PHASE
 
@@ -181,10 +199,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		return uiBattlefield.CanPlayerSummonOnTile(player, spawnArea);
 	}
-	List<HeroObject> GetHeroes(Player player)
-	{
-		return heroList[player];
-	}
 	void AddHero(Player player, HeroObject hero)
 	{
 		if (!heroList.ContainsKey(player))
@@ -204,6 +218,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 			Debug.LogError("[ERROR] TILE NOT EMPTY");
 
 		spawnArea.SetHero(hero);
+	}
+	void DestroyHero(HeroObject heroObject, Player ownerPlayer)
+    {
+		var tile = uiBattlefield.GetHeroTile(ownerPlayer, heroObject);
+
+		ownerPlayer.OnHeroDied(heroObject.OriginalCardData, tile);
+
+		HeroFactory.AddToPool(heroObject);
 	}
 	#endregion HERO_LOGIC
 

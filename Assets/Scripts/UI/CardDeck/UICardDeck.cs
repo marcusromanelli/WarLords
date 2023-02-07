@@ -55,6 +55,18 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         var cardList = cards.ToList();
         deckObjects.OrderBy(cardObject => cardList.FindIndex(card => card == cardObject.Data));
     }
+    public void SendCardToDeckFromPosition(Card cardData, CardPositionData fromPosition, Action onFinish)
+    {
+        var cardObject = CreateCard(cardData);
+        cardObject.transform.position = fromPosition.Position;
+        cardObject.transform.rotation = fromPosition.Rotation;
+
+        cardObject.SetPositionAndRotation(CardPositionData.Create(GetTopCardPosition(), GetRotationReference()), () => {
+            CardFactory.AddToPool(cardObject);
+
+            onFinish?.Invoke();
+        });
+    }
     void StartSolvingActions()
     {
         if(!isBusy)
@@ -89,10 +101,14 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
             yield return null;
         }
     }
+    CardObject CreateCard(Card cardData)
+    {
+        return CardFactory.CreateCard(cardData, transform, true);
+    }
     void AddCardAction()
     {
-        var card = cardsToAdd[0];
-        CardObject cardObject = CardFactory.CreateCard(card, transform, true);
+        var cardData = cardsToAdd[0];
+        CardObject cardObject = CreateCard(cardData);
         cardsToAdd.RemoveAt(0);
 
         cardObject.transform.rotation = GetRotationReference();
@@ -126,25 +142,4 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     {
         return cardReferencePosition.transform.rotation;
     }
-
-    /*[Button("Add 1 Card", EButtonEnableMode.Playmode)]
-    public void Editor_Add_1_Card()
-    {
-        UpdateDeckSize(deckObjects.Count + 1);
-    }
-    [Button("Add 2 Cards", EButtonEnableMode.Playmode)]
-    public void Editor_Add_2_Card()
-    {
-        UpdateDeckSize(deckObjects.Count + 2);
-    }
-    [Button("Draw 1 Card", EButtonEnableMode.Playmode)]
-    public void Editor_Draw_1_Card()
-    {
-        UpdateDeckSize(deckObjects.Count - 1);
-    }
-    [Button("Add 2 Cards", EButtonEnableMode.Playmode)]
-    public void Editor_Draw_2_Card()
-    {
-        UpdateDeckSize(deckObjects.Count - 2);
-    }*/
 }

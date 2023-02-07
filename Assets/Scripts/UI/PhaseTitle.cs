@@ -10,21 +10,11 @@ public class PhaseTitle : MonoBehaviour
 	public bool IsChanging => isChanging;
 	bool isChanging;
 
-	public void setWinner(Player player)
+	public void SetWinner(bool isLocal)
 	{
-		/*if (!finish)
-		{
-			if (player.GetCivilization() == gameController.GetLocalPlayer().GetCivilization())
-			{
-				image.sprite = Singleton.Win;
-			}
-			else
-			{
-				image.sprite = Singleton.Lose;
-			}
-			finish = true;
-			StartCoroutine(Fade());
-		}*/
+		image.sprite = isLocal ? Win : Lose;
+
+		StartCoroutine(Fade());
 	}
 	public void ChangePhase(PhaseType nextPhase, bool localPlayer) 
 	{

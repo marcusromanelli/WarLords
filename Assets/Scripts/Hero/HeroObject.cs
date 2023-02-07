@@ -6,27 +6,32 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	public string Id => cardData.Data.Id;
 
 	[SerializeField] TokenStatus Status;
+	[SerializeField] ParticleSystem damageParticleSystem;
 	[SerializeField] ParticleSystem summonParticleSystem;
 	[SerializeField] DamageCounter damageCounter;
 	[SerializeField] float walkSpeed = 0.5f;
 
 	public Vector2 GridPosition => position;
+	public Card OriginalCardData => originalCardData;
 
 	private Vector2 position;
 	private Card cardData;
+	private Card originalCardData;
 	private Token tokenObject;
 	private bool isWalking;
 	private Vector3 targetPosition;
 	private IAttackable target;
 
 
-	public void Setup(Card card)
+	public void Setup(Card cardData)
     {
-        cardData = ElementFactory.CreateObject(card);
+		originalCardData = cardData;
+
+        this.cardData = ElementFactory.CreateObject(originalCardData);
 
         if (tokenObject == null)
 		{			
-			var token = ElementFactory.CreateObject<Token>(card.Civilization.Token, transform);
+			var token = ElementFactory.CreateObject<Token>(cardData.Civilization.Token, transform);
 
 			tokenObject = token;
 		}
@@ -65,6 +70,10 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		return target != null;
 	}
+	public IAttackable GetTarget()
+	{
+		return target;
+	}
 	public void Attack()
 	{
 		if (target == null)
@@ -78,6 +87,8 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void TakeDamage(uint damage)
 	{
+		damageParticleSystem.Play();
+
 		Status.TakeDamage(damage);
 
 		damageCounter.Show(damage);
@@ -115,8 +126,12 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 
 		Status.Setup(cardData.CalculateLife(), cardData.CalculateAttack());
 	}
+    public uint GetLife()
+    {
+		return Status.Life;
+    }
 
-	/*
+    /*
 	void Start()
 	{
 		/*GameObject aux = new GameObject();
@@ -286,7 +301,7 @@ public void RemoveNumberOfAttacks(int number)
 		return gridPos;
 	}*/
 
-	/*public Vector3 GetTopPosition()
+    /*public Vector3 GetTopPosition()
 	{
 		return pivot.transform.position;
 	}*

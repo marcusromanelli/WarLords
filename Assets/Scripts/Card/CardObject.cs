@@ -47,14 +47,17 @@ public class CardObject : MonoBehaviour, IPoolable
 	private Sprite currentCover;
 	private Texture currentBackground;
 	private float dissolveT = 0;
+	private Action onFinishPosition = null;
 
-	public void SetPositionAndRotation(CardPositionData cardData)
+	public void SetPositionAndRotation(CardPositionData cardData, Action onFinish = null)
 	{
 		targetPositionAndRotation = cardData;
 
 		isInPosition = false;
+
+		onFinishPosition = onFinish;
 	}
-	public void SetPositionAndCallback(OnGetPositionAndRotation getPositionAndRotation)
+	public void SetPositionCallback(OnGetPositionAndRotation getPositionAndRotation)
 	{
 		targetPositionAndRotation = null;
 		getPositionAndRotationCallback = getPositionAndRotation;
@@ -202,7 +205,10 @@ public class CardObject : MonoBehaviour, IPoolable
 		transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPositionAndRotation.Value.Rotation, Time.deltaTime * cardRotationSpeed);
 
 		if (transform.position == targetPositionAndRotation.Value.Position && transform.localRotation == targetPositionAndRotation.Value.Rotation)
+		{
 			isInPosition = true;
+			onFinishPosition?.Invoke();
+		}
 	}
 	void Update()
 	{

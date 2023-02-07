@@ -454,6 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Status:
     uiTokenStatus: {fileID: 146286032382851810}
+  damageParticleSystem: {fileID: 8123729440274325757}
   summonParticleSystem: {fileID: 482897990041051396}
   damageCounter: {fileID: 1329481441149791382}
   walkSpeed: 0.5
@@ -632,15 +633,9 @@ PrefabInstance:
       objectReference: {fileID: 7400000, guid: 625440d4ce6807d49a75dea9cfb13a13, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c19ffd379bc6534cbd151d3433c8338, type: 3}
---- !u!4 &1434523775690369430 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4000013769259516, guid: 6c19ffd379bc6534cbd151d3433c8338,
-    type: 3}
-  m_PrefabInstance: {fileID: 1433910753805488234}
-  m_PrefabAsset: {fileID: 0}
---- !u!102 &1336485262407635876 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 102000010642211790, guid: 6c19ffd379bc6534cbd151d3433c8338,
+--- !u!111 &3178351812956148589 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 4610982441015313159, guid: 6c19ffd379bc6534cbd151d3433c8338,
     type: 3}
   m_PrefabInstance: {fileID: 1433910753805488234}
   m_PrefabAsset: {fileID: 0}
@@ -656,9 +651,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40829ac920cf74848bab875f922b6ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!111 &3178351812956148589 stripped
-Animation:
-  m_CorrespondingSourceObject: {fileID: 4610982441015313159, guid: 6c19ffd379bc6534cbd151d3433c8338,
+--- !u!102 &1336485262407635876 stripped
+TextMesh:
+  m_CorrespondingSourceObject: {fileID: 102000010642211790, guid: 6c19ffd379bc6534cbd151d3433c8338,
+    type: 3}
+  m_PrefabInstance: {fileID: 1433910753805488234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1434523775690369430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4000013769259516, guid: 6c19ffd379bc6534cbd151d3433c8338,
     type: 3}
   m_PrefabInstance: {fileID: 1433910753805488234}
   m_PrefabAsset: {fileID: 0}
@@ -717,6 +718,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198000010071945576, guid: e72ae44217834b342a735f4a8ce95d8c,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000010916798412, guid: e72ae44217834b342a735f4a8ce95d8c,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 199000010585221662, guid: e72ae44217834b342a735f4a8ce95d8c,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -729,6 +740,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e72ae44217834b342a735f4a8ce95d8c, type: 3}
+--- !u!198 &8123729440274325757 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198000010916798412, guid: e72ae44217834b342a735f4a8ce95d8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8215171652411408177}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8217964218914356127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010745513134, guid: e72ae44217834b342a735f4a8ce95d8c,

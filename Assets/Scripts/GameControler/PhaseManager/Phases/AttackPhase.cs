@@ -12,6 +12,6 @@ public class AttackPhase : Phase
 
     public override IEnumerator Resolve(Player currentPlayer, Player enemyPlayer)
     {
-        yield return battlefield.AttackPhase(currentPlayer);
+        yield return battlefield.AttackPhase(currentPlayer, enemyPlayer);
     }
 }
