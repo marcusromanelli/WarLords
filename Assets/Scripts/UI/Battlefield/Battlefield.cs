@@ -145,20 +145,24 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		var target = hero.GetTarget();
 		hero.Attack();
 
-		CheckTargetIntegrity(target, enemyPlayer);
+		var isAlive = TargetIsAlive(target, enemyPlayer);
+
+		if (!isAlive)
+			hero.ResetTargets();
 	}
-	void CheckTargetIntegrity(IAttackable target, Player ownerPlayer)
+	bool TargetIsAlive(IAttackable target, Player ownerPlayer)
 	{
 		if (target.GetLife() > 0)
-			return;
-
+			return true;
 
 		if (!(target is HeroObject))
-			return;
+			return true;
 
 		var heroObject = target as HeroObject;
 
 		DestroyHero(heroObject, ownerPlayer);
+
+		return false;
 	}
 	#endregion ATTACK_PHASE
 
