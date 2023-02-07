@@ -6,7 +6,7 @@ public class Token : MonoBehaviour
     [SerializeField] Renderer coverRenderer;
 
     Sprite lastUsed;
-    
+
     public void Setup(Sprite sprite)
     {
         if (sprite == lastUsed)

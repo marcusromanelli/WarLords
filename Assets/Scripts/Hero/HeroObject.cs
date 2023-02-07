@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 {
-	public string Id => cardData.Data.Id;
+	public string Id => cardData.Data.Id ?? "";
 
 	[SerializeField] TokenStatus Status;
 	[SerializeField] ParticleSystem damageParticleSystem;
@@ -29,12 +29,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 
         this.cardData = ElementFactory.CreateObject(originalCardData);
 
-        if (tokenObject == null)
-		{			
-			var token = ElementFactory.CreateObject<Token>(cardData.Civilization.Token, transform);
-
-			tokenObject = token;
-		}
+		CreateToken();
 
 		summonParticleSystem.Play();
 
@@ -42,7 +37,12 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void Pool()
 	{
-		throw new System.NotImplementedException();
+		originalCardData = cardData = null;
+		Destroy(tokenObject.gameObject);
+		target = null;
+		position = targetPosition = Vector3.zero;
+		isWalking = false;
+		tokenObject = null;
 	}
 	public void Move(Vector3 position)
 	{
@@ -96,6 +96,13 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	public void Heal(uint health)
 	{
 		Status.Heal(health);
+	}
+	void CreateToken()
+    {
+		var token = ElementFactory.CreateObject<Token>(cardData.Civilization.Token, transform);
+
+		tokenObject = token;
+		tokenObject.transform.localPosition = Vector3.zero;
 	}
 	void Update() {
 		DoMovement();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ElementFactory : Singleton<ElementFactory>
 {
-    public static T CreateGameObject<T>() where T : Component, IPoolable
+    public static T CreateGameObject<T>() where T : Component
     {
         return (new GameObject(typeof(T).Name, typeof(T))).GetComponent<T>();
     }

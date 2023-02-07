@@ -15,10 +15,6 @@ public class CardFactory : PoolableFactory<CardObject>
 
         return cardObj;
     }
-    /*public static CardObject CreateEmptyCard(Transform transform)
-    {
-        return CreateEmptyCard(transform, Vector3.zero, Quaternion.identity);
-    }*/
     public static CardObject CreateEmptyCard(Transform transform, Vector3 position, Quaternion rotation)
     {
         var obj = CreateDefault(transform, position, rotation);

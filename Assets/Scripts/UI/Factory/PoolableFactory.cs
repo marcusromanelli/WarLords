@@ -6,7 +6,7 @@ public class PoolableFactory<T> : Singleton<PoolableFactory<T>> where T : MonoBe
 {
     [SerializeField] T Template;
 
-    Stack<T> cardPool = new Stack<T>();
+    protected Stack<T> elementPool = new Stack<T>();
 
     public static T CreateDefault(Transform transform, Vector3 position, Quaternion rotation)
     {
@@ -53,6 +53,6 @@ public class PoolableFactory<T> : Singleton<PoolableFactory<T>> where T : MonoBe
 
     static Stack<T> GetPool()
     {
-        return Instance.cardPool;
+        return Instance.elementPool;
     }
 }
