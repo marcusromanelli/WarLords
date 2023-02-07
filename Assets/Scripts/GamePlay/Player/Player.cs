@@ -22,7 +22,7 @@ public class Player : MonoBehaviour, IAttackable
 
 
 	private const string playerPropertiesTag = "Player Properties";
-	[BoxGroup(playerPropertiesTag), SerializeField] Card[] deckStartCards;
+	[BoxGroup(playerPropertiesTag), SerializeField, Expandable] PlayerCardDeck startDeck;
 
 	private const string gameLogicTag = "Game Logic";
 	[BoxGroup(gameLogicTag), SerializeField] protected Life Life;
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		PlayDeck.Setup();
 
-		PlayDeck.AddCards(deckStartCards);
+		PlayDeck.AddCards(startDeck.Cards);
 
 		PlayDeck.Shuffle();
 	}

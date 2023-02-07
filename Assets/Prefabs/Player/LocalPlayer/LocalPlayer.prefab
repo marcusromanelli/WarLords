@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97ba632cd5a1b948a5f31a04a94e6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckStartCards: []
+  startDeck: {fileID: 11400000, guid: 3d2bd230fa1147b4cb8ed720b044c430, type: 2}
   Life:
     uiLife: {fileID: 4330709181025842558}
   PlayDeck:
