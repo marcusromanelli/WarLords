@@ -912,9 +912,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1000010407902934, guid: 4680837b290d595429c1a58b155b1a9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010598439548, guid: 4680837b290d595429c1a58b155b1a9d, type: 3}
       propertyPath: m_Name
       value: Swamp Samples
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010598439548, guid: 4680837b290d595429c1a58b155b1a9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010018615336, guid: 4680837b290d595429c1a58b155b1a9d, type: 3}
       propertyPath: m_RootOrder

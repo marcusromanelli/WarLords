@@ -5,7 +5,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 {
 	public string Id => cardData.Data.Id;
 
-	[SerializeField] Life Life;
+	[SerializeField] TokenStatus Status;
 	[SerializeField] ParticleSystem summonParticleSystem;
 	[SerializeField] float walkSpeed = 0.5f;
 
@@ -111,11 +111,11 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void TakeDamage(uint damage)
 	{
-		Life.TakeDamage(damage);
+		Status.TakeDamage(damage);
 	}
 	public void Heal(uint health)
 	{
-		Life.Heal(health);
+		Status.Heal(health);
 	}
 	void Update() {
 		DoMovement();
@@ -143,6 +143,8 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 		tokenObject.transform.rotation = Quaternion.identity;
 
 		tokenObject.Setup(cardData.FrontCover);
+
+		Status.Setup(cardData.CalculateLife(), cardData.CalculateAttack());
 	}
 
 	/*

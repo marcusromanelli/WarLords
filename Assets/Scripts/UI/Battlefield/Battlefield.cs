@@ -66,6 +66,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		hero.SetPosition(newGridPosition);
 
 		SetHeroTile(hero, newTile);
+		EvaulateHeroTarget(currentPlayer, hero);
 	}
 	SpawnArea GetTileByPosition(Vector3 position)
 	{
@@ -78,29 +79,38 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
 
+		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
+			return hero.GridPosition;
+
 		var targetField = GetFields()[(int)gridPos.x, (int)gridPos.y];
+
+		if (targetField.Hero != null)
+			return hero.GridPosition;
+
+		return gridPos;
+	}
+	void EvaulateHeroTarget(Player currentPlayer, HeroObject hero)
+	{
+		Vector2 gridPos = hero.GridPosition;
+		var currentField = GetFields()[(int)gridPos.x, (int)gridPos.y];
+
 		var targetPlayer = currentPlayer == localPlayer ? remotePlayer : localPlayer;
 
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
 		{
 			hero.SetTarget(targetPlayer);
-			return hero.GridPosition;
+			return;
 		}
 
-		if (targetField.Hero != null)
-		{
-			hero.SetTarget(targetField.Hero);
-			return hero.GridPosition;
-		}
+		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+		var nextField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
-		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, targetField))
+		if (nextField.Hero != null)
 		{
-			hero.SetTarget(targetPlayer);
+			hero.SetTarget(nextField.Hero);
 		}
 		else
 			hero.ResetTargets();
-
-		return gridPos;
 	}
 	int GetHeroMovementDirection(Player player)
 	{

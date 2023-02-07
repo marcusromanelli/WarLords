@@ -17,6 +17,10 @@ public class Card : ScriptableObject
 	{
 		return Data.CalculateAttack();
 	}
+	public uint CalculateLife()
+	{
+		return Data.CalculateDefense();
+	}
 	public uint CalculateSummonCost()
 	{
 		return ManaCost + Data.CalculateSummonCost();
