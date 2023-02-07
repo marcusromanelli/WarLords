@@ -186,7 +186,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		if (!heroList.ContainsKey(player))
 			return false;
 
-		return heroList[player].Any(c => c.Id == card.Id);
+		return heroList[player].Any(c => c.GetId() == card.Id);
 	}
 	public bool CanSummonOnSelectedTile(Player player)
 	{
@@ -206,6 +206,13 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		heroList[player].Add(hero);
 	}
+	void RemoveHero(Player player, HeroObject hero)
+	{
+		if (!heroList.ContainsKey(player))
+			return;
+
+		heroList[player].Remove(hero);
+	}
 	void ReorderHeroList(Player player)
 	{
 		var targetEdge = player == localPlayer ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
@@ -222,6 +229,8 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	void DestroyHero(HeroObject heroObject, Player ownerPlayer)
     {
 		var tile = uiBattlefield.GetHeroTile(ownerPlayer, heroObject);
+
+		RemoveHero(ownerPlayer, heroObject);
 
 		ownerPlayer.OnHeroDied(heroObject.OriginalCardData, tile);
 

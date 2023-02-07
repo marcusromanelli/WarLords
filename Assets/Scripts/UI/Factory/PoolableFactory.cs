@@ -14,15 +14,16 @@ public class PoolableFactory<T> : Singleton<PoolableFactory<T>> where T : MonoBe
         if (PoolHasElements())
         {
             obj = GetPoolElement();
+            obj.transform.SetParent(transform, false);
         }
         else {
             var template = Instance.Template;
 
             obj = ElementFactory.CreateObject<T>(template, transform);
-
-            obj.transform.position = position;
-            obj.transform.rotation = rotation;
         }
+
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
 
         return obj;
     }

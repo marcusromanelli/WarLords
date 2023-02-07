@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 {
-	public string Id => cardData.Data.Id ?? "";
-
 	[SerializeField] TokenStatus Status;
 	[SerializeField] ParticleSystem damageParticleSystem;
 	[SerializeField] ParticleSystem summonParticleSystem;
@@ -37,10 +35,12 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void Pool()
 	{
-		originalCardData = cardData = null;
+		originalCardData = null;
+		cardData = null;
 		Destroy(tokenObject.gameObject);
 		target = null;
-		position = targetPosition = Vector3.zero;
+		position = Vector3.zero;
+		targetPosition = Vector3.zero;
 		isWalking = false;
 		tokenObject = null;
 	}
@@ -136,6 +136,10 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
     public uint GetLife()
     {
 		return Status.Life;
+    }	
+    public string GetId()
+    {
+		return originalCardData.Id;
     }
 
     /*
