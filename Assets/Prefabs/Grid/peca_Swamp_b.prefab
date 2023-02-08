@@ -101,8 +101,9 @@ MonoBehaviour:
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   spawnAreaColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
   selectedColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
-  cardPositionDataReference: {fileID: 2646328291477264585}
-  isSpawnArea: 0
+  cardPositionDataReference: {fileID: 7115930612679111186}
+  isTemporarySpawnArea: 0
+  hero: {fileID: 0}
 --- !u!65 &-7354279543079754580
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ PrefabInstance:
     - target: {fileID: 5745486526731981834, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_Name
-      value: CardPositionReference
+      value: ReferencePivot
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
@@ -141,12 +142,12 @@ PrefabInstance:
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
@@ -161,17 +162,17 @@ PrefabInstance:
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 270
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
         type: 3}
@@ -188,6 +189,12 @@ PrefabInstance:
 --- !u!4 &2646328291477264585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8665955901751608274, guid: e986a817c80929e4ea5769d39f9118a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 6699682192224377627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7115930612679111186 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4484125376600844553, guid: e986a817c80929e4ea5769d39f9118a2,
     type: 3}
   m_PrefabInstance: {fileID: 6699682192224377627}
   m_PrefabAsset: {fileID: 0}

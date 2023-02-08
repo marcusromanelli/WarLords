@@ -86,7 +86,7 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		var currentCard = Hand.GetHoldingCard();
 		var currentCardData = currentCard.Data;
-		Hand.DiscardCard(currentCard);
+		Hand.RemoveCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 
 		OnDiscardCard?.Invoke(1);
@@ -193,11 +193,11 @@ public class Player : MonoBehaviour, IAttackable
 			return;
 		}
 
+		Hand.RemoveCard(cardObject, false);
+
 		ManaPool.SpendMana(cardData.CalculateSummonCost());
 
-		Hand.DiscardCard(cardObject);
-
-		gameController.Summon(this, cardData, spawnArea);
+		gameController.Summon(this, cardObject, spawnArea);
 	}
 	#endregion SUMMON_HERO
 

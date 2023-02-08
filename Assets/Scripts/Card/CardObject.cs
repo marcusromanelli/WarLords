@@ -14,6 +14,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	[SerializeField] float dissolveMin = 0.7f;
 
 	[BoxGroup("Components"), SerializeField] GameObject cardContents;
+	[BoxGroup("Components"), SerializeField] GameObject cardFrame;
 	[BoxGroup("Components"), SerializeField] TMP_Text nameText;
 	[BoxGroup("Components"), SerializeField] TMP_Text manaCostText;
 	[BoxGroup("Components"), SerializeField] TMP_Text attackText;
@@ -36,6 +37,7 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;*/
 	public bool IsInPosition => isInPosition;
+	public bool Interactable => interactable;
 
 
 	private Nullable<CardPositionData> targetPositionAndRotation;
@@ -48,6 +50,8 @@ public class CardObject : MonoBehaviour, IPoolable
 	private Texture currentBackground;
 	private float dissolveT = 0;
 	private Action onFinishPosition = null;
+	private bool interactable = true;
+	private bool isVisualizing;
 
 	public void SetPositionAndRotation(CardPositionData cardData, Action onFinish = null)
 	{
@@ -94,17 +98,73 @@ public class CardObject : MonoBehaviour, IPoolable
 
 		if (hideInfo)
 		{
+			HideInfo();
 			cardContents.SetActive(false);
 			return;
 		}
 
 		cardContents.SetActive(true);
+		cardFrame.SetActive(true);
 		UpdateCardName();
 		UpdateManaCost();
 		UpdateAttack();
 		UpdateDefense();
 		UpdateSkills();
 		UpdateFrontCardCover();
+	}
+	public void SetVisualizing(bool isVisualizing)
+    {
+        if (!isVisualizing)
+        {
+			HideInfo(true);
+        }
+        else
+        {
+			ShowInfo();
+		}
+	}
+	public void ShowInfo()
+	{
+		cardContents.SetActive(true);
+
+		cardFrame.SetActive(true);
+		nameText.gameObject.SetActive(true);
+		manaCostText.gameObject.SetActive(true);
+		attackText.gameObject.SetActive(true);
+		defenseText.gameObject.SetActive(true);
+		skill1CostText.gameObject.SetActive(true);
+		skill1DescriptionText.gameObject.SetActive(true);
+		skill2CostText.gameObject.SetActive(true);
+		skill2DescriptionText.gameObject.SetActive(true);
+	}
+	public void HideInfo(bool showBackground = false)
+	{
+		if (!showBackground)
+		{
+			cardContents.SetActive(false);
+		}
+		else
+		{
+			cardContents.SetActive(true);
+
+			cardFrame.SetActive(false);
+			nameText.gameObject.SetActive(false);
+			manaCostText.gameObject.SetActive(false);
+			attackText.gameObject.SetActive(false);
+			defenseText.gameObject.SetActive(false);
+			skill1CostText.gameObject.SetActive(false);
+			skill1DescriptionText.gameObject.SetActive(false);
+			skill2CostText.gameObject.SetActive(false);
+			skill2DescriptionText.gameObject.SetActive(false);
+		}
+	}
+	public void Lock()
+	{
+		interactable = false;
+	}
+	public void Unlock()
+	{
+		interactable = true;
 	}
 	public void BecameMana(Action onFinishesAnimation)
 	{
@@ -163,11 +223,13 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	void SetTextValue(TMP_Text component, object value)
     {
+		component.gameObject.SetActive(true);
 		component.text = value.ToString();
     }
 
 	void ResetCard()
 	{
+		interactable = true;
 		closeCallback = null;
 		isBecamingMana = false;
 		isInPosition = false;

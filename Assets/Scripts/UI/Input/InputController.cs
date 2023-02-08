@@ -15,12 +15,24 @@ public class InputController : MonoBehaviour
     {
         mouseTargetManager.CheckHoverage();
     }
-    public void RegisterTargetCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onHoverAction)
+    public void Lock()
     {
-        mouseTargetManager.RegisterCallback(type, gameObject, onHoverAction);
+        ToggleLock(true);
     }
-    public void UnregisterTargetCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onHoverAction)
+    public void Unlock()
     {
-        mouseTargetManager.UnregisterCallback(type, gameObject, onHoverAction);
+        ToggleLock(false);
+    }
+    void ToggleLock(bool value)
+    {
+        mouseTargetManager.ToggleLock(value);
+    }
+    public void RegisterTargetCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onAction)
+    {
+        mouseTargetManager.RegisterCallback(type, gameObject, onAction);
+    }
+    public void UnregisterTargetCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onAction)
+    {
+        mouseTargetManager.UnregisterCallback(type, gameObject, onAction);
     }
 }

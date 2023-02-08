@@ -17,13 +17,13 @@ public class MouseManager
     [BoxGroup("Debug")] public int registeredLayerMask;
     private Vector3 lastRecordedMousePosition;
     private Ray lastRaycast;
+    private bool Locked = false;
     public Vector3 MousePosition => lastRecordedMousePosition;
 
     public MouseManager()
     {
         objectsToWatch = new Dictionary<GameObject, ObjectInteraction>();
     }
-
     public void CheckHoverage()
     {
         CheckClick();
@@ -34,13 +34,18 @@ public class MouseManager
         UpdateMousePosition();
         UpdateRaycastCollisions();
     }
+    public void ToggleLock(bool value)
+    {
+        Locked = value;
+    }
     void CheckClick()
     {
         try
         {
             foreach (var obj in objectsToWatch)
             {
-                obj.Value.SetClick(Input.GetMouseButton(0));
+                if(!Locked)
+                    obj.Value.SetClick(Input.GetMouseButton(0));
             }
         }catch(InvalidOperationException)
         {
@@ -51,7 +56,8 @@ public class MouseManager
     {
         foreach (var obj in objectsToWatch)
         {
-            obj.Value.SetMousePosition(lastRecordedMousePosition);
+            if (!Locked)
+                obj.Value.SetMousePosition(lastRecordedMousePosition);
         }
     }
     bool MouseMoved()
@@ -137,7 +143,8 @@ public class MouseManager
                 }
             }
 
-            obj.Value.SetHovering(isHovering);
+            if (!Locked)
+                obj.Value.SetHovering(isHovering);
         }
     }
     public void RegisterCallback(MouseEventType type, GameObject gameObject, HandleMouseAction onHoverAction)

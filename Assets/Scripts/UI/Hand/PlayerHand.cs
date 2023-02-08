@@ -45,14 +45,14 @@ public class PlayerHand
         for (int i = 0; i < cards.Length; i++)
             AddCard(cards[i]);
     }
-    public void DiscardCard(CardObject cardObject)
+    public void RemoveCard(CardObject cardObject, bool destroyObject = true)
     {
         if (Cards.Count <= 0)
             return;
 
         Cards.Remove(cardObject.Data);
 
-        uiPlayerHand.Discard(cardObject);
+        uiPlayerHand.Remove(cardObject, destroyObject);
     }
     public void TurnCardIntoMana(CardObject cardObject, Action onFinishAnimation)
     {

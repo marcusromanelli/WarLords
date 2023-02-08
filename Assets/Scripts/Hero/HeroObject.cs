@@ -21,13 +21,13 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	private IAttackable target;
 
 
-	public void Setup(Card cardData)
+	public void Setup(CardObject cardObject)
     {
-		originalCardData = cardData;
+		originalCardData = cardObject.Data;
 
-        this.cardData = ElementFactory.CreateObject(originalCardData);
+        cardData = ElementFactory.CreateObject(originalCardData);
 
-		CreateToken();
+		CreateToken(cardObject);
 
 		summonParticleSystem.Play();
 
@@ -97,12 +97,22 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		Status.Heal(health);
 	}
-	void CreateToken()
+	void CreateToken(CardObject cardObject)
     {
 		var token = ElementFactory.CreateObject<Token>(cardData.Civilization.Token, transform);
 
 		tokenObject = token;
 		tokenObject.transform.localPosition = Vector3.zero;
+		tokenObject.transform.localRotation = Quaternion.identity;
+
+		var cardPivot = tokenObject.GetCardPivot();
+
+		cardObject.HideInfo(true);
+		cardObject.Lock();
+
+		cardObject.SetPositionAndRotation(CardPositionData.Create(cardPivot.position, cardPivot.rotation), () => {
+			tokenObject.SlideIn(cardObject);
+		});
 	}
 	void Update() {
 		DoMovement();

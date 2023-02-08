@@ -63,10 +63,12 @@ public class UIPlayerHand : MonoBehaviour
 
         RegisterDefaultCallbacks();
     }
-    public void Discard(CardObject cardObject)
+    public void Remove(CardObject cardObject, bool destroyObject = true)
     {
         RemoveCard(cardObject);
-        SendCardToPool(cardObject);
+
+        if(destroyObject)
+            SendCardToPool(cardObject);
     }
     public void TurnCardIntoMana(CardObject cardObject, Action onFinishAnimation)
     {
@@ -208,18 +210,18 @@ public class UIPlayerHand : MonoBehaviour
 
         ShowVisualizingCard(cardObject);
     }
-    void ShowVisualizingCard(GameObject cardObject)
+    void ShowVisualizingCard(GameObject gameObject)
     {
-        var card = cardObject.GetComponent<CardObject>();
+        var cardObject = gameObject.GetComponent<CardObject>();
 
-        if (!card.IsInPosition)
+        if (!cardObject.IsInPosition)
             return;
 
-        var forwardCameraPosition = CalculateForwardCameraPosition();        
+        var forwardCameraPosition = CalculateForwardCameraPosition();
 
         var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
 
-        currentTargetCard = card;
+        currentTargetCard = cardObject;
         currentTargetCard.SetPositionAndRotation(data);
         currentTargetCard.RegisterCloseCallback(CloseCardVisualization);
     }
@@ -247,6 +249,7 @@ public class UIPlayerHand : MonoBehaviour
 
             if (!cardObject.IsInPosition)
                 return;
+
             currentTargetCard = cardObject;
         }
         else

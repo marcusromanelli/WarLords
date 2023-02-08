@@ -11,13 +11,19 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 {
 	[SerializeField] UIBattlefield uiBattlefield;
 
+	[BoxGroup("Presets"), SerializeField] CardPositionData visualizeCardPositionOffset;
+
 	private Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
 	private GameController gameController;
+	private InputController inputController;
 	private Player localPlayer, remotePlayer;
+
+	public bool isVisualizingHeroCard = false;
 
 	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
 	{
 		gameController = GameController;
+		inputController = InputController;
 
 		localPlayer = LocalPlayer;
 		remotePlayer = RemotePlayer;
@@ -170,13 +176,15 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public void Summon(Player player, Card card, SpawnArea spawnArea = null)
+	public void Summon(Player player, CardObject cardObject, SpawnArea _spawnArea = null)
 	{
-		var areaPosition = spawnArea ?? uiBattlefield.SelectedTile;
+		var spawnArea = _spawnArea ?? uiBattlefield.SelectedTile;
 
-		var hero = HeroFactory.Create(card, transform, areaPosition.transform.position, Quaternion.identity);
+		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedHero);
 
-		hero.SetPosition(uiBattlefield.UnityToGrid(areaPosition.transform.position));
+		var hero = HeroFactory.Create(cardObject, transform, spawnArea.transform.position, spawnArea.GetRotationReference());
+
+		hero.SetPosition(uiBattlefield.UnityToGrid(spawnArea.transform.position));
 
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 
@@ -186,7 +194,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		ReorderHeroList(player);
 
-		SetHeroTile(hero, areaPosition);
+		SetHeroTile(hero, spawnArea);
 	}
 	public bool PlayerHasHeroSummoned(Player player, Card card)
 	{
@@ -243,6 +251,44 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		ownerPlayer.OnHeroDied(heroObject.OriginalCardData, tile);
 
 		HeroFactory.AddToPool(heroObject);
+	}
+	void OnClickSummonedHero(GameObject gameObject)
+    {
+		if (isVisualizingHeroCard)
+			return;
+
+		var cardObject = gameObject.GetComponent<CardObject>();
+
+		if (!cardObject.IsInPosition)
+			return;
+
+		isVisualizingHeroCard = true;
+
+		var forwardCameraPosition = CalculateForwardCameraPosition();
+
+		var oldPosition = CardPositionData.Create(cardObject.transform.position, cardObject.transform.rotation);
+
+		var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
+
+		inputController.Lock();
+		cardObject.SetVisualizing(true);
+		cardObject.SetPositionAndRotation(data);
+		cardObject.RegisterCloseCallback(() =>
+		{
+			isVisualizingHeroCard = false;
+			inputController.Unlock();
+			cardObject.SetVisualizing(false);
+			cardObject.SetPositionAndRotation(oldPosition);
+			cardObject.RegisterCloseCallback(null);
+		});
+	}
+	Vector3 CalculateForwardCameraPosition()
+	{
+		var mainCameraPosition = Camera.main.transform.position;
+		mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
+		mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
+
+		return mainCameraPosition;
 	}
 	#endregion HERO_LOGIC
 

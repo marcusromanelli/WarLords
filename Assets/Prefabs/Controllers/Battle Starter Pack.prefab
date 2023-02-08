@@ -159,6 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiBattlefield: {fileID: 3925264120054612959}
+  visualizeCardPositionOffset:
+    Position: {x: 0, y: 0.5, z: 2.7}
+    EulerRotation: {x: -50, y: 180, z: 0}
+  isVisualizingHeroCard: 0
 --- !u!82 &1991257342
 AudioSource:
   m_ObjectHideFlags: 0
