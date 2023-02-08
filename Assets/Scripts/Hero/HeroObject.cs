@@ -105,14 +105,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 		tokenObject.transform.localPosition = Vector3.zero;
 		tokenObject.transform.localRotation = Quaternion.identity;
 
-		var cardPivot = tokenObject.GetCardPivot();
-
-		cardObject.HideInfo(true);
-		cardObject.Lock();
-
-		cardObject.SetPositionAndRotation(CardPositionData.Create(cardPivot.position, cardPivot.rotation), () => {
-			tokenObject.SlideIn(cardObject);
-		});
+		tokenObject.SetCardObject(cardObject);
 	}
 	void Update() {
 		DoMovement();
