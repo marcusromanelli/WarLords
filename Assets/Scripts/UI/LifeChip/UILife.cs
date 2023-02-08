@@ -1,12 +1,13 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
+using TMPro;
 
 [ExecuteInEditMode]
 public class UILife : MonoBehaviour {
 
 	[SerializeField] Transform chipObject;
-	[SerializeField] TextMesh sideA;
-	[SerializeField] TextMesh sideB;
+	[SerializeField] TMP_Text sideA;
+	[SerializeField] TMP_Text sideB;
 	[SerializeField] float rotationSpeed = 350;
 	[SerializeField] bool ROTATE;
 	[SerializeField] Side currentSide;
@@ -62,7 +63,7 @@ public class UILife : MonoBehaviour {
 
 		UpdateLife();
 	}
-	void SetValue(TextMesh text, uint value)
+	void SetValue(TMP_Text text, uint value)
 	{
 		text.text = value.ToString();
 
