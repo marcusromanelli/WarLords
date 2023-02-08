@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Raziel_Faerjin_Data
   m_EditorClassIdentifier: 
   Id: 603730bd-e485-4de6-928e-6744de23615e
-  ManaCost: 1
-  Attack: 1
-  Defense: 3
+  ManaCost: 2
+  Attack: 3
+  Defense: 4
+  WalkSpeed: 1
   Skills:
   - ManaCost: 3
     Data: {fileID: 11400000, guid: 3a82aec5094429547996732ebd53ee61, type: 2}

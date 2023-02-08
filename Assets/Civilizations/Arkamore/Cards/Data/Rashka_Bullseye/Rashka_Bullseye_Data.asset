@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Rashka_Bullseye_Data
   m_EditorClassIdentifier: 
   Id: 08502e0f-16ff-4fdc-9760-b2b8ab56c5f0
-  ManaCost: 2
-  Attack: 3
-  Defense: 4
+  ManaCost: 1
+  Attack: 1
+  Defense: 3
+  WalkSpeed: 1
   Skills:
   - ManaCost: 0
     Data: {fileID: 11400000, guid: 5caa1f2ce17706a40b63db428d3cf100, type: 2}

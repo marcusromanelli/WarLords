@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Hanek_Manthis_Data
   m_EditorClassIdentifier: 
   Id: 39afd503-9b49-4706-95b4-9bb6a0e1a105
-  ManaCost: 0
-  Attack: 2
-  Defense: 1
+  ManaCost: 2
+  Attack: 3
+  Defense: 3
+  WalkSpeed: 1
   Skills:
   - ManaCost: 4
     Data: {fileID: 11400000, guid: 494c67139d58b3247a0d19f19162f41c, type: 2}
