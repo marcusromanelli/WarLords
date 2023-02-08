@@ -69,6 +69,9 @@ public class AIPlayer : Player
 		var tile = GetRandomTile();
 		CardObject cardObject = GetRandomCardFromHand();
 
+		if (cardObject == null)
+			return;
+
 		if (tile != null && CanSummonHero(cardObject.Data, tile))
 			TrySummonHero(cardObject, tile);
 	}
@@ -142,6 +145,9 @@ public class AIPlayer : Player
 	{
 		var currentCard = GetRandomCardFromHand();
 
+		if (currentCard == null)
+			return;
+
 		Hand.HoldCard(currentCard);
 
 		Action(currentCard);
@@ -151,6 +157,9 @@ public class AIPlayer : Player
 	CardObject GetRandomCardFromHand()
 	{
 		var handCards = Hand.GetCards();
+
+		if (handCards.Count <= 0)
+			return null;
 
 		return handCards[UnityEngine.Random.Range(0, handCards.Count - 1)];
 	}

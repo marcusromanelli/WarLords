@@ -76,7 +76,7 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	}
 	public void RemoteHero()
 	{
-		this.hero = null;
+		hero = null;
 	}
 	/*
 	private bool IsTemporarilySummonable;
