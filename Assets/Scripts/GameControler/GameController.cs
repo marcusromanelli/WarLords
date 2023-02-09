@@ -49,9 +49,9 @@ public class GameController : MonoBehaviour
 	{
 		battlefield.Summon(player, cardObject, spawnArea);
 	}
-	bool CanSummonHero(Card card)
+	bool CanSummonHero(CardObject cardObject)
 	{
-		return localPlayer.CanPlayerSummonHero(card);
+		return localPlayer.CanPlayerSummonHero(cardObject);
 	}
 	#endregion BATTLEFIELD_INTERFACE
 

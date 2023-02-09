@@ -104,6 +104,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
 		{
+			Debug.Log(hero.name + " is now targeting " + targetPlayer.name);
 			hero.SetTarget(targetPlayer);
 			return;
 		}
@@ -113,13 +114,20 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		var targetHero = nextField.Hero;
 
 		if (targetHero != null && !PlayerHasHero(currentPlayer, targetHero))
+		{
+
+			Debug.Log(hero.name + " is now targeting " + targetHero.name);
 			hero.SetTarget(targetHero);
+		}
 		else
+		{
+			Debug.Log("Reseted targetting for " + hero.name);
 			hero.ResetTargets();
+		}
 	}
 	bool PlayerHasHero(Player currentPlayer, HeroObject hero)
 	{
-		return PlayerHasHeroSummoned(currentPlayer, hero.OriginalCardData);
+		return PlayerHasHeroSummoned(currentPlayer, hero.CardObject);
 	}
 	int GetHeroMovementDirection(Player player)
 	{
@@ -152,9 +160,12 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 			return;
 
 		var target = hero.GetTarget();
+
 		hero.Attack();
 
 		var isAlive = TargetIsAlive(target, enemyPlayer);
+				
+		Debug.Log("Target is alive? " + isAlive);
 
 		if (!isAlive)
 			hero.ResetTargets();
@@ -196,12 +207,12 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		SetHeroTile(hero, spawnArea);
 	}
-	public bool PlayerHasHeroSummoned(Player player, Card card)
+	public bool PlayerHasHeroSummoned(Player player, CardObject cardObject)
 	{
 		if (!heroList.ContainsKey(player))
 			return false;
 
-		return heroList[player].Any(c => c.GetId() == card.Id);
+		return heroList[player].Any(c => c.GetId() == cardObject.Data.Id);
 	}
 	public bool CanSummonOnSelectedTile(Player player)
 	{
@@ -248,7 +259,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		RemoveHero(ownerPlayer, heroObject);
 
-		ownerPlayer.OnHeroDied(heroObject.OriginalCardData, tile);
+		ownerPlayer.OnHeroDied(heroObject.CardObject, tile);
 
 		HeroFactory.AddToPool(heroObject);
 	}
@@ -279,7 +290,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 			inputController.Unlock();
 			cardObject.SetVisualizing(false);
 			cardObject.SetPositionAndRotation(oldPosition);
-			cardObject.RegisterCloseCallback(null);
+			cardObject.UnregisterCloseCallback();
 		});
 	}
 	Vector3 CalculateForwardCameraPosition()

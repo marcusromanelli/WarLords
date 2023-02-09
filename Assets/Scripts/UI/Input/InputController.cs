@@ -7,10 +7,6 @@ public class InputController : MonoBehaviour
     [SerializeField] MouseManager mouseTargetManager;
     public Vector3 MousePosition => mouseTargetManager.MousePosition;
 
-    private void Awake()
-    {
-        mouseTargetManager = new MouseManager();
-    }
     private void Update()
     {
         mouseTargetManager.CheckHoverage();

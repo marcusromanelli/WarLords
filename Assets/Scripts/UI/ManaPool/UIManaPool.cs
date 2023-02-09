@@ -18,7 +18,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	private GetCurrentMana getCurrentManaCallback;
 	private GetMaxAllowedMana getMaxAllowedManaCallback;
 	private HandleCanSummonHero canSummonHero;
-
+	private bool isPreviewingManaCost;
 
 	void Awake()
 	{
@@ -26,6 +26,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	}
 	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanSummonHero CanSummonHero)
     {
+		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxManaCallback = getMaxManaCallback;
 		this.getCurrentManaCallback = getCurrentManaCallback;
@@ -46,9 +47,9 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 			manaOrb.transform.position = CalculateOrbPosition(i - 1);
 
 			if (getCurrentManaCallback() >= i)
-				manaOrbs[i - 1].SetStatus(ManaStatus.Active);
+				manaOrb.SetStatus(ManaStatus.Active);
 			else
-				manaOrbs[i - 1].SetStatus(ManaStatus.Used);
+				manaOrb.SetStatus(ManaStatus.Used);
 		}
 	}
 	public Vector3 GetTopCardPosition()
@@ -58,6 +59,13 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	public Quaternion GetRotationReference()
 	{
 		return cardReferencePosition.transform.rotation;
+	}
+	public void RefreshPreviewedMana(uint newManaCost)
+	{
+		if (!isPreviewingManaCost)
+			return;
+
+		PreviewMana(newManaCost);
 	}
 	float calculateRow(int number)
 	{
@@ -98,46 +106,47 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 #region FIELD_INTERACTION
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
-		if (cardObject == null || !canSummonHero(cardObject.Data))
+		if (cardObject == null || !canSummonHero(cardObject))
 		{
 			RestorePreviewedMana();
 			return;
 		}
 
-		var manaCost = cardObject.Data.CalculateSummonCost();
+		var manaCost = cardObject.CalculateSummonCost();
 
 		PreviewMana(manaCost);
 	}
 	void PreviewMana(uint number)
 	{
-		for (int i = 0; i < manaOrbs.Count; i++)
-		{
-			var manaOrb = manaOrbs[i];
+		isPreviewingManaCost = true;
+		int usedMana = (int)number;
 
-			switch (manaOrb.ManaStatus)
+		for (int i = manaOrbs.Count; i > 0; i--)
+		{
+			var manaOrb = manaOrbs[i - 1];
+
+			if (manaOrb.ManaStatus == ManaStatus.Used)
+				continue;
+
+			if (usedMana > 0)
 			{
-				case ManaStatus.Active:
-				case ManaStatus.Preview:
-					if (i < number)
-					{
-						manaOrb.SetStatus(ManaStatus.Preview);
-					}
-					else
-					{
-						manaOrb.SetStatus(ManaStatus.Active);
-					}
-					break;
+				manaOrb.SetStatus(ManaStatus.Preview);
+				usedMana--;
 			}
+			else if(manaOrb.ManaStatus == ManaStatus.Preview)
+				manaOrb.SetStatus(ManaStatus.Active);
 		}
 	}
 	void RestorePreviewedMana()
 	{
-		for (int i = 0; i < manaOrbs.Count; i++)
+		isPreviewingManaCost = false;
+
+		for (int i = manaOrbs.Count; i > 0; i--)
 		{
-			var manaOrb = manaOrbs[i];
+			var manaOrb = manaOrbs[i - 1];
 
 			if (manaOrb.ManaStatus == ManaStatus.Preview)
-				manaOrbs[i].SetStatus(ManaStatus.Active);
+				manaOrb.SetStatus(ManaStatus.Active);
 		}
 	}
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using NaughtyAttributes;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Card", menuName = "ScriptableObjects/Card/Main Card", order = 1)]
 public class Card : ScriptableObject
@@ -11,24 +12,6 @@ public class Card : ScriptableObject
 	public Sprite FrontCover;
 	[Expandable] public CivilizationData Civilization;
 	[Expandable] public CardData Data;
-	public uint ManaCost => Data.ManaCost;
-
-	public uint CalculateAttack()
-	{
-		return Data.CalculateAttack();
-	}
-	public uint CalculateLife()
-	{
-		return Data.CalculateDefense();
-	}
-	public uint CalculateSummonCost()
-	{
-		return ManaCost + Data.CalculateSummonCost();
-	}
-	public uint CalculateWalkSpeed()
-	{
-		return Data.CalculateWalkSpeed();
-	}
 
 	/*public void UpdateData()
 	{
@@ -36,7 +19,8 @@ public class Card : ScriptableObject
 		{
 			Macro aux = CardsLibrary.Singleton.Macros.findMacro(Skills[i].macroType);
 			Skill aux2 = Skills[i];
-			aux2.name = CardsLibrary.Singleton.Macros.findMacro(Skills[i].macroType).name;
+	calc
+	aux2.name = CardsLibrary.Singleton.Macros.findMacro(Skills[i].macroType).name;
 			if (aux.description == null)
 			{
 				aux2.description = "Macro: " + Skills[i].macroType.ToString() + " with no description.";

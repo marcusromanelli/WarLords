@@ -10,22 +10,22 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	[SerializeField] float walkSpeed = 0.5f;
 
 	public Vector2 GridPosition => position;
-	public Card OriginalCardData => originalCardData;
+	public CardObject CardObject => cardObject;
 
 	private Vector2 position;
 	private Card cardData;
-	private Card originalCardData;
 	private Token tokenObject;
 	private bool isWalking;
 	private Vector3 targetPosition;
 	private IAttackable target;
+	private CardObject cardObject;
 
 
 	public void Setup(CardObject cardObject)
     {
-		originalCardData = cardObject.Data;
-
-        cardData = ElementFactory.CreateObject(originalCardData);
+		cardData = cardObject.Data;
+		this.cardObject = cardObject;
+		this.cardObject.SetInvoked();
 
 		CreateToken(cardObject);
 
@@ -35,8 +35,8 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void Pool()
 	{
-		originalCardData = null;
 		cardData = null;
+		tokenObject.Destroy();
 		Destroy(tokenObject.gameObject);
 		target = null;
 		position = Vector3.zero;
@@ -51,7 +51,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public uint GetWalkSpeed()
 	{
-		return cardData.CalculateWalkSpeed();
+		return cardObject.CalculateWalkSpeed();
 	}
 	public IEnumerator IsWalking()
     {
@@ -62,9 +62,9 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
     {
 		this.position = position;
     }
-	public void SetTarget(IAttackable hero)
+	public void SetTarget(IAttackable target)
 	{
-		target = hero;
+		this.target = target;
 	}
 	public bool HasTarget()
 	{
@@ -79,7 +79,9 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 		if (target == null)
 			return;
 
-		target.TakeDamage(cardData.CalculateAttack());
+		Debug.Log("Hero attacking " + cardObject.name);
+
+		target.TakeDamage(cardObject.CalculateAttack());
 	}
 	public void ResetTargets()
 	{
@@ -87,6 +89,8 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void TakeDamage(uint damage)
 	{
+		Debug.Log(this.name + " took " + damage + " damage");
+
 		damageParticleSystem.Play();
 
 		Status.TakeDamage(damage);
@@ -134,7 +138,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
 
 		tokenObject.Setup(cardData.FrontCover);
 
-		Status.Setup(cardData.CalculateLife(), cardData.CalculateAttack());
+		Status.Setup(cardObject.CalculateLife(), cardObject.CalculateAttack());
 	}
     public uint GetLife()
     {
@@ -142,7 +146,7 @@ public class HeroObject : MonoBehaviour, IPoolable, IAttackable
     }	
     public string GetId()
     {
-		return originalCardData.Id;
+		return cardData.Id;
     }
 
     /*

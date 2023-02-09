@@ -5,7 +5,7 @@ using UnityEngine;
 
 public delegate void HandleOnCardReleased(CardObject card);
 public delegate bool HandleCanReleaseCard();
-public delegate bool HandleCanSummonHero(Card cardData);
+public delegate bool HandleCanSummonHero(CardObject cardObject);
 
 [Serializable]
 public class PlayerHand

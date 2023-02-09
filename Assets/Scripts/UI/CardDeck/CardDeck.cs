@@ -95,10 +95,10 @@ public class CardDeck
         yield return uiCardDeck.IsResolving();
     }
 
-    public void SendCardToDeckFromPosition(Card cardData, CardPositionData fromPosition)
+    public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition)
     {
-        uiCardDeck.SendCardToDeckFromPosition(cardData, fromPosition, () => {
-            AddCard(cardData);
+        uiCardDeck.SendCardToDeckFromPosition(cardObject, fromPosition, () => {
+            AddCard(cardObject.Data);
         });
     }
 }

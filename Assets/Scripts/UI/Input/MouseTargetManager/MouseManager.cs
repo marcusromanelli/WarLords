@@ -73,7 +73,10 @@ public class MouseManager
             var delta = Mathf.Abs((lastRecordedMousePosition - currentPosition).magnitude);
 
             if (delta < minMouseMovement)
+            {
+                lastRecordedMousePosition = currentPosition;
                 return false;
+            }
         }
 
         lastRecordedMousePosition = currentPosition;

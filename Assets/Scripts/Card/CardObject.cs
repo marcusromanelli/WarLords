@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public delegate void OnClickCloseButton();
 public delegate CardPositionData OnGetPositionAndRotation();
@@ -27,20 +28,24 @@ public class CardObject : MonoBehaviour, IPoolable
 	[BoxGroup("Components"), SerializeField] Renderer cardRenderer;
 	[BoxGroup("Components"), SerializeField] ParticleSystem fadeIntoManaParticle;
 	[BoxGroup("Components"), SerializeField] GameObject closeButton;
+	[BoxGroup("Components"), SerializeField] EnableSkillButton enableSkill1Button;
+	[BoxGroup("Components"), SerializeField] EnableSkillButton enableSkill2Button;
 
 
-	[BoxGroup("Game"), Expandable, SerializeField] private Card originalCard;
+	[BoxGroup("Game"), Expandable, SerializeField] private Card cardData;
 
-	public Card Data => originalCard;
+	public Card Data => cardData;
+	public RuntimeCardData RuntimeCardData => runtimeCardData;
+
 	/*
-	public Player player;
+	GameObject SkillsTree, Status, ;*/
 
-	GameObject summonButton, skillButton1, skillButton2, SkillsTree, Status, ;*/
 	public bool IsInPosition => isInPosition;
 	public bool Interactable => interactable;
+	public bool IsVisualizing => isVisualizing;
 
 
-	private Nullable<CardPositionData> targetPositionAndRotation;
+	private CardPositionData? targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = false;
 	private OnClickCloseButton closeCallback;
@@ -51,8 +56,31 @@ public class CardObject : MonoBehaviour, IPoolable
 	private float dissolveT = 0;
 	private Action onFinishPosition = null;
 	private bool interactable = true;
+	private Player player;
+	private RuntimeCardData runtimeCardData;
 	private bool isVisualizing;
+	private bool isInvoked;
 
+	public void Setup(Player player, Card card, bool hideInfo)
+	{
+		this.player = player;
+		cardData = card;
+
+		runtimeCardData = new RuntimeCardData(card);
+
+		ToggleSkillButtonsInteraction(true);
+		UpdateCardData(hideInfo);
+	}
+	public void Setup(Card card, bool hideInfo)
+	{
+		Setup(null, card, hideInfo);
+	}
+	public void SetInvoked()
+    {
+		isInvoked = true;
+
+		ToggleSkillButtonsInteraction(!isInvoked);
+	}
 	public void SetPositionAndRotation(CardPositionData cardData, Action onFinish = null)
 	{
 		targetPositionAndRotation = cardData;
@@ -86,32 +114,6 @@ public class CardObject : MonoBehaviour, IPoolable
 	{
 		ResetCard();
 	}
-	public void Setup(Card card, bool hideInfo)
-	{
-		originalCard = card;
-
-		UpdateCardData(hideInfo);
-	}
-	private void UpdateCardData(bool hideInfo)
-	{
-		UpdateBackCardCover();
-
-		if (hideInfo)
-		{
-			HideInfo();
-			cardContents.SetActive(false);
-			return;
-		}
-
-		cardContents.SetActive(true);
-		cardFrame.SetActive(true);
-		UpdateCardName();
-		UpdateManaCost();
-		UpdateAttack();
-		UpdateDefense();
-		UpdateSkills();
-		UpdateFrontCardCover();
-	}
 	public void SetVisualizing(bool isVisualizing)
     {
         if (!isVisualizing)
@@ -136,9 +138,31 @@ public class CardObject : MonoBehaviour, IPoolable
 		skill1DescriptionText.gameObject.SetActive(true);
 		skill2CostText.gameObject.SetActive(true);
 		skill2DescriptionText.gameObject.SetActive(true);
+
+		enableSkill1Button.gameObject.SetActive(true);
+		enableSkill2Button.gameObject.SetActive(true);
+
+		if (isInvoked)
+			return;
+
+		enableSkill1Button.SetClickCallback(OnToggleSkill);
+		enableSkill2Button.SetClickCallback(OnToggleSkill);
 	}
 	public void HideInfo(bool showBackground = false)
 	{
+		closeButton.SetActive(false);
+
+		if (!isInvoked)
+        {
+			enableSkill1Button.gameObject.SetActive(false);
+			enableSkill2Button.gameObject.SetActive(false);
+
+			ToggleSkillButtonsInteraction(false);
+
+			DisableSkills();
+			return;
+        }
+
 		if (!showBackground)
 		{
 			cardContents.SetActive(false);
@@ -156,6 +180,10 @@ public class CardObject : MonoBehaviour, IPoolable
 			skill1DescriptionText.gameObject.SetActive(false);
 			skill2CostText.gameObject.SetActive(false);
 			skill2DescriptionText.gameObject.SetActive(false);
+			enableSkill1Button.gameObject.SetActive(false);
+			enableSkill2Button.gameObject.SetActive(false);
+
+			ToggleSkillButtonsInteraction(false);
 		}
 	}
 	public void Lock()
@@ -175,34 +203,97 @@ public class CardObject : MonoBehaviour, IPoolable
 		onManaParticleEnd = onFinishesAnimation;
 		StartCoroutine(AwaitManaParticleEnd());
 	}
+	public uint CalculateAttack()
+	{
+		return runtimeCardData.CalculateAttack();
+	}
+	public uint CalculateLife()
+	{
+		return runtimeCardData.CalculateDefense();
+	}
+	public uint CalculateSummonCost()
+	{
+		return runtimeCardData.CalculateSummonCost();
+	}
+	public uint CalculateWalkSpeed()
+	{
+		return runtimeCardData.CalculateWalkSpeed();
+	}
+	void UpdateCardData(bool hideInfo)
+	{
+		UpdateBackCardCover();
+
+		if (hideInfo)
+		{
+			HideInfo();
+			cardContents.SetActive(false);
+			return;
+		}
+
+		cardContents.SetActive(true);
+		cardFrame.SetActive(true);
+		UpdateCardName();
+		UpdateManaCost();
+		UpdateAttack();
+		UpdateDefense();
+		UpdateSkills();
+		UpdateFrontCardCover();
+	}
 	void UpdateCardName()
     {
-		nameText.text = originalCard.Name;
+		nameText.text = runtimeCardData.Name ?? cardData.Name;
 	}
 	void UpdateManaCost()
     {
-		SetTextValue(manaCostText, originalCard.CalculateSummonCost());
+		SetTextValue(manaCostText, runtimeCardData?.CalculateSummonCost() ?? cardData.Data.ManaCost);
 	}
 	void UpdateAttack()
 	{
-		SetTextValue(attackText, originalCard.Data.Attack);
+		SetTextValue(attackText, runtimeCardData?.Attack ?? cardData.Data.Attack);
 	}
 	void UpdateDefense()
 	{
-		SetTextValue(defenseText, originalCard.Data.Defense);
+		SetTextValue(defenseText, runtimeCardData?.Defense ?? cardData.Data.Defense);
 	}
 	void UpdateSkills()
 	{
-		SetTextValue(skill1DescriptionText, originalCard.Data.Skills[0]);
-		SetTextValue(skill1CostText, originalCard.Data.Skills[0].ManaCost);
+		var skill1 = runtimeCardData?.Skills[0] ?? cardData.Data.Skills[0];
+		var skill2 = runtimeCardData?.Skills[1] ?? cardData.Data.Skills[1];
 
-		SetTextValue(skill2DescriptionText, originalCard.Data.Skills[1]);
-		SetTextValue(skill2CostText, originalCard.Data.Skills[1].ManaCost);
+		enableSkill1Button.Setup(skill1);
+		SetTextValue(skill1DescriptionText, skill1);
+		SetTextValue(skill1CostText, skill1.GetManaCost());
+
+		enableSkill2Button.Setup(skill2);
+		SetTextValue(skill2DescriptionText, skill2);
+		SetTextValue(skill2CostText, skill2.GetManaCost());
+	}
+	void ToggleSkillButtonsInteraction(bool enabled)
+    {
+		OnSkillButtonEnabledClick action = enabled ? OnToggleSkill : null;
+
+		enableSkill1Button.SetClickCallback(action);
+		enableSkill2Button.SetClickCallback(action);
+    }
+	void DisableSkills()
+	{
+		runtimeCardData?.DisableAllSkills();
+
+		enableSkill1Button.Disable();
+		enableSkill2Button.Disable();
+	}
+	void OnToggleSkill(SkillData skill, bool enabled)
+	{
+		if(isInvoked)
+			return;
+
+		runtimeCardData?.ToggleSkill(skill, enabled);
+		player?.SummonCostChanged(CalculateSummonCost());
 	}
 	void UpdateBackCardCover()
 	{
 		cardRenderer.gameObject.SetActive(true);
-		var texture = originalCard.Civilization.BackCover;
+		var texture = cardData.Civilization.BackCover;
 
 		if (currentBackground == texture) return;
 
@@ -212,7 +303,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	}
 	void UpdateFrontCardCover()
 	{
-		var texture = originalCard.FrontCover;
+		var texture = cardData.FrontCover;
 
 		if (currentCover == texture) return;
 
@@ -229,15 +320,23 @@ public class CardObject : MonoBehaviour, IPoolable
 
 	void ResetCard()
 	{
+		DisableSkills();
+		ToggleSkillButtonsInteraction(false);
+		runtimeCardData = null;
+		isVisualizing = false;
+		isInvoked = false;
+		player = null;
 		interactable = true;
 		closeCallback = null;
 		isBecamingMana = false;
 		isInPosition = false;
 		targetPositionAndRotation = null;
-		originalCard = default(Card);
+		cardData = default;
+		runtimeCardData = default;
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
 		dissolveT = 0;
+
 		ResetDissolve();
 	}
 	void MoveToTargetPosition()
@@ -307,13 +406,6 @@ public class CardObject : MonoBehaviour, IPoolable
 	}
 
 
-
-	//void Start()
-	//{
-	//	//originalScale = transform.localScale;
-
-	//}
-
 	//void showSkillTree()
 	//{
 	//	if (SkillsTree != null)
@@ -333,31 +425,6 @@ public class CardObject : MonoBehaviour, IPoolable
 	//		CloseButton.SetActive(true);
 	//	}
 	//}
-
-	//void showSummonButtons()
-	//{
-	//	if (summonButton != null)
-	//	{
-	//		if (Character == null)
-	//		{
-	//			summonButton.SetActive(true);
-	//		}
-	//		skillButton1.SetActive(true);
-	//		skillButton2.SetActive(true);
-	//		CloseButton.SetActive(true);
-	//	}
-	//}
-
-	//void hideSummonButtons()
-	//{
-	//	if (summonButton != null)
-	//	{
-	//		summonButton.SetActive(false);
-	//		skillButton1.SetActive(false);
-	//		skillButton2.SetActive(false);
-	//		CloseButton.SetActive(false);
-	//	}
-	//}
 	
 
 	/*void Update()
@@ -365,34 +432,6 @@ public class CardObject : MonoBehaviour, IPoolable
 		MoveToTargetPosition();
 		*switch (SummonType)
 		{
-			case SummonType.Mana:
-
-				hideSummonButtons();
-				break;
-			case SummonType.Monster:
-				if (isMouseDown && Vector3.Distance(lastKnownMousePosition, Input.mousePosition) > 0.2)
-				{
-					isBeingHeroVisualized = false;
-				}
-
-				if (isBeingHeroVisualized)
-				{
-					transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / ((currentCardData.Skills.Count > 2) ? 2.25f : 2), 70, 5f)), Time.deltaTime * cardMovementSpeed);
-					transform.localRotation = Quaternion.Euler(-50, 180, 0);
-					transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale * 1.5f, Time.deltaTime * 15f);
-					showSkillTree();
-					showSummonButtons();
-				}
-				else
-				{
-					hideSkillTree();
-					hideSummonButtons();
-					transform.position = Vector3.MoveTowards(transform.position, battlefield.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-					transform.rotation = Quaternion.RotateTowards(transform.rotation, battlefield.GetTopRotation(), Time.deltaTime * 600f);
-					hideSummonButtons();
-				}
-
-				break;
 			case SummonType.DoNotApply:
 				if (currentCardData.CardID != 0)
 				{
@@ -419,27 +458,6 @@ public class CardObject : MonoBehaviour, IPoolable
 								offset.z = offset.x = 0;
 								if (gameController.GetCurrentPlayer() == player || player.hasCondition(ConditionType.DiscartCard) || player.hasCondition(ConditionType.DrawCard) || player.hasCondition(ConditionType.SendCardToManaPool))
 								{
-									if (deckController.IsMouseOver)
-									{
-										transform.position = Vector3.MoveTowards(transform.position, deckController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.GetTopRotation(), Time.deltaTime * 600f);
-									}
-									else if (manaPoolController.IsMouseOver)
-									{
-										transform.position = Vector3.MoveTowards(transform.position, manaPoolController.GetBasePosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, manaPoolController.GetTopRotation(), Time.deltaTime * 600f);
-									}
-									else if (graveyardController.IsMouseOver)
-									{
-										transform.position = Vector3.MoveTowards(transform.position, graveyardController.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, graveyardController.GetTopRotation(), Time.deltaTime * 600f);
-									}
-									else if (Hero.selectedHero != null)
-									{
-										transform.position = Vector3.MoveTowards(transform.position, Hero.selectedHero.GetTopPosition(), Time.deltaTime * cardMovementSpeed);
-										transform.rotation = Quaternion.RotateTowards(transform.rotation, deckController.GetTopRotation(), Time.deltaTime * 600f);
-									}
-									else
 									{
 										var selectedTile = battlefield.GetSelectedTile();
 
@@ -468,23 +486,7 @@ public class CardObject : MonoBehaviour, IPoolable
 							}
 							else
 							{
-								if (isBeingVisualized)
-								{
-									transform.position = Vector3.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 70, 5f)), Time.deltaTime * cardMovementSpeed);
-									transform.localRotation = Quaternion.Euler(310, 0, 0);
-									transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale * 1.5f, Time.deltaTime * 15f);
-									player.PreviewSpendMana(CalculateSummonCost());
 
-									showSummonButtons();
-								}
-								else
-								{
-									hideSummonButtons();
-									//if (transform.localPosition != Vector3.zero) {
-									//transform.localPosition = Vector3.MoveTowards (transform.localPosition, originalPosition, Time.deltaTime * cardMovementSpeed);
-									//}
-									transform.localScale = Vector3.MoveTowards(transform.localScale, originalScale, Time.deltaTime * 15f);
-								}
 							}
 						}
 						else
@@ -508,16 +510,7 @@ public class CardObject : MonoBehaviour, IPoolable
 										targetHero = null;
 										Destroy(this.gameObject);*
 										break;
-									case ActionType.SummonHero:
-										/*var hasSummon = player.Summon(this, targetSpawnArea);
 
-                                        if (!hasSummon)
-										{
-											nextActionType = ActionType.NoAction;
-											isBeingHeld = false;
-											return;
-										}*
-										break;
 								}
 							}
 						}
@@ -596,16 +589,6 @@ public class CardObject : MonoBehaviour, IPoolable
 	//	currentCardData.Skills[number] = aux;
 	//}
 
-
-	/*ParticleSystem system;
-	
-
-	//public void Die()
-	//{
-	//	//gameController.SetTriggerType(TriggerType.OnBeforeDeath, this);
-	//	player.killCard(this);
-	//}
-
 	//public void AddSkill(Skill skills)
 	//{
 	//	Debug.LogWarning("Adicionando skill " + skills.name + " para a carda " + name);
@@ -631,7 +614,7 @@ public class CardObject : MonoBehaviour, IPoolable
 	//       }
 	//   }
 
-
+	/*
 	public void AddAttack(int number)
 	{
 		if (number < 0) number = 0;

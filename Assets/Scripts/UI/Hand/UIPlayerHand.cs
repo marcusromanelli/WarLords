@@ -97,7 +97,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void AddCard(Card card)
     {
-        var cardObj = CardFactory.CreateCard(card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), !IsInteractable);
+        var cardObj = CardFactory.CreateCard(player, card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), !IsInteractable);
 
         cardList.Add(cardObj);
 
@@ -222,6 +222,7 @@ public class UIPlayerHand : MonoBehaviour
         var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
 
         currentTargetCard = cardObject;
+        currentTargetCard.SetVisualizing(true);
         currentTargetCard.SetPositionAndRotation(data);
         currentTargetCard.RegisterCloseCallback(CloseCardVisualization);
     }
@@ -235,6 +236,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void CloseCardVisualization()
     {
+        currentTargetCard.SetVisualizing(false);
         ReturnCurrentCardToHand();
     }
     void OnDragCardStart(GameObject cardGameObject)
@@ -275,8 +277,9 @@ public class UIPlayerHand : MonoBehaviour
     void ReturnCurrentCardToHand()
     {
         var cardIndex = GetCardIndexByObject(currentTargetCard);
+        currentTargetCard.SetVisualizing(false);
         currentTargetCard.SetPositionAndRotation(GetCardHandPosition(cardIndex));
-        currentTargetCard.RegisterCloseCallback(null);
+        currentTargetCard.UnregisterCloseCallback();
         CancelHandToCardInteraction();
     }
     CardPositionData CalculateheldCardPosition()
@@ -376,7 +379,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
 
-        if (/*!spawnArea.IsSpawnArea || */!canSummonHero(currentTargetCard.Data))
+        if (/*!spawnArea.IsSpawnArea || */!canSummonHero(currentTargetCard))
             return;
 
         GenericHoverPlace(spawnArea);

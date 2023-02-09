@@ -55,9 +55,8 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         var cardList = cards.ToList();
         deckObjects.OrderBy(cardObject => cardList.FindIndex(card => card == cardObject.Data));
     }
-    public void SendCardToDeckFromPosition(Card cardData, CardPositionData fromPosition, Action onFinish)
+    public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition, Action onFinish)
     {
-        var cardObject = CreateCard(cardData);
         cardObject.transform.position = fromPosition.Position;
         cardObject.transform.rotation = fromPosition.Rotation;
 

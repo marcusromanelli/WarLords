@@ -43,9 +43,7 @@ public class ManaPool
 	public void SpendMana(uint number)
 	{
 		if (currentMana < number)
-		{
 			return;
-		}
 
 		GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
 
@@ -72,6 +70,10 @@ public class ManaPool
 	public uint GetMaxAllowedMana()
 	{
 		return maxAllowedMana;
+	}
+	public void RefreshPreviewedMana(uint newManaCost)
+    {
+		uiManaPool.RefreshPreviewedMana(newManaCost);
 	}
 	void SetMaxManaValue(uint newValue)
 	{

@@ -36,7 +36,7 @@ public class Token : MonoBehaviour
     {
         cardPivot.Play();
     }
-    private void OnDestroy()
+    public void Destroy()
     {
         if(cardObject != null)
             CardFactory.AddToPool(cardObject);

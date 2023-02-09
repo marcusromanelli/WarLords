@@ -2,7 +2,7 @@
 
 public class DamageCounter : MonoBehaviour 
 {
-	[SerializeField] Animation animation;
+	[SerializeField] new Animation animation;
 	[SerializeField] TextMesh text;
 
 

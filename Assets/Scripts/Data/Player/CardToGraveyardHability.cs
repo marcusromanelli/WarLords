@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CardToGraveyard", menuName = "ScriptableObjects/Habilities/CardToGraveyard", order = 1)]
 public class CardToGraveyardHability : HabilityBase
 {
-	[SerializeField] int NumberOfCardsToDiscard = 2;
 	[SerializeField] int NumberOfCardsToDraw = 2;
 
     public override bool CanUse(GetHabilityManager getHabilityManager, GetPlayer getPlayer)

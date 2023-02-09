@@ -72,7 +72,7 @@ public class AIPlayer : Player
 		if (cardObject == null)
 			return;
 
-		if (tile != null && CanSummonHero(cardObject.Data, tile))
+		if (tile != null && CanSummonHero(cardObject, tile))
 			TrySummonHero(cardObject, tile);
 	}
 	SpawnArea GetRandomTile()

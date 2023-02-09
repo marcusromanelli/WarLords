@@ -156,7 +156,7 @@ public class UIBattlefield : MonoBehaviour
 	}
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
-		if(cardObject == null || !canSummonHero(cardObject.Data))
+		if(cardObject == null || !canSummonHero(cardObject))
 		{
 			HideSpawnTiles();
 			return;

@@ -17,27 +17,4 @@ public class CardData : ScriptableObject
     {
 		Id = Guid.NewGuid().ToString();
 	}
-	public uint CalculateSummonCost()
-	{
-		uint cost = 0;
-		/*foreach (Skill skill in Skills)
-		{
-			if (skill.isActive)
-				cost += skill.manaCost;
-		}*/
-
-		return cost;
-	}
-	public uint CalculateAttack()
-	{
-		return Attack;
-	}
-	public uint CalculateDefense()
-	{
-		return Defense;
-	}
-	public uint CalculateWalkSpeed()
-	{
-		return WalkSpeed;
-	}
 }

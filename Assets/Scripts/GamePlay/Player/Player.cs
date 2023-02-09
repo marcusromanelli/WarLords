@@ -17,7 +17,6 @@ public class Player : MonoBehaviour, IAttackable
 	public event HandleOnHoldingCard OnHoldCard;
 	public event HandleOnCardReleased OnCardReleasedOnGraveyard;
 	public event HandleOnCardReleased OnCardReleasedOnManaPool;
-	public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
 	public event Action OnStartActionPhase;
 
 
@@ -63,7 +62,6 @@ public class Player : MonoBehaviour, IAttackable
 
 		conditionManager.Setup(this);
 	}
-
     public void SetupPlayDeck()
 	{
 		PlayDeck.Setup();
@@ -115,9 +113,9 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		return gameController.CanPlayerInteract(this) && enabled;
 	}
-	public void OnHeroDied(Card cardData, SpawnArea tile)
+	public void OnHeroDied(CardObject cardObject, SpawnArea tile)
 	{
-		Graveyard.SendCardToDeckFromPosition(cardData, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
+		Graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
 	}
 	#endregion INTERACTION
 
@@ -158,20 +156,20 @@ public class Player : MonoBehaviour, IAttackable
 	public CardObject IsHoldingCard()
     {
 		return Hand.GetHoldingCard();
-    }
-	public bool CanPlayerSummonHero(Card card)
-    {
-		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(card.ManaCost);
 	}
-	public bool CanSummonHero(Card card)
+	public bool CanPlayerSummonHero(CardObject cardObject)
+    {
+		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(cardObject.CalculateSummonCost());
+	}
+	public bool CanSummonHero(CardObject cardObject)
 	{
-		return CanSummonHero(card, null);
+		return CanSummonHero(cardObject, null);
 	}
-	public bool CanSummonHero(Card card, SpawnArea spawnArea = null)
+	public bool CanSummonHero(CardObject cardObject, SpawnArea spawnArea = null)
     {
-		var playerCan = CanPlayerSummonHero(card);
+		var playerCan = CanPlayerSummonHero(cardObject);
 
-		var playerCanSummonHero = !battlefield.PlayerHasHeroSummoned(this, card);
+		var playerCanSummonHero = !battlefield.PlayerHasHeroSummoned(this, cardObject);
 		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(this, spawnArea);
 		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile(this);
 
@@ -179,15 +177,17 @@ public class Player : MonoBehaviour, IAttackable
 
 		return playerCan && battleFieldCan;
 	}
+	public void SummonCostChanged(uint newCost)
+    {
+		ManaPool.RefreshPreviewedMana(newCost);
+    }
 	protected void TrySummonHero(CardObject cardObject)
 	{
 		TrySummonHero(cardObject, null);
 	}
 	protected void TrySummonHero(CardObject cardObject, SpawnArea spawnArea)
 	{
-		var cardData = cardObject.Data;
-
-		if (!CanSummonHero(cardData, spawnArea))
+		if (!CanSummonHero(cardObject, spawnArea))
 		{
 			Debug.Log("You cannot summon this hero right now.");
 			return;
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour, IAttackable
 
 		Hand.RemoveCard(cardObject, false);
 
-		ManaPool.SpendMana(cardData.CalculateSummonCost());
+		ManaPool.SpendMana(cardObject.CalculateSummonCost());
 
 		gameController.Summon(this, cardObject, spawnArea);
 	}
