@@ -26,7 +26,7 @@ public class RuntimeCardData
 
 	public RuntimeCardData(Card card)
     {
-		name = card.name;
+		name = card.Name;
 		manaCost = card.Data.ManaCost;
 		attack = card.Data.Attack;
 		defense = card.Data.Defense;
@@ -39,7 +39,7 @@ public class RuntimeCardData
 		foreach (var skill in skills)
 			activeSkills[skill] = false;
     }
-	public void DisableAllSkills()
+	public void UnselectAllSkills()
     {
 		foreach(var skill in Skills)
         {

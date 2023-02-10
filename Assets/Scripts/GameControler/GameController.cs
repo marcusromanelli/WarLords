@@ -219,6 +219,8 @@ public class GameController : MonoBehaviour
 		//}
 
 		string final = "";
+
+		
 		int count = GetPlayersConditionsNumber();
 
 		final += GetPlayersConditionsPrint();

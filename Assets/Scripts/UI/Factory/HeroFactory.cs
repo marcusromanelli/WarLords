@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroFactory : PoolableFactory<HeroObject> 
+/*public class HeroFactory : PoolableFactory<HeroObject> 
 {
-    public static HeroObject Create(CardObject cardObject, Transform transform, Vector3 position, Quaternion rotation)
+   /* public static HeroObject Create(CardObject cardObject, Transform transform, Vector3 position, Quaternion rotation)
     {
         var prefab = CreateDefault(transform, position, rotation);
 
@@ -12,7 +12,7 @@ public class HeroFactory : PoolableFactory<HeroObject>
         prefab.name = cardObject.Data.Name;
 
         return prefab;
-    }
+    }*/
 
     /*public static HeroObject CreateCard(Card card, Transform transform, bool hideCardInfo)
     {
@@ -40,5 +40,5 @@ public class HeroFactory : PoolableFactory<HeroObject>
         obj.SetupCover(civilization);
 
         return obj;
-    }*/
-}
+    }*
+}*/

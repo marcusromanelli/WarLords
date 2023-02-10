@@ -60,7 +60,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
         cardObject.transform.position = fromPosition.Position;
         cardObject.transform.rotation = fromPosition.Rotation;
 
-        cardObject.SetPositionAndRotation(CardPositionData.Create(GetTopCardPosition(), GetRotationReference()), () => {
+        cardObject.SetPosition(CardPositionData.Create(GetTopCardPosition(), GetRotationReference()), () => {
             CardFactory.AddToPool(cardObject);
 
             onFinish?.Invoke();

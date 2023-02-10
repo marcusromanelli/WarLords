@@ -2,7 +2,7 @@
 
 public class PlayCardCloseButton : MonoBehaviour {
 
-	[SerializeField] CardObject card;
+	[SerializeField] UICardObject card;
 
 	void OnMouseDown(){
 		card.OnCloseButtonClick();

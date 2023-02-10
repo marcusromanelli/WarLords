@@ -16,7 +16,7 @@ public class MacroComponent : MonoBehaviour
 	Skill Skill;
 
 	//List<SpawnArea> spawnAreaAuxiliarList;
-	List<HeroObject> heroAuxiliarList;
+	//List<HeroObject> heroAuxiliarList;
 
 	int auxiliarInt, auxiliarInt2, auxiliarInt3, auxiliarInt4;
 

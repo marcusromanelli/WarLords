@@ -78,7 +78,7 @@ public class AIPlayer : Player
 	SpawnArea GetRandomTile()
     {
 		List<SpawnArea> emptyTiles = uiBattlefield.GetEmptyFields(this);
-		emptyTiles.RemoveAll(spawnArea => spawnArea.Hero != null);
+		emptyTiles.RemoveAll(spawnArea => spawnArea.Token != null);
 
 		return emptyTiles[UnityEngine.Random.Range(0, emptyTiles.Count)];
 	}

@@ -9,9 +9,9 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	[SerializeField] Color selectedColor = Color.black;
 	[SerializeField] Transform cardPositionDataReference;
 	[SerializeField, ReadOnly] bool isTemporarySpawnArea;
-	[SerializeField, ReadOnly] HeroObject hero = null;
+	[SerializeField, ReadOnly] CardObject token = null;
 
-	public HeroObject Hero => hero;
+	public CardObject Token => token;
 	public Vector2 GridPosition => gridPosition;
 
 	private Vector2 gridPosition;
@@ -70,13 +70,13 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 		renderer.material.color = color;
 		lastUsedColor = color;
 	}
-	public void SetHero(HeroObject hero)
+	public void SetToken(CardObject hero)
 	{
-		this.hero = hero;
+		this.token = hero;
 	}
-	public void RemoteHero()
+	public void RemoveToken()
 	{
-		hero = null;
+		token = null;
 	}
 	/*
 	private bool IsTemporarilySummonable;

@@ -11,14 +11,14 @@ public class UIBattlefield : MonoBehaviour
 	public SpawnArea SelectedTile => selectedTile;
 
 	private InputController inputController;
-	private HandleCanSummonHero canSummonHero;
+	private HandleCanSummonToken canSummonToken;
 	private Player localPlayer;
 
-	public void Setup(Player LocalPlayer, InputController InputController, HandleCanSummonHero CanSummonHero)
+	public void Setup(Player LocalPlayer, InputController InputController, HandleCanSummonToken CanSummonToken)
     {
 		localPlayer = LocalPlayer;
 		inputController = InputController;
-		canSummonHero = CanSummonHero;
+		canSummonToken = CanSummonToken;
 
 		Generate();
 	}
@@ -156,7 +156,7 @@ public class UIBattlefield : MonoBehaviour
 	}
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
-		if(cardObject == null || !canSummonHero(cardObject))
+		if(cardObject == null || !canSummonToken(cardObject))
 		{
 			HideSpawnTiles();
 			return;
@@ -189,10 +189,10 @@ public class UIBattlefield : MonoBehaviour
 
 		return battlefieldTiles[(int)position.x, (int)position.y];
 	}
-	public SpawnArea GetHeroTile(Player player, HeroObject hero)
+	public SpawnArea GetTokenTile(Player player, CardObject hero)
 	{
 		foreach (var tile in battlefieldTiles)
-			if (tile.Hero == hero)
+			if (tile.Token == hero)
 				return tile;
 
 		return null;

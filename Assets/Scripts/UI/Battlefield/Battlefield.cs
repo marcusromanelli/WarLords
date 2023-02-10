@@ -13,14 +13,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 	[BoxGroup("Presets"), SerializeField] CardPositionData visualizeCardPositionOffset;
 
-	private Dictionary<Player, List<HeroObject>> heroList = new Dictionary<Player, List<HeroObject>>();
+	private Dictionary<Player, List<CardObject>> tokenList = new Dictionary<Player, List<CardObject>>();
 	private GameController gameController;
 	private InputController inputController;
 	private Player localPlayer, remotePlayer;
 
-	public bool isVisualizingHeroCard = false;
+	public bool isVisualizingTokenCard = false;
 
-	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanSummonHero CanSummonHero)
+	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanSummonToken CanSummonToken)
 	{
 		gameController = GameController;
 		inputController = InputController;
@@ -30,7 +30,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
 
-		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonHero);
+		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonToken);
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE
@@ -47,95 +47,97 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	IEnumerator DoMovement(Player currentPlayer)
 	{
-		if (!heroList.ContainsKey(currentPlayer))
+		if (!tokenList.ContainsKey(currentPlayer))
 			yield break;
 
-		List<HeroObject> heroes = heroList[currentPlayer];
+		List<CardObject> tokenes = tokenList[currentPlayer];
 
-		foreach (HeroObject hero in heroes)
+		foreach (CardObject token in tokenes)
 		{
-			yield return MoveHero(currentPlayer, hero);
+			yield return MoveToken(currentPlayer, token);
 		}
 	}
-	IEnumerator MoveHero(Player currentPlayer, HeroObject hero)
+	IEnumerator MoveToken(Player currentPlayer, CardObject token)
 	{
-		var tile = GetHeroTile(currentPlayer, hero);
-		tile.RemoteHero();
-		var newGridPosition = uiBattlefield.Normalize(CalculateHeroEndPosition(currentPlayer, hero));
+		var tile = GetTokenTile(currentPlayer, token);
+		tile.RemoveToken();
+		var newGridPosition = uiBattlefield.Normalize(CalculateTokenEndPosition(currentPlayer, token));
 		var newPosition = uiBattlefield.GridToUnity(newGridPosition);
 
-		hero.Move(newPosition);
+		token.Move(newPosition);
 
-		yield return hero.IsWalking();
+		Debug.Log("Token " + token.name + " moved to " + newGridPosition);
+
+		yield return token.IsWalking();
 
 		var newTile = GetTileByPosition(newPosition);
-		hero.SetPosition(newGridPosition);
+		token.SetPosition(newGridPosition);
 
-		SetHeroTile(hero, newTile);
-		EvaulateHeroTarget(currentPlayer, hero);
+		SetTokenTile(token, newTile);
+		EvaulateTokenTarget(currentPlayer, token);
 	}
 	SpawnArea GetTileByPosition(Vector3 position)
 	{
 		return uiBattlefield.GetTileByPosition(position);
 	}
-	Vector2 CalculateHeroEndPosition(Player currentPlayer, HeroObject hero)
+	Vector2 CalculateTokenEndPosition(Player currentPlayer, CardObject token)
 	{
-		Vector2 gridPos = hero.GridPosition;
+		Vector2 gridPos = token.GridPosition;
 		var currentField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
-		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+		gridPos.y += GetTokenMovementDirection(currentPlayer) * token.CalculateWalkSpeed();
 
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
-			return hero.GridPosition;
+			return token.GridPosition;
 
 		var targetField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
-		if (targetField.Hero != null)
-			return hero.GridPosition;
+		if (targetField.Token != null)
+			return token.GridPosition;
 
 		return gridPos;
 	}
-	void EvaulateHeroTarget(Player currentPlayer, HeroObject hero)
+	void EvaulateTokenTarget(Player currentPlayer, CardObject token)
 	{
-		Vector2 gridPos = hero.GridPosition;
+		Vector2 gridPos = token.GridPosition;
 		var currentField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 
 		var targetPlayer = currentPlayer == localPlayer ? remotePlayer : localPlayer;
 
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
 		{
-			Debug.Log(hero.name + " is now targeting " + targetPlayer.name);
-			hero.SetTarget(targetPlayer);
+			Debug.Log(token.name + " is now targeting " + targetPlayer.name);
+			token.SetTarget(targetPlayer);
 			return;
 		}
 
-		gridPos.y += GetHeroMovementDirection(currentPlayer) * hero.GetWalkSpeed();
+		gridPos.y += GetTokenMovementDirection(currentPlayer) * token.CalculateWalkSpeed();
 		var nextField = GetFields()[(int)gridPos.x, (int)gridPos.y];
-		var targetHero = nextField.Hero;
+		var targetToken = nextField.Token;
 
-		if (targetHero != null && !PlayerHasHero(currentPlayer, targetHero))
+		if (targetToken != null && !PlayerHasToken(currentPlayer, targetToken))
 		{
 
-			Debug.Log(hero.name + " is now targeting " + targetHero.name);
-			hero.SetTarget(targetHero);
+			Debug.Log(token.name + " is now targeting " + targetToken.name);
+			token.SetTarget(targetToken);
 		}
 		else
 		{
-			Debug.Log("Reseted targetting for " + hero.name);
-			hero.ResetTargets();
+			Debug.Log("Reseted targetting for " + token.name);
+			token.ResetTarget();
 		}
 	}
-	bool PlayerHasHero(Player currentPlayer, HeroObject hero)
+	bool PlayerHasToken(Player currentPlayer, CardObject token)
 	{
-		return PlayerHasHeroSummoned(currentPlayer, hero.CardObject);
+		return PlayerHasTokenSummoned(currentPlayer, token);
 	}
-	int GetHeroMovementDirection(Player player)
+	int GetTokenMovementDirection(Player player)
 	{
 		return player == localPlayer ? 1 : -1;
 	}
-	public SpawnArea GetHeroTile(Player player, HeroObject hero)
+	public SpawnArea GetTokenTile(Player player, CardObject token)
 	{
-		return uiBattlefield.GetHeroTile(player, hero);
+		return uiBattlefield.GetTokenTile(player, token);
 	}
 	#endregion MOVEMENT_PHASE
 
@@ -146,73 +148,78 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	}
 	IEnumerator DoAttack(Player currentPlayer, Player enemyPlayer)
 	{
-		if (!heroList.ContainsKey(currentPlayer))
+		if (!tokenList.ContainsKey(currentPlayer))
 			yield break;
 
-		List<HeroObject> heroes = heroList[currentPlayer];
+		List<CardObject> tokenes = tokenList[currentPlayer];
 
-		foreach (HeroObject hero in heroes)
-			HeroAttack(hero, enemyPlayer);
+		foreach (CardObject token in tokenes)
+			TokenAttack(token, enemyPlayer);
 	}
-	void HeroAttack(HeroObject hero, Player enemyPlayer)
+	void TokenAttack(CardObject token, Player enemyPlayer)
 	{
-		if (!hero.HasTarget())
+		if (!token.HasTarget())
 			return;
 
-		var target = hero.GetTarget();
+		var target = token.GetTarget();
 
-		hero.Attack();
+		Debug.Log(token.name + " attacking " + target);
+
+		token.Attack();
 
 		var isAlive = TargetIsAlive(target, enemyPlayer);
 				
 		Debug.Log("Target is alive? " + isAlive);
 
 		if (!isAlive)
-			hero.ResetTargets();
+			token.ResetTarget();
 	}
 	bool TargetIsAlive(IAttackable target, Player ownerPlayer)
 	{
 		if (target.GetLife() > 0)
 			return true;
 
-		if (!(target is HeroObject))
+		if (!(target is CardObject))
 			return true;
 
-		var heroObject = target as HeroObject;
+		var CardObject = target as CardObject;
 
-		DestroyHero(heroObject, ownerPlayer);
+		DestroyToken(CardObject, ownerPlayer);
 
 		return false;
 	}
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public void Summon(Player player, CardObject cardObject, SpawnArea _spawnArea = null)
+	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
 	{
-		var spawnArea = _spawnArea ?? uiBattlefield.SelectedTile;
+		spawnArea ??= uiBattlefield.SelectedTile;
 
-		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedHero);
+		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
 
-		var hero = HeroFactory.Create(cardObject, transform, spawnArea.transform.position, spawnArea.GetRotationReference());
+		cardObject.transform.position = spawnArea.transform.position;
+		cardObject.transform.SetParent(transform, true);
+		cardObject.Invoke();
+		//var token = TokenFactory.Create(cardObject, transform, spawnArea.transform.position, spawnArea.GetRotationReference());
 
-		hero.SetPosition(uiBattlefield.UnityToGrid(spawnArea.transform.position));
+		//token.SetPosition(uiBattlefield.UnityToGrid(spawnArea.transform.position));
 
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 
-		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, heroCard);
+		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, tokenCard);
 
-		AddHero(player, hero);
+		AddToken(player, cardObject);
 
-		ReorderHeroList(player);
+		ReorderTokenList(player);
 
-		SetHeroTile(hero, spawnArea);
+		SetTokenTile(cardObject, spawnArea);
 	}
-	public bool PlayerHasHeroSummoned(Player player, CardObject cardObject)
+	public bool PlayerHasTokenSummoned(Player player, CardObject cardObject)
 	{
-		if (!heroList.ContainsKey(player))
+		if (!tokenList.ContainsKey(player))
 			return false;
 
-		return heroList[player].Any(c => c.GetId() == cardObject.Data.Id);
+		return tokenList[player].Any(c => c.Data.Id == cardObject.Data.Id);
 	}
 	public bool CanSummonOnSelectedTile(Player player)
 	{
@@ -225,55 +232,54 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		return uiBattlefield.CanPlayerSummonOnTile(player, spawnArea);
 	}
-	void AddHero(Player player, HeroObject hero)
+	void AddToken(Player player, CardObject token)
 	{
-		if (!heroList.ContainsKey(player))
-			heroList.Add(player, new List<HeroObject>());
+		if (!tokenList.ContainsKey(player))
+			tokenList.Add(player, new List<CardObject>());
 
-		heroList[player].Add(hero);
+		tokenList[player].Add(token);
 	}
-	void RemoveHero(Player player, HeroObject hero)
+	void RemoveToken(Player player, CardObject token)
 	{
-		if (!heroList.ContainsKey(player))
+		if (!tokenList.ContainsKey(player))
 			return;
 
-		heroList[player].Remove(hero);
+		tokenList[player].Remove(token);
 	}
-	void ReorderHeroList(Player player)
+	void ReorderTokenList(Player player)
 	{
 		var targetEdge = player == localPlayer ? uiBattlefield.GetRemotePlayerEdge() : uiBattlefield.GetLocalPlayerEdge();
 
-		heroList[player].OrderByDescending(hero => Mathf.Abs(targetEdge - uiBattlefield.UnityToGrid(hero.transform.position).y));
+		tokenList[player].OrderByDescending(token => Mathf.Abs(targetEdge - uiBattlefield.UnityToGrid(token.transform.position).y));
 	}
-	void SetHeroTile(HeroObject hero, SpawnArea spawnArea)
+	void SetTokenTile(CardObject token, SpawnArea spawnArea)
 	{
-		if (spawnArea.Hero != null)
+		if (spawnArea.Token != null)
 			Debug.LogError("[ERROR] TILE NOT EMPTY");
 
-		spawnArea.SetHero(hero);
+		spawnArea.SetToken(token);
 	}
-	void DestroyHero(HeroObject heroObject, Player ownerPlayer)
+	void DestroyToken(CardObject CardObject, Player ownerPlayer)
     {
-		var tile = uiBattlefield.GetHeroTile(ownerPlayer, heroObject);
-		tile.RemoteHero();
+		var tile = uiBattlefield.GetTokenTile(ownerPlayer, CardObject);
+		tile.RemoveToken();
 
-		RemoveHero(ownerPlayer, heroObject);
+		RemoveToken(ownerPlayer, CardObject);
 
-		ownerPlayer.OnHeroDied(heroObject.CardObject, tile);
-
-		HeroFactory.AddToPool(heroObject);
+		ownerPlayer.OnTokenDied(CardObject, tile);
 	}
-	void OnClickSummonedHero(GameObject gameObject)
-    {
-		if (isVisualizingHeroCard)
+	void OnClickSummonedToken(GameObject gameObject)
+	{
+		return;
+		if (isVisualizingTokenCard)
 			return;
 
 		var cardObject = gameObject.GetComponent<CardObject>();
 
-		if (!cardObject.IsInPosition)
+		if (!cardObject.IsPositioned)
 			return;
 
-		isVisualizingHeroCard = true;
+		isVisualizingTokenCard = true;
 
 		var forwardCameraPosition = CalculateForwardCameraPosition();
 
@@ -281,17 +287,18 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
 
-		inputController.Lock();
-		cardObject.SetVisualizing(true);
-		cardObject.SetPositionAndRotation(data);
-		cardObject.RegisterCloseCallback(() =>
-		{
-			isVisualizingHeroCard = false;
+
+		void closeCallback()
+        {
+			isVisualizingTokenCard = false;
 			inputController.Unlock();
 			cardObject.SetVisualizing(false);
-			cardObject.SetPositionAndRotation(oldPosition);
-			cardObject.UnregisterCloseCallback();
-		});
+			cardObject.SetPosition(oldPosition);
+		}
+
+		inputController.Lock();
+		cardObject.SetVisualizing(true, closeCallback);
+		cardObject.SetPosition(data);
 	}
 	Vector3 CalculateForwardCameraPosition()
 	{

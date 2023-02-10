@@ -5,7 +5,7 @@ using UnityEngine;
 
 public delegate void HandleOnCardReleased(CardObject card);
 public delegate bool HandleCanReleaseCard();
-public delegate bool HandleCanSummonHero(CardObject cardObject);
+public delegate bool HandleCanSummonToken(CardObject cardObject);
 
 [Serializable]
 public class PlayerHand
@@ -24,7 +24,7 @@ public class PlayerHand
     {
         Cards = new List<Card>();
     }
-    public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleCanSummonHero canSummonHero)
+    public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleCanSummonToken canSummonHero)
     {
         uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
     }

@@ -45,11 +45,11 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
     HandleOnHoldingCard onCardBeingHeld;
-    HandleCanSummonHero canSummonHero;
+    HandleCanSummonToken canSummonHero;
 
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
         HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea, HandleOnHoldingCard onCardBeingHeld,
-        HandleCanSummonHero canSummonHero
+        HandleCanSummonToken canSummonHero
         )
     {
         this.player = player;
@@ -97,7 +97,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void AddCard(Card card)
     {
-        var cardObj = CardFactory.CreateCard(player, card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), !IsInteractable);
+        var cardObj = CardFactory.CreateCard(player, card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), IsInteractable);
 
         cardList.Add(cardObj);
 
@@ -196,7 +196,7 @@ public class UIPlayerHand : MonoBehaviour
 
             var cardPosition = GetCardHandPosition(cardHandIndex);
 
-            card.SetPositionAndRotation(cardPosition);
+            card.SetPosition(cardPosition);
 
             yield return new WaitForSeconds(awaitTimeBetweenDraws);
         }
@@ -214,7 +214,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var cardObject = gameObject.GetComponent<CardObject>();
 
-        if (!cardObject.IsInPosition)
+        if (!cardObject.IsPositioned)
             return;
 
         var forwardCameraPosition = CalculateForwardCameraPosition();
@@ -222,9 +222,8 @@ public class UIPlayerHand : MonoBehaviour
         var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
 
         currentTargetCard = cardObject;
-        currentTargetCard.SetVisualizing(true);
-        currentTargetCard.SetPositionAndRotation(data);
-        currentTargetCard.RegisterCloseCallback(CloseCardVisualization);
+        currentTargetCard.SetVisualizing(true, CloseCardVisualization);
+        currentTargetCard.SetPosition(data);
     }
     Vector3 CalculateForwardCameraPosition()
     {
@@ -249,7 +248,7 @@ public class UIPlayerHand : MonoBehaviour
         {
             cardObject = cardGameObject.GetComponent<CardObject>();
 
-            if (!cardObject.IsInPosition)
+            if (!cardObject.IsPositioned)
                 return;
 
             currentTargetCard = cardObject;
@@ -278,8 +277,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var cardIndex = GetCardIndexByObject(currentTargetCard);
         currentTargetCard.SetVisualizing(false);
-        currentTargetCard.SetPositionAndRotation(GetCardHandPosition(cardIndex));
-        currentTargetCard.UnregisterCloseCallback();
+        currentTargetCard.SetPosition(GetCardHandPosition(cardIndex));
         CancelHandToCardInteraction();
     }
     CardPositionData CalculateheldCardPosition()
@@ -292,11 +290,11 @@ public class UIPlayerHand : MonoBehaviour
     }
     void StartCardDynamicDrag(CardObject cardObject)
     {
-        currentTargetCard.SetPositionCallback(CalculateheldCardPosition);
+        currentTargetCard.SetPosition(CalculateheldCardPosition);
     }
     void StopCardDynamicDrag()
     {
-        currentTargetCard.SetPositionCallback(null);
+        currentTargetCard.SetPosition(null);
     }
 
 
@@ -398,7 +396,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         IsCardAwaitingRelease = true;
         StopCardDynamicDrag();
-        currentTargetCard.SetPositionAndRotation(CardPositionData.Create(cardPlaceable.GetTopCardPosition(), cardPlaceable.GetRotationReference()));
+        currentTargetCard.SetPosition(CardPositionData.Create(cardPlaceable.GetTopCardPosition(), cardPlaceable.GetRotationReference()));
     }
     int GetCardIndexByObject(CardObject card)
     {

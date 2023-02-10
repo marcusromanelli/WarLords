@@ -9,7 +9,7 @@ using System.Text;
 public class ActionComponent
 {
 
-	public Action action;
+	/*public Action action;
 	public int number;
 	public MacroType macro;
 	public HeroObject attacked;
@@ -57,7 +57,7 @@ public class ActionComponent
 		this.playerAttacked = attacked;
 		this.number = number;
 	}
-
+	*
 	public string getDescription()
 	{
 		StringBuilder str = new StringBuilder("Player ");
@@ -125,7 +125,7 @@ public class ActionComponent
 				str.Append(" activated macro ");
 				str.Append(macro.ToString());
 				break;
-		}*/
+		}*
 
 		return str.ToString();
 	}
@@ -217,5 +217,5 @@ public class LogController : MonoBehaviour
 			log.RemoveAt(0);
 		}
 		log.Add(action);
-	}
+	}*/
 }

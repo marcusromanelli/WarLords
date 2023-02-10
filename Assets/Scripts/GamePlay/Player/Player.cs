@@ -113,7 +113,7 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		return gameController.CanPlayerInteract(this) && enabled;
 	}
-	public void OnHeroDied(CardObject cardObject, SpawnArea tile)
+	public void OnTokenDied(CardObject cardObject, SpawnArea tile)
 	{
 		Graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
 	}
@@ -169,7 +169,7 @@ public class Player : MonoBehaviour, IAttackable
     {
 		var playerCan = CanPlayerSummonHero(cardObject);
 
-		var playerCanSummonHero = !battlefield.PlayerHasHeroSummoned(this, cardObject);
+		var playerCanSummonHero = !battlefield.PlayerHasTokenSummoned(this, cardObject);
 		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(this, spawnArea);
 		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile(this);
 

@@ -17,14 +17,14 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	private GetMaxMana getMaxManaCallback;
 	private GetCurrentMana getCurrentManaCallback;
 	private GetMaxAllowedMana getMaxAllowedManaCallback;
-	private HandleCanSummonHero canSummonHero;
+	private HandleCanSummonToken canSummonHero;
 	private bool isPreviewingManaCost;
 
 	void Awake()
 	{
 		manaOrbs = new List<ManaOrb>();
 	}
-	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanSummonHero CanSummonHero)
+	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanSummonToken CanSummonHero)
     {
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;

@@ -13,7 +13,7 @@ public class ManaPool
 	public uint MaxMana => maxMana;
 	public uint CurrentMana => currentMana;
 
-	public void Setup(Player LocalPlayer, HandleCanSummonHero CanSummonHero)
+	public void Setup(Player LocalPlayer, HandleCanSummonToken CanSummonHero)
 	{
 		LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
 

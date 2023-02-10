@@ -5,7 +5,6 @@ public class Token : MonoBehaviour
     [SerializeField] int coverMaterialIndex;
     [SerializeField] Renderer coverRenderer;
     [SerializeField] Animation cardPivot;
-    [SerializeField] CardObject cardObject;
 
     Sprite lastUsed;
 
@@ -17,28 +16,23 @@ public class Token : MonoBehaviour
         coverRenderer.materials[coverMaterialIndex].mainTexture = sprite.texture;
         lastUsed = sprite;
     }
-    public void SetCardObject(CardObject _cardObject)
+    public void SetCardObject(GameObject physicalCardObject)
     {
-        cardObject = _cardObject;
-
         var pivot = cardPivot.transform;
 
-        cardObject.transform.SetParent(pivot);
 
-        cardObject.HideInfo(true);
-        cardObject.Lock();
+        physicalCardObject.transform.position = cardPivot.transform.position;
 
-        cardObject.SetPositionAndRotation(CardPositionData.Create(pivot.position, pivot.rotation), () => {
-            SlideIn();
-        });
+        physicalCardObject.transform.SetParent(pivot, true);
+
+        physicalCardObject.transform.localPosition = Vector3.zero;
+
+        physicalCardObject.transform.localRotation = pivot.rotation;
+
+        SlideIn();
     }
     public void SlideIn()
     {
         cardPivot.Play();
-    }
-    public void Destroy()
-    {
-        if(cardObject != null)
-            CardFactory.AddToPool(cardObject);
     }
 }
