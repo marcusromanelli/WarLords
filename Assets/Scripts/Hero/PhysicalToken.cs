@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class Token : MonoBehaviour
+public class PhysicalToken : MonoBehaviour
 {
     [SerializeField] int coverMaterialIndex;
     [SerializeField] Renderer coverRenderer;
     [SerializeField] Animation cardPivot;
+
+    public Transform CardPivot => cardPivot.transform;
 
     Sprite lastUsed;
 
@@ -15,21 +17,6 @@ public class Token : MonoBehaviour
 
         coverRenderer.materials[coverMaterialIndex].mainTexture = sprite.texture;
         lastUsed = sprite;
-    }
-    public void SetCardObject(GameObject physicalCardObject)
-    {
-        var pivot = cardPivot.transform;
-
-
-        physicalCardObject.transform.position = cardPivot.transform.position;
-
-        physicalCardObject.transform.SetParent(pivot, true);
-
-        physicalCardObject.transform.localPosition = Vector3.zero;
-
-        physicalCardObject.transform.localRotation = pivot.rotation;
-
-        SlideIn();
     }
     public void SlideIn()
     {

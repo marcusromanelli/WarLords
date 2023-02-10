@@ -12,12 +12,17 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     [SerializeField] Transform cardReferencePosition;
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;
-
-    List<DeckActionType> remainingActions = new List<DeckActionType>();
-    List<CardObject> deckObjects = new List<CardObject>();
-    List<Card> cardsToAdd = new List<Card>();
     public bool IsBusy => isBusy;
 
+    private List<DeckActionType> remainingActions = new List<DeckActionType>();
+    private List<CardObject> deckObjects = new List<CardObject>();
+    private List<Card> cardsToAdd = new List<Card>();
+    private InputController inputController;
+
+    public void Setup(InputController InputController)
+    {
+        inputController = InputController;
+    }
     public void Add(Card card)
     {
         //AddCardAction(cards);
@@ -102,7 +107,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     }
     CardObject CreateCard(Card cardData)
     {
-        return CardFactory.CreateCard(cardData, transform, true);
+        return CardFactory.CreateCard(inputController, cardData, transform, true);
     }
     void AddCardAction()
     {

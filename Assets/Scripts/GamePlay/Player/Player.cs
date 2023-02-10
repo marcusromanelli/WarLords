@@ -37,14 +37,16 @@ public class Player : MonoBehaviour, IAttackable
 	[BoxGroup(debugTag), SerializeField] protected bool infinityHabilitiesPerTurn;
 
 	protected Battlefield battlefield;
-	protected bool HasUsedHability;
 	protected GameController gameController;
+	protected InputController inputController;
+	protected bool HasUsedHability;
 	protected bool IsReadyToEndActionPhase = true;
 	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
 	public virtual void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController)
     {
+		this.inputController = inputController;
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
     public void SetupPlayDeck()
 	{
-		PlayDeck.Setup();
+		PlayDeck.Setup(inputController);
 
 		PlayDeck.AddCards(startDeck.Cards);
 

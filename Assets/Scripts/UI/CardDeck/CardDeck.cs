@@ -11,9 +11,11 @@ public class CardDeck
     [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
-    public void Setup()
+    public void Setup(InputController InputController)
     {
         Cards = new Stack<Card>();
+
+        uiCardDeck.Setup(InputController);
     }
     public void AddCard(Card card)
     {

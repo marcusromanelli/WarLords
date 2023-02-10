@@ -10,7 +10,7 @@ public delegate CardPositionData OnGetPositionAndRotation();
 public class CardObject : MonoBehaviour, IPoolable, IAttackable
 {
 	[BoxGroup("Components"), SerializeField] UICardObject uiCardObject;
-	[BoxGroup("Components"), SerializeField] UIToken uiToken;
+	[BoxGroup("Components"), SerializeField] UITokenObject uiToken;
 
 
 	[BoxGroup("Game"), Expandable, SerializeField] private Card cardData;
@@ -28,9 +28,12 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	private RuntimeCardData runtimeCardData;
 	private bool isVisualizing;
 	private bool isInvoked;
+	private InputController inputController;
 
-	public void Setup(Player player, Card card, bool isLocalPlayer)
+	public void Setup(InputController inputController, Player player, Card card, bool isLocalPlayer)
 	{
+		this.name = card.Name;
+		this.inputController = inputController;
 		this.player = player;
 		cardData = card;
 
@@ -38,16 +41,16 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 
 		uiCardObject.Setup(this, isLocalPlayer);
 	}
-	public void Setup(Card card, bool hideInfo)
+	public void Setup(InputController inputController, Card card, bool hideInfo)
 	{
-		Setup(null, card, hideInfo);
+		Setup(inputController, null, card, hideInfo);
 	}
 	public void Invoke()
     {
 		isInvoked = true;
 
 		uiCardObject.RefreshCardUI();
-		uiToken.Setup(this);
+		uiToken.Setup(this, inputController);
 	}
 	public void SetVisualizing(bool isVisualizing, OnClickCloseButton closeCallback = null)
 	{
@@ -60,6 +63,10 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	public void SetPosition(CardPositionData cardData, Action onFinish = null)
 	{
 		uiCardObject.SetPositionAndRotation(cardData, onFinish);
+	}
+	public void SetLocalPosition(CardPositionData cardData, Action onFinish = null)
+	{
+		uiCardObject.SetLocalPositionAndRotation(cardData, onFinish);
 	}
 	public void SetPosition(OnGetPositionAndRotation getPositionAndRotation)
 	{

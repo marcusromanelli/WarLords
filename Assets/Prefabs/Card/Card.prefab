@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a9e8223b28d164e9e1a04855b04258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCardObject: {fileID: 0}
+  uiCardObject: {fileID: 8401291942477997792}
   Status:
     uiTokenStatus: {fileID: 1904567184572622051}
   damageParticleSystem: {fileID: 7553837838898953980}

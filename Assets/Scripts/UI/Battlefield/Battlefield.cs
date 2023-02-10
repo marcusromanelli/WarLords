@@ -11,8 +11,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 {
 	[SerializeField] UIBattlefield uiBattlefield;
 
-	[BoxGroup("Presets"), SerializeField] CardPositionData visualizeCardPositionOffset;
-
 	private Dictionary<Player, List<CardObject>> tokenList = new Dictionary<Player, List<CardObject>>();
 	private GameController gameController;
 	private InputController inputController;
@@ -195,8 +193,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	{
 		spawnArea ??= uiBattlefield.SelectedTile;
 
-		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
-
 		cardObject.transform.position = spawnArea.transform.position;
 		cardObject.transform.SetParent(transform, true);
 		cardObject.Invoke();
@@ -267,46 +263,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		RemoveToken(ownerPlayer, CardObject);
 
 		ownerPlayer.OnTokenDied(CardObject, tile);
-	}
-	void OnClickSummonedToken(GameObject gameObject)
-	{
-		return;
-		if (isVisualizingTokenCard)
-			return;
-
-		var cardObject = gameObject.GetComponent<CardObject>();
-
-		if (!cardObject.IsPositioned)
-			return;
-
-		isVisualizingTokenCard = true;
-
-		var forwardCameraPosition = CalculateForwardCameraPosition();
-
-		var oldPosition = CardPositionData.Create(cardObject.transform.position, cardObject.transform.rotation);
-
-		var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
-
-
-		void closeCallback()
-        {
-			isVisualizingTokenCard = false;
-			inputController.Unlock();
-			cardObject.SetVisualizing(false);
-			cardObject.SetPosition(oldPosition);
-		}
-
-		inputController.Lock();
-		cardObject.SetVisualizing(true, closeCallback);
-		cardObject.SetPosition(data);
-	}
-	Vector3 CalculateForwardCameraPosition()
-	{
-		var mainCameraPosition = Camera.main.transform.position;
-		mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
-		mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
-
-		return mainCameraPosition;
 	}
 	#endregion HERO_LOGIC
 

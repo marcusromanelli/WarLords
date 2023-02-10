@@ -16,7 +16,6 @@ public class UIPlayerHand : MonoBehaviour
     [SerializeField, ShowIf("IsInteractable")] BezierCurve bezierCurve;
 	[SerializeField, ShowIf("IsInteractable")] AnimationCurve curveRange;
 
-    [BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData visualizeCardPositionOffset;
 	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
     [BoxGroup("Presets"), SerializeField] Vector3 HandRotation;
 
@@ -24,6 +23,7 @@ public class UIPlayerHand : MonoBehaviour
     private Battlefield battlefield;
     private List<CardObject> cardList = new List<CardObject>();
     private InputController inputController;
+    private bool targetingCard;
     private CardObject _currentTargetCard;
     private CardObject currentTargetCard
     {
@@ -97,7 +97,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void AddCard(Card card)
     {
-        var cardObj = CardFactory.CreateCard(player, card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), IsInteractable);
+        var cardObj = CardFactory.CreateCard(inputController, player, card, transform, uiCardDeck.GetTopCardPosition(), uiCardDeck.GetRotationReference(), IsInteractable);
 
         cardList.Add(cardObj);
 
@@ -114,6 +114,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     public void CancelHandToCardInteraction()
     {
+        targetingCard = false;
         currentTargetCard = null;
         IsCardAwaitingRelease = false;
         IsDraggingCard = false;
@@ -158,6 +159,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         if (IsInteractable)
         {
+            inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, gameObject, OnDownCard);
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, gameObject, OnUpCard);
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragStart, gameObject, OnDragCardStart);
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, gameObject, OnDragCardEnd);
@@ -167,6 +169,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         if (IsInteractable)
         {
+            inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonDown, gameObject, OnUpCard);
             inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonUp, gameObject, OnUpCard);
             inputController.UnregisterTargetCallback(MouseEventType.LeftMouseDragStart, gameObject, OnDragCardStart);
             inputController.UnregisterTargetCallback(MouseEventType.LeftMouseDragEnd, gameObject, OnDragCardEnd);
@@ -203,35 +206,36 @@ public class UIPlayerHand : MonoBehaviour
 
         IsRearragingCards = false;
     }
+    void OnDownCard(GameObject gameObject)
+    {
+        if (currentTargetCard != null && targetingCard)
+            return;
+
+        targetingCard = true;
+    }
     void OnUpCard(GameObject cardObject)
     {
         if (currentTargetCard != null)
             return;
 
+        targetingCard = false;
         ShowVisualizingCard(cardObject);
     }
     void ShowVisualizingCard(GameObject gameObject)
     {
+        targetingCard = false;
         var cardObject = gameObject.GetComponent<CardObject>();
 
         if (!cardObject.IsPositioned)
             return;
 
-        var forwardCameraPosition = CalculateForwardCameraPosition();
+        var forwardCamera = CameraController.CalculateForwardCameraPosition();
 
-        var data = CardPositionData.Create(forwardCameraPosition, visualizeCardPositionOffset.Rotation);
+        var data = CardPositionData.Create(forwardCamera.Position, forwardCamera.Rotation);
 
         currentTargetCard = cardObject;
         currentTargetCard.SetVisualizing(true, CloseCardVisualization);
         currentTargetCard.SetPosition(data);
-    }
-    Vector3 CalculateForwardCameraPosition()
-    {
-        var mainCameraPosition = Camera.main.transform.position;
-        mainCameraPosition += (Camera.main.transform.forward * visualizeCardPositionOffset.Position.z); //Adjust Z
-        mainCameraPosition += (-Camera.main.transform.up * visualizeCardPositionOffset.Position.y); //Adjust Y
-
-        return mainCameraPosition;
     }
     void CloseCardVisualization()
     {

@@ -38,6 +38,7 @@ public class UICardObject : MonoBehaviour
 	public bool IsInPosition => isInPosition;
 
 	private CardObject parentCardObject;
+	private CardPositionData? targetLocalPositionAndRotation;
 	private CardPositionData? targetPositionAndRotation;
 	private OnGetPositionAndRotation getPositionAndRotationCallback;
 	private bool isInPosition = false;
@@ -61,8 +62,20 @@ public class UICardObject : MonoBehaviour
 
 		RefreshCardUI();
 	}
+	public void SetLocalPositionAndRotation(CardPositionData cardData, Action onFinish = null)
+	{
+		getPositionAndRotationCallback = null;
+		targetPositionAndRotation = null;
+		targetLocalPositionAndRotation = cardData;
+
+		isInPosition = false;
+
+		onFinishPosition = onFinish;
+	}
 	public void SetPositionAndRotation(CardPositionData cardData, Action onFinish = null)
 	{
+		targetLocalPositionAndRotation = null;
+		getPositionAndRotationCallback = null;
 		targetPositionAndRotation = cardData;
 
 		isInPosition = false;
@@ -71,6 +84,7 @@ public class UICardObject : MonoBehaviour
 	}
 	public void SetPositionCallback(OnGetPositionAndRotation getPositionAndRotation)
 	{
+		targetLocalPositionAndRotation = null;
 		targetPositionAndRotation = null;
 		getPositionAndRotationCallback = getPositionAndRotation;
 
@@ -146,7 +160,7 @@ public class UICardObject : MonoBehaviour
 				ShowHidden();         //The default card appearance. Showing only the cover
 				break;
 			case CardVisualizationType.DefaultVisualization:
-				ShowDefaultWithSkills(true);  //"Default" one, but with skills button activated
+				ShowFieldVisualization();  //"Default" one, but with skills button activated
 				break;
 			case CardVisualizationType.OnField:
 				ShowOnField();      //On field. Shownig only background image
@@ -200,6 +214,10 @@ public class UICardObject : MonoBehaviour
 
 		ToggleSkillButtonsInteraction(false);
 	}
+	void ShowFieldVisualization()
+    {
+		ShowDefaultWithSkills(false);
+    }
 	void ShowDefaultWithSkills(bool skillsInteractable)
 	{
 		ShowDefault();
@@ -208,6 +226,24 @@ public class UICardObject : MonoBehaviour
 		enableSkill2Button.gameObject.SetActive(true);
 
 		ToggleSkillButtonsInteraction(skillsInteractable);
+	}
+	public void DetachPhsyicalCard()
+	{
+		physicalCardObject.transform.SetParent(null, true);
+	}
+	public void AttachPhsyicalCard(Transform transform, bool changePosition = true, bool changeRotation = true)
+	{
+		if(changePosition)
+			physicalCardObject.transform.position = transform.position;
+
+		physicalCardObject.transform.SetParent(transform, true);
+
+		if(changeRotation)
+			physicalCardObject.transform.localRotation = transform.localRotation;
+	}
+	public void DettachPhsyicalCard()
+	{
+		physicalCardObject.transform.SetParent(null, true);
 	}
 	void UpdateCardName()
     {
@@ -298,6 +334,7 @@ public class UICardObject : MonoBehaviour
 		closeCallback = null;
 		isBecamingMana = false;
 		isInPosition = false;
+		targetLocalPositionAndRotation = null;
 		targetPositionAndRotation = null;
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
@@ -318,6 +355,10 @@ public class UICardObject : MonoBehaviour
 		{
 			GoToPresetTargetPosition();
 		}
+		if (!isInPosition && targetLocalPositionAndRotation != null)
+		{
+			GoToPresetTargetLocalPosition();
+		}
 	}
 	void GoToDynamicTargetPosition()
 	{
@@ -327,6 +368,19 @@ public class UICardObject : MonoBehaviour
 
 		opjTransform.position = targetPosition.Position;
 		opjTransform.localRotation = Quaternion.RotateTowards(opjTransform.localRotation, targetPosition.Rotation, Time.deltaTime * cardRotationSpeed);
+	}
+	void GoToPresetTargetLocalPosition()
+	{
+		Transform opjTransform = GetCurrentActiveObject();
+
+		opjTransform.localPosition = Vector3.MoveTowards(opjTransform.localPosition, targetLocalPositionAndRotation.Value.Position, Time.deltaTime * cardMovementSpeed);
+		opjTransform.localRotation = Quaternion.RotateTowards(opjTransform.localRotation, targetLocalPositionAndRotation.Value.Rotation, Time.deltaTime * cardRotationSpeed);
+
+		if (opjTransform.localPosition == targetLocalPositionAndRotation.Value.Position && opjTransform.localRotation == targetLocalPositionAndRotation.Value.Rotation)
+		{
+			isInPosition = true;
+			onFinishPosition?.Invoke();
+		}
 	}
 	void GoToPresetTargetPosition()
 	{
