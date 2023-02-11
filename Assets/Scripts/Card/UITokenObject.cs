@@ -134,7 +134,7 @@ public class UITokenObject : MonoBehaviour
 
 		CardSlideIn();
 
-		//inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
+		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, cardObject.gameObject, OnClickSummonedToken);
 	}
 	void OnClickSummonedToken(GameObject gameObject)
 	{
@@ -147,7 +147,7 @@ public class UITokenObject : MonoBehaviour
 		void closeCallback()
 		{
 
-			uiCardObject.AttachPhsyicalCard(tokenObject);
+			uiCardObject.AttachPhsyicalCard(SlideCardPivot);
 			cardObject.SetVisualizing(false);
 			cardObject.SetLocalPosition(CardPositionData.Create(Vector3.zero, Quaternion.Euler(Vector3.zero)), () =>
 			{
