@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiCardObject: {fileID: 8401291942477997792}
-  uiToken: {fileID: 872176418975635393}
+  uiToken: {fileID: 1473592187069729216}
   cardData: {fileID: 0}
 --- !u!114 &8401291942477997792
 MonoBehaviour:
@@ -2110,6 +2110,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000011953715102}
     m_Modifications:
+    - target: {fileID: 872176418975635393, guid: bf35140e13b4b664ab6ee226437dba0b,
+        type: 3}
+      propertyPath: uiCardObject
+      value: 
+      objectReference: {fileID: 8401291942477997792}
     - target: {fileID: 6411267487628462972, guid: bf35140e13b4b664ab6ee226437dba0b,
         type: 3}
       propertyPath: m_Name
@@ -2175,73 +2180,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3165635204484052632, guid: bf35140e13b4b664ab6ee226437dba0b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf35140e13b4b664ab6ee226437dba0b, type: 3}
---- !u!114 &728056810524897943 stripped
+--- !u!114 &1473592187069729216 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1329481441149791382, guid: bf35140e13b4b664ab6ee226437dba0b,
+  m_CorrespondingSourceObject: {fileID: 872176418975635393, guid: bf35140e13b4b664ab6ee226437dba0b,
     type: 3}
   m_PrefabInstance: {fileID: 1759174196167368193}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40829ac920cf74848bab875f922b6ebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1904567184572622051 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 146286032382851810, guid: bf35140e13b4b664ab6ee226437dba0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1759174196167368193}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5a8b3e39838d84990b95467c541e95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!198 &2223175908371693317 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 482897990041051396, guid: bf35140e13b4b664ab6ee226437dba0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1759174196167368193}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4652414487520728445 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6411267487628462972, guid: bf35140e13b4b664ab6ee226437dba0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1759174196167368193}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &872176418975635393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4652414487520728445}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a9e8223b28d164e9e1a04855b04258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCardObject: {fileID: 8401291942477997792}
-  Status:
-    uiTokenStatus: {fileID: 1904567184572622051}
-  damageParticleSystem: {fileID: 7553837838898953980}
-  summonParticleSystem: {fileID: 2223175908371693317}
-  damageCounter: {fileID: 728056810524897943}
-  walkSpeed: 0.5
 --- !u!4 &7168664996878781348 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8869242745767220645, guid: bf35140e13b4b664ab6ee226437dba0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1759174196167368193}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &7553837838898953980 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8123729440274325757, guid: bf35140e13b4b664ab6ee226437dba0b,
     type: 3}
   m_PrefabInstance: {fileID: 1759174196167368193}
   m_PrefabAsset: {fileID: 0}

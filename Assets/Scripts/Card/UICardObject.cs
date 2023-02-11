@@ -231,15 +231,9 @@ public class UICardObject : MonoBehaviour
 	{
 		physicalCardObject.transform.SetParent(null, true);
 	}
-	public void AttachPhsyicalCard(Transform transform, bool changePosition = true, bool changeRotation = true)
+	public void AttachPhsyicalCard(Transform transform)
 	{
-		if(changePosition)
-			physicalCardObject.transform.position = transform.position;
-
 		physicalCardObject.transform.SetParent(transform, true);
-
-		if(changeRotation)
-			physicalCardObject.transform.localRotation = transform.localRotation;
 	}
 	public void DettachPhsyicalCard()
 	{

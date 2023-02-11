@@ -51,6 +51,8 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 
 		uiCardObject.RefreshCardUI();
 		uiToken.Setup(this, inputController);
+
+		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 	}
 	public void SetVisualizing(bool isVisualizing, OnClickCloseButton closeCallback = null)
 	{

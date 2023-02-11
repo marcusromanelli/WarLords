@@ -194,13 +194,13 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		spawnArea ??= uiBattlefield.SelectedTile;
 
 		cardObject.transform.position = spawnArea.transform.position;
+		cardObject.transform.localRotation = spawnArea.GetRotationReference();
 		cardObject.transform.SetParent(transform, true);
+
 		cardObject.Invoke();
 		//var token = TokenFactory.Create(cardObject, transform, spawnArea.transform.position, spawnArea.GetRotationReference());
 
 		//token.SetPosition(uiBattlefield.UnityToGrid(spawnArea.transform.position));
-
-		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 
 		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, tokenCard);
 

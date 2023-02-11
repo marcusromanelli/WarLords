@@ -4,11 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class UICardDeck : MonoBehaviour, ICardPlaceable
 {    enum DeckActionType { AddCard, DrawCard }
 
-    [SerializeField] TextMesh cardCounter;
+    [SerializeField] TMP_Text cardCounter;
     [SerializeField] Transform cardReferencePosition;
     [SerializeField] float distanceBetweenCards = 0.02f;
     [SerializeField, ReadOnly] bool isBusy;

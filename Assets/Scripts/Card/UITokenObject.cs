@@ -8,17 +8,19 @@ public class UITokenObject : MonoBehaviour
 	[SerializeField] ParticleSystem damageParticleSystem;
 	[SerializeField] ParticleSystem summonParticleSystem;
 	[SerializeField] DamageCounter damageCounter;
+	[SerializeField] Animation slideCardPivot;
 	[SerializeField] float walkSpeed = 0.5f;
 
 	public Vector2 GridPosition => gridPosition;
+	public Transform SlideCardPivot => slideCardPivot.transform;
 
 
 	private Vector2 gridPosition;
-	private PhysicalToken tokenObject;
 	private IAttackable target;
 	private bool isWalking;
 	private Vector3 targetPosition;
 	private CardObject cardObject;
+	private Transform tokenObject;
 	private InputController inputController;
 	private bool isBeingVisualized;
 	private bool isInvoked;
@@ -43,7 +45,7 @@ public class UITokenObject : MonoBehaviour
 			return;
 
 		if (tokenObject != null)
-			tokenObject.gameObject.SetActive(false);
+			Destroy(tokenObject.gameObject);
 
 		inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
 
@@ -113,19 +115,26 @@ public class UITokenObject : MonoBehaviour
 
 
 
+	public void CardSlideIn()
+	{
+		slideCardPivot.Play();
+	}
 	void CreateToken(CardObject cardObject, InputController inputController)
     {
-		var token = ElementFactory.CreateObject<PhysicalToken>(cardObject.Data.Civilization.Token, transform);
+		var token = ((GameObject)ElementFactory.CreateObject(cardObject.Data.Civilization.Token, transform)).transform;
+
+		token.localPosition = Vector3.zero;
+		token.localRotation = Quaternion.identity;
 
 		tokenObject = token;
-		tokenObject.transform.localPosition = Vector3.zero;
-		tokenObject.transform.localRotation = Quaternion.identity;
 
-		uiCardObject.AttachPhsyicalCard(tokenObject.CardPivot);
+		uiCardObject.AttachPhsyicalCard(SlideCardPivot);
 
-		tokenObject.SlideIn();
+		uiCardObject.SetLocalPositionAndRotation(CardPositionData.Create(Vector3.zero, Quaternion.identity));
 
-		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
+		CardSlideIn();
+
+		//inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
 	}
 	void OnClickSummonedToken(GameObject gameObject)
 	{
@@ -138,9 +147,9 @@ public class UITokenObject : MonoBehaviour
 		void closeCallback()
 		{
 
-			uiCardObject.AttachPhsyicalCard(tokenObject.CardPivot, false, false);
+			uiCardObject.AttachPhsyicalCard(tokenObject);
 			cardObject.SetVisualizing(false);
-			cardObject.SetLocalPosition(CardPositionData.Create(Vector3.zero, tokenObject.CardPivot.rotation), () =>
+			cardObject.SetLocalPosition(CardPositionData.Create(Vector3.zero, Quaternion.Euler(Vector3.zero)), () =>
 			{
 				inputController.Unlock();
 				isBeingVisualized = false;
@@ -176,11 +185,6 @@ public class UITokenObject : MonoBehaviour
     }
 	void UpdateVisuals()
     {
-		tokenObject.transform.localPosition = Vector3.zero;
-		tokenObject.transform.rotation = Quaternion.identity;
-
-		tokenObject.Setup(cardObject.Data.FrontCover);
-
 		Status.Setup(cardObject.CalculateLife(), cardObject.CalculateAttack());
 	}
     public uint GetLife()
