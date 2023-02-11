@@ -192,7 +192,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		cardObject.transform.localRotation = spawnArea.GetRotationReference();
 		cardObject.transform.SetParent(transform, true);
 
-		cardObject.Invoke();
+		cardObject.Invoke(spawnArea.GridPosition);
 
 		LogController.LogSummonToken(cardObject, spawnArea.GridPosition, cardObject.CalculateSummonCost());
 

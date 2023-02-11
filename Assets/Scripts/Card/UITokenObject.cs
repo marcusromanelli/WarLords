@@ -26,9 +26,10 @@ public class UITokenObject : MonoBehaviour
 	private bool isInvoked;
 
     #region CARD_OBJECT_INTERFACE
-    public void Setup(CardObject cardObject, InputController inputController)
+    public void Setup(CardObject cardObject, Vector2 gridPosition, InputController inputController)
     {
 		isInvoked = true;
+		this.gridPosition = gridPosition;
 		this.gameObject.SetActive(true);
 		this.inputController = inputController;
 		this.cardObject = cardObject;

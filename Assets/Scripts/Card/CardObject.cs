@@ -16,8 +16,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	[BoxGroup("Game"), Expandable, SerializeField] private Card cardData;
 
 	public Player Player => player;
-	public Vector2 GridPosition => position;
-	private Vector2 position;
+	public Vector2 GridPosition => uiToken.GridPosition;
 	public bool IsPositioned => uiCardObject.IsInPosition;
 	public bool IsVisualizing => isVisualizing;
 	public bool IsInvoked => isInvoked;
@@ -46,12 +45,12 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		Setup(inputController, null, card, hideInfo);
 	}
-	public void Invoke()
+	public void Invoke(Vector2 gridPosition)
     {
 		isInvoked = true;
 
 		uiCardObject.RefreshCardUI();
-		uiToken.Setup(this, inputController);
+		uiToken.Setup(this, gridPosition, inputController);
 
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
 	}
