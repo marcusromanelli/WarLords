@@ -53,7 +53,7 @@ public class UIBattlefield : MonoBehaviour
 				var tile = battlefieldTiles[x, y];
 				tile.SetPosition(x, y);
 
-				inputController.RegisterTargetCallback(MouseEventType.StartHover, tile.gameObject, SetSelectedTile);
+				inputController.RegisterTargetCallback(MouseEventType.Hover, tile.gameObject, SetSelectedTile);
 				inputController.RegisterTargetCallback(MouseEventType.EndHover, tile.gameObject, SetUnselectedTile);
 			}
 		}
@@ -105,6 +105,8 @@ public class UIBattlefield : MonoBehaviour
 	}
 	void SetSelectedTile(GameObject area)
 	{
+		if (area == null)
+			return;
 
 		if (selectedTile != null && selectedTile.gameObject == area.gameObject)
 			return;
@@ -116,6 +118,14 @@ public class UIBattlefield : MonoBehaviour
 
 		selectedTile = tile;
 		selectedTile.SetSelected(true);
+	}
+	void SetUnselectedTile(GameObject area)
+	{
+		if (selectedTile == null || selectedTile.gameObject != area.gameObject)
+			return;
+
+		selectedTile.SetSelected(false);
+		selectedTile = null;
 	}
 	void ShowSpawnTiles(Player player)
 	{
@@ -129,14 +139,6 @@ public class UIBattlefield : MonoBehaviour
 		{
 			tile.StopSelectingSpawnArea();
 		}
-	}
-	void SetUnselectedTile(GameObject area)
-	{
-		if (selectedTile == null || selectedTile.gameObject != area.gameObject)
-			return;
-
-		selectedTile.SetSelected(false);
-		selectedTile = null;
 	}
 	bool IsLocalSpawnRow(int rowNumber)
 	{
