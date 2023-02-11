@@ -27,6 +27,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		remotePlayer = RemotePlayer;
 
 		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+		gameController.PhaseManager.OnPhaseChange += OnPhaseChanged;
 
 		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonToken);
 	}
@@ -36,6 +37,10 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	{
 		uiBattlefield.OnLocalPlayerHoldCard(player, cardObject);
 	}
+	void OnPhaseChanged(PhaseType newPhase)
+    {
+		uiBattlefield.OnPhaseChanged(gameController.PhaseManager.CurrentPlayer, newPhase);
+    }
 	#endregion UI_BATTLEFIELD_INTERFACE
 
 	#region MOVEMENT_PHASE

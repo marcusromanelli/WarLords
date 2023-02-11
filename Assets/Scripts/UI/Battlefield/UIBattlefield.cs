@@ -13,6 +13,7 @@ public class UIBattlefield : MonoBehaviour
 	private InputController inputController;
 	private HandleCanSummonToken canSummonToken;
 	private Player localPlayer;
+	private bool isPlayerHoldingCard;
 
 	public void Setup(Player LocalPlayer, InputController InputController, HandleCanSummonToken CanSummonToken)
     {
@@ -158,7 +159,9 @@ public class UIBattlefield : MonoBehaviour
 	}
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
-		if(cardObject == null || !canSummonToken(cardObject))
+		isPlayerHoldingCard = cardObject != null;
+
+		if (cardObject == null || !canSummonToken(cardObject))
 		{
 			HideSpawnTiles();
 			return;
@@ -166,6 +169,18 @@ public class UIBattlefield : MonoBehaviour
 
         ShowSpawnTiles(player);
 	}
+	public void OnPhaseChanged(Player currentPlayer, PhaseType newPhase)
+    {
+		var canSelect = newPhase == PhaseType.Action;
+
+		if (!isPlayerHoldingCard || !canSelect)
+		{
+			HideSpawnTiles();
+			return;
+		}
+
+		ShowSpawnTiles(currentPlayer);
+    }
 	#endregion FIELD_INTERACTION
 
 	#region FIELD_HELPER

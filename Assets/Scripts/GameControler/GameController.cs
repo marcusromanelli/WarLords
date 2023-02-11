@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
 	[BoxGroup("Components"), SerializeField] Player remotePlayer;
 
 
+	public PhaseManager PhaseManager => phaseManager;
+
 	//List<MacroComponent> Macros;
 
 	void Start()
@@ -58,115 +60,6 @@ public class GameController : MonoBehaviour
 	public bool CanPlayerInteract(Player player)
 	{
 		return phaseManager.CanPlayerInteract(player);
-	}
-
-
-	void AttackPlayer(int damage)
-	{
-		/*Player target;
-
-		//TODO arg
-		if (currentPlayer == LocalPlayer)
-			target = RemotePlayer;
-		else
-			target = LocalPlayer;
-
-
-		target.TakeDamage(damage);
-
-		if (currentPlayer.GetPlayerType() == PlayerType.Remote)
-			ScreenController.Blink(new Color(1f, 0.45f, 0.45f, 0.7f));*/
-	}
-
-	void SetTriggerType(TriggerType trigger, CardObject cardObject)
-	{
-		//List<Skill> aux = cardObject.GetCardData().hasSkillType(trigger);
-		//List<Skill> aux2 = cardObject.GetCardData().hasSkillType(TriggerType.Passive);
-
-		//foreach (Skill auxs in aux)
-		//{
-		//	AddMacro(auxs, cardObject);
-		//}
-
-
-		//if (trigger != TriggerType.OnBeforeSpawn)
-		//{
-		//	foreach (Skill auxs in aux2)
-		//	{
-		//		AddMacro(auxs, cardObject);
-		//	}
-		//}
-	}
-
-	/*List<MacroComponent> GetMacrosFromPlayer(Player player)
-	{
-		return Macros.FindAll(macro => macro.GetPlayer() == player);
-	}
-
-
-	IEnumerator doActions(Actions action)
-	{
-		DisablePlayers();
-
-		List<Hero> heroes = GameObject.FindObjectsOfType<Hero>().ToList();
-		heroes.RemoveAll(a => a.GetPlayer() != currentPlayer);
-
-		foreach (Hero hero in heroes)
-		{
-			if (hero != null)
-			{
-				switch (action)
-				{
-					case Actions.Attack:
-						hero.Attack();
-						while (hero.IsAttacking())
-						{
-							yield return null;
-						}
-						break;
-					case Actions.Move:
-						hero.moveForward();
-						while (hero.IsWalking())
-						{
-							yield return null;
-						}
-						break;
-				}
-				yield return new WaitForSeconds(1f);
-			}
-		}
-
-		EnablePlayers();
-
-		yield return new WaitForSeconds(1);
-		NextPhase();
-	}*/
-	void AddMacro(Skill skill, CardObject hero)
-	{
-		/*if (!IsMacroActive(hero, skill))
-		{
-			MacroComponent aux = Singleton.gameObject.AddComponent<MacroComponent>();
-
-			aux.Setup(this, skill, hero);
-
-			Singleton.Macros.Add(aux);
-
-			if (!Singleton.Macros[0].IsResolving)
-				Singleton.Macros[0].setActive();
-		}*/
-	}
-
-	bool IsMacroActive(CardObject card, Skill skill)
-	{
-		return false;
-		//return Macros.FindAll(macro => macro.GetCardObject().GetCardData().PlayID == card.GetCardData().PlayID && macro.GetSkill().triggerType == skill.triggerType).Count > 0;
-	}
-
-	static void RemoveMacro(MacroComponent condition)
-	{
-		/*Singleton.Macros.Remove(condition);
-		if (Singleton.Macros.Count > 0)
-			Singleton.Macros[0].setActive();*/
 	}
 
 	#region HELPER_GUI

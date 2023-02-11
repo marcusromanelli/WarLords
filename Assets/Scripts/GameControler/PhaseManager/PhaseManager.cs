@@ -11,13 +11,16 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
     [BoxGroup("Components"), SerializeField, Expandable] Phase[] phaseCycle;
 
 	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Battlefield battlefield;
-	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player CurrentPlayer;
-	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player EnemyPlayer;
+	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player currentPlayer;
+	[BoxGroup("Gameplay"), SerializeField, ReadOnly] Player enemyPlayer;
+
+	public Phase CurrentPhase => phaseCycle[currentPhaseIndex];
+	public Player CurrentPlayer => currentPlayer;
+
 
 	private int currentPhaseIndex = 0;
 	private Player localPlayer, remotePlayer;
 	private bool GameHasEnded = false;
-	private Phase CurrentPhase => phaseCycle[currentPhaseIndex];
 
 
 	#region GAMECONTROLLER_INTERFACE
@@ -52,18 +55,18 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 	public
 	void NextTurn()
 	{
-		if (CurrentPlayer == null)
+		if (currentPlayer == null)
 		{
-			CurrentPlayer = localPlayer;
-			EnemyPlayer = remotePlayer;
+			currentPlayer = localPlayer;
+			enemyPlayer = remotePlayer;
 		}
 		else
 		{
-			CurrentPlayer = (CurrentPlayer == remotePlayer) ? localPlayer : remotePlayer;
-			EnemyPlayer = (CurrentPlayer == localPlayer) ? remotePlayer : localPlayer;
+			currentPlayer = (currentPlayer == remotePlayer) ? localPlayer : remotePlayer;
+			enemyPlayer = (currentPlayer == localPlayer) ? remotePlayer : localPlayer;
 		}
 
-		LogController.LogTurnChange(CurrentPlayer);
+		LogController.LogTurnChange(currentPlayer);
 	}
 	#endregion PHASES_INTERFACE
 
@@ -71,20 +74,20 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 
 	bool HasGameEnded()
 	{
-		if (CurrentPlayer.GetLife() <= 0)
+		if (currentPlayer.GetLife() <= 0)
 		{
-			phaseTitle.SetWinner(EnemyPlayer == localPlayer);
+			phaseTitle.SetWinner(enemyPlayer == localPlayer);
 		}
 
-		if (EnemyPlayer.GetLife() <= 0)
+		if (enemyPlayer.GetLife() <= 0)
 		{
-			phaseTitle.SetWinner(CurrentPlayer == localPlayer);
+			phaseTitle.SetWinner(currentPlayer == localPlayer);
 		}
 
-		CurrentPlayer.enabled = false;
-		EnemyPlayer.enabled = false;
+		currentPlayer.enabled = false;
+		enemyPlayer.enabled = false;
 
-		return CurrentPlayer.GetLife() <= 0 || EnemyPlayer.GetLife() <= 0;
+		return currentPlayer.GetLife() <= 0 || enemyPlayer.GetLife() <= 0;
 	}
 	void InitializePhases()
     {
@@ -134,11 +137,11 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 	}
 	IEnumerator ResolvePhase(Phase phase)
     {
-		yield return phase.PrePhase(CurrentPlayer, EnemyPlayer);
+		yield return phase.PrePhase(currentPlayer, enemyPlayer);
 
 		OnPhaseChange?.Invoke(CurrentPhase.GetPhaseType());
 
-		yield return phase.Resolve(CurrentPlayer, EnemyPlayer);
+		yield return phase.Resolve(currentPlayer, enemyPlayer);
 	}
 	IEnumerator AwaitConditionsToSolve()
 	{
@@ -147,18 +150,18 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 		{
 			yield return null;
 
-			if (CurrentPlayer.HasConditions())
-				EnablePlayer(CurrentPlayer);
+			if (currentPlayer.HasConditions())
+				EnablePlayer(currentPlayer);
 
-			if (EnemyPlayer.HasConditions())
-				EnablePlayer(EnemyPlayer);
+			if (enemyPlayer.HasConditions())
+				EnablePlayer(enemyPlayer);
 
-			hasConditions = localPlayer.HasConditions() || EnemyPlayer.HasConditions();
+			hasConditions = localPlayer.HasConditions() || enemyPlayer.HasConditions();
 		}
 	}
 	IEnumerator StartChangingPhases()
 	{
-		phaseTitle.ChangePhase(CurrentPhase.GetPhaseType(), CurrentPlayer == localPlayer);
+		phaseTitle.ChangePhase(CurrentPhase.GetPhaseType(), currentPlayer == localPlayer);
 
 		yield return AwaitPhaseChange();
 
@@ -171,7 +174,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 	}
 	IEnumerator AwaitToSolvePhase(Phase phase)
 	{
-		yield return phase.Resolve(CurrentPlayer, EnemyPlayer);
+		yield return phase.Resolve(currentPlayer, enemyPlayer);
 	}
 	void OnGUI()
 	{
@@ -187,7 +190,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 		string final = "\n";
 		
 		if(CurrentPhase.GetPhaseType() != PhaseType.PreGame)
-			final += CurrentPlayer.name + " turn. \n";
+			final += currentPlayer.name + " turn. \n";
 
 		final += CurrentPhase.GetPhaseType().ToString();
 
