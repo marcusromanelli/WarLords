@@ -59,12 +59,13 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	{
 		var tile = GetTokenTile(currentPlayer, token);
 		tile.RemoveToken();
+		var originalPosition = token.GridPosition;
 		var newGridPosition = uiBattlefield.Normalize(CalculateTokenEndPosition(currentPlayer, token));
 		var newPosition = uiBattlefield.GridToUnity(newGridPosition);
 
 		token.Move(newPosition);
 
-		Debug.Log("Token " + token.name + " moved to " + newGridPosition);
+		LogController.LogMovement(token, originalPosition, newGridPosition, token.CalculateWalkSpeed());
 
 		yield return token.IsWalking();
 
@@ -104,7 +105,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		if (uiBattlefield.IsOnEnemyEdge(currentPlayer, currentField))
 		{
-			Debug.Log(token.name + " is now targeting " + targetPlayer.name);
 			token.SetTarget(targetPlayer);
 			return;
 		}
@@ -115,13 +115,10 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		if (targetToken != null && !PlayerHasToken(currentPlayer, targetToken))
 		{
-
-			Debug.Log(token.name + " is now targeting " + targetToken.name);
 			token.SetTarget(targetToken);
 		}
 		else
 		{
-			Debug.Log("Reseted targetting for " + token.name);
 			token.ResetTarget();
 		}
 	}
@@ -161,8 +158,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		var target = token.GetTarget();
 
-		Debug.Log(token.name + " attacking " + target);
-
 		token.Attack();
 
 		var isAlive = TargetIsAlive(target, enemyPlayer);
@@ -198,9 +193,8 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		cardObject.transform.SetParent(transform, true);
 
 		cardObject.Invoke();
-		//var token = TokenFactory.Create(cardObject, transform, spawnArea.transform.position, spawnArea.GetRotationReference());
 
-		//token.SetPosition(uiBattlefield.UnityToGrid(spawnArea.transform.position));
+		LogController.LogSummonToken(cardObject, spawnArea.GridPosition, cardObject.CalculateSummonCost());
 
 		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, tokenCard);
 
@@ -259,6 +253,8 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
     {
 		var tile = uiBattlefield.GetTokenTile(ownerPlayer, CardObject);
 		tile.RemoveToken();
+
+		LogController.LogTokenDestroyed(ownerPlayer, CardObject);
 
 		RemoveToken(ownerPlayer, CardObject);
 

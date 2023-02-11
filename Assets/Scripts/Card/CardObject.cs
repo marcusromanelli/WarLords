@@ -15,6 +15,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 
 	[BoxGroup("Game"), Expandable, SerializeField] private Card cardData;
 
+	public Player Player => player;
 	public Vector2 GridPosition => position;
 	private Vector2 position;
 	public bool IsPositioned => uiCardObject.IsInPosition;
@@ -188,5 +189,9 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		uiToken.Attack();
 	}
-	#endregion TOKEN_INTERFACE
+    public string GetName()
+    {
+		return Data.Name;
+    }
+    #endregion TOKEN_INTERFACE
 }

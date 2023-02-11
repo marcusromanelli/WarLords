@@ -55,6 +55,7 @@ public class UITokenObject : MonoBehaviour
 	}
 	public void SetTarget(IAttackable target)
 	{
+		LogController.LogChangeTarget(cardObject, target);
 		this.target = target;
 	}
 	public bool HasTarget()
@@ -70,15 +71,20 @@ public class UITokenObject : MonoBehaviour
 		if (target == null)
 			return;
 
-		target.TakeDamage(cardObject.CalculateAttack());
+		var damage = cardObject.CalculateAttack();
+
+		LogController.LogAttack(damage, cardObject, target);
+
+		target.TakeDamage(damage);
 	}
 	public void ResetTarget()
 	{
+		LogController.LogChangeTarget(cardObject, null);
 		target = null;
 	}
 	public void TakeDamage(uint damage)
 	{
-		Debug.Log(this.name + " took " + damage + " damage");
+		LogController.LogElementTookDamage(cardObject, damage);
 
 		damageParticleSystem.Play();
 

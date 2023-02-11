@@ -25,6 +25,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
     {
 		localPlayer = LocalPlayer;
 		remotePlayer = RemotePlayer;
+		remotePlayer = RemotePlayer;
 		battlefield = Battlefield;
 
 		InitializePhases();
@@ -62,7 +63,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 			EnemyPlayer = (CurrentPlayer == localPlayer) ? remotePlayer : localPlayer;
 		}
 
-		Debug.Log("Player " + CurrentPlayer + " turn.");
+		LogController.LogTurnChange(CurrentPlayer);
 	}
 	#endregion PHASES_INTERFACE
 
@@ -161,7 +162,7 @@ public class PhaseManager : MonoBehaviour, IPhaseManager
 
 		yield return AwaitPhaseChange();
 
-		Debug.LogWarning("New Phase: " + CurrentPhase.GetPhaseType().ToString() + " player: " + CurrentPlayer.name);
+		LogController.LogPhaseChange(CurrentPhase);
 	}
 	IEnumerator AwaitPhaseChange()
 	{

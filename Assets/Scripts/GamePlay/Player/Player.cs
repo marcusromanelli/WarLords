@@ -89,6 +89,9 @@ public class Player : MonoBehaviour, IAttackable
 		Hand.RemoveCard(currentCard);
 		Graveyard.AddCard(currentCardData);
 
+
+		LogController.LogDiscard(this);
+
 		OnDiscardCard?.Invoke(1);
 	}
 	public bool HasManaSpace()
@@ -104,6 +107,8 @@ public class Player : MonoBehaviour, IAttackable
 		});
 
 		ManaPool.IncreaseMaxMana();
+
+		LogController.LogManaGeneration(this);
 
 		TriggerManaCreation();
 	}
@@ -228,7 +233,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	void DoDrawCards(int number)
 	{
-		Debug.Log(GetFormatedName() + " drawed " + number + " cards");
+		LogController.LogCardDrawn(this, number);
 
 		Card[] cards = PlayDeck.DrawCards(number);
 
@@ -295,12 +300,12 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		OnCardReleasedOnManaPool?.Invoke(cardObject);
 	}
-	string GetFormatedName()
-	{
-		return "Player " + (name);
-	}
     public uint GetLife()
     {
 		return Life.Current;
+    }
+    public string GetName()
+    {
+		return name;
     }
 }

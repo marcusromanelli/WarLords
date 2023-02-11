@@ -15,6 +15,8 @@ public class CardToGraveyardHability : HabilityBase
 
 		player.DiscardCurrentHoldingCard();
 		player.TryDrawCards(NumberOfCardsToDraw);
+
+		LogController.LogGraveyardHability(player, 1, NumberOfCardsToDraw);
 	}
 	bool IsUsingHability(GetHabilityManager getHabilityManager, GetPlayer getPlayer)
 	{
