@@ -40,7 +40,7 @@ public class UIPlayerHand : MonoBehaviour
     private bool IsCardAwaitingRelease;
     private bool IsDraggingCard;
     private bool IsRearragingCards;
-    private bool IsNOTInteractable => !IsInteractable;
+    private ICardPlaceable hoverArea;
     HandleOnCardReleased onCardReleasedOnGraveyard;
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
@@ -371,9 +371,12 @@ public class UIPlayerHand : MonoBehaviour
     }
     void OnEndHoverSpawnArea(GameObject gameObject)
     {
-        if (!IsHoldingCard || !IsDraggingCard)
+        var spawnArea = gameObject.GetComponent<SpawnArea>();
+
+        if ((spawnArea != null && hoverArea != spawnArea) || !IsHoldingCard || !IsDraggingCard)
             return;
 
+        hoverArea = null;
         IsCardAwaitingRelease = false;
         StartCardDynamicDrag(currentTargetCard);
     }
@@ -381,7 +384,7 @@ public class UIPlayerHand : MonoBehaviour
     {
         var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
 
-        if (/*!spawnArea.IsSpawnArea || */!canSummonHero(currentTargetCard))
+        if (hoverArea == spawnArea || !canSummonHero(currentTargetCard))
             return;
 
         GenericHoverPlace(spawnArea);
@@ -398,6 +401,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void GenericHoverPlace(ICardPlaceable cardPlaceable)
     {
+        hoverArea = cardPlaceable;
         IsCardAwaitingRelease = true;
         StopCardDynamicDrag();
         currentTargetCard.SetPosition(CardPositionData.Create(cardPlaceable.GetTopCardPosition(), cardPlaceable.GetRotationReference()));

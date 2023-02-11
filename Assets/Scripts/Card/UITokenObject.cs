@@ -48,7 +48,7 @@ public class UITokenObject : MonoBehaviour
 		if (tokenObject != null)
 			Destroy(tokenObject.gameObject);
 
-		inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonUp, cardObject.gameObject, OnClickSummonedToken);
+		inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonUp, uiCardObject.gameObject, OnClickSummonedToken);
 
 		target = null;
 		tokenObject = null;
@@ -141,7 +141,7 @@ public class UITokenObject : MonoBehaviour
 
 		CardSlideIn();
 
-		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, cardObject.gameObject, OnClickSummonedToken);
+		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, uiCardObject.gameObject, OnClickSummonedToken);
 	}
 	void OnClickSummonedToken(GameObject gameObject)
 	{
