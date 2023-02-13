@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
 
         phaseManager.Setup(localPlayer, remotePlayer, battlefield);
 
-        battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonHero);
+        battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonToken);
 
 		localPlayer.PreSetup(battlefield, this, inputController);
 
@@ -51,9 +51,9 @@ public class GameController : MonoBehaviour
 	{
 		battlefield.Summon(player, cardObject, spawnArea);
 	}
-	bool CanSummonHero(CardObject cardObject)
+	bool CanSummonToken(CardObject cardObject, bool isSkillOnly)
 	{
-		return localPlayer.CanPlayerSummonHero(cardObject);
+		return localPlayer.CanPlayerSummonToken(cardObject, isSkillOnly);
 	}
 	#endregion BATTLEFIELD_INTERFACE
 

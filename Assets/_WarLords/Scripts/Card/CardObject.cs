@@ -29,6 +29,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	private bool isVisualizing;
 	private bool isInvoked;
 	private InputController inputController;
+	private Stack<CardObject> buffedCards = new Stack<CardObject>();
 
 	public void Setup(InputController inputController, Player player, Card card, bool isLocalPlayer)
 	{
@@ -53,6 +54,15 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 		uiToken.Setup(this, gridPosition, inputController);
 
 		GameConfiguration.PlaySFX(GameConfiguration.Summon);
+	}
+	public void SkillBuff(CardObject cardObject)
+    {
+		buffedCards.Push(cardObject);
+
+		runtimeCardData.BuffSkills(cardObject.RuntimeCardData);
+
+		cardObject.Lock();
+		cardObject.gameObject.SetActive(false);
 	}
 	public void SetVisualizing(bool isVisualizing, OnClickCloseButton closeCallback = null)
 	{
@@ -92,9 +102,13 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		uiCardObject.BecameMana(onFinishesAnimation);
 	}
-	public SkillData[] GetSkills()
+	public SkillData[] GetSkillList()
 	{
-		return runtimeCardData.Skills;
+		return runtimeCardData.OriginalCardSkills;
+	}
+	public List<SkillData> GetActiveSkills()
+	{
+		return runtimeCardData.ActiveSkills;
 	}
 	public string GetCardName()
 	{
@@ -108,9 +122,9 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		return runtimeCardData.CalculateDefense();
 	}
-	public uint CalculateSummonCost()
+	public uint CalculateSummonCost(bool isSkillOnly)
 	{
-		return runtimeCardData.CalculateSummonCost();
+		return runtimeCardData.CalculateSummonCost(isSkillOnly);
 	}
 	public uint CalculateWalkSpeed()
 	{
@@ -124,7 +138,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
     {
 		runtimeCardData.ToggleSkill(skill, value);
 
-		player?.SummonCostChanged(CalculateSummonCost());
+		player?.SummonCostChanged(CalculateSummonCost(false));
 	}
 	public GameObject GetPhysicalCardObject()
 	{

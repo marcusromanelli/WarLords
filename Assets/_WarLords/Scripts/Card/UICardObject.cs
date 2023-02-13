@@ -254,7 +254,7 @@ public class UICardObject : MonoBehaviour
 	}
 	void UpdateManaCost()
     {
-		SetTextValue(manaCostText, parentCardObject.CalculateSummonCost());
+		SetTextValue(manaCostText, parentCardObject.CalculateSummonCost(false));
 	}
 	void UpdateAttack()
 	{
@@ -266,7 +266,7 @@ public class UICardObject : MonoBehaviour
 	}
 	void UpdateSkills()
 	{
-		var skills = parentCardObject.GetSkills();
+		var skills = parentCardObject.GetSkillList();
 
 		var skill1 = skills[0];
 		var skill2 = skills[1];

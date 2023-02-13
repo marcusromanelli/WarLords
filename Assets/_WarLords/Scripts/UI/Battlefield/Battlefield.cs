@@ -18,7 +18,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 	public bool isVisualizingTokenCard = false;
 
-	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanSummonToken CanSummonToken)
+	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanPlayerSummonToken CanSummonToken)
 	{
 		gameController = GameController;
 		inputController = InputController;
@@ -189,25 +189,38 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
+	public void Summon(Player player, CardObject summonedCardObject, SpawnArea spawnArea)
 	{
-		spawnArea ??= uiBattlefield.SelectedTile;
+		var isSkillOnly = spawnArea.Token != null;
 
-		cardObject.transform.position = spawnArea.transform.position;
-		cardObject.transform.localRotation = spawnArea.GetRotationReference();
-		cardObject.transform.SetParent(transform, true);
 
-		cardObject.Invoke(spawnArea.GridPosition);
+		if (isSkillOnly)
+		{
+			var targetObject = spawnArea.Token;
 
-		LogController.LogSummonToken(cardObject, spawnArea.GridPosition, cardObject.CalculateSummonCost());
+			LogController.LogBuffToken(targetObject, summonedCardObject, summonedCardObject.GetActiveSkills(), summonedCardObject.CalculateSummonCost(true));
+
+			targetObject.SkillBuff(summonedCardObject);
+
+			return;
+		}
+
+
+		summonedCardObject.transform.position = spawnArea.transform.position;
+		summonedCardObject.transform.localRotation = spawnArea.GetRotationReference();
+		summonedCardObject.transform.SetParent(transform, true);
+
+		summonedCardObject.Invoke(spawnArea.GridPosition);
+
+		LogController.LogSummonToken(summonedCardObject, spawnArea.GridPosition, summonedCardObject.CalculateSummonCost(isSkillOnly));
 
 		//gameController.SetTriggerType(TriggerType.OnAfterSpawn, tokenCard);
 
-		AddToken(player, cardObject);
+		AddToken(player, summonedCardObject);
 
 		ReorderTokenList(player);
 
-		SetTokenTile(cardObject, spawnArea);
+		SetTokenTile(summonedCardObject, spawnArea);
 	}
 	public bool PlayerHasTokenSummoned(Player player, CardObject cardObject)
 	{

@@ -26,11 +26,11 @@ public class HabilityManager : MonoBehaviour
     {
 		RestoreUniqueHability();
 	}
-	protected void OnReleasedOnManaPool(CardObject cardObject)
+	protected void OnReleasedOnManaPool(CardObject cardObject, GameObject releasedArea)
     {
 		UseManaPoolHability();
     }
-	protected void OnReleasedOnGraveyard(CardObject cardObject)
+	protected void OnReleasedOnGraveyard(CardObject cardObject, GameObject releasedArea)
     {
 		UseGraveyardHability();
 	}

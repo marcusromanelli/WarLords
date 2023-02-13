@@ -17,14 +17,14 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	private GetMaxMana getMaxManaCallback;
 	private GetCurrentMana getCurrentManaCallback;
 	private GetMaxAllowedMana getMaxAllowedManaCallback;
-	private HandleCanSummonToken canSummonHero;
+	private HandleCanPlayerSummonToken canSummonHero;
 	private bool isPreviewingManaCost;
 
 	void Awake()
 	{
 		manaOrbs = new List<ManaOrb>();
 	}
-	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanSummonToken CanSummonHero)
+	public void Setup(GetMaxAllowedMana getGetMaxAllowedManaCallback, GetMaxMana getMaxManaCallback, GetCurrentMana getCurrentManaCallback, HandleCanPlayerSummonToken CanSummonHero)
     {
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
 		this.getMaxAllowedManaCallback = getGetMaxAllowedManaCallback;
@@ -106,13 +106,13 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 #region FIELD_INTERACTION
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
 	{
-		if (cardObject == null || !canSummonHero(cardObject))
+		if (cardObject == null || !canSummonHero(cardObject, false))
 		{
 			RestorePreviewedMana();
 			return;
 		}
 
-		var manaCost = cardObject.CalculateSummonCost();
+		var manaCost = cardObject.CalculateSummonCost(false);
 
 		PreviewMana(manaCost);
 	}

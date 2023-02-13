@@ -11,11 +11,11 @@ public class UIBattlefield : MonoBehaviour
 	public SpawnArea SelectedTile => selectedTile;
 
 	private InputController inputController;
-	private HandleCanSummonToken canSummonToken;
+	private HandleCanPlayerSummonToken canSummonToken;
 	private Player localPlayer;
 	private bool isPlayerHoldingCard;
 
-	public void Setup(Player LocalPlayer, InputController InputController, HandleCanSummonToken CanSummonToken)
+	public void Setup(Player LocalPlayer, InputController InputController, HandleCanPlayerSummonToken CanSummonToken)
     {
 		localPlayer = LocalPlayer;
 		inputController = InputController;
@@ -81,10 +81,10 @@ public class UIBattlefield : MonoBehaviour
 		if (spawnArea == null)
 			return false;
 
-		if (isLocalPlayer)
-			return IsLocalSpawnRow((int)gridPosition.y);
+		var canSummonOnEdge = isLocalPlayer ? IsLocalSpawnRow((int)gridPosition.y) : IsRemoteSpawnRow((int)gridPosition.y);
+		var canSummonOnToken = spawnArea.Token != null && spawnArea.Token.Player == player;
 
-		return IsRemoteSpawnRow((int)gridPosition.y);
+		return canSummonOnEdge || canSummonOnToken;
 	}
 	public SpawnArea[,] GetFields()
 	{
@@ -161,7 +161,7 @@ public class UIBattlefield : MonoBehaviour
 	{
 		isPlayerHoldingCard = cardObject != null;
 
-		if (cardObject == null || !canSummonToken(cardObject))
+		if (cardObject == null || !canSummonToken(cardObject, false))
 		{
 			HideSpawnTiles();
 			return;

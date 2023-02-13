@@ -45,11 +45,11 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
     HandleOnHoldingCard onCardBeingHeld;
-    HandleCanSummonToken canSummonHero;
+    HandleCanSummonToken canSummonToken;
 
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
         HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea, HandleOnHoldingCard onCardBeingHeld,
-        HandleCanSummonToken canSummonHero
+        HandleCanSummonToken canSummonToken
         )
     {
         this.player = player;
@@ -59,7 +59,7 @@ public class UIPlayerHand : MonoBehaviour
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
         this.onCardReleasedOnSpawnArea = onCardReleasedOnSpawnArea;
         this.onCardBeingHeld = onCardBeingHeld;
-        this.canSummonHero = canSummonHero;
+        this.canSummonToken = canSummonToken;
 
         RegisterDefaultCallbacks();
     }
@@ -303,12 +303,12 @@ public class UIPlayerHand : MonoBehaviour
 
 
     #region GRAVEYARD_LOGIC
-    void OnReleaseCardOnGraveyard(GameObject gameObject)
+    void OnReleaseCardOnGraveyard(GameObject releasedArea)
     {
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
-        onCardReleasedOnGraveyard?.Invoke(currentTargetCard);
+        onCardReleasedOnGraveyard?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverGraveyard(GameObject gameObject)
     {
@@ -329,12 +329,12 @@ public class UIPlayerHand : MonoBehaviour
 
     #region MANA_POOL_LOGIC
 
-    void OnReleaseCardOnManaPool(GameObject gameObject)
+    void OnReleaseCardOnManaPool(GameObject releasedArea)
     {
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
-        onCardReleasedOnManaPool?.Invoke(currentTargetCard);
+        onCardReleasedOnManaPool?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverManaPool(GameObject gameObject)
     {
@@ -355,12 +355,12 @@ public class UIPlayerHand : MonoBehaviour
     #endregion MANA_POOL_LOGIC
 
     #region SPAWN_AREA_LOGIC
-    void OnReleaseHoverSpawnArea(GameObject gameObject)
+    void OnReleaseHoverSpawnArea(GameObject releasedArea)
     {
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
-        onCardReleasedOnSpawnArea?.Invoke(currentTargetCard);
+        onCardReleasedOnSpawnArea?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverSpawnArea(GameObject gameObject)
     {
@@ -384,7 +384,12 @@ public class UIPlayerHand : MonoBehaviour
     {
         var spawnArea = spawnAreaObject.GetComponent<SpawnArea>();
 
-        if (hoverArea == spawnArea || !canSummonHero(currentTargetCard))
+        if (spawnArea == null)
+            return;
+
+        var isSkillOnly = spawnArea.Token != null;
+
+        if (hoverArea == spawnArea || !canSummonToken(currentTargetCard, spawnArea, isSkillOnly))
             return;
 
         GenericHoverPlace(spawnArea);

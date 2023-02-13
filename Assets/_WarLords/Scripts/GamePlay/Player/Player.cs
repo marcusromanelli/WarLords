@@ -54,9 +54,9 @@ public class Player : MonoBehaviour, IAttackable
 
 		habilityManager.Setup(this);
 
-		ManaPool.Setup(this, CanPlayerSummonHero);
+		ManaPool.Setup(this, CanPlayerSummonToken);
 
-		Hand.PreSetup(this, battlefield, inputController, CanSummonHero);
+		Hand.PreSetup(this, battlefield, inputController, CanSummonToken);
 		Hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
 		Hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
 		Hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
@@ -164,23 +164,18 @@ public class Player : MonoBehaviour, IAttackable
     {
 		return Hand.GetHoldingCard();
 	}
-	public bool CanPlayerSummonHero(CardObject cardObject)
+	public bool CanPlayerSummonToken(CardObject cardObject, bool isSkillsOnly)
     {
-		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(cardObject.CalculateSummonCost());
+		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(cardObject.CalculateSummonCost(isSkillsOnly));
 	}
-	public bool CanSummonHero(CardObject cardObject)
-	{
-		return CanSummonHero(cardObject, null);
-	}
-	public bool CanSummonHero(CardObject cardObject, SpawnArea spawnArea = null)
+	public bool CanSummonToken(CardObject cardObject, SpawnArea spawnArea, bool isSkillOnly)
     {
-		var playerCan = CanPlayerSummonHero(cardObject);
-
+		var playerCan = CanPlayerSummonToken(cardObject, isSkillOnly);
 		var playerCanSummonHero = !battlefield.PlayerHasTokenSummoned(this, cardObject);
-		var canSummonOnPassedSpawnArea = spawnArea != null && battlefield.CanSummonOnTile(this, spawnArea);
-		var canSummonOnSelectedTile = spawnArea == null && battlefield.CanSummonOnSelectedTile(this);
 
-		var battleFieldCan = playerCanSummonHero && (canSummonOnSelectedTile || canSummonOnPassedSpawnArea);
+		var canSummonOnSpawnArea = battlefield.CanSummonOnTile(this, spawnArea);
+
+		var battleFieldCan = playerCanSummonHero && (canSummonOnSpawnArea);
 
 		return playerCan && battleFieldCan;
 	}
@@ -188,21 +183,19 @@ public class Player : MonoBehaviour, IAttackable
     {
 		ManaPool.RefreshPreviewedMana(newCost);
     }
-	protected void TrySummonHero(CardObject cardObject)
+	protected void TrySummonToken(CardObject cardObject, SpawnArea spawnArea)
 	{
-		TrySummonHero(cardObject, null);
-	}
-	protected void TrySummonHero(CardObject cardObject, SpawnArea spawnArea)
-	{
-		if (!CanSummonHero(cardObject, spawnArea))
+		if (!CanPlayerSummonToken(cardObject, spawnArea))
 		{
 			Debug.Log("You cannot summon this hero right now.");
 			return;
 		}
 
+		var isSkillOnly = spawnArea.Token != null;
+
 		Hand.RemoveCard(cardObject, false);
 
-		ManaPool.SpendMana(cardObject.CalculateSummonCost());
+		ManaPool.SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
 
 		gameController.Summon(this, cardObject, spawnArea);
 	}
@@ -288,17 +281,22 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		OnSendManaCreation?.Invoke(1);
 	}
-	void onCardReleasedOnGraveyard(CardObject cardObject)
+	void onCardReleasedOnGraveyard(CardObject cardObject, GameObject releasedArea)
 	{
-		OnCardReleasedOnGraveyard?.Invoke(cardObject);
+		OnCardReleasedOnGraveyard?.Invoke(cardObject, releasedArea);
 	}
-	void onCardReleasedOnSpawnArea(CardObject cardObject)
+	void onCardReleasedOnSpawnArea(CardObject cardObject, GameObject releasedArea)
 	{
-		TrySummonHero(cardObject);
+		var spawnArea = releasedArea.GetComponent<SpawnArea>();
+
+		if (spawnArea == null)
+			return;
+
+		TrySummonToken(cardObject, spawnArea);
 	}
-	void onCardReleasedOnManaPool(CardObject cardObject)
+	void onCardReleasedOnManaPool(CardObject cardObject, GameObject releasedArea)
 	{
-		OnCardReleasedOnManaPool?.Invoke(cardObject);
+		OnCardReleasedOnManaPool?.Invoke(cardObject, releasedArea);
 	}
     public uint GetLife()
     {

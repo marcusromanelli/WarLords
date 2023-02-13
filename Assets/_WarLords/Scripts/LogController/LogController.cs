@@ -217,6 +217,11 @@ public class LogController : MonoBehaviour
 		var action = SummonTokenAction.Create(token, position, manaCost);
 		Singleton.AddLog(action);
 	}
+	public static void LogBuffToken(CardObject targetObject, CardObject summonedObject, List<SkillData> usedSkills, uint manaCost)
+	{
+		var action = BuffTokenAction.Create(targetObject, summonedObject, usedSkills, manaCost);
+		Singleton.AddLog(action);
+	}
 
 	/*public static void Log(GameAction action, Player player, string str)
 	{

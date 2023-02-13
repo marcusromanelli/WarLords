@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class AIPlayer : Player
 {
+	[BoxGroup("AI Behavior"), SerializeField] protected UIManaPool UIManaPool;
 	[BoxGroup("AI Behavior"), SerializeField] protected AIHabilityManager aiHabilityManager;
 	[BoxGroup("AI Behavior"), SerializeField] protected UIBattlefield uiBattlefield;
 	[BoxGroup("AI Behavior"), SerializeField] protected PhaseManager phaseManager;
@@ -72,8 +73,8 @@ public class AIPlayer : Player
 		if (cardObject == null)
 			return;
 
-		if (tile != null && CanSummonHero(cardObject, tile))
-			TrySummonHero(cardObject, tile);
+		if (tile != null && CanPlayerSummonToken(cardObject, tile))
+			TrySummonToken(cardObject, tile);
 	}
 	SpawnArea GetRandomTile()
     {
@@ -139,7 +140,7 @@ public class AIPlayer : Player
 	}
 	void GenerateManaFromRandomCard()
 	{
-		ActionOnRandomCard(card => { aiHabilityManager.UseManaHability(card); });
+		ActionOnRandomCard(card => { aiHabilityManager.UseManaHability(card, UIManaPool.gameObject); });
 	}
 	void ActionOnRandomCard(Action<CardObject> Action)
 	{

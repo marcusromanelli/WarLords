@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AIHabilityManager : HabilityManager
 {
-	public void UseManaHability(CardObject cardObject)
+	public void UseManaHability(CardObject cardObject, GameObject releaseArea)
     {
-        OnReleasedOnManaPool(cardObject);
+        OnReleasedOnManaPool(cardObject, releaseArea);
     }
 }

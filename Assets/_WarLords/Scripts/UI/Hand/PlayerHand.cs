@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void HandleOnCardReleased(CardObject card);
+public delegate void HandleOnCardReleased(CardObject card, GameObject releasedArea);
 public delegate bool HandleCanReleaseCard();
-public delegate bool HandleCanSummonToken(CardObject cardObject);
+public delegate bool HandleCanSummonToken(CardObject cardObject, SpawnArea targetArea, bool isSkillOnly);
+public delegate bool HandleCanPlayerSummonToken(CardObject cardObject, bool isSkillOnly);
 
 [Serializable]
 public class PlayerHand
@@ -114,17 +115,17 @@ public class PlayerHand
     {
         uiPlayerHand.CancelHandToCardInteraction();
     }
-    void onCardReleasedOnGraveyard(CardObject cardObject)
+    void onCardReleasedOnGraveyard(CardObject cardObject, GameObject releasedArea)
     {
-        OnCardReleasedOnGraveyard?.Invoke(cardObject);
+        OnCardReleasedOnGraveyard?.Invoke(cardObject, releasedArea);
     }
-    void onCardReleasedOnManaPool(CardObject cardObject)
+    void onCardReleasedOnManaPool(CardObject cardObject, GameObject releasedArea)
     {
-        OnCardReleasedOnManaPool?.Invoke(cardObject);
+        OnCardReleasedOnManaPool?.Invoke(cardObject, releasedArea);
     }
-    void onCardReleasedOnSpawnArea(CardObject cardObject)
+    void onCardReleasedOnSpawnArea(CardObject cardObject, GameObject releasedArea)
     {
-        OnCardReleasedOnSpawnArea?.Invoke(cardObject);
+        OnCardReleasedOnSpawnArea?.Invoke(cardObject, releasedArea);
     }
     void onCardBeingHold(Player player, CardObject cardObject)
     {

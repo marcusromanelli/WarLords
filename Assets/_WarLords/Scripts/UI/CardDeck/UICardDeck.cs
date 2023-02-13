@@ -81,7 +81,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     {
         isBusy = true;
 
-        while (true)
+        while (remainingActions.Count > 0)
         {
             try
             {
