@@ -8,14 +8,25 @@ public class RuntimeCardData
 {
 	private string name;
 	public string Name => name;
+
 	private uint manaCost;
 	public uint ManaCost => manaCost;
+
 	private uint attack;
 	public uint Attack => attack;
+
 	private uint defense;
 	public uint Defense => defense;
+
 	private uint walkSpeed;
 	public uint WalkSpeed => walkSpeed;
+
+	private CivilizationData civilization;
+	public CivilizationData Civilization => civilization;
+
+	private Sprite frontCover;
+	public Sprite FrontCover => frontCover;
+
 	public List<SkillData> ActiveSkills => activeSkills;
 	public SkillData[] OriginalCardSkills => originalSkills;
 
@@ -29,6 +40,8 @@ public class RuntimeCardData
 		attack = card.Data.Attack;
 		defense = card.Data.Defense;
 		walkSpeed = card.Data.WalkSpeed;
+		civilization = card.Civilization;
+		frontCover = card.FrontCover;
 
 		activeSkills = new List<SkillData>();
 

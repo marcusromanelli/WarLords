@@ -13,26 +13,15 @@ public class UICardObject : MonoBehaviour
 
 	[SerializeField] float cardMovementSpeed = 20;
 	[SerializeField] float cardRotationSpeed = 20;
-	[SerializeField] float dissolveSpeed = 20;
-	[SerializeField] float dissolveMin = 0.7f;
 
 	[BoxGroup("Components"), SerializeField] Transform physicalCardObject;
-	[BoxGroup("Components"), SerializeField] GameObject cardContents;
-	[BoxGroup("Components"), SerializeField] GameObject cardFrame;
-	[BoxGroup("Components"), SerializeField] TMP_Text nameText;
-	[BoxGroup("Components"), SerializeField] TMP_Text manaCostText;
-	[BoxGroup("Components"), SerializeField] TMP_Text attackText;
-	[BoxGroup("Components"), SerializeField] TMP_Text defenseText;
-	[BoxGroup("Components"), SerializeField] TMP_Text skill1DescriptionText;
-	[BoxGroup("Components"), SerializeField] TMP_Text skill1CostText;
-	[BoxGroup("Components"), SerializeField] TMP_Text skill2DescriptionText;
-	[BoxGroup("Components"), SerializeField] TMP_Text skill2CostText;
-	[BoxGroup("Components"), SerializeField] SpriteRenderer backgroundImageSpriteRenderer;
-	[BoxGroup("Components"), SerializeField] Renderer cardRenderer;
 	[BoxGroup("Components"), SerializeField] ParticleSystem fadeIntoManaParticle;
-	[BoxGroup("Components"), SerializeField] GameObject closeButton;
-	[BoxGroup("Components"), SerializeField] EnableSkillButton enableSkill1Button;
-	[BoxGroup("Components"), SerializeField] EnableSkillButton enableSkill2Button;
+
+	[BoxGroup("Components"), SerializeField] CardContent defaultCardContentView;
+	[BoxGroup("Components"), SerializeField] CardContent hiddenCardContentView;
+	[BoxGroup("Components"), SerializeField] CardContent defaultVisualizationCardContentView;
+	[BoxGroup("Components"), SerializeField] CardContent onFieldCardContentView;
+	[BoxGroup("Components"), SerializeField] CardContent onFieldVisualizationCardContentView;
 
 
 	public bool IsInPosition => isInPosition;
@@ -50,6 +39,7 @@ public class UICardObject : MonoBehaviour
 	private float dissolveT = 0;
 	private Action onFinishPosition = null;
 	private bool isLocalPlayer;
+	private CardContent currentDisplayingContent;
 
 	public void Setup(CardObject cardObject, bool isLocalPlayer)
 	{
@@ -57,8 +47,6 @@ public class UICardObject : MonoBehaviour
 		parentCardObject = cardObject;
 
 		ToggleSkillButtonsInteraction(true);
-
-		SetCardData();
 
 		RefreshCardUI();
 	}
@@ -92,8 +80,7 @@ public class UICardObject : MonoBehaviour
 	}
 	public void RegisterCloseCallback(OnClickCloseButton closeCallback)
 	{
-		this.closeCallback = closeCallback;
-		closeButton.SetActive(true);
+		currentDisplayingContent.RegisterCloseCallback(closeCallback);
 	}
 	public void OnCloseButtonClick ()
     {
@@ -102,7 +89,7 @@ public class UICardObject : MonoBehaviour
 	public void BecameMana(Action onFinishesAnimation)
 	{
 		isBecamingMana = true;
-		cardContents.SetActive(false);
+		currentDisplayingContent.Disable();
 		
 		fadeIntoManaParticle.Play();
 		onManaParticleEnd = onFinishesAnimation;
@@ -116,17 +103,6 @@ public class UICardObject : MonoBehaviour
 		var isInvoked = parentCardObject.IsInvoked;
 
 		return isInvoked ? physicalCardObject : transform;
-	}
-	void SetCardData()
-	{
-		UpdateBackCardCover();
-
-		UpdateCardName();
-		UpdateManaCost();
-		UpdateAttack();
-		UpdateDefense();
-		UpdateSkills();
-		UpdateFrontCardCover();
 	}
 	public void RefreshCardUI()
     {
@@ -158,83 +134,59 @@ public class UICardObject : MonoBehaviour
 				ShowHidden();         //The default card appearance. Showing only the cover
 				break;
 			case CardVisualizationType.DefaultVisualization:
-				ShowDefaultWithSkills(true);  //"Default" one, but with skills button activated
+				ShowDefaultVisualization();  //"Default" one, but with skills button activated
 				break;
 			case CardVisualizationType.OnField:
 				ShowOnField();      //On field. Shownig only background image
 				break;
 			case CardVisualizationType.OnFieldVisualization:
-				ShowFieldVisualization();  //On field, but being visualized.
+				ShowOnFieldVisualization();  //On field, but being visualized.
 				break;
         }
 	}
-	void ShowOnField()
+	void DisablePreviousCardContent()
 	{
-		ShowHidden();
+		if (currentDisplayingContent == null)
+			return;
 
-		cardContents.SetActive(true);
+		currentDisplayingContent.Disable();
 	}
-	void ShowHidden()
+	void SetNewCardContent(CardContent cardContent)
 	{
-		cardContents.SetActive(false);
-		cardFrame.SetActive(false);
-		nameText.gameObject.SetActive(false);
-		manaCostText.gameObject.SetActive(false);
-		attackText.gameObject.SetActive(false);
-		defenseText.gameObject.SetActive(false);
-		skill1CostText.gameObject.SetActive(false);
-		skill1DescriptionText.gameObject.SetActive(false);
-		skill2CostText.gameObject.SetActive(false);
-		skill2DescriptionText.gameObject.SetActive(false);
-		enableSkill1Button.gameObject.SetActive(false);
-		enableSkill2Button.gameObject.SetActive(false);
+		cardContent.RefreshData(parentCardObject.RuntimeCardData, OnToggleSkill);
+		cardContent.Enable();
 
-		ToggleSkillButtonsInteraction(false);
+		currentDisplayingContent = cardContent;
 	}
 	void ShowDefault()
 	{
-		cardContents.SetActive(true);
+		DisablePreviousCardContent();
 
-		cardFrame.SetActive(true);
-		nameText.gameObject.SetActive(true);
-		manaCostText.gameObject.SetActive(true);
-		attackText.gameObject.SetActive(true);
-		defenseText.gameObject.SetActive(true);
-		skill1CostText.gameObject.SetActive(true);
-		skill1DescriptionText.gameObject.SetActive(true);
-		skill2CostText.gameObject.SetActive(true);
-		skill2DescriptionText.gameObject.SetActive(true);
-
-		UnselectSkillButtons();
-
-		enableSkill1Button.gameObject.SetActive(false);
-		enableSkill2Button.gameObject.SetActive(false);
-
-		ToggleSkillButtonsInteraction(false);
+		SetNewCardContent(defaultCardContentView);
 	}
-	void ShowFieldVisualization()
-    {
-		ShowDefaultWithSkills(false);
-    }
-	void ShowDefaultWithSkills(bool skillsInteractable)
+	void ShowHidden()
 	{
-		cardContents.SetActive(true);
+		DisablePreviousCardContent();
 
-		cardFrame.SetActive(true);
-		nameText.gameObject.SetActive(true);
-		manaCostText.gameObject.SetActive(true);
-		attackText.gameObject.SetActive(true);
-		defenseText.gameObject.SetActive(true);
-		skill1CostText.gameObject.SetActive(true);
-		skill1DescriptionText.gameObject.SetActive(true);
-		skill2CostText.gameObject.SetActive(true);
-		skill2DescriptionText.gameObject.SetActive(true);
+		SetNewCardContent(hiddenCardContentView);
+	}
+	void ShowDefaultVisualization()
+	{
+		DisablePreviousCardContent();
 
+		SetNewCardContent(defaultVisualizationCardContentView);
+	}
+	void ShowOnField()
+	{
+		DisablePreviousCardContent();
 
-		enableSkill1Button.gameObject.SetActive(true);
-		enableSkill2Button.gameObject.SetActive(true);
+		SetNewCardContent(onFieldCardContentView);
+	}
+	void ShowOnFieldVisualization()
+	{
+		DisablePreviousCardContent();
 
-		ToggleSkillButtonsInteraction(skillsInteractable);
+		SetNewCardContent(onFieldVisualizationCardContentView);
 	}
 	public void DetachPhsyicalCard()
 	{
@@ -248,50 +200,14 @@ public class UICardObject : MonoBehaviour
 	{
 		physicalCardObject.transform.SetParent(null, true);
 	}
-	void UpdateCardName()
-    {
-		nameText.text = parentCardObject.GetCardName();
-	}
-	void UpdateManaCost()
-    {
-		SetTextValue(manaCostText, parentCardObject.CalculateSummonCost(false));
-	}
-	void UpdateAttack()
-	{
-		SetTextValue(attackText, parentCardObject.CalculateAttack());
-	}
-	void UpdateDefense()
-	{
-		SetTextValue(defenseText, parentCardObject.CalculateLife());
-	}
-	void UpdateSkills()
-	{
-		var skills = parentCardObject.GetSkillList();
 
-		var skill1 = skills[0];
-		var skill2 = skills[1];
-
-		enableSkill1Button.Setup(skill1);
-		SetTextValue(skill1DescriptionText, skill1);
-		SetTextValue(skill1CostText, skill1.GetManaCost());
-
-		enableSkill2Button.Setup(skill2);
-		SetTextValue(skill2DescriptionText, skill2);
-		SetTextValue(skill2CostText, skill2.GetManaCost());
-	}
 	void ToggleSkillButtonsInteraction(bool enabled)
     {
 		OnSkillButtonEnabledClick action = enabled ? OnToggleSkill : null;
-
-		enableSkill1Button.SetClickCallback(action);
-		enableSkill2Button.SetClickCallback(action);
     }
 	void UnselectSkillButtons()
 	{
 		parentCardObject.UnselectAllSkills();
-
-		enableSkill1Button.Disable();
-		enableSkill2Button.Disable();
 	}
 	void OnToggleSkill(SkillData skill, bool enabled)
 	{
@@ -300,34 +216,6 @@ public class UICardObject : MonoBehaviour
 
 		parentCardObject?.ToggleSkill(skill, enabled);
 	}
-	void UpdateBackCardCover()
-	{
-		var cardData = parentCardObject.Data;
-		cardRenderer.gameObject.SetActive(true);
-		var texture = cardData.Civilization.BackCover;
-
-		if (currentBackground == texture) return;
-
-		cardRenderer.material.SetTexture("_MainTex", texture);
-
-		currentBackground = texture;
-	}
-	void UpdateFrontCardCover()
-	{
-		var cardData = parentCardObject.Data;
-		var texture = cardData.FrontCover;
-
-		if (currentCover == texture) return;
-
-		backgroundImageSpriteRenderer.sprite = texture;
-
-		currentCover = texture;
-	}
-	void SetTextValue(TMP_Text component, object value)
-    {
-		component.gameObject.SetActive(true);
-		component.text = value.ToString();
-    }
 
 	public void ResetUI()
 	{
@@ -342,8 +230,6 @@ public class UICardObject : MonoBehaviour
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
 		dissolveT = 0;
-
-		ResetDissolve();
 	}
 	void MoveToTargetPosition()
     {
@@ -407,28 +293,7 @@ public class UICardObject : MonoBehaviour
 		if (!isBecamingMana)
 			yield break;
 
-		while(dissolveT < dissolveMin)
-		{
-			DissolveCard();
-			yield return null;
-		}
-
 		isBecamingMana = false;
 		onManaParticleEnd();
-	}
-	void DissolveCard()
-	{
-		dissolveT += dissolveSpeed * Time.deltaTime;
-		dissolveT = Mathf.Clamp(dissolveT, 0, 1);
-
-		SetDissolveCard(dissolveT);
-	}
-	void ResetDissolve()
-    {
-		SetDissolveCard(0);
-    }
-	void SetDissolveCard(float value)
-	{
-		cardRenderer.material.SetFloat("_DissolveAmount", value);
 	}
 }

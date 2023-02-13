@@ -68,9 +68,9 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		this.isVisualizing = isVisualizing;
 
-		uiCardObject.RegisterCloseCallback(closeCallback);
-
 		uiCardObject.RefreshCardUI();
+
+		uiCardObject.RegisterCloseCallback(closeCallback);
 	}
 	public void SetPosition(CardPositionData cardData, Action onFinish = null)
 	{

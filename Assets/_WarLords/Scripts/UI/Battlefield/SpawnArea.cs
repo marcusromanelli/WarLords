@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SpawnArea: MonoBehaviour, ICardPlaceable
 {
-	[SerializeField] new Renderer renderer;
+	/*[SerializeField] new Renderer renderer;
 	[SerializeField] Color defaultColor = Color.white;
 	[SerializeField] Color spawnAreaColor = Color.gray;
-	[SerializeField] Color selectedColor = Color.black;
+	[SerializeField] Color selectedColor = Color.black;*/
 	[SerializeField] Transform cardPositionDataReference;
 	[SerializeField, ReadOnly] bool isTemporarySpawnArea;
 	[SerializeField, ReadOnly] CardObject token = null;
@@ -47,7 +47,7 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 	}
 	void UpdateColor(bool isSelected = false)
 	{
-		if (!isSelectingSpawnArea)
+		/*if (!isSelectingSpawnArea)
 		{
 			SetColor(defaultColor);
 			return;
@@ -58,17 +58,17 @@ public class SpawnArea: MonoBehaviour, ICardPlaceable
 			SetColor(selectedColor);
 			return;
 		}
-
-		SetColor(spawnAreaColor);
+		
+		SetColor(spawnAreaColor);*/
 
 	}
 	void SetColor(Color color)
 	{
-		if (color == lastUsedColor)
+		/*if (color == lastUsedColor)
 			return;
 
 		renderer.material.color = color;
-		lastUsedColor = color;
+		lastUsedColor = color;*/
 	}
 	public void SetToken(CardObject hero)
 	{

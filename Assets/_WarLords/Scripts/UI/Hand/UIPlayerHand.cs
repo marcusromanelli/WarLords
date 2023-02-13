@@ -417,7 +417,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     CardPositionData GetCardHandPosition(int cardIndex)
     {
-        var verticalBuildUp = 0.01f;
+        var verticalBuildUp = 0.02f;
 
         var numberOfCards = cardList.Count; //5
         var sectionSize = (1f / numberOfCards); //0.2

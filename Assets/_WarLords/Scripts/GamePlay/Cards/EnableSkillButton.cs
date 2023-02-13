@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public delegate void OnSkillButtonEnabledClick(SkillData skillData, bool value);
 
 public class EnableSkillButton : MonoBehaviour 
 {
-	[SerializeField] new Renderer renderer;
+	[SerializeField] bool active;
+	[SerializeField] Image image;
 	[SerializeField] Color green;
 
 	private OnSkillButtonEnabledClick onSkillButtonClick;
@@ -26,8 +28,8 @@ public class EnableSkillButton : MonoBehaviour
 		this.onSkillButtonClick = onSkillButtonClick;
 	}
 
-    void OnMouseDown(){
-		if (onSkillButtonClick == null)
+    public void onClick(){
+		if (onSkillButtonClick == null || !active)
 			return;
 
 		Enabled = !Enabled;
@@ -42,8 +44,8 @@ public class EnableSkillButton : MonoBehaviour
 	void UpdateVisuals()
     {
         if (Enabled)
-			renderer.material.color = green;
+			image.color = green;
         else
-			renderer.material.color = Color.white;
+			image.color = Color.white;
 	}
 }

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Arkamore
   m_EditorClassIdentifier: 
   Name: Arkamore
-  BackCover: {fileID: 2800000, guid: 2bc19ce120662dc4a8afec0367a5d295, type: 3}
+  BackCover: {fileID: 3149120151073116378, guid: 650cd555599754b4d93647fd5ae28c59,
+    type: 3}
   Token: {fileID: 7583463133153421432, guid: 283debc62465f3f47b3bdb5bc91312f5, type: 3}

@@ -4,6 +4,6 @@ using UnityEngine;
 public class CivilizationData : ScriptableObject
 {
 	public string Name;
-	public Texture BackCover;
+	public GameObject BackCover;
 	public GameObject Token;
 }

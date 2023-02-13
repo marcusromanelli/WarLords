@@ -682,8 +682,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce3505538ed050498401b1838d58c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Template: {fileID: 3165635204484052632, guid: bf35140e13b4b664ab6ee226437dba0b,
-    type: 3}
 --- !u!850595691 &1123372294
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1377,6 +1375,11 @@ PrefabInstance:
         type: 3}
       propertyPath: awaitTimeBetweenDraws
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8079824663444652178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8093913726611655529, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
