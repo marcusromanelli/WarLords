@@ -6,8 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/initializer.unity
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-  - enabled: 1
-    path: Assets/Scenes/Swamp_Sample.unity
+    path: Assets/_WarLords/Scenes/Swamp_Sample.unity
+    guid: 6e4d495867beaec42948d6661af4badd
+  m_configObjects: {}

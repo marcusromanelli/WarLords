@@ -1,0 +1,2116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1521398425 &-6198823198601799863
+VideoBuildInfo:
+  m_VideoClipCount: 0
+  m_IsVideoModuleDisabled: 0
+--- !u!114 &-4975546152393142456
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13802, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedDependencies:
+  - key: Required by Scripts
+    value: []
+    icon: class/MonoScript
+    size: 0
+  - key: AndroidJNI Module
+    value: []
+    icon: package/com.unity.modules.androidjni
+    size: 0
+  - key: Animation Module
+    value:
+    - Animation
+    - AnimationClip
+    - Animator
+    - AnimatorController
+    - AnimatorOverrideController
+    - Motion
+    - RuntimeAnimatorController
+    icon: package/com.unity.modules.animation
+    size: 0
+  - key: Animation
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Animation
+    size: 0
+  - key: Assets/_WarLords/Scenes/Swamp_Sample.unity
+    value: []
+    icon: class/SceneAsset
+    size: 0
+  - key: AnimationClip
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/AnimationClip
+    size: 0
+  - key: Animator
+    value: []
+    icon: class/Animator
+    size: 0
+  - key: AnimatorController
+    value: []
+    icon: class/AnimatorController
+    size: 0
+  - key: AnimatorOverrideController
+    value: []
+    icon: class/AnimatorOverrideController
+    size: 0
+  - key: Motion
+    value: []
+    icon: class/Motion
+    size: 0
+  - key: RuntimeAnimatorController
+    value: []
+    icon: class/RuntimeAnimatorController
+    size: 0
+  - key: Audio Module
+    value:
+    - AudioBehaviour
+    - AudioClip
+    - AudioListener
+    - AudioManager
+    - AudioSource
+    - SampleClip
+    icon: package/com.unity.modules.audio
+    size: 0
+  - key: AudioBehaviour
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/AudioBehaviour
+    size: 0
+  - key: AudioClip
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/AudioClip
+    size: 0
+  - key: AudioListener
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/AudioListener
+    size: 0
+  - key: AudioManager
+    value: []
+    icon: class/AudioManager
+    size: 0
+  - key: AudioSource
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/AudioSource
+    size: 0
+  - key: SampleClip
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/SampleClip
+    size: 0
+  - key: Core Module
+    value:
+    - Behaviour
+    - BuildSettings
+    - Camera
+    - Component
+    - ComputeShader
+    - Cubemap
+    - CubemapArray
+    - DelayedCallManager
+    - EditorExtension
+    - FlareLayer
+    - GameManager
+    - GameObject
+    - GlobalGameManager
+    - GraphicsSettings
+    - InputManager
+    - LevelGameManager
+    - Light
+    - LightingSettings
+    - LightmapSettings
+    - LightProbes
+    - LowerResBlitTexture
+    - Material
+    - Mesh
+    - MeshFilter
+    - MeshRenderer
+    - MonoBehaviour
+    - MonoManager
+    - MonoScript
+    - NamedObject
+    - Object
+    - PlayerSettings
+    - PreloadData
+    - QualitySettings
+    - RectTransform
+    - ReflectionProbe
+    - Renderer
+    - RenderSettings
+    - RenderTexture
+    - ResourceManager
+    - RuntimeInitializeOnLoadManager
+    - Shader
+    - ShaderNameRegistry
+    - Sprite
+    - SpriteAtlas
+    - SpriteRenderer
+    - TagManager
+    - TextAsset
+    - Texture
+    - Texture2D
+    - Texture2DArray
+    - Texture3D
+    - TimeManager
+    - Transform
+    - Required by AndroidJNI Module
+    - Required by Animation Module
+    - Required by Audio Module
+    - Required by IMGUI Module
+    - Required by InputLegacy Module
+    - Required by JSONSerialize Module
+    - Required by ParticleSystem Module
+    - Required by Physics Module
+    - Required by RuntimeInitializeOnLoadManagerInitializer Module
+    - Required by Terrain Module
+    - Required by TextCoreFontEngine Module
+    - Required by TextCoreTextEngine Module
+    - Required by TextRendering Module
+    - Required by UI Module
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    - Required by Wind Module
+    icon: package/com.unity.modules.core
+    size: 0
+  - key: Behaviour
+    value: []
+    icon: class/Behaviour
+    size: 0
+  - key: BuildSettings
+    value: []
+    icon: class/BuildSettings
+    size: 0
+  - key: Camera
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Camera
+    size: 0
+  - key: Component
+    value: []
+    icon: class/Component
+    size: 0
+  - key: ComputeShader
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/ComputeShader
+    size: 0
+  - key: Cubemap
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Cubemap
+    size: 0
+  - key: CubemapArray
+    value: []
+    icon: class/CubemapArray
+    size: 0
+  - key: DelayedCallManager
+    value: []
+    icon: class/DelayedCallManager
+    size: 0
+  - key: EditorExtension
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/EditorExtension
+    size: 0
+  - key: FlareLayer
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/FlareLayer
+    size: 0
+  - key: GameManager
+    value: []
+    icon: class/GameManager
+    size: 0
+  - key: GameObject
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/GameObject
+    size: 0
+  - key: GlobalGameManager
+    value: []
+    icon: class/GlobalGameManager
+    size: 0
+  - key: GraphicsSettings
+    value: []
+    icon: class/GraphicsSettings
+    size: 0
+  - key: InputManager
+    value: []
+    icon: class/InputManager
+    size: 0
+  - key: LevelGameManager
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/LevelGameManager
+    size: 0
+  - key: Light
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Light
+    size: 0
+  - key: LightingSettings
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/LightingSettings
+    size: 0
+  - key: LightmapSettings
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/LightmapSettings
+    size: 0
+  - key: LightProbes
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/LightProbes
+    size: 0
+  - key: LowerResBlitTexture
+    value: []
+    icon: class/LowerResBlitTexture
+    size: 0
+  - key: Material
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Material
+    size: 0
+  - key: Mesh
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Mesh
+    size: 0
+  - key: MeshFilter
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/MeshFilter
+    size: 0
+  - key: MeshRenderer
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/MeshRenderer
+    size: 0
+  - key: MonoBehaviour
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/MonoBehaviour
+    size: 0
+  - key: MonoManager
+    value: []
+    icon: class/MonoManager
+    size: 0
+  - key: MonoScript
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/MonoScript
+    size: 0
+  - key: NamedObject
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/NamedObject
+    size: 0
+  - key: Object
+    value: []
+    icon: class/Object
+    size: 0
+  - key: PlayerSettings
+    value: []
+    icon: class/PlayerSettings
+    size: 0
+  - key: PreloadData
+    value: []
+    icon: class/PreloadData
+    size: 0
+  - key: QualitySettings
+    value: []
+    icon: class/QualitySettings
+    size: 0
+  - key: RectTransform
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/RectTransform
+    size: 0
+  - key: ReflectionProbe
+    value: []
+    icon: class/ReflectionProbe
+    size: 0
+  - key: Renderer
+    value: []
+    icon: class/Renderer
+    size: 0
+  - key: RenderSettings
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/RenderSettings
+    size: 0
+  - key: RenderTexture
+    value: []
+    icon: class/RenderTexture
+    size: 0
+  - key: ResourceManager
+    value: []
+    icon: class/ResourceManager
+    size: 0
+  - key: RuntimeInitializeOnLoadManager
+    value: []
+    icon: class/RuntimeInitializeOnLoadManager
+    size: 0
+  - key: Shader
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Shader
+    size: 0
+  - key: ShaderNameRegistry
+    value: []
+    icon: class/ShaderNameRegistry
+    size: 0
+  - key: Sprite
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Sprite
+    size: 0
+  - key: SpriteAtlas
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/SpriteAtlas
+    size: 0
+  - key: SpriteRenderer
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/SpriteRenderer
+    size: 0
+  - key: TagManager
+    value: []
+    icon: class/TagManager
+    size: 0
+  - key: TextAsset
+    value: []
+    icon: class/TextAsset
+    size: 0
+  - key: Texture
+    value: []
+    icon: class/Texture
+    size: 0
+  - key: Texture2D
+    value: []
+    icon: class/Texture2D
+    size: 0
+  - key: Texture2DArray
+    value: []
+    icon: class/Texture2DArray
+    size: 0
+  - key: Texture3D
+    value: []
+    icon: class/Texture3D
+    size: 0
+  - key: TimeManager
+    value: []
+    icon: class/TimeManager
+    size: 0
+  - key: Transform
+    value: []
+    icon: class/Transform
+    size: 0
+  - key: Required by AndroidJNI Module
+    value: []
+    icon: package/com.unity.modules.androidjni
+    size: 0
+  - key: Required by Animation Module
+    value: []
+    icon: package/com.unity.modules.animation
+    size: 0
+  - key: Required by Audio Module
+    value: []
+    icon: package/com.unity.modules.audio
+    size: 0
+  - key: Required by IMGUI Module
+    value: []
+    icon: package/com.unity.modules.imgui
+    size: 0
+  - key: Required by InputLegacy Module
+    value: []
+    icon: package/com.unity.modules.inputlegacy
+    size: 0
+  - key: Required by JSONSerialize Module
+    value: []
+    icon: package/com.unity.modules.jsonserialize
+    size: 0
+  - key: Required by ParticleSystem Module
+    value: []
+    icon: package/com.unity.modules.particlesystem
+    size: 0
+  - key: Required by Physics Module
+    value: []
+    icon: package/com.unity.modules.physics
+    size: 0
+  - key: Required by RuntimeInitializeOnLoadManagerInitializer Module
+    value: []
+    icon: package/com.unity.modules.runtimeinitializeonloadmanagerinitializer
+    size: 0
+  - key: Required by Terrain Module
+    value: []
+    icon: package/com.unity.modules.terrain
+    size: 0
+  - key: Required by TextCoreFontEngine Module
+    value: []
+    icon: package/com.unity.modules.textcorefontengine
+    size: 0
+  - key: Required by TextCoreTextEngine Module
+    value: []
+    icon: package/com.unity.modules.textcoretextengine
+    size: 0
+  - key: Required by TextRendering Module
+    value: []
+    icon: package/com.unity.modules.textrendering
+    size: 0
+  - key: Required by UI Module
+    value: []
+    icon: package/com.unity.modules.ui
+    size: 0
+  - key: Required by UIElements Module
+    value: []
+    icon: package/com.unity.modules.uielements
+    size: 0
+  - key: Required by UIElementsNative Module
+    value: []
+    icon: package/com.unity.modules.uielementsnative
+    size: 0
+  - key: Required by Wind Module
+    value: []
+    icon: package/com.unity.modules.wind
+    size: 0
+  - key: IMGUI Module
+    value:
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.imgui
+    size: 0
+  - key: InputLegacy Module
+    value:
+    - Required by IMGUI Module
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.inputlegacy
+    size: 0
+  - key: JSONSerialize Module
+    value:
+    - Required by RuntimeInitializeOnLoadManagerInitializer Module
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.jsonserialize
+    size: 0
+  - key: ParticleSystem Module
+    value:
+    - ParticleSystem
+    - ParticleSystemRenderer
+    icon: package/com.unity.modules.particlesystem
+    size: 0
+  - key: ParticleSystem
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/ParticleSystem
+    size: 0
+  - key: ParticleSystemRenderer
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/ParticleSystemRenderer
+    size: 0
+  - key: Physics Module
+    value:
+    - BoxCollider
+    - Collider
+    - MeshCollider
+    - PhysicsManager
+    icon: package/com.unity.modules.physics
+    size: 0
+  - key: BoxCollider
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/BoxCollider
+    size: 0
+  - key: Collider
+    value: []
+    icon: class/Collider
+    size: 0
+  - key: MeshCollider
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/MeshCollider
+    size: 0
+  - key: PhysicsManager
+    value: []
+    icon: class/PhysicsManager
+    size: 0
+  - key: RuntimeInitializeOnLoadManagerInitializer Module
+    value:
+    - RuntimeInitializeOnLoadManagerInitializer is always required
+    icon: package/com.unity.modules.runtimeinitializeonloadmanagerinitializer
+    size: 0
+  - key: RuntimeInitializeOnLoadManagerInitializer is always required
+    value: []
+    icon: class/DefaultAsset
+    size: 0
+  - key: SharedInternals Module
+    value:
+    - Required by AndroidJNI Module
+    - Required by Animation Module
+    - Required by Audio Module
+    - Required by Core Module
+    - Required by IMGUI Module
+    - Required by InputLegacy Module
+    - Required by JSONSerialize Module
+    - Required by ParticleSystem Module
+    - Required by Physics Module
+    - Required by RuntimeInitializeOnLoadManagerInitializer Module
+    - Required by Terrain Module
+    - Required by TextCoreFontEngine Module
+    - Required by TextCoreTextEngine Module
+    - Required by TextRendering Module
+    - Required by UI Module
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    - Required by Wind Module
+    icon: package/com.unity.modules.sharedinternals
+    size: 0
+  - key: Required by Core Module
+    value: []
+    icon: package/com.unity.modules.core
+    size: 0
+  - key: Terrain Module
+    value:
+    - Terrain
+    - TerrainData
+    - Tree
+    icon: package/com.unity.modules.terrain
+    size: 0
+  - key: Terrain
+    value: []
+    icon: class/Terrain
+    size: 0
+  - key: TerrainData
+    value: []
+    icon: class/TerrainData
+    size: 0
+  - key: Tree
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Tree
+    size: 0
+  - key: TextCoreFontEngine Module
+    value:
+    - Required by TextCoreTextEngine Module
+    - Required by UIElements Module
+    icon: package/com.unity.modules.textcorefontengine
+    size: 0
+  - key: TextCoreTextEngine Module
+    value:
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.textcoretextengine
+    size: 0
+  - key: TextRendering Module
+    value:
+    - Font
+    - TextMesh
+    - Required by IMGUI Module
+    - Required by TextCoreFontEngine Module
+    - Required by TextCoreTextEngine Module
+    - Required by UI Module
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.textrendering
+    size: 0
+  - key: Font
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Font
+    size: 0
+  - key: TextMesh
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/TextMesh
+    size: 0
+  - key: UI Module
+    value:
+    - Canvas
+    - CanvasGroup
+    - CanvasRenderer
+    - Required by UIElements Module
+    - Required by UIElementsNative Module
+    icon: package/com.unity.modules.ui
+    size: 0
+  - key: Canvas
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/Canvas
+    size: 0
+  - key: CanvasGroup
+    value: []
+    icon: class/CanvasGroup
+    size: 0
+  - key: CanvasRenderer
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/CanvasRenderer
+    size: 0
+  - key: UIElements Module
+    value: []
+    icon: package/com.unity.modules.uielements
+    size: 0
+  - key: UIElementsNative Module
+    value:
+    - Required by UIElements Module
+    icon: package/com.unity.modules.uielementsnative
+    size: 0
+  - key: Wind Module
+    value:
+    - WindZone
+    icon: package/com.unity.modules.wind
+    size: 0
+  - key: WindZone
+    value:
+    - Assets/_WarLords/Scenes/Swamp_Sample.unity
+    icon: class/WindZone
+    size: 0
+  modules:
+  - AndroidJNI Module
+  - Animation Module
+  - Audio Module
+  - Core Module
+  - IMGUI Module
+  - InputLegacy Module
+  - JSONSerialize Module
+  - ParticleSystem Module
+  - Physics Module
+  - RuntimeInitializeOnLoadManagerInitializer Module
+  - SharedInternals Module
+  - Terrain Module
+  - TextCoreFontEngine Module
+  - TextCoreTextEngine Module
+  - TextRendering Module
+  - UI Module
+  - UIElements Module
+  - UIElementsNative Module
+  - Wind Module
+  serializedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  totalSize: 0
+--- !u!114 &-4278565597193624365
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13803, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRequirements:
+    minSdkVersion: 26
+    glesMinVersion: 196608
+    openGLRequireES31AEP: 0
+    vulkanMinVersion: 0
+    targetArchitectures: 2
+  outputPath: D:/Google Drive/Projects/Personal/WarLords/0.1.apk
+  buildOptions: 268697865
+  buildApkPerCpuArchitecture: 0
+  buildAppBundle: 0
+  splitMode: 0
+  targetArchitectures: 2
+  versionCode: 1
+  packageName: com.JetDragons.WarLords
+  safeProductName: WarLords
+  activityWithIntent: com.unity3d.player.UnityPlayerActivity
+  stagingArea: Temp/StagingArea
+  patchPackage: 0
+--- !u!1125 &1
+BuildReport:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Build_2023-13-Feb-09-53-15
+  m_Summary:
+    buildStartTime:
+      serializedVersion: 2
+      ticks: 638118894579427146
+    buildGUID: 57c717ba87d6f4c4f834266eb96a23d6
+    platformName: Android
+    platformGroupName: Android
+    subtarget: 0
+    options: 268697865
+    assetBundleOptions: 0
+    outputPath: D:/Google Drive/Projects/Personal/WarLords/0.1.apk
+    crc: 0
+    totalSize: 445240733
+    totalTimeTicks: 1370339835
+    totalErrors: 0
+    totalWarnings: 12
+    buildType: 1
+    buildResult: 1
+  m_Files:
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/boot.config
+    role: config
+    id: 0
+    totalSize: 519
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/data.unity3d
+    role: unity3d
+    id: 1
+    totalSize: 40717686
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/resources.resource
+    role: resource
+    id: 2
+    totalSize: 2834496
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/RuntimeInitializeOnLoads.json
+    role: json
+    id: 3
+    totalSize: 1187
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/ScriptingAssemblies.json
+    role: json
+    id: 4
+    totalSize: 3265
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/sharedassets0.resource
+    role: resource
+    id: 5
+    totalSize: 14007008
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/UnityServicesProjectConfiguration.json
+    role: json
+    id: 6
+    totalSize: 530
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/Managed/Metadata/global-metadata.dat
+    role: dat
+    id: 7
+    totalSize: 3236468
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/Managed/Resources/mscorlib.dll-resources.dat
+    role: dat
+    id: 8
+    totalSize: 337563
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/jniLibs/arm64-v8a/libil2cpp.so
+    role: so
+    id: 9
+    totalSize: 29383904
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/analytics.json
+    role: json
+    id: 10
+    totalSize: 1172
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp-firstpass.cpp
+    role: cpp
+    id: 11
+    totalSize: 1510544
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp-firstpass1.cpp
+    role: cpp
+    id: 12
+    totalSize: 153
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp-firstpass_CodeGen.c
+    role: c
+    id: 13
+    totalSize: 101860
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp.cpp
+    role: cpp
+    id: 14
+    totalSize: 2053209
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp1.cpp
+    role: cpp
+    id: 15
+    totalSize: 1422490
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Assembly-CSharp_CodeGen.c
+    role: c
+    id: 16
+    totalSize: 328104
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods.cpp
+    role: cpp
+    id: 17
+    totalSize: 1474159
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods1.cpp
+    role: cpp
+    id: 18
+    totalSize: 2116651
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods2.cpp
+    role: cpp
+    id: 19
+    totalSize: 3768096
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods3.cpp
+    role: cpp
+    id: 20
+    totalSize: 1484929
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods4.cpp
+    role: cpp
+    id: 21
+    totalSize: 2145453
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods5.cpp
+    role: cpp
+    id: 22
+    totalSize: 2164250
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods6.cpp
+    role: cpp
+    id: 23
+    totalSize: 2000520
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/GenericMethods7.cpp
+    role: cpp
+    id: 24
+    totalSize: 1913743
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics.cpp
+    role: cpp
+    id: 25
+    totalSize: 2443704
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics1.cpp
+    role: cpp
+    id: 26
+    totalSize: 1981534
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics10.cpp
+    role: cpp
+    id: 27
+    totalSize: 2376926
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics11.cpp
+    role: cpp
+    id: 28
+    totalSize: 1982087
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics12.cpp
+    role: cpp
+    id: 29
+    totalSize: 1542741
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics13.cpp
+    role: cpp
+    id: 30
+    totalSize: 1898272
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics14.cpp
+    role: cpp
+    id: 31
+    totalSize: 2538841
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics15.cpp
+    role: cpp
+    id: 32
+    totalSize: 3268794
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics16.cpp
+    role: cpp
+    id: 33
+    totalSize: 2575416
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics17.cpp
+    role: cpp
+    id: 34
+    totalSize: 1869177
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics18.cpp
+    role: cpp
+    id: 35
+    totalSize: 1384793
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics19.cpp
+    role: cpp
+    id: 36
+    totalSize: 1402110
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics2.cpp
+    role: cpp
+    id: 37
+    totalSize: 1875522
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics20.cpp
+    role: cpp
+    id: 38
+    totalSize: 1393491
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics21.cpp
+    role: cpp
+    id: 39
+    totalSize: 1423850
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics22.cpp
+    role: cpp
+    id: 40
+    totalSize: 2437060
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics23.cpp
+    role: cpp
+    id: 41
+    totalSize: 1563999
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics24.cpp
+    role: cpp
+    id: 42
+    totalSize: 1941979
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics25.cpp
+    role: cpp
+    id: 43
+    totalSize: 2127206
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics26.cpp
+    role: cpp
+    id: 44
+    totalSize: 2083459
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics27.cpp
+    role: cpp
+    id: 45
+    totalSize: 1957270
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics28.cpp
+    role: cpp
+    id: 46
+    totalSize: 1349414
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics29.cpp
+    role: cpp
+    id: 47
+    totalSize: 1164441
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics3.cpp
+    role: cpp
+    id: 48
+    totalSize: 1608083
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics30.cpp
+    role: cpp
+    id: 49
+    totalSize: 879796
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics4.cpp
+    role: cpp
+    id: 50
+    totalSize: 1936221
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics5.cpp
+    role: cpp
+    id: 51
+    totalSize: 1198231
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics6.cpp
+    role: cpp
+    id: 52
+    totalSize: 1217806
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics7.cpp
+    role: cpp
+    id: 53
+    totalSize: 1240720
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics8.cpp
+    role: cpp
+    id: 54
+    totalSize: 1472612
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Generics9.cpp
+    role: cpp
+    id: 55
+    totalSize: 4503005
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCCalculateFieldValues.cpp
+    role: cpp
+    id: 56
+    totalSize: 3102192
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCCalculateFieldValues1.cpp
+    role: cpp
+    id: 57
+    totalSize: 1092159
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCCalculateTypeValues.cpp
+    role: cpp
+    id: 58
+    totalSize: 3923276
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCCFieldValuesTable.cpp
+    role: cpp
+    id: 59
+    totalSize: 221004
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCCTypeValuesTable.cpp
+    role: cpp
+    id: 60
+    totalSize: 370541
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppCodeRegistration.cpp
+    role: cpp
+    id: 61
+    totalSize: 5910
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericAdjustorThunkTable.c
+    role: c
+    id: 62
+    totalSize: 895172
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericClassTable.c
+    role: c
+    id: 63
+    totalSize: 411599
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericInstDefinitions.c
+    role: c
+    id: 64
+    totalSize: 1142447
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericMethodDefinitions.c
+    role: c
+    id: 65
+    totalSize: 505180
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericMethodPointerTable.c
+    role: c
+    id: 66
+    totalSize: 5270859
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppGenericMethodTable.c
+    role: c
+    id: 67
+    totalSize: 562195
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppInteropDataTable.cpp
+    role: cpp
+    id: 68
+    totalSize: 289473
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppInvokerTable.cpp
+    role: cpp
+    id: 69
+    totalSize: 5030787
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppMetadataRegistration.c
+    role: c
+    id: 70
+    totalSize: 989
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppMetadataUsage.c
+    role: c
+    id: 71
+    totalSize: 7944305
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppReversePInvokeWrapperTable.cpp
+    role: cpp
+    id: 72
+    totalSize: 2081
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppRgctxTable.c
+    role: c
+    id: 73
+    totalSize: 251924
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Il2CppTypeDefinitions.c
+    role: c
+    id: 74
+    totalSize: 4142073
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Mono.Security.cpp
+    role: cpp
+    id: 75
+    totalSize: 107531
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Mono.Security_CodeGen.c
+    role: c
+    id: 76
+    totalSize: 4757
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib.cpp
+    role: cpp
+    id: 77
+    totalSize: 1582854
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib1.cpp
+    role: cpp
+    id: 78
+    totalSize: 2075929
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib10.cpp
+    role: cpp
+    id: 79
+    totalSize: 1919148
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib11.cpp
+    role: cpp
+    id: 80
+    totalSize: 1838584
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib12.cpp
+    role: cpp
+    id: 81
+    totalSize: 1662841
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib13.cpp
+    role: cpp
+    id: 82
+    totalSize: 2221765
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib14.cpp
+    role: cpp
+    id: 83
+    totalSize: 1859505
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib15.cpp
+    role: cpp
+    id: 84
+    totalSize: 1288323
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib16.cpp
+    role: cpp
+    id: 85
+    totalSize: 1386653
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib17.cpp
+    role: cpp
+    id: 86
+    totalSize: 1033832
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib2.cpp
+    role: cpp
+    id: 87
+    totalSize: 1181510
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib3.cpp
+    role: cpp
+    id: 88
+    totalSize: 1448166
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib4.cpp
+    role: cpp
+    id: 89
+    totalSize: 1982651
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib5.cpp
+    role: cpp
+    id: 90
+    totalSize: 1922409
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib6.cpp
+    role: cpp
+    id: 91
+    totalSize: 1462192
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib7.cpp
+    role: cpp
+    id: 92
+    totalSize: 2225357
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib8.cpp
+    role: cpp
+    id: 93
+    totalSize: 1327441
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib9.cpp
+    role: cpp
+    id: 94
+    totalSize: 1748478
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/mscorlib_CodeGen.c
+    role: c
+    id: 95
+    totalSize: 2759300
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/NaughtyAttributes.Core.cpp
+    role: cpp
+    id: 96
+    totalSize: 248747
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/NaughtyAttributes.Core_CodeGen.c
+    role: c
+    id: 97
+    totalSize: 38035
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/NaughtyAttributes.Test.cpp
+    role: cpp
+    id: 98
+    totalSize: 330711
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/NaughtyAttributes.Test_CodeGen.c
+    role: c
+    id: 99
+    totalSize: 38054
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Configuration.cpp
+    role: cpp
+    id: 100
+    totalSize: 35031
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Configuration_CodeGen.c
+    role: c
+    id: 101
+    totalSize: 5653
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Core.cpp
+    role: cpp
+    id: 102
+    totalSize: 24149
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Core_CodeGen.c
+    role: c
+    id: 103
+    totalSize: 91261
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.cpp
+    role: cpp
+    id: 104
+    totalSize: 998576
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Xml.cpp
+    role: cpp
+    id: 105
+    totalSize: 103676
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System.Xml_CodeGen.c
+    role: c
+    id: 106
+    totalSize: 7589
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System1.cpp
+    role: cpp
+    id: 107
+    totalSize: 1408199
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System2.cpp
+    role: cpp
+    id: 108
+    totalSize: 1203463
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/System_CodeGen.c
+    role: c
+    id: 109
+    totalSize: 205943
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro.cpp
+    role: cpp
+    id: 110
+    totalSize: 983607
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro1.cpp
+    role: cpp
+    id: 111
+    totalSize: 1001275
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro2.cpp
+    role: cpp
+    id: 112
+    totalSize: 1456842
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro3.cpp
+    role: cpp
+    id: 113
+    totalSize: 1791568
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro4.cpp
+    role: cpp
+    id: 114
+    totalSize: 1214847
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro5.cpp
+    role: cpp
+    id: 115
+    totalSize: 1755408
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro6.cpp
+    role: cpp
+    id: 116
+    totalSize: 2094727
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro7.cpp
+    role: cpp
+    id: 117
+    totalSize: 860950
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/Unity.TextMeshPro_CodeGen.c
+    role: c
+    id: 118
+    totalSize: 462610
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AndroidJNIModule.cpp
+    role: cpp
+    id: 119
+    totalSize: 997796
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AndroidJNIModule_CodeGen.c
+    role: c
+    id: 120
+    totalSize: 119499
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AnimationModule.cpp
+    role: cpp
+    id: 121
+    totalSize: 229572
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AnimationModule_CodeGen.c
+    role: c
+    id: 122
+    totalSize: 27495
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AudioModule.cpp
+    role: cpp
+    id: 123
+    totalSize: 103085
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.AudioModule_CodeGen.c
+    role: c
+    id: 124
+    totalSize: 10139
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.CoreModule.cpp
+    role: cpp
+    id: 125
+    totalSize: 2632975
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.CoreModule1.cpp
+    role: cpp
+    id: 126
+    totalSize: 2251049
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.CoreModule2.cpp
+    role: cpp
+    id: 127
+    totalSize: 194730
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.CoreModule_CodeGen.c
+    role: c
+    id: 128
+    totalSize: 660488
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.cpp
+    role: cpp
+    id: 129
+    totalSize: 706
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.GridModule.cpp
+    role: cpp
+    id: 130
+    totalSize: 3042
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.GridModule_CodeGen.c
+    role: c
+    id: 131
+    totalSize: 452
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.IMGUIModule.cpp
+    role: cpp
+    id: 132
+    totalSize: 1230473
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.IMGUIModule1.cpp
+    role: cpp
+    id: 133
+    totalSize: 184276
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.IMGUIModule_CodeGen.c
+    role: c
+    id: 134
+    totalSize: 117523
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.InputLegacyModule.cpp
+    role: cpp
+    id: 135
+    totalSize: 181432
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.InputLegacyModule_CodeGen.c
+    role: c
+    id: 136
+    totalSize: 17922
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.ParticleSystemModule.cpp
+    role: cpp
+    id: 137
+    totalSize: 62725
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.ParticleSystemModule_CodeGen.c
+    role: c
+    id: 138
+    totalSize: 8115
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.Physics2DModule.cpp
+    role: cpp
+    id: 139
+    totalSize: 20251
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.Physics2DModule_CodeGen.c
+    role: c
+    id: 140
+    totalSize: 2616
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.PhysicsModule.cpp
+    role: cpp
+    id: 141
+    totalSize: 164470
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.PhysicsModule_CodeGen.c
+    role: c
+    id: 142
+    totalSize: 18589
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.SharedInternalsModule.cpp
+    role: cpp
+    id: 143
+    totalSize: 140921
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.SharedInternalsModule_CodeGen.c
+    role: c
+    id: 144
+    totalSize: 18388
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.SpriteShapeModule.cpp
+    role: cpp
+    id: 145
+    totalSize: 3085
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.SpriteShapeModule_CodeGen.c
+    role: c
+    id: 146
+    totalSize: 473
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TerrainModule.cpp
+    role: cpp
+    id: 147
+    totalSize: 219326
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TerrainModule_CodeGen.c
+    role: c
+    id: 148
+    totalSize: 12309
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreFontEngineModule.cpp
+    role: cpp
+    id: 149
+    totalSize: 361344
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreFontEngineModule_CodeGen.c
+    role: c
+    id: 150
+    totalSize: 56134
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreTextEngineModule.cpp
+    role: cpp
+    id: 151
+    totalSize: 662800
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreTextEngineModule1.cpp
+    role: cpp
+    id: 152
+    totalSize: 940536
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreTextEngineModule2.cpp
+    role: cpp
+    id: 153
+    totalSize: 1456416
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreTextEngineModule3.cpp
+    role: cpp
+    id: 154
+    totalSize: 514438
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextCoreTextEngineModule_CodeGen.c
+    role: c
+    id: 155
+    totalSize: 115518
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextRenderingModule.cpp
+    role: cpp
+    id: 156
+    totalSize: 175976
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TextRenderingModule_CodeGen.c
+    role: c
+    id: 157
+    totalSize: 15170
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TilemapModule.cpp
+    role: cpp
+    id: 158
+    totalSize: 3934
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.TilemapModule_CodeGen.c
+    role: c
+    id: 159
+    totalSize: 461
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI.cpp
+    role: cpp
+    id: 160
+    totalSize: 1914486
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI1.cpp
+    role: cpp
+    id: 161
+    totalSize: 1312059
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI2.cpp
+    role: cpp
+    id: 162
+    totalSize: 1542774
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI3.cpp
+    role: cpp
+    id: 163
+    totalSize: 2233096
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI4.cpp
+    role: cpp
+    id: 164
+    totalSize: 368577
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule.cpp
+    role: cpp
+    id: 165
+    totalSize: 1787292
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule1.cpp
+    role: cpp
+    id: 166
+    totalSize: 2514640
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule10.cpp
+    role: cpp
+    id: 167
+    totalSize: 1731077
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule11.cpp
+    role: cpp
+    id: 168
+    totalSize: 1470961
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule12.cpp
+    role: cpp
+    id: 169
+    totalSize: 903021
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule2.cpp
+    role: cpp
+    id: 170
+    totalSize: 2303938
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule3.cpp
+    role: cpp
+    id: 171
+    totalSize: 2244360
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule4.cpp
+    role: cpp
+    id: 172
+    totalSize: 2004818
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule5.cpp
+    role: cpp
+    id: 173
+    totalSize: 2230920
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule6.cpp
+    role: cpp
+    id: 174
+    totalSize: 1456809
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule7.cpp
+    role: cpp
+    id: 175
+    totalSize: 2176588
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule8.cpp
+    role: cpp
+    id: 176
+    totalSize: 2104445
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule9.cpp
+    role: cpp
+    id: 177
+    totalSize: 1031671
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsModule_CodeGen.c
+    role: c
+    id: 178
+    totalSize: 1726501
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsNativeModule.cpp
+    role: cpp
+    id: 179
+    totalSize: 504640
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIElementsNativeModule_CodeGen.c
+    role: c
+    id: 180
+    totalSize: 68717
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIModule.cpp
+    role: cpp
+    id: 181
+    totalSize: 267723
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UIModule_CodeGen.c
+    role: c
+    id: 182
+    totalSize: 31258
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.UI_CodeGen.c
+    role: c
+    id: 183
+    totalSize: 519354
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.WindModule.cpp
+    role: cpp
+    id: 184
+    totalSize: 2830
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine.WindModule_CodeGen.c
+    role: c
+    id: 185
+    totalSize: 452
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnityEngine_CodeGen.c
+    role: c
+    id: 186
+    totalSize: 419
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/UnresolvedVirtualCallStubs.cpp
+    role: cpp
+    id: 187
+    totalSize: 491545
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/__Generated.cpp
+    role: cpp
+    id: 188
+    totalSize: 4277
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/il2cppOutput/__Generated_CodeGen.c
+    role: c
+    id: 189
+    totalSize: 1087
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/analytics.json
+    role: json
+    id: 190
+    totalSize: 2752
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Assembly-CSharp-firstpass.dll
+    role: dll
+    id: 191
+    totalSize: 93184
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Assembly-CSharp-firstpass.pdb
+    role: pdb
+    id: 192
+    totalSize: 47772
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Assembly-CSharp.dll
+    role: dll
+    id: 193
+    totalSize: 131584
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Assembly-CSharp.pdb
+    role: pdb
+    id: 194
+    totalSize: 73840
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Mono.Security.dll
+    role: dll
+    id: 195
+    totalSize: 8704
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/mscorlib.dll
+    role: dll
+    id: 196
+    totalSize: 1764352
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/NaughtyAttributes.Core.dll
+    role: dll
+    id: 197
+    totalSize: 16384
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/NaughtyAttributes.Core.pdb
+    role: pdb
+    id: 198
+    totalSize: 19936
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/NaughtyAttributes.Test.dll
+    role: dll
+    id: 199
+    totalSize: 26624
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/NaughtyAttributes.Test.pdb
+    role: pdb
+    id: 200
+    totalSize: 18756
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/System.Configuration.dll
+    role: dll
+    id: 201
+    totalSize: 5120
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/System.Core.dll
+    role: dll
+    id: 202
+    totalSize: 27136
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/System.dll
+    role: dll
+    id: 203
+    totalSize: 181248
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/System.Xml.dll
+    role: dll
+    id: 204
+    totalSize: 14336
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Unity.TextMeshPro.dll
+    role: dll
+    id: 205
+    totalSize: 425472
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/Unity.TextMeshPro.pdb
+    role: pdb
+    id: 206
+    totalSize: 226124
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AndroidJNIModule.dll
+    role: dll
+    id: 207
+    totalSize: 63488
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AndroidJNIModule.pdb
+    role: pdb
+    id: 208
+    totalSize: 25764
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AnimationModule.dll
+    role: dll
+    id: 209
+    totalSize: 23040
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AnimationModule.pdb
+    role: pdb
+    id: 210
+    totalSize: 6836
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AudioModule.dll
+    role: dll
+    id: 211
+    totalSize: 14336
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.AudioModule.pdb
+    role: pdb
+    id: 212
+    totalSize: 4196
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.CoreModule.dll
+    role: dll
+    id: 213
+    totalSize: 299008
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.CoreModule.pdb
+    role: pdb
+    id: 214
+    totalSize: 106168
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.dll
+    role: dll
+    id: 215
+    totalSize: 49664
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.GridModule.dll
+    role: dll
+    id: 216
+    totalSize: 9728
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.GridModule.pdb
+    role: pdb
+    id: 217
+    totalSize: 2332
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.IMGUIModule.dll
+    role: dll
+    id: 218
+    totalSize: 81920
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.IMGUIModule.pdb
+    role: pdb
+    id: 219
+    totalSize: 33236
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.InputLegacyModule.dll
+    role: dll
+    id: 220
+    totalSize: 16896
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.InputLegacyModule.pdb
+    role: pdb
+    id: 221
+    totalSize: 5476
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.ParticleSystemModule.dll
+    role: dll
+    id: 222
+    totalSize: 13824
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.ParticleSystemModule.pdb
+    role: pdb
+    id: 223
+    totalSize: 3728
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.pdb
+    role: pdb
+    id: 224
+    totalSize: 4416
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.Physics2DModule.dll
+    role: dll
+    id: 225
+    totalSize: 11264
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.Physics2DModule.pdb
+    role: pdb
+    id: 226
+    totalSize: 2996
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.PhysicsModule.dll
+    role: dll
+    id: 227
+    totalSize: 18944
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.PhysicsModule.pdb
+    role: pdb
+    id: 228
+    totalSize: 5348
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.SharedInternalsModule.dll
+    role: dll
+    id: 229
+    totalSize: 16384
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.SharedInternalsModule.pdb
+    role: pdb
+    id: 230
+    totalSize: 5108
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.SpriteShapeModule.dll
+    role: dll
+    id: 231
+    totalSize: 9728
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.SpriteShapeModule.pdb
+    role: pdb
+    id: 232
+    totalSize: 2332
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TerrainModule.dll
+    role: dll
+    id: 233
+    totalSize: 17920
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TerrainModule.pdb
+    role: pdb
+    id: 234
+    totalSize: 5924
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextCoreFontEngineModule.dll
+    role: dll
+    id: 235
+    totalSize: 27648
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextCoreFontEngineModule.pdb
+    role: pdb
+    id: 236
+    totalSize: 9568
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextCoreTextEngineModule.dll
+    role: dll
+    id: 237
+    totalSize: 165376
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextCoreTextEngineModule.pdb
+    role: pdb
+    id: 238
+    totalSize: 70476
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextRenderingModule.dll
+    role: dll
+    id: 239
+    totalSize: 18944
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TextRenderingModule.pdb
+    role: pdb
+    id: 240
+    totalSize: 4620
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TilemapModule.dll
+    role: dll
+    id: 241
+    totalSize: 10240
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.TilemapModule.pdb
+    role: pdb
+    id: 242
+    totalSize: 2444
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UI.dll
+    role: dll
+    id: 243
+    totalSize: 278016
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UI.pdb
+    role: pdb
+    id: 244
+    totalSize: 167768
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIElementsModule.dll
+    role: dll
+    id: 245
+    totalSize: 922624
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIElementsModule.pdb
+    role: pdb
+    id: 246
+    totalSize: 454320
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIElementsNativeModule.dll
+    role: dll
+    id: 247
+    totalSize: 34304
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIElementsNativeModule.pdb
+    role: pdb
+    id: 248
+    totalSize: 10788
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIModule.dll
+    role: dll
+    id: 249
+    totalSize: 20480
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.UIModule.pdb
+    role: pdb
+    id: 250
+    totalSize: 5124
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.WindModule.dll
+    role: dll
+    id: 251
+    totalSize: 9216
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityEngine.WindModule.pdb
+    role: pdb
+    id: 252
+    totalSize: 2332
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Il2CppBackup/Managed/UnityLinkerToEditorData.json
+    role: json
+    id: 253
+    totalSize: 15018
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/unity
+      default resources
+    role: unity default resources
+    id: 254
+    totalSize: 4221568
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/build.gradle
+    role: gradle
+    id: 255
+    totalSize: 1074
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build.gradle
+    role: gradle
+    id: 256
+    totalSize: 928
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/build.gradle
+    role: gradle
+    id: 257
+    totalSize: 1519
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/gradle.properties
+    role: properties
+    id: 258
+    totalSize: 125
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/local.properties
+    role: properties
+    id: 259
+    totalSize: 182
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/settings.gradle
+    role: gradle
+    id: 260
+    totalSize: 36
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/gradle/wrapper/gradle-wrapper.properties
+    role: properties
+    id: 261
+    totalSize: 203
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/proguard-unity.txt
+    role: txt
+    id: 262
+    totalSize: 327
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/java/com/unity3d/player/UnityPlayerActivity.java
+    role: java
+    id: 263
+    totalSize: 5557
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/libs/unity-classes.jar
+    role: jar
+    id: 264
+    totalSize: 111334
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values/ids.xml
+    role: xml
+    id: 265
+    totalSize: 111
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/values/styles.xml
+    role: xml
+    id: 266
+    totalSize: 529
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/values-v21/styles.xml
+    role: xml
+    id: 267
+    totalSize: 169
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/values-v28/styles.xml
+    role: xml
+    id: 268
+    totalSize: 245
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values/styles.xml
+    role: xml
+    id: 269
+    totalSize: 529
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values-v21/styles.xml
+    role: xml
+    id: 270
+    totalSize: 169
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values-v28/styles.xml
+    role: xml
+    id: 271
+    totalSize: 245
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/values/strings.xml
+    role: xml
+    id: 272
+    totalSize: 177
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values/freeformwindow.xml
+    role: xml
+    id: 273
+    totalSize: 359
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/res/values-v30/freeformwindow.xml
+    role: xml
+    id: 274
+    totalSize: 395
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-mdpi/app_icon.png
+    role: png
+    id: 275
+    totalSize: 6511
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-ldpi/app_icon.png
+    role: png
+    id: 276
+    totalSize: 3838
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-hdpi/app_icon.png
+    role: png
+    id: 277
+    totalSize: 13846
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xhdpi/app_icon.png
+    role: png
+    id: 278
+    totalSize: 23424
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xxhdpi/app_icon.png
+    role: png
+    id: 279
+    totalSize: 49224
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xxxhdpi/app_icon.png
+    role: png
+    id: 280
+    totalSize: 83414
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-ldpi/app_icon_round.png
+    role: png
+    id: 281
+    totalSize: 3838
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-mdpi/app_icon_round.png
+    role: png
+    id: 282
+    totalSize: 6511
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-hdpi/app_icon_round.png
+    role: png
+    id: 283
+    totalSize: 13846
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xhdpi/app_icon_round.png
+    role: png
+    id: 284
+    totalSize: 23424
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xxhdpi/app_icon_round.png
+    role: png
+    id: 285
+    totalSize: 49224
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/res/mipmap-xxxhdpi/app_icon_round.png
+    role: png
+    id: 286
+    totalSize: 83414
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/jniLibs/arm64-v8a/libmain.so
+    role: so
+    id: 287
+    totalSize: 13312
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/src/main/AndroidManifest.xml
+    role: xml
+    id: 288
+    totalSize: 492
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/AndroidManifest.xml
+    role: xml
+    id: 289
+    totalSize: 1938
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/jniLibs/arm64-v8a/libunity.so
+    role: so
+    id: 290
+    totalSize: 27764840
+  - path: D:/Google Drive/Projects/Personal/WarLords/WarLords/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/assets/bin/Data/unity_app_guid
+    role: unity_app_guid
+    id: 291
+    totalSize: 36
+  - path: D:/Google Drive/Projects/Personal/WarLords/0.1.apk
+    role: APK
+    id: 292
+    totalSize: 101483370
+  m_BuildSteps:
+  - stepName: Build player
+    durationTicks: 1370339835
+    depth: 0
+    messages: []
+  - stepName: Preprocess Player
+    durationTicks: 405017
+    depth: 1
+    messages: []
+  - stepName: Prepare For Build
+    durationTicks: 42036
+    depth: 1
+    messages: []
+  - stepName: ProducePlayerScriptAssemblies
+    durationTicks: 22518019
+    depth: 1
+    messages: []
+  - stepName: Prebuild Cleanup and Recompile
+    durationTicks: 16654781
+    depth: 2
+    messages: []
+  - stepName: Compile scripts
+    durationTicks: 3470929
+    depth: 3
+    messages: []
+  - stepName: Generate and validate platform script types
+    durationTicks: 12848024
+    depth: 3
+    messages: []
+  - stepName: Verify Build setup
+    durationTicks: 1474064
+    depth: 1
+    messages: []
+  - stepName: Check old data build
+    durationTicks: 1355066
+    depth: 2
+    messages: []
+  - stepName: Set up scripts only build
+    durationTicks: 46326
+    depth: 2
+    messages: []
+  - stepName: Prepare assets for target platform
+    durationTicks: 5377941
+    depth: 1
+    messages: []
+  - stepName: Run script only build
+    durationTicks: 6903704
+    depth: 1
+    messages: []
+  - stepName: Build scripts DLLs
+    durationTicks: 6564227
+    depth: 2
+    messages: []
+  - stepName: GetReferencedAssemblies
+    durationTicks: 8753
+    depth: 3
+    messages: []
+  - stepName: Postprocess built player
+    durationTicks: 1330034356
+    depth: 1
+    messages:
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+    - type: 2
+      content: Compressed texture Icon is used as icon. This might compromise visual
+        quality of the final image. Uncompressed format might be considered as better
+        import option.
+  - stepName: Initializing
+    durationTicks: 818
+    depth: 2
+    messages: []
+  - stepName: Check gradle project collisions
+    durationTicks: 71
+    depth: 2
+    messages: []
+  - stepName: Preparing banner
+    durationTicks: 51
+    depth: 2
+    messages: []
+  - stepName: Setup incremental player build
+    durationTicks: 577848
+    depth: 2
+    messages: []
+  - stepName: Incremental player build
+    durationTicks: 1191121135
+    depth: 2
+    messages: []
+  - stepName: Report output files
+    durationTicks: 170946
+    depth: 2
+    messages: []
+  - stepName: Calling IPostGenerateGradleAndroidProject callbacks
+    durationTicks: 7767
+    depth: 2
+    messages: []
+  - stepName: Performance Reporting Symbol Upload
+    durationTicks: 54
+    depth: 2
+    messages: []
+  - stepName: Building Gradle project
+    durationTicks: 68374809
+    depth: 2
+    messages: []
+  - stepName: Processing Mapping File
+    durationTicks: 254
+    depth: 2
+    messages: []
+  - stepName: Moving output package(s)
+    durationTicks: 16675129
+    depth: 2
+    messages: []
+  m_Appendices:
+  - {fileID: -4975546152393142456}
+  - {fileID: -4278565597193624365}
+  - {fileID: 3452257848804637028}
+  - {fileID: 8423276500524001465}
+  - {fileID: -6198823198601799863}
+--- !u!382020655 &3452257848804637028
+PluginBuildInfo:
+  m_RuntimePlugins:
+  - Newtonsoft.Json
+  - Unity.VisualScripting.Antlr3.Runtime
+  - nunit.framework
+  m_EditorPlugins:
+  - Unity.Plastic.Newtonsoft.Json
+  - Unity.Plastic.Antlr3.Runtime
+  - Unity.VisualScripting.YamlDotNet
+  - Unity.VisualScripting.TextureAssets
+  - zlib64Plastic
+  - Unity.VisualScripting.IonicZip
+  - liblz4Plastic
+  - unityplastic
+  - log4netPlastic
+  - lz4x64Plastic
+  - Unity.VisualScripting.sqlite3
+  - AppleEventIntegration
+--- !u!641289076 &8423276500524001465
+AudioBuildInfo:
+  m_IsAudioDisabled: 0
+  m_AudioClipCount: 0
+  m_AudioMixerCount: 0

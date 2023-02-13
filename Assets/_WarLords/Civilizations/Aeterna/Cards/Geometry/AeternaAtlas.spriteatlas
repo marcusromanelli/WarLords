@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AeternaAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 4096
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 9d7af60ab3c1b1744a9022918e754752, type: 3}
+    - {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: f8a25a1293c543d418254bb6f50784ab, type: 3}
+  - {fileID: 21300000, guid: 526fcf6248081f6478164b2462fd25fd, type: 3}
+  - {fileID: 21300000, guid: 874eee2388ade944b970d38f7c1df35d, type: 3}
+  - {fileID: 21300000, guid: dd18d845d6d27744b875882f302caae6, type: 3}
+  - {fileID: 21300000, guid: 79faefd6c25833e4f8d40ad0ea40c421, type: 3}
+  - {fileID: 21300000, guid: 0e9770177e836634ea4c37335a4ccaeb, type: 3}
+  - {fileID: 21300000, guid: 4143db487ee09ed45b2bb153debbae31, type: 3}
+  - {fileID: 21300000, guid: b1ee024a6e2bfd248834fde16601d341, type: 3}
+  - {fileID: 21300000, guid: 48c8d44a6f768304f85ec183b8bb8f04, type: 3}
+  - {fileID: 21300000, guid: d854e69be450ae14c925b09bd728911f, type: 3}
+  - {fileID: 21300000, guid: 52c9ec4cd02923248bf73c7b992f0310, type: 3}
+  - {fileID: 21300000, guid: 51998f6d892308a49be890922055b79f, type: 3}
+  - {fileID: 21300000, guid: 8e2d4afe546ae4f429e278a177e70c36, type: 3}
+  - {fileID: 21300000, guid: 9373a86f64ee82243bac742fe211a139, type: 3}
+  - {fileID: 21300000, guid: f6375dffe39157b41b1567477c5233c1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Aeterna_Texture_02
+  - Aeterna_Texture_15
+  - Aeterna_Texture_04
+  - Aeterna_Texture_09
+  - Aeterna_Texture_07
+  - Aeterna_Texture_01
+  - Aeterna_Texture_13
+  - Aeterna_Texture_03
+  - Aeterna_Texture_11
+  - Aeterna_Texture_12
+  - Aeterna_Texture_06
+  - Aeterna_Texture_10
+  - Aeterna_Texture_14
+  - Aeterna_Texture_05
+  - Aeterna_Texture_08
+  m_RenderDataMap: {}
+  m_Tag: AeternaAtlas
+  m_IsVariant: 0
