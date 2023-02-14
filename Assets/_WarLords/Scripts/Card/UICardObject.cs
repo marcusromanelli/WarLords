@@ -16,7 +16,7 @@ public class UICardObject : MonoBehaviour
 
 	[BoxGroup("Components"), SerializeField] Transform physicalCardObject;
 	[BoxGroup("Components"), SerializeField] ParticleSystem fadeIntoManaParticle;
-
+	[BoxGroup("Components"), SerializeField] Transform coverBackgroundPivot;
 	[BoxGroup("Components"), SerializeField] CardContent defaultCardContentView;
 	[BoxGroup("Components"), SerializeField] CardContent hiddenCardContentView;
 	[BoxGroup("Components"), SerializeField] CardContent defaultVisualizationCardContentView;
@@ -34,12 +34,10 @@ public class UICardObject : MonoBehaviour
 	private OnClickCloseButton closeCallback;
 	private bool isBecamingMana = false;
 	private Action onManaParticleEnd;
-	private Sprite currentCover;
-	private Texture currentBackground;
-	private float dissolveT = 0;
 	private Action onFinishPosition = null;
 	private bool isLocalPlayer;
 	private CardContent currentDisplayingContent;
+	private GameObject currentBackgroundObject;
 
 	public void Setup(CardObject cardObject, bool isLocalPlayer)
 	{
@@ -153,10 +151,25 @@ public class UICardObject : MonoBehaviour
 	}
 	void SetNewCardContent(CardContent cardContent)
 	{
+		UpdateBackCardCover();
+
 		cardContent.RefreshData(parentCardObject.RuntimeCardData, OnToggleSkill);
 		cardContent.Enable();
 
 		currentDisplayingContent = cardContent;
+	}
+	void UpdateBackCardCover()
+	{
+		var obj = parentCardObject.RuntimeCardData.Civilization.BackCover;
+
+		if (currentBackgroundObject == obj) return;
+
+		if (currentBackgroundObject != null)
+			Destroy(currentBackgroundObject.gameObject);
+
+		currentBackgroundObject = (GameObject)ElementFactory.CreateObject(obj, coverBackgroundPivot);
+		currentBackgroundObject.transform.localPosition = Vector3.zero;
+		currentBackgroundObject.transform.localRotation = Quaternion.identity;
 	}
 	void ShowDefault()
 	{
@@ -229,7 +242,6 @@ public class UICardObject : MonoBehaviour
 		targetPositionAndRotation = null;
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
-		dissolveT = 0;
 	}
 	void MoveToTargetPosition()
     {

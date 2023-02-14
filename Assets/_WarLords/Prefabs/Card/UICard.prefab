@@ -688,7 +688,6 @@ RectTransform:
   m_Children:
   - {fileID: 4310246124597777210}
   - {fileID: 4473741779785253515}
-  - {fileID: 1133562025914008548}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1157,7 +1156,6 @@ MonoBehaviour:
   skill2DescriptionText: {fileID: 1657328665278120946}
   skill2CostText: {fileID: 4794717225621407038}
   heroBackground: {fileID: 8856984217024291897}
-  coverBackgroundPivot: {fileID: 1133562025914008548}
   closeButton: {fileID: 4129435855901813003}
   enableSkill1Button: {fileID: 8055892806057633621}
   enableSkill2Button: {fileID: 1124661439770554425}
@@ -1377,7 +1375,6 @@ MonoBehaviour:
   skill2DescriptionText: {fileID: 1958075782906804876}
   skill2CostText: {fileID: 4065589131683971061}
   heroBackground: {fileID: 7591264405682207261}
-  coverBackgroundPivot: {fileID: 1133562025914008548}
   closeButton: {fileID: 3022829428680775022}
   enableSkill1Button: {fileID: 6129731375487522423}
   enableSkill2Button: {fileID: 5913313527884713977}
@@ -2951,7 +2948,6 @@ MonoBehaviour:
   skill2DescriptionText: {fileID: 0}
   skill2CostText: {fileID: 0}
   heroBackground: {fileID: 637974685254068710}
-  coverBackgroundPivot: {fileID: 1133562025914008548}
   closeButton: {fileID: 0}
   enableSkill1Button: {fileID: 0}
   enableSkill2Button: {fileID: 0}
@@ -8631,7 +8627,6 @@ MonoBehaviour:
   skill2DescriptionText: {fileID: 0}
   skill2CostText: {fileID: 0}
   heroBackground: {fileID: 0}
-  coverBackgroundPivot: {fileID: 1133562025914008548}
   closeButton: {fileID: 0}
   enableSkill1Button: {fileID: 0}
   enableSkill2Button: {fileID: 0}
@@ -10021,37 +10016,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &8462328366053176036
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1133562025914008548}
-  m_Layer: 8
-  m_Name: BackgroundCoverPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1133562025914008548
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8462328366053176036}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4436543930875814685}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8472425946770884462
 GameObject:
   m_ObjectHideFlags: 0
@@ -10249,7 +10213,6 @@ MonoBehaviour:
   skill2DescriptionText: {fileID: 0}
   skill2CostText: {fileID: 0}
   heroBackground: {fileID: 4546580034248015401}
-  coverBackgroundPivot: {fileID: 1133562025914008548}
   closeButton: {fileID: 0}
   enableSkill1Button: {fileID: 0}
   enableSkill2Button: {fileID: 0}
@@ -10366,7 +10329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   image: {fileID: 1081479004808378340}
-  green: {r: 0, g: 0.5943396, b: 0.0090310685, a: 0}
+  green: {r: 0, g: 0.5943396, b: 0.0090310685, a: 1}
 --- !u!114 &651703656263552702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11072,7 +11035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   image: {fileID: 832240232246811931}
-  green: {r: 0, g: 0.5943396, b: 0.0090310685, a: 0}
+  green: {r: 0, g: 0.5943396, b: 0.0090310685, a: 1}
 --- !u!114 &166083484200372880
 MonoBehaviour:
   m_ObjectHideFlags: 0

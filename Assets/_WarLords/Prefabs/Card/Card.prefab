@@ -31,6 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6638931184861846954}
   - {fileID: 3270143386026165844}
   - {fileID: 7168664996878781348}
   m_Father: {fileID: 0}
@@ -67,6 +68,7 @@ MonoBehaviour:
   cardRotationSpeed: 500
   physicalCardObject: {fileID: 3270143386026165844}
   fadeIntoManaParticle: {fileID: 8847221289539847744}
+  coverBackgroundPivot: {fileID: 6638931184861846954}
   defaultCardContentView: {fileID: 1992490095069665127}
   hiddenCardContentView: {fileID: 8445872821927162861}
   defaultVisualizationCardContentView: {fileID: 8877331561887495293}
@@ -85,6 +87,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.62, y: 1, z: 0.1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!1 &7916331539034169012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6638931184861846954}
+  m_Layer: 8
+  m_Name: BackgroundCoverPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6638931184861846954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916331539034169012}
+  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4000011953715102}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1220518545040500041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,7 +148,7 @@ PrefabInstance:
     - target: {fileID: 4436543930875814685, guid: 7338a613db59c8d489bc3b187504332d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436543930875814685, guid: 7338a613db59c8d489bc3b187504332d,
         type: 3}
@@ -306,7 +339,7 @@ PrefabInstance:
     - target: {fileID: 8869242745767220645, guid: bf35140e13b4b664ab6ee226437dba0b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8869242745767220645, guid: bf35140e13b4b664ab6ee226437dba0b,
         type: 3}

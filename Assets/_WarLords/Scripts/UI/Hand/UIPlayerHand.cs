@@ -14,7 +14,7 @@ public class UIPlayerHand : MonoBehaviour
     [SerializeField, ShowIf("IsInteractable")] UICardDeck uiGraveyardDeck;
     [SerializeField, ShowIf("IsInteractable")] UIManaPool uiManaPool;
     [SerializeField, ShowIf("IsInteractable")] BezierCurve bezierCurve;
-	[SerializeField, ShowIf("IsInteractable")] AnimationCurve curveRange;
+	[SerializeField] AnimationCurve curveRange;
 
 	[BoxGroup("Presets"), SerializeField, ShowIf("IsInteractable")] CardPositionData draggingCardRotationOffset;
     [BoxGroup("Presets"), SerializeField] Vector3 HandRotation;

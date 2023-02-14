@@ -27,6 +27,36 @@ PrefabInstance:
       propertyPath: uiGraveyardDeck
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[0].value
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[1].value
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[0].inSlope
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[1].inSlope
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[0].outSlope
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948489795777724375, guid: bf2e690cc981a7f41b11a30df402232d,
+        type: 3}
+      propertyPath: curveRange.m_Curve.Array.data[1].outSlope
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 5640023540144885975, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -40,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 9044026799581514670, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9044026799581514670, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
@@ -50,7 +80,7 @@ PrefabInstance:
     - target: {fileID: 9044026799581514670, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9044026799581514670, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
@@ -60,7 +90,7 @@ PrefabInstance:
     - target: {fileID: 9044026799581514670, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 9046855931151017253, guid: bf2e690cc981a7f41b11a30df402232d,
         type: 3}

@@ -14,8 +14,8 @@ public class UILife : MonoBehaviour {
 
 	private uint currentLife;
 	private bool hasInitialized = false;
-	private Quaternion sideARotation = Quaternion.Euler(new Vector3(0, 180, 0));
-	private Quaternion sideBRotation = Quaternion.Euler(new Vector3(0, 180, 180));
+	private Quaternion sideARotation = Quaternion.Euler(new Vector3(0, 0, 0));
+	private Quaternion sideBRotation = Quaternion.Euler(new Vector3(0, 0, 180));
 
 	private enum Side{ A, B }
 	

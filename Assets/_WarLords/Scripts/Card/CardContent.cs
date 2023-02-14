@@ -17,7 +17,6 @@ public class CardContent : MonoBehaviour
 	[SerializeField] TMP_Text skill2DescriptionText;
 	[SerializeField] TMP_Text skill2CostText;
 	[SerializeField] Image heroBackground;
-	[SerializeField] Transform coverBackgroundPivot;
 	[SerializeField] GameObject closeButton;
 	[SerializeField] EnableSkillButton enableSkill1Button;
 	[SerializeField] EnableSkillButton enableSkill2Button;
@@ -25,7 +24,6 @@ public class CardContent : MonoBehaviour
 	RuntimeCardData runtimeCardData;
 	OnClickCloseButton onClickCloseButton;
 	UICardObject uICardObject;
-	GameObject currentBackground;
 
 	public void RefreshData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
     {
@@ -36,7 +34,6 @@ public class CardContent : MonoBehaviour
 		UpdateAttack();
 		UpdateDefense();
 		UpdateSkills();
-		UpdateBackCardCover();
 		UpdateFrontCardCover();
 
 		enableSkill1Button?.SetClickCallback(onSkillButtonClick);
@@ -86,19 +83,6 @@ public class CardContent : MonoBehaviour
 			return;
 
 		component.text = value.ToString();
-	}
-	void UpdateBackCardCover()
-	{
-		var obj = runtimeCardData.Civilization.BackCover;
-
-		if (currentBackground == obj) return;
-
-		if(currentBackground != null)
-			Destroy(currentBackground.gameObject);
-
-		currentBackground = (GameObject)ElementFactory.CreateObject(obj, coverBackgroundPivot);
-		currentBackground.transform.localPosition = Vector3.zero;
-		currentBackground.transform.localRotation = Quaternion.identity;
 	}
 	void UpdateFrontCardCover()
 	{
