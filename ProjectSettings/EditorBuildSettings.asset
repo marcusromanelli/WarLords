@@ -6,6 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_WarLords/Scenes/initializer.unity
+    guid: 3fa3d62b3a0a30d4a8f90e1b2e2fdcab
+  - enabled: 1
     path: Assets/_WarLords/Scenes/Swamp_Sample.unity
     guid: 6e4d495867beaec42948d6661af4badd
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 7cb2a56508e4f2140b816ebcfac38556,
+      type: 2}
