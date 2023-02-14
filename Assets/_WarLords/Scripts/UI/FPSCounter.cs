@@ -20,6 +20,7 @@ public class FPSCounter : MonoBehaviour
 
         textStyle.fontStyle = FontStyle.Bold;
         textStyle.normal.textColor = Color.white;
+        textStyle.fontSize = 30;
     }
 
     // Update is called once per frame
@@ -43,6 +44,6 @@ public class FPSCounter : MonoBehaviour
     void OnGUI()
     {
         //Display the fps and round to 2 decimals
-        GUI.Label(new Rect(100, Screen.height - 25, 100, 25), fps.ToString("F2") + "FPS", textStyle);
+        GUI.Label(new Rect(100, Screen.height - 50, 100, 50), fps.ToString("F2") + "FPS", textStyle);
     }
 }

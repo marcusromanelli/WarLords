@@ -6,8 +6,12 @@ public class CameraController : Singleton<CameraController>
 {
 	[SerializeField] CardPositionData visualizeCardPositionOffset;
 
+    private void Start()
+    {
+		Application.targetFrameRate = 60;
+    }
 
-	public static CardPositionData CalculateForwardCameraPosition()
+    public static CardPositionData CalculateForwardCameraPosition()
 	{
 		var mainCameraPosition = Camera.main.transform.position;
 		mainCameraPosition += (Camera.main.transform.forward * Instance.visualizeCardPositionOffset.Position.z); //Adjust Z
