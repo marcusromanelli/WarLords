@@ -25,9 +25,10 @@ public class PreGamePhase : Phase
 		currentPlayer.SetupPlayDeck();
 		enemyPlayer.SetupPlayDeck();
 
-		yield return currentPlayer.IsInitialized();
+		currentPlayer.SetupGraveyard();
+		enemyPlayer.SetupGraveyard();
 
-		yield return enemyPlayer.IsInitialized();
+		yield return new WaitForSeconds(1);
 	}
 	public override IEnumerator Resolve(Player currentPlayer, Player enemyPlayer)
 	{

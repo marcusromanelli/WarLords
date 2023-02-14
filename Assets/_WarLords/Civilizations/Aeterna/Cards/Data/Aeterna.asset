@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Aeterna
   m_EditorClassIdentifier: 
   Name: Aeterna
-  BackCover: {fileID: 3149120151073116378, guid: fda11209a15b61c4bb8c4148770091ee,
+  BackCoverObject: {fileID: 3149120151073116378, guid: fda11209a15b61c4bb8c4148770091ee,
     type: 3}
+  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
   Token: {fileID: 1000013511909096, guid: fc0ab1ec919ede84681f0cb90a43d032, type: 3}

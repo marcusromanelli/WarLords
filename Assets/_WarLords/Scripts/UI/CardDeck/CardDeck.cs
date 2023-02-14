@@ -11,11 +11,11 @@ public class CardDeck
     [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
-    public void Setup(InputController InputController)
+    public void Setup(CivilizationData civilizationData)
     {
         Cards = new Stack<Card>();
 
-        uiCardDeck.Setup(InputController);
+        uiCardDeck.Setup(civilizationData);
     }
     public void AddCard(Card card)
     {
@@ -92,11 +92,6 @@ public class CardDeck
 
         uiCardDeck.Shuffle(tempList);
     }
-    public IEnumerator IsUIUpdating()
-    {
-        yield return uiCardDeck.IsResolving();
-    }
-
     public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition)
     {
         uiCardDeck.SendCardToDeckFromPosition(cardObject, fromPosition, () => {

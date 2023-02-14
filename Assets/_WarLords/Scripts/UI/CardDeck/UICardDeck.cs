@@ -10,51 +10,47 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
 {    enum DeckActionType { AddCard, DrawCard }
 
     [SerializeField] TMP_Text cardCounter;
-    [SerializeField] Transform cardReferencePosition;
-    [SerializeField] float distanceBetweenCards = 0.02f;
+    [SerializeField] Renderer deckObject;
+    [SerializeField] float distanceBetweenCardsForScale = 1f;
+    [SerializeField] float distanceBetweenCardsForPosition = 1f;
     [SerializeField, ReadOnly] bool isBusy;
     public bool IsBusy => isBusy;
 
-    private List<DeckActionType> remainingActions = new List<DeckActionType>();
-    private List<CardObject> deckObjects = new List<CardObject>();
-    private List<Card> cardsToAdd = new List<Card>();
-    private InputController inputController;
+    private List<Card> deckObjects = new List<Card>();
 
-    public void Setup(InputController InputController)
+    public void Setup(CivilizationData civilizationData)
     {
-        inputController = InputController;
+        deckObject.material.mainTexture = civilizationData.BackCover;
+        UpdateCardCount();
     }
     public void Add(Card card)
     {
-        //AddCardAction(cards);
-        remainingActions.Add(DeckActionType.AddCard);
-        cardsToAdd.Add(card);
-
-        StartSolvingActions();
-    }
-    public IEnumerator IsResolving()
-    {
-        while (IsBusy && remainingActions.Count <= 0 && cardsToAdd.Count <= 0)
-            yield return null;
+        AddCardAction(card);
     }
     void UpdateCardCount()
     {
-        if (cardCounter == null)
-            return;
+        var newSize = CalculateDeckHeight();
 
-        cardCounter.text = deckObjects.Count.ToString();
+        if (newSize.z == 0)
+            deckObject.gameObject.SetActive(false);
+        else
+        {
+            deckObject.gameObject.SetActive(true);
+            deckObject.transform.localScale = newSize;
+        }
+
+        if(cardCounter != null)
+            cardCounter.text = deckObjects.Count.ToString();
     }
 
     public void RemoveCards(int count)
     {
         for (int i = 0; i < count; i++)
-            remainingActions.Add(DeckActionType.DrawCard);
-
-        StartSolvingActions();
+            RemoveCardAction();
     }
     public void RemoveAll()
     {
-        RemoveCards(deckObjects.Count + cardsToAdd.Count);
+        RemoveCards(deckObjects.Count);
     }
     public void Shuffle(Card[] cards)
     {
@@ -72,54 +68,9 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
             onFinish?.Invoke();
         });
     }
-    void StartSolvingActions()
+    void AddCardAction(Card card)
     {
-        if(!isBusy)
-            StartCoroutine(SolveActions());
-    }
-    IEnumerator SolveActions()
-    {
-        isBusy = true;
-
-        while (remainingActions.Count > 0)
-        {
-            try
-            {
-                DeckActionType nextAction = remainingActions[0];
-
-                switch (nextAction)
-                {
-                    case DeckActionType.AddCard:
-                        AddCardAction();
-                        break;
-                    case DeckActionType.DrawCard:
-                        RemoveCardAction();
-                        break;
-                }
-
-                remainingActions.RemoveAt(0);
-            }
-            catch (Exception)
-            {
-            }
-
-            yield return null;
-        }
-    }
-    CardObject CreateCard(Card cardData)
-    {
-        return CardFactory.CreateCard(inputController, cardData, transform, true);
-    }
-    void AddCardAction()
-    {
-        var cardData = cardsToAdd[0];
-        CardObject cardObject = CreateCard(cardData);
-        cardsToAdd.RemoveAt(0);
-
-        cardObject.transform.rotation = GetRotationReference();
-        cardObject.transform.position = GetTopCardPosition();
-
-        deckObjects.Add(cardObject);
+        deckObjects.Add(card);
 
         UpdateCardCount();
     }
@@ -129,9 +80,6 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
             return;
 
         var lastPosition = deckObjects.Count - 1;
-        var card = deckObjects[lastPosition];
-
-        CardFactory.AddToPool(card);
 
         deckObjects.RemoveAt(lastPosition);
 
@@ -139,12 +87,16 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     }
     public Vector3 GetTopCardPosition()
     {
-        var verticalPosition = deckObjects.Count * distanceBetweenCards;
+        var verticalPosition = deckObjects.Count * distanceBetweenCardsForPosition;
 
-        return cardReferencePosition.position + Vector3.up * verticalPosition;
+        return deckObject.transform.position + Vector3.up * verticalPosition;
     }
     public Quaternion GetRotationReference()
     {
-        return cardReferencePosition.transform.rotation;
+        return deckObject.transform.rotation;
+    }
+    Vector3 CalculateDeckHeight()
+    {
+        return new Vector3(1, 1, (distanceBetweenCardsForScale * deckObjects.Count));
     }
 }

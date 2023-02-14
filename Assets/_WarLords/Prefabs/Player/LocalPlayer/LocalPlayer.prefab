@@ -209,6 +209,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5915370931475101019}
     m_Modifications:
+    - target: {fileID: 3324987073759715984, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
+        type: 3}
+      propertyPath: distanceBetweenCardsForPosition
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5670301201399560972, guid: ee18261ff2c21f24c8f1c0a69cb240fe,
         type: 3}
       propertyPath: m_Name

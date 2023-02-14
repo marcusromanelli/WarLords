@@ -66,15 +66,15 @@ public class Player : MonoBehaviour, IAttackable
 	}
     public void SetupPlayDeck()
 	{
-		PlayDeck.Setup(inputController);
+		PlayDeck.Setup(startDeck.Cards[0].Civilization);
 
 		PlayDeck.AddCards(startDeck.Cards);
 
 		PlayDeck.Shuffle();
 	}
-	public IEnumerator IsInitialized()
-    {
-		yield return PlayDeck.IsUIUpdating();
+    public void SetupGraveyard()
+	{
+		Graveyard.Setup(startDeck.Cards[0].Civilization);
 	}
 
     #region INTERACTION
