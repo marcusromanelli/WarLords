@@ -132,7 +132,7 @@ public class Player : MonoBehaviour, IAttackable
 		OnStartActionPhase?.Invoke();
 		ManaPool.RestoreSpentMana();		
 		IsReadyToEndActionPhase = false;
-		nextPhaseButton?.Show();
+		nextPhaseButton.gameObject.SetActive(true);
 	}
 	public IEnumerator IsResolvingActionPhase()
 	{
@@ -147,7 +147,7 @@ public class Player : MonoBehaviour, IAttackable
 			return;
 
 		IsReadyToEndActionPhase = true;
-		nextPhaseButton?.Hide();
+		nextPhaseButton.gameObject.SetActive(false);
 	}
 	public void TakeDamage(uint damage)
 	{
