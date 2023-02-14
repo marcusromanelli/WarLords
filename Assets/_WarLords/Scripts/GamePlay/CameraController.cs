@@ -6,11 +6,6 @@ public class CameraController : Singleton<CameraController>
 {
 	[SerializeField] CardPositionData visualizeCardPositionOffset;
 
-    private void Start()
-    {
-		Application.targetFrameRate = 60;
-    }
-
     public static CardPositionData CalculateForwardCameraPosition()
 	{
 		var mainCameraPosition = Camera.main.transform.position;

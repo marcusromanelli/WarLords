@@ -1,13 +1,21 @@
+using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
-public enum CivilizationType
+[Serializable]
+public struct CivilizationRawData
 {
-	Aeterna,
-	Arkamore
+	public string Name;
+	public AssetReference Bundle;
 }
 
 [CreateAssetMenu(fileName = "Civilization Collection", menuName = "ScriptableObjects/Civilization-Collection", order = 2)]
 public class CivilizationCollection : ScriptableObject
 {
-	public CivilizationType[] Civilizations;
+	[SerializeField] CivilizationRawData[] Civilizations;
+
+	public CivilizationRawData[] GetAvailableCivilizationRawData()
+    {
+		return Civilizations;
+    }
 }

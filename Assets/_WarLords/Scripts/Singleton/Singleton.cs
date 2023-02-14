@@ -11,8 +11,10 @@ public class Singleton<T> : MonoBehaviour where T : Component
             {
                 instance = FindObjectOfType<T>();
 
-                if(instance == null)
+                if(instance == null) 
                     instance = CreateGameObject();
+
+                DontDestroyOnLoad(instance);
             }
 
             return instance;

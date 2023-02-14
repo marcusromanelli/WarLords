@@ -2,36 +2,84 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
 
 public class Initializer : MonoBehaviour {
+	[SerializeField] Image image;
+	[SerializeField] CanvasGroup canvasGroup;
+	[SerializeField] Sprite[] icons;
+	[SerializeField] float speed = 0.01f;
+	[SerializeField] ILoadableBaseClass[] loadableComponents;
 
-    AsyncOperationHandle<CivilizationCollection> opHandle;
+	void Start () {
+		LoadRoutine();
+		StartCoroutine(FadeRoutine());
 
-    public IEnumerator Start()
-    {
-        opHandle = Addressables.LoadAssetAsync<CivilizationCollection>("Available-Civilizations");
-        yield return opHandle;
+		Application.targetFrameRate = 60;
+	}
 
-        if (opHandle.Status == AsyncOperationStatus.Succeeded)
+	void Finish(){
+		SceneController.Singleton.LoadLevel(MenuScreens.Menu, 1f, 3f);
+	}
+	void LoadRoutine()
+	{
+		foreach (var component in loadableComponents)
+		{
+			component.Load();
+		}
+	}
+	IEnumerator FadeRoutine(){
+
+		int currentIndex = 0;
+
+		while(currentIndex < icons.Length)
         {
-            CivilizationCollection obj = opHandle.Result;
+			image.sprite = icons[currentIndex];
 
-            if(obj.Civilizations.Length > 0)
+			yield return fadeIn();
+			yield return fadeOut();
+
+			currentIndex++;
+		}
+
+		int numberLoaded = 0;
+        while (numberLoaded < loadableComponents.Length)
+        {
+			numberLoaded = 0;
+
+			foreach (var component in loadableComponents)
             {
-                Debug.Log("Available decks: ");
+				if (!component.HasLoaded())
+					break;
 
-                foreach (var item in obj.Civilizations)
-                {
-                    Debug.Log(item.ToString() + ",  ");
-                }
+				numberLoaded++;
             }
+			yield return null;
         }
-    }
 
-    void OnDestroy()
-    {
-        Addressables.Release(opHandle);
-    }
+		Finish();
+	}
+	IEnumerator fadeIn()
+	{
+		float c = 0;
+
+		while (c < 1)
+		{
+			c += speed * Time.deltaTime;
+
+			canvasGroup.alpha = c;
+			yield return null;
+		}
+	}
+	IEnumerator fadeOut()
+	{
+		float c = 0;
+
+		while (c > 0)
+		{
+			c -= speed * Time.deltaTime;
+
+			canvasGroup.alpha = c;
+			yield return null;
+		}
+	}
 }

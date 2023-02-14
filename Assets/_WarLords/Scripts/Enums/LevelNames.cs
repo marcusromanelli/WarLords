@@ -1,5 +1,5 @@
 ﻿public enum MenuScreens{
-	Menu=0
+	Loader = 0, Menu = 1
 }
 
 public enum StageNames{

@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000010912921156, guid: a29e5113208196441a9b0773236d52a9, type: 3}
       propertyPath: m_Name
-      value: bg
+      value: Background
       objectReference: {fileID: 0}
     - target: {fileID: 224000011520568724, guid: a29e5113208196441a9b0773236d52a9,
         type: 3}
@@ -226,6 +226,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a29e5113208196441a9b0773236d52a9, type: 3}
+--- !u!1 &22418089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000010912921156, guid: a29e5113208196441a9b0773236d52a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 22418088}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &264163107
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +245,7 @@ GameObject:
   - component: {fileID: 264163109}
   - component: {fileID: 264163108}
   - component: {fileID: 264163112}
+  - component: {fileID: 264163113}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -339,6 +346,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 860f4fcdbb3a7e944a1770f2e5c242ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 730992772}
+  canvasGroup: {fileID: 1526933682}
+  icons: []
+  speed: 0.01
+  loadableComponents:
+  - {fileID: 264163113}
+--- !u!114 &264163113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264163107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586e0b1793ba83a499b39b14f3083298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &730992770
@@ -491,6 +516,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 22418088}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1526933682
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22418089}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!850595691 &1949277950
 LightingSettings:
   m_ObjectHideFlags: 0

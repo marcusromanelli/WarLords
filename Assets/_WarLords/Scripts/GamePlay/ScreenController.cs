@@ -129,7 +129,6 @@ public class ScreenController: MonoBehaviour {
 	//Fade In
 	
 	public static void FadeIn(float tempoFadeIn=2f){
-		Debug.Log ("startedfadein");
 		singleton.doFadeIn(tempoFadeIn);
 	}
 	private void doFadeIn(float tempoFadeIn){
