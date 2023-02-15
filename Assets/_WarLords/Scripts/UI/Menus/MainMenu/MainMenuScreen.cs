@@ -8,4 +8,8 @@ public class MainMenuScreen : MonoBehaviour
     {
         SceneController.LoadLevel(MenuScreens.CardVisualizer);
     }
+    public void GoToDeckManager()
+    {
+        SceneController.LoadLevel(MenuScreens.DeckManager);
+    }
 }

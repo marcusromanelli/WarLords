@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 167802}
   - component: {fileID: 167803}
   m_Layer: 5
-  m_Name: Cards
+  m_Name: CardList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cadd3920fe0f0c54aa393c671538c099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardListObject: {fileID: 9115988811051002837, guid: 52b0d4b1c60d5ac4e949f5113a5a98f9,
+  CardListObject: {fileID: 790344758541681014, guid: d9cd8a9bcf1261b48b9522f2a8717d46,
     type: 3}
   UICard: {fileID: 1872760159}
   CardListContainer: {fileID: 2008451978}
@@ -568,9 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ed62f13454aa34b82a0b934e096aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameElementPrefab: {fileID: 732028532822813235, guid: 73b1c8882d02c8b40a2a73c420089bdb,
-    type: 3}
-  CivilizationNameGroup: {fileID: 868580371}
+  civilizationPanel: {fileID: 2036626793}
   MenuCardList: {fileID: 167803}
 --- !u!1 &1635501060
 GameObject:
@@ -796,7 +794,7 @@ PrefabInstance:
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000013351433
+      value: 0.000013351431
       objectReference: {fileID: 0}
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}
@@ -1140,8 +1138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2036626790}
   - component: {fileID: 2036626792}
+  - component: {fileID: 2036626793}
   m_Layer: 5
-  m_Name: Civilizations
+  m_Name: CivilizationsList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1176,6 +1175,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036626789}
   m_CullTransparentMesh: 1
+--- !u!114 &2036626793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036626789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f4642bfce38a73409be3bd0a2523595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameElementPrefab: {fileID: 790344758541681014, guid: d9cd8a9bcf1261b48b9522f2a8717d46,
+    type: 3}
+  CivilizationNameGroup: {fileID: 868580371}
 --- !u!224 &1067697289876862082
 RectTransform:
   m_ObjectHideFlags: 0

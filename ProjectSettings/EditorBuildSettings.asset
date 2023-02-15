@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/_WarLords/Scenes/CardVisualizer.unity
     guid: 51edb607bb2c8ec479b74bef872778f9
   - enabled: 1
+    path: Assets/_WarLords/Scenes/DeckManager.unity
+    guid: f17be5251fe84ed4d823e6c77ac53a4b
+  - enabled: 1
     path: Assets/_WarLords/Scenes/Battlefields/Swamp/Swamp_Sample.unity
     guid: 6e4d495867beaec42948d6661af4badd
   m_configObjects:

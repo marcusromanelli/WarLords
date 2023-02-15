@@ -20,7 +20,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
             return instance;
         }
     }
-    public static T CreateGameObject()
+    static T CreateGameObject()
     {
         return (new GameObject(typeof(T).Name, typeof(T))).GetComponent<T>();
     }

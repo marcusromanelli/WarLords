@@ -5,14 +5,14 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class MenuCardList : MonoBehaviour
+public class CardsPanel : MonoBehaviour
 {
-    [SerializeField] CardNameObject CardListObject;
+    [SerializeField] SimpleListObject CardListObject;
     [SerializeField] CardContent UICard;
 	[SerializeField] Transform CardListContainer;
 
 
-    private CardNameObject[] loadedCards;
+    private SimpleListObject[] loadedCards;
 	private CivilizationData data;
 	private AsyncOperationHandle<Card> cardDataHandler;
 	private RuntimeCardData runtimeCardData;
@@ -77,17 +77,17 @@ public class MenuCardList : MonoBehaviour
 		{
 			Debug.Log("No cards found, or none loaded");
 
-			loadedCards = new CardNameObject[1];
+			loadedCards = new SimpleListObject[1];
 
 			loadedCards[0] = Instantiate(CardListObject, CardListContainer);
-			loadedCards[0].Setup(this, null);
+			loadedCards[0].Setup("No cards found, or none loaded", null);
 			return;
 		}
 
 
 		Debug.Log(data.GetName() + " loaded. There are " + cards.Length + " cards.");
 
-		loadedCards = new CardNameObject[cards.Length];
+		loadedCards = new SimpleListObject[cards.Length];
 		int i = 0;
 		foreach (var card in cards)
 		{
@@ -99,7 +99,7 @@ public class MenuCardList : MonoBehaviour
 	void CreateCard(CivilizationData.CardNameAndBundle assetData, int index)
 	{
 		loadedCards[index] = Instantiate(CardListObject, CardListContainer);
-		loadedCards[index].Setup(this, assetData);
+		loadedCards[index].Setup(assetData.Name, () => { OnClickCard(assetData); });
 	}
 	void EraseAll()
 	{

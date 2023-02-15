@@ -5,7 +5,7 @@ public class UserManager : Singleton<UserManager>
 
     public static void SetData(User user)
     {
-        instance.setData(user);
+        Instance.setData(user);
     }
     void setData(User user)
     {
