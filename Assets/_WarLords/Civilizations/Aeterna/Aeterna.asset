@@ -12,99 +12,115 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31974969591e6d4c8ee1c79ad9fc072, type: 3}
   m_Name: Aeterna
   m_EditorClassIdentifier: 
+  Id: 602a2caa-cadc-4c4a-8596-973058cf66df
   Name: Aeterna
   BackCoverObject: {fileID: 3149120151073116378, guid: fda11209a15b61c4bb8c4148770091ee,
     type: 3}
   BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
   Token: {fileID: 1000013511909096, guid: fc0ab1ec919ede84681f0cb90a43d032, type: 3}
   AvailableCards:
-  - Bundle:
+  - Id: 
+    Name: Anitta Ashervind
+    Bundle:
       m_AssetGUID: 028778dc7dc7912478b4c35b69da85b6
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Anitta Ashervind
-  - Bundle:
+  - Id: 
+    Name: Daires Nightrose
+    Bundle:
       m_AssetGUID: bed8efbcf6267bf48a6b4336b4e0930c
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Daires Nightrose
-  - Bundle:
+  - Id: 
+    Name: Dominic Kreshaw
+    Bundle:
       m_AssetGUID: 94e363887b7738649a07b681af896378
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Dominic Kreshaw
-  - Bundle:
+  - Id: 
+    Name: Esopo Hagnix
+    Bundle:
       m_AssetGUID: ce423f5e168d084459685fad9e8c8148
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Esopo Hagnix
-  - Bundle:
+  - Id: 
+    Name: Evangeline Kunin
+    Bundle:
       m_AssetGUID: bce3b45cfe17e8e4e9c0f9bd72d5ee9c
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Evangeline Kunin
-  - Bundle:
+  - Id: 
+    Name: Hanek Manthis
+    Bundle:
       m_AssetGUID: da8df668d31abea439b164c5fedf9299
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Hanek Manthis
-  - Bundle:
+  - Id: 
+    Name: Jacob Cella
+    Bundle:
       m_AssetGUID: c069ba2e9cecabd49b876fa4c186ec13
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Jacob Cella
-  - Bundle:
+  - Id: 
+    Name: Jeremiah Moyer
+    Bundle:
       m_AssetGUID: a61e6c13f618fdc4aa4d0991756d45f6
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Jeremiah Moyer
-  - Bundle:
+  - Id: 
+    Name: Kaiser Svarius
+    Bundle:
       m_AssetGUID: 2a6626fb22fd0374d87dfd97d30b7a91
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Kaiser Svarius
-  - Bundle:
+  - Id: 
+    Name: Lauren Dufeu
+    Bundle:
       m_AssetGUID: 077351b78339f744e908d44acb6402ac
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Lauren Dufeu
-  - Bundle:
+  - Id: 
+    Name: Nataleph O'Raki
+    Bundle:
       m_AssetGUID: c30ab1c96157f2d4bba9b463caad005d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Nataleph O'Raki
-  - Bundle:
+  - Id: 
+    Name: Nikaella Halth
+    Bundle:
       m_AssetGUID: c840855e4181fae4f9a357bd6f241309
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Nikaella Halth
-  - Bundle:
+  - Id: 
+    Name: Rafiel Skyhawk
+    Bundle:
       m_AssetGUID: 468d3be43e302c649ab815147cd6ad72
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Rafiel Skyhawk
-  - Bundle:
+  - Id: 
+    Name: Thea Witkind
+    Bundle:
       m_AssetGUID: 3143884e7cf49c14bbf258fd82e0c5f6
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Thea Witkind
-  - Bundle:
+  - Id: 
+    Name: Zefyr_Vexherd
+    Bundle:
       m_AssetGUID: f46e2858974379b478493d587cc5907f
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Zefyr_Vexherd

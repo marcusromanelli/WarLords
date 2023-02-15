@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Civilization Collection
   m_EditorClassIdentifier: 
   Civilizations:
-  - Id: Aeterna
+  - Id: 602a2caa-cadc-4c4a-8596-973058cf66df
+    Name: Aeterna
     Bundle:
       m_AssetGUID: 550ea8ae27fe22f45ad18e6fefa04dce
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Id: Arkamore
+  - Id: 4515a542-7e11-40df-9b48-9410b15e7741
+    Name: Arkamore
     Bundle:
       m_AssetGUID: 274500159a975ac438fe0840ced3f7c5
       m_SubObjectName: 

@@ -15,20 +15,60 @@ public class CivilizationData : ScriptableObject
 	public struct CardNameAndBundle
 	{
 		public string Name;
+		public string Id;
 		public AssetReference Bundle;
 	}
 
+	[SerializeField, ReadOnly] string Id;
 	[SerializeField] string Name;
 	[SerializeField] GameObject BackCoverObject;
 	[SerializeField] Texture BackCover;
 	[SerializeField] GameObject Token;
 	[SerializeField] CardNameAndBundle[] AvailableCards;
 
+	public string GetId() => Id;
 	public string GetName() => Name;
 	public GameObject GetBackCoverObject() => BackCoverObject;
 	public Texture GetBackCoverTexture() => BackCover;
 	public GameObject GetToken() => Token;
 	public CardNameAndBundle[] GetAvailableCards() => AvailableCards;
+	public CardNameAndBundle FindCardByid(string id)
+    {
+		foreach (var card in AvailableCards)
+			if (card.Id == id)
+				return card;
+
+		return default;
+    }
+	public Dictionary<CardNameAndBundle, int> GetAvailableCards(Dictionary<string, int> deckData) {
+
+		Dictionary<CardNameAndBundle, int> newDeckData = new Dictionary<CardNameAndBundle, int>();
+
+		foreach (var card in deckData)
+        {
+			var cardObj = FindCardByid(card.Key);
+
+			if(cardObj.Id == "")
+            {
+				Debug.Log("Card not found: " + card.Key);
+				continue;
+            }
+
+
+            if (!newDeckData.ContainsKey(cardObj))
+				newDeckData[cardObj] = 1;
+
+			newDeckData[cardObj]++;
+		}
+
+		return newDeckData;
+	}
+
+	public void OnValidate()
+	{
+		if (Id == "")
+			Id = Guid.NewGuid().ToString();
+	}
 
 #if UNITY_EDITOR
 	[Button("Refresh Card References")]
@@ -53,7 +93,7 @@ public class CivilizationData : ScriptableObject
 
 			AssetReference referenceBundle = new AssetReference(address);
 
-			list.Add(new CardNameAndBundle() { Name = card.Name, Bundle = referenceBundle });
+			list.Add(new CardNameAndBundle() { Id = card.Id, Name = card.Name, Bundle = referenceBundle });
 		}
 
 		AvailableCards = list.ToArray();

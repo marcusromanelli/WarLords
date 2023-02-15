@@ -12,99 +12,115 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31974969591e6d4c8ee1c79ad9fc072, type: 3}
   m_Name: Arkamore
   m_EditorClassIdentifier: 
+  Id: 4515a542-7e11-40df-9b48-9410b15e7741
   Name: Arkamore
   BackCoverObject: {fileID: 3149120151073116378, guid: 650cd555599754b4d93647fd5ae28c59,
     type: 3}
   BackCover: {fileID: 2800000, guid: 2bc19ce120662dc4a8afec0367a5d295, type: 3}
   Token: {fileID: 7583463133153421432, guid: 283debc62465f3f47b3bdb5bc91312f5, type: 3}
   AvailableCards:
-  - Bundle:
+  - Id: 
+    Name: Amber Gonerjin
+    Bundle:
       m_AssetGUID: ff2d66d8bbea0f14dbb56c09506337c6
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Amber Gonerjin
-  - Bundle:
+  - Id: 
+    Name: Du'Mal Garokjin
+    Bundle:
       m_AssetGUID: 5d2aa6de56172344bbfdef69ee81535a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Du'Mal Garokjin
-  - Bundle:
+  - Id: 
+    Name: Garulf Feltrejin
+    Bundle:
       m_AssetGUID: f6cdfd22f9e7cab40b3ff30de8f84ccd
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Garulf Feltrejin
-  - Bundle:
+  - Id: 
+    Name: Gengis Karmajin
+    Bundle:
       m_AssetGUID: b5472e4252acf404bbea61c70df28ae4
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Gengis Karmajin
-  - Bundle:
+  - Id: 
+    Name: Hultaka Tarmejin
+    Bundle:
       m_AssetGUID: 642174559e14cfb40ae17862a5a63d4e
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Hultaka Tarmejin
-  - Bundle:
+  - Id: 
+    Name: Inorrom Viperjin
+    Bundle:
       m_AssetGUID: 445a56c4e09ea824d95bd25ed3354b68
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Inorrom Viperjin
-  - Bundle:
+  - Id: 
+    Name: Lavignia Damarjin
+    Bundle:
       m_AssetGUID: 59138f503ad18c446b016f39dcc298ac
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Lavignia Damarjin
-  - Bundle:
+  - Id: 
+    Name: Minster Stortjin
+    Bundle:
       m_AssetGUID: df091f85f889e6e4c91e60d322251a74
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Minster Stortjin
-  - Bundle:
+  - Id: 
+    Name: Mirra Severjin
+    Bundle:
       m_AssetGUID: a14033fb772bf024e8257aa5bebfb93c
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Mirra Severjin
-  - Bundle:
+  - Id: 
+    Name: Rania Layerjin
+    Bundle:
       m_AssetGUID: 660e69cef3b36484e930f79815f16421
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Rania Layerjin
-  - Bundle:
+  - Id: 
+    Name: Rashka Bullseye
+    Bundle:
       m_AssetGUID: 8c1912d1a6490fd4f9faa8817f410880
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Rashka Bullseye
-  - Bundle:
+  - Id: 
+    Name: Raziel Faerjin
+    Bundle:
       m_AssetGUID: ae9170d3312fc7a4dad0bbdc12ece8e4
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Raziel Faerjin
-  - Bundle:
+  - Id: 
+    Name: Serenity Charmjin
+    Bundle:
       m_AssetGUID: 42fec0a1f092d6a46a360f89f8263f6a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Serenity Charmjin
-  - Bundle:
+  - Id: 
+    Name: Sonja Ayerjin
+    Bundle:
       m_AssetGUID: cd5dde39b2126b140864a1c4ed93268a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Sonja Ayerjin
-  - Bundle:
+  - Id: 
+    Name: Zorak Madshred
+    Bundle:
       m_AssetGUID: 926b1b90f4b44dc41b36cf5d380a3b55
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Name: Zorak Madshred

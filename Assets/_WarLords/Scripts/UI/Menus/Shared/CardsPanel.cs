@@ -13,13 +13,22 @@ public class CardsPanel : MonoBehaviour
 
 
     private SimpleListObject[] loadedCards;
-	private CivilizationData data;
+	private CivilizationData civilizationData;
+	private CivilizationData.CardNameAndBundle[] cardList;
 	private AsyncOperationHandle<Card> cardDataHandler;
 	private RuntimeCardData runtimeCardData;
 
-	public void Setup(CivilizationData data)
-    {
-		this.data = data;
+	public void Setup(CivilizationData civilizationData)
+	{
+		this.civilizationData = civilizationData;
+
+		Load();
+	} 
+	public void Setup(CivilizationData civilizationData, CivilizationData.CardNameAndBundle[] deckData)
+	{
+		Setup(civilizationData);
+
+		this.cardList = deckData;
 
 		Load();
 	}
@@ -67,11 +76,21 @@ public class CardsPanel : MonoBehaviour
     {
 		EraseAll();
 
-		RenderCards();
+		RenderCards(civilizationData);
 	}
-	void RenderCards()
+	void RenderCards(CivilizationData civilizationData)
     {
-		var cards = data.GetAvailableCards();
+
+		CivilizationData.CardNameAndBundle[] cards;
+
+		if (cardList == null)
+		{
+			cards = civilizationData.GetAvailableCards();
+        }
+        else
+        {
+			cards = cardList;
+		}
 
 		if (cards == null || cards.Length == 0)
 		{
@@ -85,7 +104,7 @@ public class CardsPanel : MonoBehaviour
 		}
 
 
-		Debug.Log(data.GetName() + " loaded. There are " + cards.Length + " cards.");
+		Debug.Log(civilizationData.GetName() + " loaded. There are " + cards.Length + " cards.");
 
 		loadedCards = new SimpleListObject[cards.Length];
 		int i = 0;

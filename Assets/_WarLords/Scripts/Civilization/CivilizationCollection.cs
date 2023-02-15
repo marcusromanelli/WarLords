@@ -1,4 +1,8 @@
+using NaughtyAttributes;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -6,6 +10,7 @@ using UnityEngine.AddressableAssets;
 public struct CivilizationRawData
 {
 	public string Id;
+	public string Name;
 	public AssetReference Bundle;
 }
 
@@ -25,5 +30,35 @@ public class CivilizationCollection : ScriptableObject
 				return civ;
 
 		return null;
-    }
+	}
+
+#if UNITY_EDITOR
+	[Button("Refresh Civilization References")]
+	public void RefreshCardReferences()
+	{
+		var path = Directory.GetParent(AssetDatabase.GetAssetPath(this));
+
+		var relativePath = Path.GetRelativePath(Directory.GetParent(Application.dataPath).FullName, path.FullName);
+
+		string[] files = Directory.GetFiles(relativePath, "*.asset", SearchOption.AllDirectories);
+
+		List<CivilizationRawData> list = new List<CivilizationRawData>();
+
+		foreach (var file in files)
+		{
+			var civ = AssetDatabase.LoadAssetAtPath<CivilizationData>(file);
+
+			if (civ == null)
+				continue;
+
+			var address = AssetDatabase.AssetPathToGUID(file);
+
+			AssetReference referenceBundle = new AssetReference(address);
+
+			list.Add(new CivilizationRawData() { Id = civ.GetId(), Name = civ.GetName(), Bundle = referenceBundle });
+		}
+
+		Civilizations = list.ToArray();
+	}
+#endif
 }

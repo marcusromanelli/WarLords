@@ -9,45 +9,71 @@ using UnityEngine.AddressableAssets;
 public class DeckManagerScreen : MonoBehaviour {
 	[SerializeField] CivilizationPanel civilizationPanel;
 	[SerializeField] CardsPanel MenuCardList;
+
 	[SerializeField] DeckPanel DeckList;
+	[SerializeField] DeckEditPanel DeckCardList;
+
+	private CivilizationData currentCivilization;
+	private User userData;
 
 	void Start () {
 		var civData = CivilizationManager.GetData();
-		var userData = UserManager.GetData();
+		userData = UserManager.GetData();
 
 		civilizationPanel.gameObject.SetActive(true);
 		civilizationPanel.Setup(OnCivilizationClick);
 		civilizationPanel.Load(civData);
 
 		DeckList.Setup(OnDeckClick);
-		DeckList.Load(userData.GetDecks());
 	}
 	
-	void ReturnToMenu()
-    {
-		SceneController.LoadLevel(MenuScreens.Menu);
-    }
 
 	void OnCivilizationClick(CivilizationData civilizationData)
 	{
+		currentCivilization = civilizationData;
+		DeckList.gameObject.SetActive(true);
+		DeckList.Load(userData.GetDecks(civilizationData.GetId()));
+
 		civilizationPanel.gameObject.SetActive(false);
 		MenuCardList.gameObject.SetActive(true);
 		MenuCardList.Setup(civilizationData);
-	}
-	void OnReturnToCivilizationClick()
-	{
-		civilizationPanel.gameObject.SetActive(true);
-		MenuCardList.gameObject.SetActive(false);
 	}
 	void OnDeckClick(UserDeck deck)
     {
 		if(deck == null)
         {
-			var data = UserManager.GetData();
-			data.AddNewDeck();
+			var civId = currentCivilization.GetId();
 
-			DeckList.Load(data.GetDecks());
+			userData.AddNewDeck(civId);
+
+			DeckList.Load(userData.GetDecks(civId));
 			return;
         }
-    }
+        else
+        {
+			DeckList.gameObject.SetActive(false);
+			DeckCardList.gameObject.SetActive(true);
+
+			DeckCardList.Setup(currentCivilization, deck, OnReturnToDeckList);
+		}
+	}
+	public void ReturnToMenu()
+	{
+		SceneController.LoadLevel(MenuScreens.Menu);
+	}
+	public void OnReturnToCivilizationList()
+	{
+		civilizationPanel.gameObject.SetActive(true);
+		MenuCardList.gameObject.SetActive(false);
+		DeckList.gameObject.SetActive(false);
+	}
+	public void OnReturnToDeckList()
+	{
+		DeckList.gameObject.SetActive(true);
+		DeckCardList.gameObject.SetActive(false);
+	}
+	public void Save()
+	{
+		userData.Save();
+	}
 }

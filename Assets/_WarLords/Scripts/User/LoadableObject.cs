@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public abstract class LoadableObject<T> where T : new()
 {
-	public void Write()
+	public void Save()
 	{
 		Type t = typeof(T);
 
@@ -14,7 +15,9 @@ public abstract class LoadableObject<T> where T : new()
 
 		savePath += ".json";
 
-		var file = JsonUtility.ToJson(this);
+		var file = JsonConvert.SerializeObject(this);
+
+		Debug.Log("Saved file on " + savePath);
 
 		File.WriteAllText(savePath, file);
 	}
@@ -26,18 +29,15 @@ public abstract class LoadableObject<T> where T : new()
 		string savePath = Path.Combine(Application.persistentDataPath, t.FullName);
 
 		savePath += ".json";
-
-		string file = "";
-		T obj;
+		T obj = new T();
 
 		try
 		{
-			file = File.ReadAllText(savePath);
-			obj = JsonUtility.FromJson<T>(file);
+			var file = File.ReadAllText(savePath);
+			obj = JsonConvert.DeserializeAnonymousType(file, obj);
 		}
         catch (FileNotFoundException)
 		{
-			obj = new T();
 		}
 
 		return obj;

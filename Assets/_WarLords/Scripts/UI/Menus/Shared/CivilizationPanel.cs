@@ -44,7 +44,7 @@ public class CivilizationPanel : MonoBehaviour
 		foreach (var civ in civilizationRawData)
 		{
 			elements[i] = Instantiate(NameElementPrefab, CivilizationNameGroup);
-			elements[i].Setup(civ.Id, () => { OnClickCivilization(civ.Id); });
+			elements[i].Setup(civ.Name, () => { OnClickCivilization(civ.Id); });
 
 			i++;
 		}

@@ -3,16 +3,25 @@ using UnityEngine;
 
 public class User : LoadableObject<User>
 {
-    [SerializeField] List<UserDeck> userDecks;
-    public List<UserDeck> GetDecks() => userDecks;
+    public Dictionary<string, List<UserDeck>> userDecks { get; private set; }
+    public List<UserDeck> GetDecks(string civilizationid)
+    {
+        if(userDecks.ContainsKey(civilizationid))
+            return userDecks[civilizationid];
+
+        return new List<UserDeck>();
+    }
 
     public User()
     {
-        userDecks = new List<UserDeck>();
+        userDecks = new Dictionary<string, List<UserDeck>>();
     }
 
-    public void AddNewDeck()
+    public void AddNewDeck(string civilization)
     {
-        userDecks.Add(new UserDeck());
+        if (!userDecks.ContainsKey(civilization))
+            userDecks[civilization] = new List<UserDeck>();
+
+        userDecks[civilization].Add(new UserDeck());
     }
 }
