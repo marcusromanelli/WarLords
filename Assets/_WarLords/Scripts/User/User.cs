@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class User : MonoBehaviour
+public class User : LoadableObject<User>
 {
-    
+    [SerializeField] UserDeck[] userDecks;
+
+    public User()
+    {
+        userDecks = new UserDeck[0];
+    }
 }

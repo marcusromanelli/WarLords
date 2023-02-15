@@ -7,8 +7,9 @@ public class Initializer : MonoBehaviour {
 	[SerializeField] Image image;
 	[SerializeField] CanvasGroup canvasGroup;
 	[SerializeField] Sprite[] icons;
-	[SerializeField] float speed = 0.01f;
-	[SerializeField] ILoadableBaseClass[] loadableComponents;
+	[SerializeField] float speed = 0.01f;	
+
+	private ILoadableBaseClass[] loadableComponents;
 
 	void Start () {
 		LoadRoutine();
@@ -22,6 +23,8 @@ public class Initializer : MonoBehaviour {
 	}
 	void LoadRoutine()
 	{
+		loadableComponents = GetComponents<ILoadableBaseClass>();
+
 		foreach (var component in loadableComponents)
 		{
 			component.Load();
