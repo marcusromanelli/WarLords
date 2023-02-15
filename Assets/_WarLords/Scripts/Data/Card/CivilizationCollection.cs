@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 [Serializable]
 public struct CivilizationRawData
 {
-	public string Name;
+	public string Id;
 	public AssetReference Bundle;
 }
 
@@ -17,5 +17,13 @@ public class CivilizationCollection : ScriptableObject
 	public CivilizationRawData[] GetAvailableCivilizationRawData()
     {
 		return Civilizations;
+    }
+	public CivilizationRawData? GetCivilizationRawData(string Id)
+    {
+		foreach (var civ in Civilizations)
+			if (civ.Id == Id)
+				return civ;
+
+		return null;
     }
 }

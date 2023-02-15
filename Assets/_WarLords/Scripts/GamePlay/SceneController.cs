@@ -1,60 +1,39 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System.Collections;
 
-public class SceneController : MonoBehaviour
+public class SceneController : Singleton<SceneController>
 {
-
-	private static SceneController _singleton;
-	public static SceneController Singleton
+	public static void LoadLevel(MenuScreens level = MenuScreens.Loader, float fadeOt = 0.5f, float fadeIn = 0.5f)
 	{
-		get
-		{
-			if (_singleton == null)
-			{
-				SceneController aux = GameObject.FindObjectOfType<SceneController>();
-				if (aux == null)
-				{
-					_singleton = (new GameObject("-----Global Controller-----", typeof(SceneController))).GetComponent<SceneController>();
-				}
-				else
-				{
-					_singleton = aux;
-				}
-			}
-			DontDestroyOnLoad(_singleton);
-			return _singleton;
-		}
+		Instance._loadLevel(level, fadeOt, fadeIn);
 	}
-
-
-	public void LoadLevel(MenuScreens level = MenuScreens.Loader, float fadeout = 0.5f, float fadein = 0.5f)
+	void _loadLevel(MenuScreens level, float fadeOt, float fadeIn)
 	{
-		StartCoroutine(_loadLevel((int)level, fadeout, fadein));
+		StartCoroutine(_loadLevel((int)level, fadeOt, fadeIn));
 	}
 	/*public void LoadLevel(StageNames level = StageNames.Swamp, float fadeout = 0.5f, float fadein = 0.5f)
 	{
 		int number = Enum.GetNames(typeof(MenuScreens)).Length - 1;
 		StartCoroutine(_loadLevel((int)level + number + 1, fadeout, fadein));
 	}*/
-	IEnumerator _loadLevel(int level, float fadeout, float fadein)
+	IEnumerator _loadLevel(int level, float fadeOt, float fadeIn)
 	{
 		ScreenController.showLoadingIcon = true;
-		ScreenController.FadeOut(fadeout);
-		while (ScreenController.singleton.currentFade < 1)
+		ScreenController.FadeOut(fadeOt);
+
+		while (ScreenController.Instance.currentFade < 1)
 		{
 			yield return null;
 		}
+
 		LevelController.AsyncPreLoadLevel(level);
 
-		while (LevelController.singleton.Async.progress < 0.9f)
+		while (LevelController.Instance.Async.progress < 0.9f)
 		{
 			yield return null;
 		}
+
 		LevelController.AsyncLoadLevel();
 
-
-		yield return new WaitForSeconds(6);
-		ScreenController.FadeIn(fadein);
+		ScreenController.FadeIn(fadeIn);
 	}
 }

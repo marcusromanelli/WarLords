@@ -87,7 +87,7 @@ public class UICardObject : MonoBehaviour
 	public void BecameMana(Action onFinishesAnimation)
 	{
 		isBecamingMana = true;
-		currentDisplayingContent.Disable();
+		currentDisplayingContent.Hide();
 		
 		fadeIntoManaParticle.Play();
 		onManaParticleEnd = onFinishesAnimation;
@@ -147,20 +147,20 @@ public class UICardObject : MonoBehaviour
 		if (currentDisplayingContent == null)
 			return;
 
-		currentDisplayingContent.Disable();
+		currentDisplayingContent.Hide();
 	}
 	void SetNewCardContent(CardContent cardContent)
 	{
 		UpdateBackCardCover();
 
-		cardContent.RefreshData(parentCardObject.RuntimeCardData, OnToggleSkill);
-		cardContent.Enable();
+		cardContent.SetData(parentCardObject.RuntimeCardData, OnToggleSkill);
+		cardContent.Show();
 
 		currentDisplayingContent = cardContent;
 	}
 	void UpdateBackCardCover()
 	{
-		var obj = parentCardObject.RuntimeCardData.Civilization.BackCoverObject;
+		var obj = parentCardObject.RuntimeCardData.Civilization.GetBackCoverObject();
 
 		if (currentBackgroundObject == obj) return;
 
@@ -220,7 +220,7 @@ public class UICardObject : MonoBehaviour
     }
 	void UnselectSkillButtons()
 	{
-		parentCardObject.UnselectAllSkills();
+		parentCardObject?.UnselectAllSkills();
 	}
 	void OnToggleSkill(SkillData skill, bool enabled)
 	{

@@ -20,7 +20,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
 
     public void Setup(CivilizationData civilizationData)
     {
-        deckObject.material.mainTexture = civilizationData.BackCover;
+        deckObject.material.mainTexture = civilizationData.GetBackCoverTexture();
         UpdateCardCount();
     }
     public void Add(Card card)

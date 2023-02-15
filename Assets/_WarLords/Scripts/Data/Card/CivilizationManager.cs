@@ -19,6 +19,13 @@ public class CivilizationManager : Singleton<CivilizationManager>
 
         return Instance.RawCivilizationData.GetAvailableCivilizationRawData();
     }    
+    public static CivilizationRawData? GetData(string Id)
+    {
+        if (Instance.RawCivilizationData == null)
+            return null;
+
+        return Instance.RawCivilizationData.GetCivilizationRawData(Id);
+    }    
     public static void SetData(AsyncOperationHandle<CivilizationCollection> civilizationHandler)
     {
         Instance.setData(civilizationHandler);
@@ -34,6 +41,7 @@ public class CivilizationManager : Singleton<CivilizationManager>
     }
     void OnDestroy()
     {
-        Addressables.Release(loadedHandler);
+        if(loadedHandler.IsValid())
+            Addressables.Release(loadedHandler);
     }
 }

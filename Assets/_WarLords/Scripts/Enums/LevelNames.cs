@@ -1,7 +1,7 @@
 ﻿public enum MenuScreens{
-	Loader = 0, Menu = 1
+	Loader, Menu, CardVisualizer
 }
 
 public enum StageNames{
-	Swamp=1
+	Swamp = 1
 }

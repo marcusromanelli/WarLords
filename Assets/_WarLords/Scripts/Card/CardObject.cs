@@ -44,7 +44,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void Setup(InputController inputController, Card card, bool hideInfo)
 	{
-		Setup(inputController, null, card, hideInfo);
+		Setup(inputController, null, card, !hideInfo);
 	}
 	public void Invoke(Vector2 gridPosition)
     {
@@ -86,7 +86,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void Pool()
 	{
-		uiToken.ResetObj();
+		uiToken?.ResetObj();
 		uiCardObject.ResetUI();
 		ResetCard();
 	}	

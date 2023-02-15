@@ -25,7 +25,7 @@ public class CardContent : MonoBehaviour
 	OnClickCloseButton onClickCloseButton;
 	UICardObject uICardObject;
 
-	public void RefreshData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
+	public void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
     {
 		this.runtimeCardData = runtimeCardData;
 
@@ -103,11 +103,11 @@ public class CardContent : MonoBehaviour
     {
 		onClickCloseButton?.Invoke();
 	}
-	public void Disable()
+	public void Hide()
 	{
 		canvas.enabled = false;
 	}
-	public void Enable()
+	public void Show()
 	{
 		canvas.enabled = true;
 	}

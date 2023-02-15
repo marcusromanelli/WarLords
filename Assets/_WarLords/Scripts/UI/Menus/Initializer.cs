@@ -18,7 +18,7 @@ public class Initializer : MonoBehaviour {
 	}
 
 	void Finish(){
-		SceneController.Singleton.LoadLevel(MenuScreens.Menu, 1f, 3f);
+		SceneController.LoadLevel(MenuScreens.Menu);
 	}
 	void LoadRoutine()
 	{
