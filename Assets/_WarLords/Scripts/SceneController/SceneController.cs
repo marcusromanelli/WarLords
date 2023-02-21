@@ -1,7 +1,15 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 public class SceneController : Singleton<SceneController>
 {
+#if UNITY_EDITOR
+	void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+			LoadLevel(MenuScreens.Loader);
+    }
+#endif
 	public static void LoadLevel(MenuScreens level = MenuScreens.Loader, float fadeOt = 0.5f, float fadeIn = 0.5f)
 	{
 		Instance._loadLevel(level, fadeOt, fadeIn);

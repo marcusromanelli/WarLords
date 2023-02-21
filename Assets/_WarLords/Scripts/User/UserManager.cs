@@ -1,20 +1,29 @@
 public class UserManager : Singleton<UserManager>
 {
     private User userData;
-    private bool initialized;
 
-    public static void SetData(User user)
+    public static void Initialize()
     {
-        Instance.setData(user);
+        Instance.initialize();
     }
-    void setData(User user)
+    void initialize()
     {
-        if (initialized)
-            return;
+        userData = FileManager.Load<User>();
+    }
 
-        this.userData = user;
-        initialized = true;
+
+    public static void UpdateData(User user)
+    {
+        Instance.updateData(user);
     }
+    void updateData(User user)
+    {
+        userData = user;
+
+        FileManager.Save(userData);
+    }
+
+
     public static User GetData()
     {
         return Instance.getData();

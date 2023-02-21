@@ -22,8 +22,12 @@ public class CardsPanel : MonoBehaviour
 	{
 		this.civilizationData = civilizationData;
 
+		Refresh();
+	}
+	public void Refresh()
+	{
 		Load();
-	} 
+	}
 	public void Setup(CivilizationData civilizationData, CivilizationData.CardNameAndBundle[] deckData)
 	{
 		Setup(civilizationData);

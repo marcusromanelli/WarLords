@@ -2,12 +2,12 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public abstract class ILoadableBaseClass : MonoBehaviour, ILoadable
+public abstract class ILoadableComponentBaseClass : MonoBehaviour, ILoadableComponent
 {    public abstract bool HasLoaded();
     public abstract void Load();
 }
 
-public interface ILoadable
+public interface ILoadableComponent
 {    
     public void Load();
     public bool HasLoaded();

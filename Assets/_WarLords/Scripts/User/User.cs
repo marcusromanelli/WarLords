@@ -1,27 +1,26 @@
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class User : LoadableObject<User>
+[Serializable]
+public struct User : ILoadable
 {
-    public Dictionary<string, List<UserDeck>> userDecks { get; private set; }
-    public List<UserDeck> GetDecks(string civilizationid)
-    {
-        if(userDecks.ContainsKey(civilizationid))
-            return userDecks[civilizationid];
+    public DeckCollection userDecks;
 
-        return new List<UserDeck>();
+    public User(DeckCollection userDecks)
+    {
+        this.userDecks = userDecks;
     }
 
-    public User()
+    public void Initialize()
     {
-        userDecks = new Dictionary<string, List<UserDeck>>();
+        userDecks = new DeckCollection();
+    }
+    public DeckCollection GetDecks()
+    {
+        return userDecks;
+    }
+    public void SetDeckData(DeckCollection deckCollection)
+    {
+        userDecks = deckCollection;
     }
 
-    public void AddNewDeck(string civilization)
-    {
-        if (!userDecks.ContainsKey(civilization))
-            userDecks[civilization] = new List<UserDeck>();
-
-        userDecks[civilization].Add(new UserDeck());
-    }
 }

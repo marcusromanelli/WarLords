@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void OnDeckClick(UserDeck deck);
+public delegate void OnDeckClick(UserDeck? deck);
 public class DeckPanel : MonoBehaviour
 {
 	[SerializeField] SimpleListObject NameElementPrefab;
@@ -14,25 +14,31 @@ public class DeckPanel : MonoBehaviour
 	{
 		this.onDeckClick = onDeckClick;
 	}
-	public void Load(List<UserDeck> userDecks)
+	public void Load(UserDeckList userDecks)
 	{
 		_load(userDecks);
 	}
-	void _load(List<UserDeck> userDecks)
+	void _load(UserDeckList civDecks)
 	{
 		EraseAll();
 
-		elements = new SimpleListObject[userDecks.Count + 1];
+		var targetSize = 1;
+		var deckList = civDecks.GetDecks();
+
+		if (deckList != null && deckList.Length > 0)
+			targetSize = deckList.Length + 1;
+
+		elements = new SimpleListObject[targetSize];
 
 		elements[0] = Instantiate(NameElementPrefab, DeckNameGroup);
 		elements[0].Setup("  +  ", CreateNewDeck);
-		int i = 1;
-		foreach (var deck in userDecks)
+
+		for(int i = 1; i < targetSize; i++)
 		{
+			var deck = deckList[i - 1];
+
 			elements[i] = Instantiate(NameElementPrefab, DeckNameGroup);
 			elements[i].Setup(deck.GetName(), () => { OnClickDeck(deck); });
-
-			i++;
 		}
 	}
 	void EraseAll()

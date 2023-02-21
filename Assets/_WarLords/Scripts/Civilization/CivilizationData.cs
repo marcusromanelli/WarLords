@@ -40,17 +40,17 @@ public class CivilizationData : ScriptableObject
 
 		return default;
     }
-	public Dictionary<CardNameAndBundle, int> GetAvailableCards(Dictionary<string, int> deckData) {
+	public Dictionary<CardNameAndBundle, int> LoadCardReferences(string[] deckData) {
 
 		Dictionary<CardNameAndBundle, int> newDeckData = new Dictionary<CardNameAndBundle, int>();
 
 		foreach (var card in deckData)
         {
-			var cardObj = FindCardByid(card.Key);
+			var cardObj = FindCardByid(card);
 
 			if(cardObj.Id == "")
             {
-				Debug.Log("Card not found: " + card.Key);
+				Debug.Log("Card not found: " + card);
 				continue;
             }
 

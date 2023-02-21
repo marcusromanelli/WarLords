@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 [Serializable]
-public class RawCivilizationLoader : ILoadableBaseClass
+public class RawCivilizationLoader : ILoadableComponentBaseClass
 {
     AsyncOperationHandle<CivilizationCollection> loadHandler;
 

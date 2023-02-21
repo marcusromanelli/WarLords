@@ -1,10 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using TMPro;
-using NaughtyAttributes;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
-
 
 public class DeckManagerScreen : MonoBehaviour {
 	[SerializeField] CivilizationPanel civilizationPanel;
@@ -13,12 +7,14 @@ public class DeckManagerScreen : MonoBehaviour {
 	[SerializeField] DeckPanel DeckList;
 	[SerializeField] DeckEditPanel DeckCardList;
 
+	[SerializeField] GameObject SaveButton;
+
 	private CivilizationData currentCivilization;
-	private User userData;
+	private DeckCollection deckCollection;
 
 	void Start () {
 		var civData = CivilizationManager.GetData();
-		userData = UserManager.GetData();
+		deckCollection = new DeckCollection(UserManager.GetData().GetDecks());
 
 		civilizationPanel.gameObject.SetActive(true);
 		civilizationPanel.Setup(OnCivilizationClick);
@@ -27,26 +23,31 @@ public class DeckManagerScreen : MonoBehaviour {
 		DeckList.Setup(OnDeckClick);
 	}
 	
-
+	UserDeckList GetCurrentCivDeckList()
+    {
+		return deckCollection.GetCivilizationDeck(currentCivilization.GetId());
+	}
 	void OnCivilizationClick(CivilizationData civilizationData)
 	{
 		currentCivilization = civilizationData;
 		DeckList.gameObject.SetActive(true);
-		DeckList.Load(userData.GetDecks(civilizationData.GetId()));
+		DeckList.Load(GetCurrentCivDeckList());
 
 		civilizationPanel.gameObject.SetActive(false);
 		MenuCardList.gameObject.SetActive(true);
 		MenuCardList.Setup(civilizationData);
 	}
-	void OnDeckClick(UserDeck deck)
+	void OnDeckClick(UserDeck? userDeck)
     {
-		if(deck == null)
+		if(userDeck == null)
         {
 			var civId = currentCivilization.GetId();
 
-			userData.AddNewDeck(civId);
+			deckCollection.AddNewDeck(civId);
 
-			DeckList.Load(userData.GetDecks(civId));
+			DeckList.Load(GetCurrentCivDeckList());
+
+			SetDirty();
 			return;
         }
         else
@@ -54,8 +55,12 @@ public class DeckManagerScreen : MonoBehaviour {
 			DeckList.gameObject.SetActive(false);
 			DeckCardList.gameObject.SetActive(true);
 
-			DeckCardList.Setup(currentCivilization, deck, OnReturnToDeckList);
+			DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName);
 		}
+	}
+	void SetDirty()
+    {
+		SaveButton.SetActive(true);
 	}
 	public void ReturnToMenu()
 	{
@@ -63,6 +68,7 @@ public class DeckManagerScreen : MonoBehaviour {
 	}
 	public void OnReturnToCivilizationList()
 	{
+		currentCivilization = null;
 		civilizationPanel.gameObject.SetActive(true);
 		MenuCardList.gameObject.SetActive(false);
 		DeckList.gameObject.SetActive(false);
@@ -71,9 +77,24 @@ public class DeckManagerScreen : MonoBehaviour {
 	{
 		DeckList.gameObject.SetActive(true);
 		DeckCardList.gameObject.SetActive(false);
+
+		DeckList.Load(GetCurrentCivDeckList());
+	}
+	public void OnChangedDeckName(UserDeck deck, string name)
+	{
+		var civ = currentCivilization.GetId();
+
+		deck.SetName(name);
+		deckCollection.UpdateDeck(civ, deck);
+
+		SetDirty();
 	}
 	public void Save()
 	{
-		userData.Save();
+		var user = UserManager.GetData();
+		user.SetDeckData(deckCollection);
+
+		UserManager.UpdateData(user);
+		SaveButton.SetActive(false);
 	}
 }

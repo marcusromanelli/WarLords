@@ -1,14 +1,14 @@
 using System;
 
 [Serializable]
-public class UserDataLoader : ILoadableBaseClass
+public class UserDataLoader : ILoadableComponentBaseClass
 {
     public override bool HasLoaded()
     {
-        return UserManager.GetData() != null;
+        return true;
     }
     public override void Load()
     {
-        UserManager.SetData(User.Load());
+        UserManager.Initialize();
     }
 }

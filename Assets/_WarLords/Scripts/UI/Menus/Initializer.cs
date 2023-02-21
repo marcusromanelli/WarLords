@@ -9,7 +9,7 @@ public class Initializer : MonoBehaviour {
 	[SerializeField] Sprite[] icons;
 	[SerializeField] float speed = 0.01f;	
 
-	private ILoadableBaseClass[] loadableComponents;
+	private ILoadableComponentBaseClass[] loadableComponents;
 
 	void Start () {
 		LoadRoutine();
@@ -23,7 +23,7 @@ public class Initializer : MonoBehaviour {
 	}
 	void LoadRoutine()
 	{
-		loadableComponents = GetComponents<ILoadableBaseClass>();
+		loadableComponents = GetComponents<ILoadableComponentBaseClass>();
 
 		foreach (var component in loadableComponents)
 		{

@@ -5,9 +5,9 @@ using UnityEngine;
 
 
 [Serializable]
-public abstract class LoadableObject<T> where T : new()
+public static class FileManager
 {
-	public void Save()
+	public static void Save<T>(T obj) where T: ILoadable
 	{
 		Type t = typeof(T);
 
@@ -15,29 +15,30 @@ public abstract class LoadableObject<T> where T : new()
 
 		savePath += ".json";
 
-		var file = JsonConvert.SerializeObject(this);
+		var file = JsonConvert.SerializeObject(obj);
 
 		Debug.Log("Saved file on " + savePath);
 
 		File.WriteAllText(savePath, file);
 	}
 
-	public static T Load()
+	public static T Load<T>() where T : ILoadable
 	{
 		Type t = typeof(T);
 
 		string savePath = Path.Combine(Application.persistentDataPath, t.FullName);
 
 		savePath += ".json";
-		T obj = new T();
+		T obj = default;
 
 		try
 		{
 			var file = File.ReadAllText(savePath);
-			obj = JsonConvert.DeserializeAnonymousType(file, obj);
+			obj = JsonConvert.DeserializeObject<T>(file);
 		}
         catch (FileNotFoundException)
 		{
+			obj.Initialize();
 		}
 
 		return obj;

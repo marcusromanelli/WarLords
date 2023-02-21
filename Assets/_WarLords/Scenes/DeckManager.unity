@@ -697,7 +697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &313751487
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2005,6 +2005,7 @@ MonoBehaviour:
   MenuCardList: {fileID: 167803}
   DeckList: {fileID: 79875981}
   DeckCardList: {fileID: 1826891670}
+  SaveButton: {fileID: 313751486}
 --- !u!1 &1315153375
 GameObject:
   m_ObjectHideFlags: 0
@@ -2891,7 +2892,7 @@ PrefabInstance:
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000013351433
+      value: 0.000013351432
       objectReference: {fileID: 0}
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}
