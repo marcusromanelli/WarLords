@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SceneController : Singleton<SceneController>
 {
-	static bool IsChangingScene = false;
 #if UNITY_EDITOR
 	void Update()
     {
@@ -14,20 +13,17 @@ public class SceneController : Singleton<SceneController>
 #endif
 	public static void LoadLevel(MenuScreens level = MenuScreens.Loader, float fadeOt = 0.5f, float fadeIn = 0.5f)
 	{
-		if (IsChangingScene)
-			return;
-
 		Instance._loadLevel(level, fadeOt, fadeIn);
 	}
 	void _loadLevel(MenuScreens level, float fadeOt, float fadeIn)
 	{
+		StopAllCoroutines();
+
 		StartCoroutine(_loadLevel((int)level, fadeOt, fadeIn));
 	}
 
 	IEnumerator _loadLevel(int level, float fadeOt, float fadeIn)
 	{
-		IsChangingScene = true;
-
 		ScreenController.showLoadingIcon = true;
 
 		yield return DoFadeOut(fadeOt);
@@ -35,8 +31,6 @@ public class SceneController : Singleton<SceneController>
 		yield return LoadScene(level);
 
 		yield return DoFadeIn(fadeIn);
-
-		IsChangingScene = false;
 	}
 
 	IEnumerator LoadScene(int level)
