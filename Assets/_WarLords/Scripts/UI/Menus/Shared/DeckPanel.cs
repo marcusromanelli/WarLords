@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void OnDeckClick(UserDeck? deck);
+public delegate void OnDeckClick(UserDeck deck);
+public delegate void OnNewDeckClick();
 public class DeckPanel : MonoBehaviour
 {
 	[SerializeField] SimpleListObject NameElementPrefab;
 	[SerializeField] Transform DeckNameGroup;
+	[SerializeField] bool ReadOnly;
 
 	private SimpleListObject[] elements;
 	private OnDeckClick onDeckClick;
+	private OnNewDeckClick onNewDeckClick;
 
-	public void Setup(OnDeckClick onDeckClick)
+	public void Setup(OnNewDeckClick onNewDeckClick, OnDeckClick onDeckClick)
 	{
+		this.onNewDeckClick = onNewDeckClick;
 		this.onDeckClick = onDeckClick;
 	}
 	public void Load(UserDeckList userDecks)
@@ -22,20 +26,27 @@ public class DeckPanel : MonoBehaviour
 	{
 		EraseAll();
 
-		var targetSize = 1;
+		var startIndex = 0;
 		var deckList = civDecks.GetDecks();
+		var targetSize = deckList.Length;
 
-		if (deckList != null && deckList.Length > 0)
-			targetSize = deckList.Length + 1;
-
-		elements = new SimpleListObject[targetSize];
-
-		elements[0] = Instantiate(NameElementPrefab, DeckNameGroup);
-		elements[0].Setup("  +  ", CreateNewDeck);
-
-		for(int i = 1; i < targetSize; i++)
+		if (onNewDeckClick != null)
 		{
-			var deck = deckList[i - 1];
+			targetSize++;
+
+			elements = new SimpleListObject[targetSize];
+
+			elements[0] = Instantiate(NameElementPrefab, DeckNameGroup);
+			elements[0].Setup("  +  ", CreateNewDeck);
+
+			startIndex = 1;
+		}
+		else
+			elements = new SimpleListObject[targetSize];
+
+		for (int i = startIndex; i < targetSize; i++)
+		{
+			var deck = deckList[i - startIndex];
 
 			elements[i] = Instantiate(NameElementPrefab, DeckNameGroup);
 			elements[i].Setup(deck.GetName(), () => { OnClickDeck(deck); });
@@ -60,6 +71,6 @@ public class DeckPanel : MonoBehaviour
 	public void CreateNewDeck()
 	{
 		Debug.Log("Clicked new deck");
-		onDeckClick?.Invoke(null);
+		onNewDeckClick?.Invoke();
 	}
 }

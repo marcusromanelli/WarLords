@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/_WarLords/Scenes/DeckManager.unity
     guid: f17be5251fe84ed4d823e6c77ac53a4b
   - enabled: 1
+    path: Assets/_WarLords/Scenes/StartGameMenu.unity
+    guid: 5324f561c5def584b8d0f99125531ba6
+  - enabled: 1
     path: Assets/_WarLords/Scenes/Battlefields/Swamp/Swamp_Sample.unity
     guid: 6e4d495867beaec42948d6661af4badd
   m_configObjects:

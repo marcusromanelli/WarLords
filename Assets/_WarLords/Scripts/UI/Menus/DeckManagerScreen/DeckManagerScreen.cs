@@ -22,7 +22,7 @@ public class DeckManagerScreen : MonoBehaviour {
 		CivilizationPanel.Setup(OnCivilizationClick);
 		CivilizationPanel.Load(civData);
 
-		DeckList.Setup(OnDeckClick);
+		DeckList.Setup(OnNewDeckClick, OnDeckClick);
 	}
 	
 	UserDeckList GetCurrentCivDeckList()
@@ -39,27 +39,23 @@ public class DeckManagerScreen : MonoBehaviour {
 		MenuCardList.gameObject.SetActive(true);
 		MenuCardList.Setup(civilizationData, OnCardListClicked);
 	}
-	void OnDeckClick(UserDeck? userDeck)
+	void OnNewDeckClick()
     {
-		if(userDeck == null)
-        {
-			var civId = currentCivilization.GetId();
+		var civId = currentCivilization.GetId();
 
-			deckCollection.AddNewDeck(civId);
+		deckCollection.AddNewDeck(civId);
 
-			DeckList.Load(GetCurrentCivDeckList());
+		DeckList.Load(GetCurrentCivDeckList());
 
-			SetDirty();
-			return;
-        }
-        else
-        {
-			SetEditing(true);
-			DeckList.gameObject.SetActive(false);
-			DeckCardList.gameObject.SetActive(true);
+		SetDirty();
+	}
+	void OnDeckClick(UserDeck userDeck)
+    {
+		SetEditing(true);
+		DeckList.gameObject.SetActive(false);
+		DeckCardList.gameObject.SetActive(true);
 
-			DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName, OnChangedDeckCardList);
-		}
+		DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName, OnChangedDeckCardList);
 	}
 	void SetEditing(bool isEditing)
     {

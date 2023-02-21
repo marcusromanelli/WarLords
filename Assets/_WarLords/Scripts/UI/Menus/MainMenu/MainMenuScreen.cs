@@ -12,4 +12,8 @@ public class MainMenuScreen : MonoBehaviour
     {
         SceneController.LoadLevel(MenuScreens.DeckManager);
     }
+    public void GoToStartGame()
+    {
+        SceneController.LoadLevel(MenuScreens.StartGame);
+    }
 }

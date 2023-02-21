@@ -1,5 +1,5 @@
 ﻿public enum MenuScreens{
-	Loader, Menu, CardVisualizer, DeckManager
+	Loader, Menu, CardVisualizer, DeckManager, StartGame
 }
 
 public enum StageNames{
