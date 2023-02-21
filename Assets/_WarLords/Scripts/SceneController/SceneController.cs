@@ -58,7 +58,7 @@ public class SceneController : Singleton<SceneController>
 	{
 		ScreenController.FadeIn(fadeIn);
 
-		yield return WhileDo(() => { return ScreenController.Instance.currentFade >= 0; });
+		yield return WhileDo(() => { return ScreenController.Instance.currentFade > 0; });
 	}
 
 	IEnumerator WhileDo(Func<bool> whileCondition, Action doAction = null)
