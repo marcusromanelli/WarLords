@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 [Serializable]
-public struct CivilizationRawData
+public struct RawBundleData
 {
 	public string Id;
 	public string Name;
@@ -17,13 +17,13 @@ public struct CivilizationRawData
 [CreateAssetMenu(fileName = "Civilization Collection", menuName = "ScriptableObjects/Civilization-Collection", order = 2)]
 public class CivilizationCollection : ScriptableObject
 {
-	[SerializeField] CivilizationRawData[] Civilizations;
+	[SerializeField] RawBundleData[] Civilizations;
 
-	public CivilizationRawData[] GetAvailableCivilizationRawData()
+	public RawBundleData[] GetAvailableCivilizationRawData()
     {
 		return Civilizations;
     }
-	public CivilizationRawData? GetCivilizationRawData(string Id)
+	public RawBundleData? GetCivilizationRawData(string Id)
     {
 		foreach (var civ in Civilizations)
 			if (civ.Id == Id)
@@ -42,7 +42,7 @@ public class CivilizationCollection : ScriptableObject
 
 		string[] files = Directory.GetFiles(relativePath, "*.asset", SearchOption.AllDirectories);
 
-		List<CivilizationRawData> list = new List<CivilizationRawData>();
+		List<RawBundleData> list = new List<RawBundleData>();
 
 		foreach (var file in files)
 		{
@@ -55,7 +55,9 @@ public class CivilizationCollection : ScriptableObject
 
 			AssetReference referenceBundle = new AssetReference(address);
 
-			list.Add(new CivilizationRawData() { Id = civ.GetId(), Name = civ.GetName(), Bundle = referenceBundle });
+			list.Add(new RawBundleData() { Id = civ.GetId(), Name = civ.GetName(), Bundle = referenceBundle });
+
+			civ.RefreshCardReferences();
 		}
 
 		Civilizations = list.ToArray();

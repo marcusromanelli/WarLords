@@ -1,24 +1,26 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 public class DeckManagerScreen : MonoBehaviour {
-	[SerializeField] CivilizationPanel civilizationPanel;
+	[SerializeField] UICardViewer uiCardViewer;
+	[SerializeField] CivilizationPanel CivilizationPanel;
 	[SerializeField] CardsPanel MenuCardList;
-
 	[SerializeField] DeckPanel DeckList;
 	[SerializeField] DeckEditPanel DeckCardList;
-
 	[SerializeField] GameObject SaveButton;
+	[SerializeField, ReadOnly] Card selectedCard;
 
 	private CivilizationData currentCivilization;
 	private DeckCollection deckCollection;
+	private bool isEditingDeck;
 
 	void Start () {
 		var civData = CivilizationManager.GetData();
 		deckCollection = new DeckCollection(UserManager.GetData().GetDecks());
 
-		civilizationPanel.gameObject.SetActive(true);
-		civilizationPanel.Setup(OnCivilizationClick);
-		civilizationPanel.Load(civData);
+		CivilizationPanel.gameObject.SetActive(true);
+		CivilizationPanel.Setup(OnCivilizationClick);
+		CivilizationPanel.Load(civData);
 
 		DeckList.Setup(OnDeckClick);
 	}
@@ -33,9 +35,9 @@ public class DeckManagerScreen : MonoBehaviour {
 		DeckList.gameObject.SetActive(true);
 		DeckList.Load(GetCurrentCivDeckList());
 
-		civilizationPanel.gameObject.SetActive(false);
+		CivilizationPanel.gameObject.SetActive(false);
 		MenuCardList.gameObject.SetActive(true);
-		MenuCardList.Setup(civilizationData);
+		MenuCardList.Setup(civilizationData, OnCardListClicked);
 	}
 	void OnDeckClick(UserDeck? userDeck)
     {
@@ -52,29 +54,59 @@ public class DeckManagerScreen : MonoBehaviour {
         }
         else
         {
+			SetEditing(true);
 			DeckList.gameObject.SetActive(false);
 			DeckCardList.gameObject.SetActive(true);
 
-			DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName);
+			DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName, OnChangedDeckCardList);
 		}
+	}
+	void SetEditing(bool isEditing)
+    {
+		this.isEditingDeck = isEditing;
+
+		OnCardListClicked(selectedCard);
 	}
 	void SetDirty()
     {
 		SaveButton.SetActive(true);
 	}
+	void OnAddCardClicked()
+    {
+		DeckCardList.AddCardToCurrentDeck(selectedCard);
+    }
+	public void OnCardListClicked(Card card)
+    {
+		selectedCard = card;
+
+		if (selectedCard == null)
+			return;
+
+		if(isEditingDeck)
+			uiCardViewer.Show(card, OnAddCardClicked);
+		else
+			uiCardViewer.Show(card, null);
+	}
 	public void ReturnToMenu()
 	{
+		DeckCardList.Unload();
+		CivilizationPanel.Unload();
+		MenuCardList.Unload();
+
 		SceneController.LoadLevel(MenuScreens.Menu);
 	}
 	public void OnReturnToCivilizationList()
 	{
+		uiCardViewer.Hide();
 		currentCivilization = null;
-		civilizationPanel.gameObject.SetActive(true);
+		CivilizationPanel.gameObject.SetActive(true);
 		MenuCardList.gameObject.SetActive(false);
 		DeckList.gameObject.SetActive(false);
+		DeckCardList.gameObject.SetActive(false);
 	}
 	public void OnReturnToDeckList()
 	{
+		SetEditing(false);
 		DeckList.gameObject.SetActive(true);
 		DeckCardList.gameObject.SetActive(false);
 
@@ -82,9 +114,14 @@ public class DeckManagerScreen : MonoBehaviour {
 	}
 	public void OnChangedDeckName(UserDeck deck, string name)
 	{
+		deck.SetName(name);
+
+		OnChangedDeckCardList(deck);
+	}
+	public void OnChangedDeckCardList(UserDeck deck)
+	{
 		var civ = currentCivilization.GetId();
 
-		deck.SetName(name);
 		deckCollection.UpdateDeck(civ, deck);
 
 		SetDirty();

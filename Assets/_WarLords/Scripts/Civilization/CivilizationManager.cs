@@ -12,14 +12,14 @@ public class CivilizationManager : Singleton<CivilizationManager>
 
     bool initialized = false;
 
-    public static CivilizationRawData[] GetData()
+    public static RawBundleData[] GetData()
     {
         if (Instance.RawCivilizationData == null)
             return null;
 
         return Instance.RawCivilizationData.GetAvailableCivilizationRawData();
     }    
-    public static CivilizationRawData? GetData(string Id)
+    public static RawBundleData? GetData(string Id)
     {
         if (Instance.RawCivilizationData == null)
             return null;

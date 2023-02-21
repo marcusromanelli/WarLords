@@ -19,11 +19,16 @@ public class CivilizationPanel : MonoBehaviour
     {
 		this.onCivilizationClick = onCivilizationClick;
 	}
-	public void Load(CivilizationRawData[] civilizationRawData)
+	public void Load(RawBundleData[] civilizationRawData)
     {
 		_load(civilizationRawData);
 	}
-	void _load(CivilizationRawData[] civilizationRawData)
+	public void Unload()
+	{
+		if (civilizationDataHandler.IsValid())
+			Addressables.Release(civilizationDataHandler);
+	}
+	void _load(RawBundleData[] civilizationRawData)
 	{
 		EraseAll();
 
@@ -59,7 +64,7 @@ public class CivilizationPanel : MonoBehaviour
 			Destroy(elements[i].gameObject);
 		}
 	}
-	IEnumerator LoadCivilizationData(CivilizationRawData? civilizationRawData)
+	IEnumerator LoadCivilizationData(RawBundleData? civilizationRawData)
 	{
 		if (civilizationRawData == null)
 			yield break;

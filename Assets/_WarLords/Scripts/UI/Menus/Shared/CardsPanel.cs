@@ -1,26 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
+public delegate void OnSelectedCard(Card card);
 public class CardsPanel : MonoBehaviour
 {
     [SerializeField] SimpleListObject CardListObject;
-    [SerializeField] CardContent UICard;
 	[SerializeField] Transform CardListContainer;
 
 
     private SimpleListObject[] loadedCards;
 	private CivilizationData civilizationData;
-	private CivilizationData.CardNameAndBundle[] cardList;
+	private RawBundleData[] cardList;
 	private AsyncOperationHandle<Card> cardDataHandler;
 	private RuntimeCardData runtimeCardData;
+	private OnSelectedCard onSelectedCard;
 
-	public void Setup(CivilizationData civilizationData)
+	public void Setup(CivilizationData civilizationData, OnSelectedCard onSelectedCard)
 	{
 		this.civilizationData = civilizationData;
+		this.onSelectedCard = onSelectedCard;
 
 		Refresh();
 	}
@@ -28,20 +28,19 @@ public class CardsPanel : MonoBehaviour
 	{
 		Load();
 	}
-	public void Setup(CivilizationData civilizationData, CivilizationData.CardNameAndBundle[] deckData)
+	public void Setup(CivilizationData civilizationData, OnSelectedCard onSelectedCard = null, RawBundleData[] deckData = null)
 	{
-		Setup(civilizationData);
-
-		this.cardList = deckData;
-
-		Load();
+		cardList = deckData;
+		Setup(civilizationData, onSelectedCard);
 	}
 	public void Unload()
 	{
 		EraseAll();
-		UICard.Hide();
+
+		if (cardDataHandler.IsValid())
+			Addressables.Release(cardDataHandler);
 	}
-	public void OnClickCard(CivilizationData.CardNameAndBundle cardData)
+	public void OnClickCard(RawBundleData cardData)
 	{
 		if (cardDataHandler.IsValid())
 			Addressables.Release(cardDataHandler);
@@ -49,14 +48,13 @@ public class CardsPanel : MonoBehaviour
 		if (runtimeCardData != null && runtimeCardData.Name == cardData.Name)
 		{
 			runtimeCardData = null;
-			UICard.Hide();
 			return;
 		}
 
 		StartCoroutine(LoadCardData(cardData));
 	}
 
-	IEnumerator LoadCardData(CivilizationData.CardNameAndBundle cardData)
+	IEnumerator LoadCardData(RawBundleData cardData)
 	{
 		cardDataHandler = Addressables.LoadAssetAsync<Card>(cardData.Bundle);
 
@@ -64,7 +62,7 @@ public class CardsPanel : MonoBehaviour
 
 		if (cardDataHandler.Status != AsyncOperationStatus.Succeeded)
 		{
-			Debug.LogError("Error loadnig card data: " + cardDataHandler.OperationException.ToString());
+			Debug.LogError("Error loading card data: " + cardDataHandler.OperationException.ToString());
 			yield break;
 		}
 
@@ -72,8 +70,7 @@ public class CardsPanel : MonoBehaviour
 
 		runtimeCardData = new RuntimeCardData(cardDataResult);
 
-		UICard.Show();
-		UICard.SetData(runtimeCardData, null);
+		onSelectedCard?.Invoke(cardDataResult);
 	}
 
 	void Load()
@@ -85,7 +82,7 @@ public class CardsPanel : MonoBehaviour
 	void RenderCards(CivilizationData civilizationData)
     {
 
-		CivilizationData.CardNameAndBundle[] cards;
+		RawBundleData[] cards;
 
 		if (cardList == null)
 		{
@@ -119,7 +116,7 @@ public class CardsPanel : MonoBehaviour
 			i++;
 		}
 	}
-	void CreateCard(CivilizationData.CardNameAndBundle assetData, int index)
+	void CreateCard(RawBundleData assetData, int index)
 	{
 		loadedCards[index] = Instantiate(CardListObject, CardListContainer);
 		loadedCards[index].Setup(assetData.Name, () => { OnClickCard(assetData); });

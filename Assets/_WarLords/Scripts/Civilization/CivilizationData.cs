@@ -11,28 +11,20 @@ using UnityEngine.AddressableAssets;
 [CreateAssetMenu(fileName = "Civilization Data", menuName = "ScriptableObjects/Card/Civilization", order = 2)]
 public class CivilizationData : ScriptableObject
 {
-	[Serializable]
-	public struct CardNameAndBundle
-	{
-		public string Name;
-		public string Id;
-		public AssetReference Bundle;
-	}
-
 	[SerializeField, ReadOnly] string Id;
 	[SerializeField] string Name;
 	[SerializeField] GameObject BackCoverObject;
 	[SerializeField] Texture BackCover;
 	[SerializeField] GameObject Token;
-	[SerializeField] CardNameAndBundle[] AvailableCards;
+	[SerializeField] RawBundleData[] AvailableCards;
 
 	public string GetId() => Id;
 	public string GetName() => Name;
 	public GameObject GetBackCoverObject() => BackCoverObject;
 	public Texture GetBackCoverTexture() => BackCover;
 	public GameObject GetToken() => Token;
-	public CardNameAndBundle[] GetAvailableCards() => AvailableCards;
-	public CardNameAndBundle FindCardByid(string id)
+	public RawBundleData[] GetAvailableCards() => AvailableCards;
+	public RawBundleData FindCardByid(string id)
     {
 		foreach (var card in AvailableCards)
 			if (card.Id == id)
@@ -40,9 +32,9 @@ public class CivilizationData : ScriptableObject
 
 		return default;
     }
-	public Dictionary<CardNameAndBundle, int> LoadCardReferences(string[] deckData) {
+	public Dictionary<RawBundleData, int> LoadCardReferences(string[] deckData) {
 
-		Dictionary<CardNameAndBundle, int> newDeckData = new Dictionary<CardNameAndBundle, int>();
+		Dictionary<RawBundleData, int> newDeckData = new Dictionary<RawBundleData, int>();
 
 		foreach (var card in deckData)
         {
@@ -56,7 +48,7 @@ public class CivilizationData : ScriptableObject
 
 
             if (!newDeckData.ContainsKey(cardObj))
-				newDeckData[cardObj] = 1;
+				newDeckData.Add(cardObj, 0);
 
 			newDeckData[cardObj]++;
 		}
@@ -80,7 +72,7 @@ public class CivilizationData : ScriptableObject
 
 		string[] files = Directory.GetFiles(relativePath, "*.asset", SearchOption.AllDirectories);
 
-		List<CardNameAndBundle> list = new List<CardNameAndBundle>();
+		List<RawBundleData> list = new List<RawBundleData>();
 
 		foreach (var file in files)
 		{
@@ -93,7 +85,7 @@ public class CivilizationData : ScriptableObject
 
 			AssetReference referenceBundle = new AssetReference(address);
 
-			list.Add(new CardNameAndBundle() { Id = card.Id, Name = card.Name, Bundle = referenceBundle });
+			list.Add(new RawBundleData() { Id = card.Id, Name = card.Name, Bundle = referenceBundle });
 		}
 
 		AvailableCards = list.ToArray();
