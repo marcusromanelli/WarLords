@@ -34,8 +34,8 @@ public class UICardViewer : MonoBehaviour
     public void Hide()
     {
         cardContent.Hide();
-        addButton.gameObject.SetActive(false);
-        removeButton.gameObject.SetActive(false);
+        addButton?.gameObject.SetActive(false);
+        removeButton?.gameObject.SetActive(false);
     }
 
 }

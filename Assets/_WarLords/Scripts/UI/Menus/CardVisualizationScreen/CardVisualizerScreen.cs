@@ -30,11 +30,20 @@ public class CardVisualizerScreen : MonoBehaviour {
 
 	void OnCivilizationClick(CivilizationData civilizationData)
     {
+		if (civilizationData == null)
+		{
+			MenuCardList.Unload();
+			return;
+		}
+
 		MenuCardList.Setup(dataReferenceLibrary, civilizationData.GetId(), OnCardClick);
     }
 
 	void OnCardClick(Card card)
     {
-		uiCardViewer.Show(card);
+		if (card == null)
+			uiCardViewer.Hide();
+		else
+			uiCardViewer.Show(card);
 	}
 }

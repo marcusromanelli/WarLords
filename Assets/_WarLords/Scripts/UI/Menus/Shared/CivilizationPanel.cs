@@ -11,9 +11,9 @@ public class CivilizationPanel : MonoBehaviour
 	[SerializeField] Transform CivilizationNameGroup;
 
 	private string currentCivilizationId = null;
-	private AsyncOperationHandle<CivilizationData> civilizationDataHandler;
 	private SimpleListObject[] elements;
 	private OnCivilizationClick onCivilizationClick;
+	private AssetReference currentCivilizationReference;
 
 	public void Setup(OnCivilizationClick onCivilizationClick)
     {
@@ -25,13 +25,11 @@ public class CivilizationPanel : MonoBehaviour
 	}
 	public void Unload()
 	{
-		if (civilizationDataHandler.IsValid())
-			Addressables.Release(civilizationDataHandler);
+		DeallocateLastCivilization();
 	}
 	void _load(RawBundleData[] civilizationRawData)
 	{
 		EraseAll();
-
 
 		if (civilizationRawData == null || civilizationRawData.Length == 0)
 		{
@@ -64,32 +62,26 @@ public class CivilizationPanel : MonoBehaviour
 			Destroy(elements[i].gameObject);
 		}
 	}
-	IEnumerator LoadCivilizationData(RawBundleData? civilizationRawData)
+	void OnLoadCivilizationData(CivilizationData civilizationRawData)
 	{
-		if (civilizationRawData == null)
-			yield break;
+		onCivilizationClick?.Invoke(civilizationRawData);
+	}
+	void DeallocateLastCivilization()
+    {
+		if (currentCivilizationReference == null)
+			return;
 
-		civilizationDataHandler = Addressables.LoadAssetAsync<CivilizationData>(civilizationRawData.Value.Bundle);
-
-		yield return civilizationDataHandler;
-
-		if (civilizationDataHandler.Status != AsyncOperationStatus.Succeeded)
-		{
-			Debug.LogError("Error downloading civilization data: " + civilizationDataHandler.OperationException.ToString());
-			yield break;
-		}
-
-
-		onCivilizationClick?.Invoke(civilizationDataHandler.Result);
+		ResourceManager.DeallocateCivilization(currentCivilizationReference);
 	}
 	public void OnClickCivilization(string civilizationId)
 	{
-		if (civilizationDataHandler.IsValid())
-			Addressables.Release(civilizationDataHandler);
+		DeallocateLastCivilization();
 
 		if (currentCivilizationId == civilizationId)
 		{
 			currentCivilizationId = null;
+			currentCivilizationReference = null;
+			OnLoadCivilizationData(null);
 			return;
 		}
 
@@ -97,6 +89,8 @@ public class CivilizationPanel : MonoBehaviour
 
 		currentCivilizationId = civilizationId;
 
-		StartCoroutine(LoadCivilizationData(civAssetReference));
+		currentCivilizationReference = civAssetReference.Bundle;
+
+		ResourceManager.AllocateCivilization(civAssetReference.Bundle, OnLoadCivilizationData);
 	}
 }

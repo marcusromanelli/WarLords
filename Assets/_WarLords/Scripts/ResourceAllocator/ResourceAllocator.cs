@@ -19,13 +19,13 @@ class AssetReferenceComparer<T> : IEqualityComparer<AssetHandleReference<T>>
     }
 }
 
-public struct AssetHandleReference<T>
+public class AssetHandleReference<T>
 {
     public AssetReference AssetReference;
-    public Action<T> OnFinishLoading;
     public T Data => AssetOperation.Result;
 
-
+    private Action<T> OnFinishLoading;
+    private int useNumber;
     private AsyncOperationHandle<T> AssetOperation;
 
     public bool HasLoaded()
@@ -37,28 +37,48 @@ public struct AssetHandleReference<T>
         return AssetOperation.IsValid() && AssetOperation.Status != AsyncOperationStatus.Succeeded;
     }
 
-    public void Load()
+    public void Load(Action<T> OnFinishLoading)
     {
+        useNumber++;
+
+        if (HasLoaded())
+        {
+            OnFinishLoading?.Invoke(Data);
+            return;
+        }
+
+        this.OnFinishLoading += OnFinishLoading;
+
+        if (IsLoading())
+            return;
+
         AssetOperation = Addressables.LoadAssetAsync<T>(AssetReference);
 
-        AssetHandleReference<T> obj = this; //derp
+        AssetOperation.Completed += OnOperationFinishes;
+    }
 
-        AssetOperation.Completed += handle =>
-        {
-            if (handle.Status != AsyncOperationStatus.Succeeded)
-            {
-                Debug.LogError("Error loading data: " + handle.OperationException.ToString());
-                return;
-            }
+    void OnOperationFinishes(AsyncOperationHandle<T> handle)
+    {
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+            return;
 
-            obj.OnFinishLoading?.Invoke(handle.Result);
-        };
+        OnFinishLoading?.Invoke(handle.Result);
+
+        AssetOperation.Completed -= OnOperationFinishes;
+        OnFinishLoading = null;
     }
 
     public void Unload()
     {
-        if (AssetOperation.IsValid())
+        useNumber--;
+
+        var isValid = AssetOperation.IsValid();
+
+        if (isValid && useNumber <= 0)
+        {
+            useNumber = 0;
             Addressables.Release(AssetOperation);
+        }
     }
 }
 
@@ -68,29 +88,18 @@ public class ResourceAllocator<T>
 
     public void Load(AssetReference assetReference, Action<T> onLoadFinish)
     {
-        AssetHandleReference<T> data = new AssetHandleReference<T>() { AssetReference = assetReference };
+        AssetHandleReference<T> searchData = new AssetHandleReference<T>() { AssetReference = assetReference };
 
-        AssetHandleReference<T> foundData = data;
+        AssetHandleReference<T> foundData = searchData;
 
-        datahandler.TryGetValue(data, out foundData);
-
-        if(foundData.AssetReference != null)
-            data = foundData;
-
-        if (data.HasLoaded())
+        if (!datahandler.TryGetValue(searchData, out foundData))
         {
-            onLoadFinish?.Invoke(data.Data);
-            return;
+            datahandler.Add(searchData);
+
+            foundData = searchData;
         }
 
-        data.OnFinishLoading += onLoadFinish;
-
-        if (data.IsLoading())
-            return;
-
-        data.Load();
-
-        datahandler.Add(data);
+        foundData.Load(onLoadFinish);
     }
 
     public void Unload(AssetReference assetReference)

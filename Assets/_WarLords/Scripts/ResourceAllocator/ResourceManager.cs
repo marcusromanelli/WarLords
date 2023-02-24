@@ -4,6 +4,7 @@ using UnityEngine.AddressableAssets;
 public class ResourceManager : Singleton<ResourceManager>
 {
     public ResourceAllocator<Card> cardResourceAllocator = new ResourceAllocator<Card>();
+    public ResourceAllocator<CivilizationData> civilizationResourceAllocator = new ResourceAllocator<CivilizationData>();
 
 
     public static void AllocateCard(AssetReference assetReference, Action<Card> onFinishLoad)
@@ -22,5 +23,24 @@ public class ResourceManager : Singleton<ResourceManager>
     void deallocateCard(AssetReference assetReference)
     {
         cardResourceAllocator.Unload(assetReference);
+    }
+
+
+    public static void AllocateCivilization(AssetReference assetReference, Action<CivilizationData> onFinishLoad)
+    {
+        Instance.allocateCivilization(assetReference, onFinishLoad);
+    }
+    public static void DeallocateCivilization(AssetReference assetReference)
+    {
+        Instance.deallocateCivilization(assetReference);
+    }
+
+    void allocateCivilization(AssetReference assetReference, Action<CivilizationData> onFinishLoad)
+    {
+        civilizationResourceAllocator.Load(assetReference, onFinishLoad);
+    }
+    void deallocateCivilization(AssetReference assetReference)
+    {
+        civilizationResourceAllocator.Unload(assetReference);
     }
 }

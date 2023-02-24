@@ -48,6 +48,8 @@ public class CardsPanel : MonoBehaviour
 		if (runtimeCardData != null && runtimeCardData.Name == cardData.Name)
 		{
 			runtimeCardData = null;
+
+			OnSelectedCard(null);
 			return;
 		}
 
@@ -68,7 +70,12 @@ public class CardsPanel : MonoBehaviour
 
 		runtimeCardData = new RuntimeCardData(cardDataResult);
 
-		onSelectedCard?.Invoke(cardDataResult);
+		OnSelectedCard(cardDataResult);
+	}
+
+	void OnSelectedCard(Card card)
+    {
+		onSelectedCard?.Invoke(card);
 	}
 
 	void Load()
