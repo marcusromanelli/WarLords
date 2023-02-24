@@ -8,25 +8,25 @@ public class SceneController : Singleton<SceneController>
 	void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-			LoadLevel(MenuScreens.Loader);
+			LoadLevel(GameScreens.Loader);
     }
 #endif
-	public static void LoadLevel(MenuScreens level = MenuScreens.Loader, float fadeOt = 0.5f, float fadeIn = 0.5f)
+	public static void LoadLevel(GameScreens level = GameScreens.Loader, float fadeOut = 0.5f, float fadeIn = 0.5f)
 	{
-		Instance._loadLevel(level, fadeOt, fadeIn);
+		Instance._loadLevel(level, fadeOut, fadeIn);
 	}
-	void _loadLevel(MenuScreens level, float fadeOt, float fadeIn)
+	void _loadLevel(GameScreens level, float fadeOut, float fadeIn)
 	{
 		StopAllCoroutines();
 
-		StartCoroutine(_loadLevel((int)level, fadeOt, fadeIn));
+		StartCoroutine(_loadLevel((int)level, fadeOut, fadeIn));
 	}
 
-	IEnumerator _loadLevel(int level, float fadeOt, float fadeIn)
+	IEnumerator _loadLevel(int level, float fadeOut, float fadeIn)
 	{
 		ScreenController.showLoadingIcon = true;
 
-		yield return DoFadeOut(fadeOt);
+		yield return DoFadeOut(fadeOut);
 
 		yield return LoadScene(level);
 

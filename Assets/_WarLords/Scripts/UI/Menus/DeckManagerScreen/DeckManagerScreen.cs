@@ -89,7 +89,7 @@ public class DeckManagerScreen : MonoBehaviour {
 		CivilizationPanel.Unload();
 		MenuCardList.Unload();
 
-		SceneController.LoadLevel(MenuScreens.Menu);
+		SceneController.LoadLevel(GameScreens.Menu);
 	}
 	public void OnReturnToCivilizationList()
 	{

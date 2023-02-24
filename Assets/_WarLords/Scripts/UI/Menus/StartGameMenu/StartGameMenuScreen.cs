@@ -11,7 +11,7 @@ public class StartGameMenuScreen : MonoBehaviour
 	bool playerReady, enemyReady;
 	UserDeck playerDeck, enemyDeck;
 	public void Start()
-    {
+	{
 		var deckCollection = UserManager.GetData().GetDecks();
 		var civs = CivilizationManager.GetData();
 
@@ -20,8 +20,14 @@ public class StartGameMenuScreen : MonoBehaviour
 	}
 	public void ReturnToMenu()
 	{
-		SceneController.LoadLevel(MenuScreens.Menu);
+		SceneController.LoadLevel(GameScreens.Menu);
 	}
+	public void StartGame()
+    {
+		GameController.SetPlayersDeck(playerDeck, enemyDeck);
+
+		SceneController.LoadLevel(GameScreens.Stage_Swamp);
+    }
 
 	void OnSelectedDeck(bool localPlayer, UserDeck deckList)
     {

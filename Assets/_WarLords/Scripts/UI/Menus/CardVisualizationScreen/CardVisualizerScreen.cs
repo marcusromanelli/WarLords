@@ -20,7 +20,7 @@ public class CardVisualizerScreen : MonoBehaviour {
 	
 	public void ReturnToMenu()
     {
-		SceneController.LoadLevel(MenuScreens.Menu);
+		SceneController.LoadLevel(GameScreens.Menu);
     }
 
 	public void OnCivilizationClick(CivilizationData civilizationData)

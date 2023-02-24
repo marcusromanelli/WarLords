@@ -6,14 +6,14 @@ public class MainMenuScreen : MonoBehaviour
 {
     public void GoToCardVisualizer()
     {
-        SceneController.LoadLevel(MenuScreens.CardVisualizer);
+        SceneController.LoadLevel(GameScreens.CardVisualizer);
     }
     public void GoToDeckManager()
     {
-        SceneController.LoadLevel(MenuScreens.DeckManager);
+        SceneController.LoadLevel(GameScreens.DeckManager);
     }
     public void GoToStartGame()
     {
-        SceneController.LoadLevel(MenuScreens.StartGame);
+        SceneController.LoadLevel(GameScreens.StartGame);
     }
 }

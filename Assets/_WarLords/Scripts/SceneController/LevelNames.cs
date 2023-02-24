@@ -1,7 +1,4 @@
-﻿public enum MenuScreens{
-	Loader, Menu, CardVisualizer, DeckManager, StartGame
+﻿public enum GameScreens{
+	Loader, Menu, CardVisualizer, DeckManager, StartGame, Stage_Swamp
 }
 
-public enum StageNames{
-	Swamp = 1
-}

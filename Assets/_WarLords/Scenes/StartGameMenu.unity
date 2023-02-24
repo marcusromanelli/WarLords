@@ -1622,7 +1622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1286498004}
         m_TargetAssemblyTypeName: StartGameMenuScreen, Assembly-CSharp
-        m_MethodName: ReturnToMenu
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

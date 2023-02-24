@@ -19,7 +19,7 @@ public class Initializer : MonoBehaviour {
 	}
 
 	void Finish(){
-		SceneController.LoadLevel(MenuScreens.Menu);
+		SceneController.LoadLevel(GameScreens.Menu);
 	}
 	void LoadRoutine()
 	{

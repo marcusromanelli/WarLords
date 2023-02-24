@@ -3,8 +3,9 @@ using UnityEngine.SceneManagement;
 using NaughtyAttributes;
 
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
+	[BoxGroup("Components"), SerializeField] DataReferenceLibrary dataReferenceLibrary;
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
 	[BoxGroup("Components"), SerializeField] InputController inputController;
 	[BoxGroup("Components"), SerializeField] PhaseManager phaseManager;
@@ -31,11 +32,11 @@ public class GameController : MonoBehaviour
 
         battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonToken);
 
-		localPlayer.PreSetup(battlefield, this, inputController);
+		localPlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
 
-		remotePlayer.PreSetup(battlefield, this, inputController);
+		remotePlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
 	}
-    private void Update()
+    void Update()
     {
 		WatchExitGame();
 	}
@@ -44,7 +45,16 @@ public class GameController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+	void setPlayersDeck(UserDeck localDeckData, UserDeck remoteDeckData)
+	{
+		localPlayer.SetDeck(localDeckData);
+		remotePlayer.SetDeck(remoteDeckData);
+	}
 
+	public static void SetPlayersDeck(UserDeck localDeckData, UserDeck remoteDeckData)
+    {
+		Instance.setPlayersDeck(localDeckData, remoteDeckData);
+    }
 
 	#region BATTLEFIELD_INTERFACE
 	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
