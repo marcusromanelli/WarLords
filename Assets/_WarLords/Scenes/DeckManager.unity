@@ -240,6 +240,7 @@ MonoBehaviour:
   NameElementPrefab: {fileID: 790344758541681014, guid: d9cd8a9bcf1261b48b9522f2a8717d46,
     type: 3}
   DeckNameGroup: {fileID: 1617478215}
+  ReadOnly: 0
 --- !u!1 &102890552
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,6 +2127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4793e04aaa9671c4db956bb190ee9a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataReferenceLibrary: {fileID: 11400000, guid: 9efccc8a06256e54a80040813b101242,
+    type: 2}
   uiCardViewer: {fileID: 1878441692}
   CivilizationPanel: {fileID: 2036626793}
   MenuCardList: {fileID: 167803}
@@ -3031,7 +3034,7 @@ PrefabInstance:
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00001335144
+      value: 0.000013351438
       objectReference: {fileID: 0}
     - target: {fileID: 1722447297586130045, guid: e5397477df758434799c758993137d06,
         type: 3}

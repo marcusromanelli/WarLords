@@ -21,8 +21,8 @@ public class RuntimeCardData
 	private uint walkSpeed;
 	public uint WalkSpeed => walkSpeed;
 
-	private CivilizationData civilization;
-	public CivilizationData Civilization => civilization;
+	private CivilizationGraphicsData graphics;
+	public CivilizationGraphicsData Graphics => graphics;
 
 	private Sprite frontCover;
 	public Sprite FrontCover => frontCover;
@@ -36,16 +36,16 @@ public class RuntimeCardData
 	public RuntimeCardData(Card card)
     {
 		name = card.Name;
-		manaCost = card.Data.ManaCost;
-		attack = card.Data.Attack;
-		defense = card.Data.Defense;
-		walkSpeed = card.Data.WalkSpeed;
-		civilization = card.Civilization;
+		manaCost = card.ManaCost;
+		attack = card.Attack;
+		defense = card.Defense;
+		walkSpeed = card.WalkSpeed;
+		graphics = card.Graphics;
 		frontCover = card.FrontCover;
 
 		activeSkills = new List<SkillData>();
 
-		originalSkills = card.Data.Skills;
+		originalSkills = card.Skills;
     }
 	public void UnselectAllSkills()
     {

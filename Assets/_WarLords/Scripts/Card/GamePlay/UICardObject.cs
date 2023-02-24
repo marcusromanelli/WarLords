@@ -160,7 +160,7 @@ public class UICardObject : MonoBehaviour
 	}
 	void UpdateBackCardCover()
 	{
-		var obj = parentCardObject.RuntimeCardData.Civilization.GetBackCoverObject();
+		var obj = parentCardObject.RuntimeCardData.Graphics.GetBackCoverObject();
 
 		if (currentBackgroundObject == obj) return;
 

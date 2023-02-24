@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using NaughtyAttributes;
 
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
 	[BoxGroup("Components"), SerializeField] InputController inputController;
@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
 
 		remotePlayer.PreSetup(battlefield, this, inputController);
 	}
-    private void Update()
+    void Update()
     {
 		WatchExitGame();
 	}
@@ -45,6 +45,13 @@ public class GameController : MonoBehaviour
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
+	public void SetPlayerDeck(UserDeck deckData, CivilizationData civilizationData, bool isLocalPlayer)
+    {
+		var player = isLocalPlayer ? localPlayer : remotePlayer;
+		//var deck = new PlayerCardDeck(deckData, civilizationData);
+
+		//player.SetDeck(deck);
+    }
 
 	#region BATTLEFIELD_INTERFACE
 	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)

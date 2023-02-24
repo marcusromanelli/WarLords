@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Lavignia_Damarjin
   m_EditorClassIdentifier: 
-  Name: Lavignia Damarjin
+  Name: 
+  Id: 48837ccb-b016-4e0c-abb9-675dad5db864
   FrontCover: {fileID: 21300000, guid: 543fbfcf77b43d1469be579466ff46f6, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: 071b720f95ec0ac459b69889d271de35, type: 2}
+  ManaCost: 1
+  Attack: 2
+  Defense: 1
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: 545011c408a313b44bef062cd91f24d5, type: 2}
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: d3ef5b96b34805b4f9d5bd49a6e29f32, type: 2}
+  Graphics: {fileID: 0}

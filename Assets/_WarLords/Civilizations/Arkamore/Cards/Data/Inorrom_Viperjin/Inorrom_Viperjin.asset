@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Inorrom_Viperjin
   m_EditorClassIdentifier: 
-  Name: Inorrom Viperjin
-  FrontCover: {fileID: 21300000, guid: 1ef3b874bc208a443a08fa76eb118d1c, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: ebb5a1ef8accfbc4b8447d775b055c8b, type: 2}
+  Name: 
+  Id: a31cad70-2135-4c1c-bb76-bdb59b00961d
+  FrontCover: {fileID: 21300000, guid: 27ff4754ca9c6b54eb5e31fcf9d866ce, type: 3}
+  ManaCost: 3
+  Attack: 4
+  Defense: 1
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: c2b2286f50431d24089272cfc811dccf, type: 2}
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: d0b02f8e35f6db7478ad9d8a338d5bc0, type: 2}
+  Graphics: {fileID: 0}

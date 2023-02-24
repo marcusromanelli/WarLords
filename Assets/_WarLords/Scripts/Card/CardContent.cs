@@ -64,18 +64,16 @@ public class CardContent : MonoBehaviour
 		var skill2 = skills[1];
 
 		if (enableSkill1Button != null)
-		{
 			enableSkill1Button.Setup(skill1);
-			SetTextValue(skill1DescriptionText, skill1);
-			SetTextValue(skill1CostText, skill1.GetManaCost());
-		}
+
+		SetTextValue(skill1DescriptionText, skill1);
+		SetTextValue(skill1CostText, skill1.GetManaCost());
 
 		if (enableSkill2Button != null)
-		{
 			enableSkill2Button.Setup(skill2);
-			SetTextValue(skill2DescriptionText, skill2);
-			SetTextValue(skill2CostText, skill2.GetManaCost());
-		}
+
+		SetTextValue(skill2DescriptionText, skill2);
+		SetTextValue(skill2CostText, skill2.GetManaCost());
 	}
 	void SetTextValue(TMP_Text component, object value)
 	{

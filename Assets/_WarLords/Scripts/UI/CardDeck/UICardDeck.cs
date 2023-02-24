@@ -18,7 +18,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
 
     private List<Card> deckObjects = new List<Card>();
 
-    public void Setup(CivilizationData civilizationData)
+    public void Setup(CivilizationGraphicsData civilizationData)
     {
         deckObject.material.mainTexture = civilizationData.GetBackCoverTexture();
         UpdateCardCount();
@@ -55,7 +55,7 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     public void Shuffle(Card[] cards)
     {
         var cardList = cards.ToList();
-        deckObjects.OrderBy(cardObject => cardList.FindIndex(card => card == cardObject.Data));
+        deckObjects.OrderBy(cardObject => cardList.FindIndex(card => card == cardObject));
     }
     public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition, Action onFinish)
     {

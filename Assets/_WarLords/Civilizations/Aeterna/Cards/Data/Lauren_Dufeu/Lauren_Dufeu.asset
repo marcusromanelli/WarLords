@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Lauren_Dufeu
   m_EditorClassIdentifier: 
-  Name: Lauren Dufeu
+  Name: 
+  Id: b6bfb829-bb71-40a7-a56d-7483dc84392d
   FrontCover: {fileID: 21300000, guid: 51998f6d892308a49be890922055b79f, type: 3}
-  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
-  Data: {fileID: 11400000, guid: fbc6c296c8af2aa48bbabb201f1ccb38, type: 2}
+  ManaCost: 2
+  Attack: 1
+  Defense: 5
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: 6870219346e055f4f8c17fce0b89cb9b, type: 2}
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: 6abfc928f44883c45a01a042c0fcd649, type: 2}
+  Graphics: {fileID: 0}

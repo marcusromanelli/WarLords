@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Zorak_Madshred
   m_EditorClassIdentifier: 
-  Name: Zorak Madshred
+  Name: 
+  Id: f9d3b403-0a53-461a-a3a3-160c45c343ec
   FrontCover: {fileID: 21300000, guid: 62cc4c618a4229e4eaaea744fe0da254, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: 1c9fa990f8acb044fbdfcb489a07299e, type: 2}
+  ManaCost: 2
+  Attack: 2
+  Defense: 4
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: 6870219346e055f4f8c17fce0b89cb9b, type: 2}
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: 3a82aec5094429547996732ebd53ee61, type: 2}
+  Graphics: {fileID: 0}

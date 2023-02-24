@@ -13,7 +13,7 @@ public class StartGameMenuScreen : MonoBehaviour
 	public void Start()
     {
 		var deckCollection = UserManager.GetData().GetDecks();
-		var civs = CivilizationManager.GetData();
+		var civs = CivilizationManager.GetAll();
 
 		PlayerSelectionDeck?.Setup(deckCollection, civs, true, OnSelectedDeck);
 		EnemySelectionDeck?.Setup(deckCollection, civs, false, OnSelectedDeck);

@@ -1,36 +1,46 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class CivilizationManager : Singleton<CivilizationManager>
 {
-	[SerializeField] CivilizationCollection RawCivilizationData;
+	[SerializeField] DataReferenceLibrary RawCivilizationData;
 
-    AsyncOperationHandle<CivilizationCollection> loadedHandler;
+    AsyncOperationHandle<DataReferenceLibrary> loadedHandler;
 
     bool initialized = false;
+    RawBundleData[] civilizationDataArray;
 
-    public static RawBundleData[] GetData()
+    public static RawBundleData GetData(string id)
     {
         if (Instance.RawCivilizationData == null)
-            return null;
+            return default;
 
-        return Instance.RawCivilizationData.GetAvailableCivilizationRawData();
-    }    
-    public static RawBundleData? GetData(string Id)
+        return Instance.RawCivilizationData.GetCivilization(id);
+    }
+    public static RawBundleData[] GetAll()
+    {
+        return Instance.getAll();
+    }
+    RawBundleData[] getAll()
     {
         if (Instance.RawCivilizationData == null)
-            return null;
+            return new RawBundleData[0];
 
-        return Instance.RawCivilizationData.GetCivilizationRawData(Id);
-    }    
-    public static void SetData(AsyncOperationHandle<CivilizationCollection> civilizationHandler)
+        if (civilizationDataArray == null || civilizationDataArray.Length == 0)
+        {
+            var data = Instance.RawCivilizationData?.GetCivilizations();
+
+            civilizationDataArray = data;
+        }
+
+        return civilizationDataArray;
+    }
+    public static void SetData(AsyncOperationHandle<DataReferenceLibrary> civilizationHandler)
     {
         Instance.setData(civilizationHandler);
     }
-    public void setData(AsyncOperationHandle<CivilizationCollection> civilizationHandler)
+    public void setData(AsyncOperationHandle<DataReferenceLibrary> civilizationHandler)
     {
         if (initialized)
             return;

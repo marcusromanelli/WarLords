@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Nikaella_Halth
   m_EditorClassIdentifier: 
-  Name: Nikaella Halth
+  Name: 
+  Id: 1806a70e-6fb7-49ff-8e6a-b19c387de506
   FrontCover: {fileID: 21300000, guid: d854e69be450ae14c925b09bd728911f, type: 3}
-  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
-  Data: {fileID: 11400000, guid: c725929b5cb22154799517bd742abedc, type: 2}
+  ManaCost: 3
+  Attack: 4
+  Defense: 3
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: fefd91036bdcd9441ba7d71aa1ac7a9a, type: 2}
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: 68a99c5a3f8c23449af948872b4c10ab, type: 2}
+  Graphics: {fileID: 0}

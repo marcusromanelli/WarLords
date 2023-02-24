@@ -11,15 +11,17 @@ public class CardsPanel : MonoBehaviour
 
 
     private SimpleListObject[] loadedCards;
-	private CivilizationData civilizationData;
 	private RawBundleData[] cardList;
 	private AsyncOperationHandle<Card> cardDataHandler;
 	private RuntimeCardData runtimeCardData;
 	private OnSelectedCard onSelectedCard;
+	private DataReferenceLibrary dataLibrary;
+	private string civilizationId;
 
-	public void Setup(CivilizationData civilizationData, OnSelectedCard onSelectedCard)
+	public void Setup(DataReferenceLibrary dataLibrary, string civilizationId, OnSelectedCard onSelectedCard)
 	{
-		this.civilizationData = civilizationData;
+		this.dataLibrary = dataLibrary;
+		this.civilizationId = civilizationId;
 		this.onSelectedCard = onSelectedCard;
 
 		Refresh();
@@ -28,10 +30,10 @@ public class CardsPanel : MonoBehaviour
 	{
 		Load();
 	}
-	public void Setup(CivilizationData civilizationData, OnSelectedCard onSelectedCard = null, RawBundleData[] deckData = null)
+	public void Setup(DataReferenceLibrary dataLibrary, string civilizationId, OnSelectedCard onSelectedCard = null, RawBundleData[] deckData = null)
 	{
 		cardList = deckData;
-		Setup(civilizationData, onSelectedCard);
+		Setup(dataLibrary, civilizationId, onSelectedCard);
 	}
 	public void Unload()
 	{
@@ -77,16 +79,17 @@ public class CardsPanel : MonoBehaviour
     {
 		EraseAll();
 
-		RenderCards(civilizationData);
+		RenderCards();
 	}
-	void RenderCards(CivilizationData civilizationData)
+	void RenderCards()
     {
 
 		RawBundleData[] cards;
+		RawBundleData civ = dataLibrary.GetCivilization(civilizationId);
 
 		if (cardList == null)
 		{
-			cards = civilizationData.GetAvailableCards();
+			cards = dataLibrary.CardsByCivilization[civilizationId].ToArray();
         }
         else
         {
@@ -105,7 +108,7 @@ public class CardsPanel : MonoBehaviour
 		}
 
 
-		Debug.Log(civilizationData.GetName() + " loaded. There are " + cards.Length + " cards.");
+		Debug.Log(civ.Name + " loaded. There are " + cards.Length + " cards.");
 
 		loadedCards = new SimpleListObject[cards.Length];
 		int i = 0;

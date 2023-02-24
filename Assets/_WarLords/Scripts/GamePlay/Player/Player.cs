@@ -66,7 +66,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
     public void SetupPlayDeck()
 	{
-		PlayDeck.Setup(startDeck.Cards[0].Civilization);
+		PlayDeck.Setup(startDeck.Cards[0].Graphics);
 
 		PlayDeck.AddCards(startDeck.Cards);
 
@@ -74,8 +74,14 @@ public class Player : MonoBehaviour, IAttackable
 	}
     public void SetupGraveyard()
 	{
-		Graveyard.Setup(startDeck.Cards[0].Civilization);
+		Graveyard.Setup(startDeck.Cards[0].Graphics);
 	}
+	
+	public void SetDeck(PlayerCardDeck deck)
+    {
+		startDeck = deck;
+    }
+
 
     #region INTERACTION
 	void OnCardBeingHeld(Player player, CardObject cardObject)

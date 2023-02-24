@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Garulf_Feltrejin
   m_EditorClassIdentifier: 
-  Name: Garulf Feltrejin
+  Name: 
+  Id: cb0f7042-d9ba-446e-80f6-5ca21247dfa0
   FrontCover: {fileID: 21300000, guid: 9543452521ac56943974f980e15b3c2e, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: 741010ea8bc59ae48b951b02b651eb05, type: 2}
+  ManaCost: 0
+  Attack: 1
+  Defense: 2
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: 7a8c7bf0b4733e347886d4e72c9c984e, type: 2}
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: e65591bae860af641b5be0ddb0b082c3, type: 2}
+  Graphics: {fileID: 0}
