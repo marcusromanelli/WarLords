@@ -24,4 +24,4 @@ MonoBehaviour:
     Data: {fileID: 11400000, guid: 494c67139d58b3247a0d19f19162f41c, type: 2}
   - ManaCost: 1
     Data: {fileID: 11400000, guid: e1ccb3e9c86d6a143ad3dd03376e5d56, type: 2}
-  Graphics: {fileID: 0}
+  Graphics: {fileID: 11400000, guid: 0c5e7b8e7748f6348b61209ff91aee4c, type: 2}

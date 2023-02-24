@@ -50,6 +50,7 @@ public class CivilizationData : ScriptableObject
 			var parentFolder = Directory.GetParent(file);
 
 			card.Name = parentFolder.Name.Replace("_", " ");
+			card.Graphics = Graphics;
 
 			EditorUtility.SetDirty(card);
 
