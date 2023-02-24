@@ -26,6 +26,8 @@ public class CivilizationPanel : MonoBehaviour
 	public void Unload()
 	{
 		DeallocateLastCivilization();
+		currentCivilizationId = null;
+		currentCivilizationReference = null;
 	}
 	void _load(RawBundleData[] civilizationRawData)
 	{

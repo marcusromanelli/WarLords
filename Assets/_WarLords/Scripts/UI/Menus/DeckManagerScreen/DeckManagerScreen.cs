@@ -32,6 +32,9 @@ public class DeckManagerScreen : MonoBehaviour {
 	}
 	void OnCivilizationClick(CivilizationData civilizationData)
 	{
+		if (civilizationData == null)
+			return;
+
 		currentCivilization = civilizationData;
 		DeckList.gameObject.SetActive(true);
 		DeckList.Load(GetCurrentCivDeckList());
@@ -77,7 +80,10 @@ public class DeckManagerScreen : MonoBehaviour {
 		selectedCard = card;
 
 		if (selectedCard == null)
+		{
+			uiCardViewer.Hide();
 			return;
+		}
 
 		if(isEditingDeck)
 			uiCardViewer.Show(card, OnAddCardClicked);
@@ -94,6 +100,8 @@ public class DeckManagerScreen : MonoBehaviour {
 	}
 	public void OnReturnToCivilizationList()
 	{
+		MenuCardList.Unload();
+		CivilizationPanel.Unload();
 		uiCardViewer.Hide();
 		currentCivilization = null;
 		CivilizationPanel.gameObject.SetActive(true);
