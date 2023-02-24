@@ -21,7 +21,10 @@ public class CardVisualizerScreen : MonoBehaviour {
 
 	
 	public void ReturnToMenu()
-    {
+	{
+		civilizationPanel.Unload();
+		MenuCardList.Unload();
+
 		SceneController.LoadLevel(GameScreens.Menu);
     }
 

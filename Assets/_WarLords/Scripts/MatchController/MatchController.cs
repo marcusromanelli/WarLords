@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using NaughtyAttributes;
+using System.Collections;
 
-
-public class GameController : Singleton<GameController>
+public class MatchController : MonoBehaviour
 {
 	[BoxGroup("Components"), SerializeField] DataReferenceLibrary dataReferenceLibrary;
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
 	[BoxGroup("Components"), SerializeField] InputController inputController;
 	[BoxGroup("Components"), SerializeField] PhaseManager phaseManager;
-	[BoxGroup("Components"), SerializeField] Player localPlayer;
-	[BoxGroup("Components"), SerializeField] Player remotePlayer;
+	[BoxGroup("Components"), SerializeField, ReadOnly] Player localPlayer;
+	[BoxGroup("Components"), SerializeField, ReadOnly] Player remotePlayer;
 
 
 	public PhaseManager PhaseManager => phaseManager;
 
 	//List<MacroComponent> Macros;
 
-	void Start()
+	IEnumerator Start()
 	{
-		Initialize();
+		yield return Initialize();
 
 		phaseManager.StartCycle();
 	}
-	void Initialize()
+	IEnumerator Initialize()
     {
         //if (Macros == null)
         //			Macros = new List<MacroComponent>();
@@ -32,10 +32,26 @@ public class GameController : Singleton<GameController>
 
         battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonToken);
 
-		localPlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
 
-		remotePlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
+		var localPLayerDeck = GameController.LocalPlayerDeck;
+		localPlayer.PreSetup(localPLayerDeck, battlefield, this, inputController, dataReferenceLibrary);
+
+		var remotePLayerDeck = GameController.LocalPlayerDeck;
+		remotePlayer.PreSetup(remotePLayerDeck, battlefield, this, inputController, dataReferenceLibrary);
+
+		yield return IsPlayersLoading();
 	}
+	IEnumerator IsPlayersLoading()
+    {
+		var isLoading = true;
+
+        while (isLoading)
+        {
+			isLoading = localPlayer.IsLoading() || remotePlayer.IsLoading();
+
+			yield return null;
+        }
+    }
     void Update()
     {
 		WatchExitGame();
@@ -45,17 +61,6 @@ public class GameController : Singleton<GameController>
 		if (Input.GetKeyDown(KeyCode.Escape))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
-	void setPlayersDeck(UserDeck localDeckData, UserDeck remoteDeckData)
-	{
-		localPlayer.SetDeck(localDeckData);
-		remotePlayer.SetDeck(remoteDeckData);
-	}
-
-	public static void SetPlayersDeck(UserDeck localDeckData, UserDeck remoteDeckData)
-    {
-		Instance.setPlayersDeck(localDeckData, remoteDeckData);
-    }
-
 	#region BATTLEFIELD_INTERFACE
 	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
 	{

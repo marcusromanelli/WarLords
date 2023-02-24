@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8192998750778342233}
   - component: {fileID: 3104873644544912153}
   - component: {fileID: 8916673347036682317}
+  - component: {fileID: 8668026389334826982}
   m_Layer: 0
   m_Name: RemotePlayer
   m_TagString: Untagged
@@ -51,21 +52,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966215ff92d38f049800ae92579d2564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDeck: {fileID: 11400000, guid: 188bffa319a78a6458457c54dff597e9, type: 2}
-  Life:
+  startDeck: {fileID: 8668026389334826982}
+  life:
     uiLife: {fileID: 1566704411265935500}
-  PlayDeck:
+  playDeck:
     uiCardDeck: {fileID: 3365073403211521110}
     NumberOfShuffles: 1
-  Graveyard:
+  graveyard:
     uiCardDeck: {fileID: 1957271906497805297}
     NumberOfShuffles: 1
-  ManaPool:
+  manaPool:
     uiManaPool: {fileID: 444793233157916697}
     maxAllowedMana: 12
     currentMana: 0
     maxMana: 0
-  Hand:
+  hand:
     uiPlayerHand: {fileID: 2105107900512989623}
     Cards: []
   nextPhaseButton: {fileID: 0}
@@ -110,6 +111,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conditions: []
+--- !u!114 &8668026389334826982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8916545259453791785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b276deda1a19c46b179daa1fe4c385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cards: []
 --- !u!1001 &2018816645592147589
 PrefabInstance:
   m_ObjectHideFlags: 0

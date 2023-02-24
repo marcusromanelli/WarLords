@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameConfiguration {
+public class GameRules {
 	public static int numberOfCardsToDrawEveryTurn = 1;
 	public static int numberOfInitialDrawnCards = 8;
 	public static int numberOfInitialMana = 3;

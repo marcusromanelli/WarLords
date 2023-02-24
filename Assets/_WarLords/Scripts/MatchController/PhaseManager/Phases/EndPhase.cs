@@ -14,13 +14,13 @@ public class EndPhase : Phase
     {
 		var numberOfCardsInHand = currentPlayer.GetHandCardsNumber();
 
-		if (numberOfCardsInHand > GameConfiguration.maxNumberOfCardsInHand)
+		if (numberOfCardsInHand > GameRules.maxNumberOfCardsInHand)
 		{
-			var numberOfCardsToDiscard = numberOfCardsInHand - GameConfiguration.maxNumberOfCardsInHand;
+			var numberOfCardsToDiscard = numberOfCardsInHand - GameRules.maxNumberOfCardsInHand;
 
 			currentPlayer.AddCondition(MandatoryConditionType.DiscartCard, numberOfCardsToDiscard);
 
-			Debug.LogWarning("Player " + currentPlayer + " have " + numberOfCardsInHand + " cards in his hand. He can have at maximum " + GameConfiguration.maxNumberOfCardsInHand);
+			Debug.LogWarning("Player " + currentPlayer + " have " + numberOfCardsInHand + " cards in his hand. He can have at maximum " + GameRules.maxNumberOfCardsInHand);
 		}
 
 		phaseManager.NextTurn();

@@ -41,11 +41,11 @@ public class PreGamePhase : Phase
 	}
 	void StartPreGame(Player currentPlayer, Player enemyPlayer)
 	{
-		currentPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
-		enemyPlayer.TryDrawCards(GameConfiguration.numberOfInitialDrawnCards);
+		currentPlayer.TryDrawCards(GameRules.numberOfInitialDrawnCards);
+		enemyPlayer.TryDrawCards(GameRules.numberOfInitialDrawnCards);
 
-		currentPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
-		enemyPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameConfiguration.numberOfInitialMana);
+		currentPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameRules.numberOfInitialMana);
+		enemyPlayer.AddCondition(MandatoryConditionType.SendCardToManaPool, GameRules.numberOfInitialMana);
 
 		didRun = true;
 	}

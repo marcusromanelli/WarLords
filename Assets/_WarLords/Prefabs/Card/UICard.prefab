@@ -5177,6 +5177,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: OnFieldView
       objectReference: {fileID: 0}
+    - target: {fileID: 2622644763634856946, guid: b76980fb25a7c814c977794e080a7f6b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877741208756370056, guid: b76980fb25a7c814c977794e080a7f6b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b76980fb25a7c814c977794e080a7f6b, type: 3}
 --- !u!224 &6870436350207983708 stripped
@@ -5196,6 +5206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DefaultView
+      objectReference: {fileID: 0}
+    - target: {fileID: 1464201209343939141, guid: 1f986109e5694cf41b635a6ae611896e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4575474435011302134, guid: 1f986109e5694cf41b635a6ae611896e,
         type: 3}
@@ -5302,6 +5317,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5152252034384389618, guid: 1f986109e5694cf41b635a6ae611896e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f986109e5694cf41b635a6ae611896e, type: 3}
 --- !u!224 &7747742094441287996 stripped
@@ -5317,6 +5337,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4310246124597777210}
     m_Modifications:
+    - target: {fileID: 4166175031706287942, guid: 7a72ccfddfe42914e80def58077b6ec7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8138516141135125077, guid: 7a72ccfddfe42914e80def58077b6ec7,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5427,6 +5452,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefaultVisualization
       objectReference: {fileID: 0}
+    - target: {fileID: 9104041474006673156, guid: 7a72ccfddfe42914e80def58077b6ec7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a72ccfddfe42914e80def58077b6ec7, type: 3}
 --- !u!224 &3335082404849215926 stripped
@@ -5442,10 +5472,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4310246124597777210}
     m_Modifications:
-    - target: {fileID: 3162924647198934256, guid: e5397477df758434799c758993137d06,
+    - target: {fileID: 5763171819258148825, guid: e5397477df758434799c758993137d06,
         type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.0020599402
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6834127287351016914, guid: e5397477df758434799c758993137d06,
         type: 3}

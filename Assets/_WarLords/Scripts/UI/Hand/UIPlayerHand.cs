@@ -103,7 +103,7 @@ public class UIPlayerHand : MonoBehaviour
 
         RegisterCardCallback(cardObj.gameObject);
 
-        GameConfiguration.PlaySFX(GameConfiguration.drawCard);
+        GameRules.PlaySFX(GameRules.drawCard);
 
         RefreshCardPositions();
     }

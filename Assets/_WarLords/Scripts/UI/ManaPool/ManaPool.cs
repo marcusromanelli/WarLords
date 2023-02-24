@@ -34,7 +34,7 @@ public class ManaPool
     {
 		var valueToRestore = number;
 
-		GameConfiguration.PlaySFX(GameConfiguration.energyToCard);
+		GameRules.PlaySFX(GameRules.energyToCard);
 
 		SetCurrentManaValue(currentMana + valueToRestore);
 
@@ -45,7 +45,7 @@ public class ManaPool
 		if (currentMana < number)
 			return;
 
-		GameConfiguration.PlaySFX(GameConfiguration.useEnergy);
+		GameRules.PlaySFX(GameRules.useEnergy);
 
 		SetCurrentManaValue(currentMana - number);
 

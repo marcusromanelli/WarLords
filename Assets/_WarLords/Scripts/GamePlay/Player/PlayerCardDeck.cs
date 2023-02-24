@@ -3,17 +3,36 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
+using System;
 
 public class PlayerCardDeck : MonoBehaviour
 {
-    struct CardIdData
+    class CardIdDataComparer : IEqualityComparer<CardIdData>
+    {
+        public bool Equals(CardIdData x, CardIdData y)
+        {
+            return x.Raw.Id == y.Raw.Id;
+        }
+
+        public int GetHashCode(CardIdData obj)
+        {
+            return obj.Raw.Id.GetHashCode();
+        }
+    }
+    class CardIdData
     {
         public RawBundleData Raw;
+        public int number;
         public AsyncOperationHandle<Card> CardOperation;
         public Card Card => CardOperation.Result;
 
-        public IEnumerator Load() {
+
+        private Action<Card> onLoadFinishes;
+
+        public IEnumerator Load(Action<Card> onLoadFinishes)
+        {
+            this.onLoadFinishes = onLoadFinishes;
+
             CardOperation = new AsyncOperationHandle<Card>();
 
             yield return LoadCardData(Raw, CardOperation);
@@ -28,7 +47,12 @@ public class PlayerCardDeck : MonoBehaviour
             if (asyncOperation.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError("Error loading card data: " + asyncOperation.OperationException.ToString());
+                yield break;
             }
+
+            CardOperation = asyncOperation;
+
+            onLoadFinishes?.Invoke(asyncOperation.Result);
         }
 
         public override int GetHashCode()
@@ -44,20 +68,31 @@ public class PlayerCardDeck : MonoBehaviour
     private HashSet<CardIdData> loadedCards;
     private DataReferenceLibrary dataReferenceLibrary;
 
-    public void Setup(DataReferenceLibrary dataReferenceLibrary)
+    public void Setup(DataReferenceLibrary dataReferenceLibrary, UserDeck userDeck)
     {
         this.dataReferenceLibrary = dataReferenceLibrary;
-    }
-    public void SetDeck(UserDeck deck)
-    {
-        StartCoroutine(StartDeckLoading(deck));
-    }
 
-    IEnumerator StartDeckLoading(UserDeck deck)
+        SetDeck(userDeck);
+    }
+    public bool IsLoading()
+    {
+        foreach (var cardData in loadedCards)
+        {
+            if (!cardData.CardOperation.IsValid() || cardData.CardOperation.IsValid() && cardData.CardOperation.Status != AsyncOperationStatus.Succeeded)
+                return true;
+        }
+
+        return false;
+    }
+    void SetDeck(UserDeck deck)
+    {
+        StartDeckLoading(deck);
+    }
+    void StartDeckLoading(UserDeck deck)
     {
         var cardsString = deck.Cards;
-        var cardList = new List<Card>();
-        loadedCards = new HashSet<CardIdData>();
+
+        loadedCards = new HashSet<CardIdData>(new CardIdDataComparer());
 
         foreach (var cardId in cardsString)
         {
@@ -68,16 +103,37 @@ public class PlayerCardDeck : MonoBehaviour
             {
                 CardIdData aux;
                 loadedCards.TryGetValue(cardIdData, out aux);
+                aux.number++;
 
-                cardList.Add(aux.Card);
+                loadedCards.Add(aux);
                 continue;
             }
 
-            yield return cardIdData.Load();
+            cardIdData.number++;
+            loadedCards.Add(cardIdData);
 
-            cardList.Add(cardIdData.Card);
+            StartCoroutine(cardIdData.Load(OnLoadFinishes));
+        }
+    }
+    void OnLoadFinishes(Card card)
+    {
+        if (IsLoading())
+            return;
+
+        BuildDeck();
+    }
+    void BuildDeck()
+    {
+        List<Card> finalDeck = new List<Card>();
+
+        foreach (var cardIdData in loadedCards)
+        {
+            for (int i = 0; i < cardIdData.number; i++)
+            {
+                finalDeck.Add(cardIdData.Card);
+            }
         }
 
-        cards = cardList.ToArray();
+        cards = finalDeck.ToArray();
     }
 }

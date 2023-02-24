@@ -34,7 +34,7 @@ public class UIBattlefield : MonoBehaviour
 	{
 		if (battlefieldData.columnNumber % 2 == 0)
 		{
-			GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+			GameRules.PlaySFX(GameRules.denyAction);
 			Debug.LogWarning("The number of lanes must be an odd number.");
 			return;
 		}

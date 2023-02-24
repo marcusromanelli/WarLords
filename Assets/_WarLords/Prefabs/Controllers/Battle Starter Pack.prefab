@@ -196,6 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa7dc61acf39ae448c089f4de32407c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataReferenceLibrary: {fileID: 11400000, guid: 9efccc8a06256e54a80040813b101242,
+    type: 2}
   battlefield: {fileID: 4137047462942251646}
   inputController: {fileID: 2653399724738741445}
   phaseManager: {fileID: 4157040494950130592}

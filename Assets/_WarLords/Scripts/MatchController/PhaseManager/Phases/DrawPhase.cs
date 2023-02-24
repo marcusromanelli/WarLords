@@ -8,7 +8,7 @@ public class DrawPhase : Phase
     {
         phaseManager.EnablePlayer(currentPlayer);
 
-        currentPlayer.TryDrawCards(GameConfiguration.numberOfCardsToDrawEveryTurn);
+        currentPlayer.TryDrawCards(GameRules.numberOfCardsToDrawEveryTurn);
 
         yield break;
     }

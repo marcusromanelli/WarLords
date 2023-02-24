@@ -53,7 +53,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 		uiCardObject.RefreshCardUI();
 		uiToken.Setup(this, gridPosition, inputController);
 
-		GameConfiguration.PlaySFX(GameConfiguration.Summon);
+		GameRules.PlaySFX(GameRules.Summon);
 	}
 	public void SkillBuff(CardObject cardObject)
     {

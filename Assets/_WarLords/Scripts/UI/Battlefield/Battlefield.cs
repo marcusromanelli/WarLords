@@ -12,13 +12,13 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	[SerializeField] UIBattlefield uiBattlefield;
 
 	private Dictionary<Player, List<CardObject>> tokenList = new Dictionary<Player, List<CardObject>>();
-	private GameController gameController;
+	private MatchController gameController;
 	private InputController inputController;
 	private Player localPlayer, remotePlayer;
 
 	public bool isVisualizingTokenCard = false;
 
-	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, GameController GameController, HandleCanPlayerSummonToken CanSummonToken)
+	public void PreSetup(Player LocalPlayer, Player RemotePlayer, InputController InputController, MatchController GameController, HandleCanPlayerSummonToken CanSummonToken)
 	{
 		gameController = GameController;
 		inputController = InputController;

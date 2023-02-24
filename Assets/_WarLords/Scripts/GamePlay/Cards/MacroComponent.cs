@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class MacroComponent : MonoBehaviour
 {
 	Player Player;
-	GameController GameController;
+	MatchController GameController;
 	//Battlefield Battlefield;
 	public bool IsResolving { get; private set; }
 
@@ -109,7 +109,7 @@ public class MacroComponent : MonoBehaviour
 	{
 		//Initialize();
 	}
-	public void Setup(GameController gameController, Skill type, CardObject hero)
+	public void Setup(MatchController gameController, Skill type, CardObject hero)
 	{
 		//Skill = type;
 		//CardObject = hero;

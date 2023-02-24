@@ -101,7 +101,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 		manaOrbs.Add(mana);
 		manaObj.transform.SetParent(transform, true);
 
-		GameConfiguration.PlaySFX(GameConfiguration.cardToEnergy);
+		GameRules.PlaySFX(GameRules.cardToEnergy);
 	}
 #region FIELD_INTERACTION
 	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)

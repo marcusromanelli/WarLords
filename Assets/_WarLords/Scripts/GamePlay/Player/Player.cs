@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, IAttackable
 
 
 	private const string playerPropertiesTag = "Player Properties";
-	[BoxGroup(playerPropertiesTag), SerializeField, Expandable] PlayerCardDeck startDeck;
+	[BoxGroup(playerPropertiesTag), SerializeField] PlayerCardDeck startDeck;
 
 	private const string gameLogicTag = "Game Logic";
 	[BoxGroup(gameLogicTag), SerializeField] protected Life life;
@@ -37,20 +37,20 @@ public class Player : MonoBehaviour, IAttackable
 	[BoxGroup(debugTag), SerializeField] protected bool infinityHabilitiesPerTurn;
 
 	protected Battlefield battlefield;
-	protected GameController gameController;
+	protected MatchController gameController;
 	protected InputController inputController;
 	protected bool HasUsedHability;
 	protected bool IsReadyToEndActionPhase = true;
 	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
-	public virtual void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
+	public virtual void PreSetup(UserDeck deckData, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
 		this.inputController = inputController;
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
-		life.Setup(GameConfiguration.startLife);
+		life.Setup(GameRules.startLife);
 
 		habilityManager.Setup(this);
 
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour, IAttackable
 
 		conditionManager.Setup(this);
 
-		startDeck.Setup(dataReferenceLibrary);
+		startDeck.Setup(dataReferenceLibrary, deckData);
 	}
     public void SetupPlayDeck()
 	{
@@ -78,11 +78,10 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		graveyard.Setup(startDeck.Cards[0].Graphics);
 	}
-	
-	public void SetDeck(UserDeck deck)
+	public bool IsLoading()
     {
-		startDeck.SetDeck(deck);
-    }
+		return startDeck.IsLoading();
+	}
 
 
     #region INTERACTION

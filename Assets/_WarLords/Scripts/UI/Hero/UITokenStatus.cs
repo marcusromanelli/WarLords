@@ -17,9 +17,9 @@ public class UITokenStatus : MonoBehaviour
 	public void SetLife(uint newLife)
 	{
 		if (newLife > currentLife)
-			GameConfiguration.PlaySFX(GameConfiguration.heal);
+			GameRules.PlaySFX(GameRules.heal);
 		else if (newLife < currentLife)
-			GameConfiguration.PlaySFX(GameConfiguration.Hit);
+			GameRules.PlaySFX(GameRules.Hit);
 
 		currentLife = newLife;
 

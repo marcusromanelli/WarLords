@@ -182,7 +182,7 @@ public class UITokenObject : MonoBehaviour
 
         if (transform.position != targetPosition)
         {
-            GameConfiguration.PlaySFX(GameConfiguration.denyAction);
+            GameRules.PlaySFX(GameRules.denyAction);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * walkSpeed);
 
 			return;

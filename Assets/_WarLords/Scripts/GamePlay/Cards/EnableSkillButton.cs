@@ -36,7 +36,7 @@ public class EnableSkillButton : MonoBehaviour
 
 		onSkillButtonClick?.Invoke(skillData, Enabled);
 
-		GameConfiguration.PlaySFX(GameConfiguration.confirmAction);
+		GameRules.PlaySFX(GameRules.confirmAction);
 
 		UpdateVisuals();
 	}

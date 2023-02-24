@@ -15,9 +15,9 @@ public class AIPlayer : Player
 
 
 	private bool DoAction = false;
-	public override void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
+	public override void PreSetup(UserDeck userDeck, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
-        base.PreSetup(battlefield, gameController, inputController, dataReferenceLibrary);
+        base.PreSetup(userDeck, battlefield, gameController, inputController, dataReferenceLibrary);
 
 		phaseManager.OnPhaseChange += HandlePhaseChange;
 	}
