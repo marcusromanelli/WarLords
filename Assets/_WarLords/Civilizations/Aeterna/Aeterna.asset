@@ -14,113 +14,110 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 602a2caa-cadc-4c4a-8596-973058cf66df
   Name: Aeterna
-  BackCoverObject: {fileID: 3149120151073116378, guid: fda11209a15b61c4bb8c4148770091ee,
-    type: 3}
-  BackCover: {fileID: 2800000, guid: 64ab0c659f776304d9284f451fd7598c, type: 3}
-  Token: {fileID: 1000013511909096, guid: fc0ab1ec919ede84681f0cb90a43d032, type: 3}
+  Graphics: {fileID: 11400000, guid: 0c5e7b8e7748f6348b61209ff91aee4c, type: 2}
   AvailableCards:
   - Name: Anitta Ashervind
     Id: 592fff76-bd89-46b6-ac40-c9683f951933
     Bundle:
-      m_AssetGUID: 028778dc7dc7912478b4c35b69da85b6
+      m_AssetGUID: 83c51bf3242abb64ebcf73b0945321da
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Daires Nightrose
+  - Name: 
     Id: 18b7ac8b-ddd8-41f9-9970-222995a0b4a5
     Bundle:
-      m_AssetGUID: bed8efbcf6267bf48a6b4336b4e0930c
+      m_AssetGUID: 54fd9a85f5aee154bab853ef09faf93d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Dominic Kreshaw
+  - Name: 
     Id: d4a1ee41-150f-4946-99ff-97815fa47635
     Bundle:
-      m_AssetGUID: 94e363887b7738649a07b681af896378
+      m_AssetGUID: 08045d332ff2dd24294cbf570efecb84
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Esopo Hagnix
+  - Name: 
     Id: b0c65f82-9adc-41dd-9405-8146743055ca
     Bundle:
-      m_AssetGUID: ce423f5e168d084459685fad9e8c8148
+      m_AssetGUID: aeab8f24595efc647bedddf9270e61c1
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Evangeline Kunin
+  - Name: 
     Id: bb9938fb-4fad-4254-8512-cfef0642e844
     Bundle:
-      m_AssetGUID: bce3b45cfe17e8e4e9c0f9bd72d5ee9c
+      m_AssetGUID: 3eaefa36bcadcc34fad55e7cb4d07f40
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Hanek Manthis
+  - Name: 
     Id: 39afd503-9b49-4706-95b4-9bb6a0e1a105
     Bundle:
-      m_AssetGUID: da8df668d31abea439b164c5fedf9299
+      m_AssetGUID: d14eb8b4f9a3bdf4e8471beab60c6c85
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Jacob Cella
+  - Name: 
     Id: 53f9bb74-2561-45f4-9c5f-208692c2b745
     Bundle:
-      m_AssetGUID: c069ba2e9cecabd49b876fa4c186ec13
+      m_AssetGUID: 358ec59d5590eb24f8b3b3066f701f54
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Jeremiah Moyer
+  - Name: 
     Id: 455c058c-6668-4425-b90f-3994559c697f
     Bundle:
-      m_AssetGUID: a61e6c13f618fdc4aa4d0991756d45f6
+      m_AssetGUID: b3cf69c49fed964438c5b0363b575207
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Kaiser Svarius
+  - Name: 
     Id: ec8fbe18-b0a3-4a6c-88a8-f307d49984d3
     Bundle:
-      m_AssetGUID: 2a6626fb22fd0374d87dfd97d30b7a91
+      m_AssetGUID: 4abf3cbc10948ed4c97a4e08a99e0f33
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Lauren Dufeu
+  - Name: 
     Id: b6bfb829-bb71-40a7-a56d-7483dc84392d
     Bundle:
-      m_AssetGUID: 077351b78339f744e908d44acb6402ac
+      m_AssetGUID: fbc6c296c8af2aa48bbabb201f1ccb38
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Nataleph O'Raki
+  - Name: 
     Id: 6907ac03-bac8-4140-b573-b615c296bd72
     Bundle:
-      m_AssetGUID: c30ab1c96157f2d4bba9b463caad005d
+      m_AssetGUID: 730f968279fc3db4784c18fa6e1b39da
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Nikaella Halth
+  - Name: 
     Id: 1806a70e-6fb7-49ff-8e6a-b19c387de506
     Bundle:
-      m_AssetGUID: c840855e4181fae4f9a357bd6f241309
+      m_AssetGUID: c725929b5cb22154799517bd742abedc
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Rafiel Skyhawk
+  - Name: 
     Id: 52502d2e-b283-4ce1-84f9-af81b1a1c8e6
     Bundle:
-      m_AssetGUID: 468d3be43e302c649ab815147cd6ad72
+      m_AssetGUID: 34efdf5395337444ea469aec6e81766e
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Thea Witkind
+  - Name: 
     Id: 1c89c7fe-9184-4b91-b593-bc67fed047d6
     Bundle:
-      m_AssetGUID: 3143884e7cf49c14bbf258fd82e0c5f6
+      m_AssetGUID: 438841ff7ce7e2c45be6bd255161179d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - Name: Zefyr Vexherd
+  - Name: 
     Id: a78cabb3-fb5e-4d6f-bf69-9a5bc4f01e6b
     Bundle:
-      m_AssetGUID: f46e2858974379b478493d587cc5907f
+      m_AssetGUID: 6f4527a9dbfe2424991471531b15792a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0

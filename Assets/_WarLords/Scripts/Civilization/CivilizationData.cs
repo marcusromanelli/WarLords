@@ -13,48 +13,10 @@ public class CivilizationData : ScriptableObject
 {
 	[SerializeField, ReadOnly] string Id;
 	[SerializeField] string Name;
-	[SerializeField] GameObject BackCoverObject;
-	[SerializeField] Texture BackCover;
-	[SerializeField] GameObject Token;
-	[SerializeField] RawBundleData[] AvailableCards;
+	[SerializeField] CivilizationGraphicsData Graphics;
 
 	public string GetId() => Id;
 	public string GetName() => Name;
-	public GameObject GetBackCoverObject() => BackCoverObject;
-	public Texture GetBackCoverTexture() => BackCover;
-	public GameObject GetToken() => Token;
-	public RawBundleData[] GetAvailableCards() => AvailableCards;
-	public RawBundleData FindCardByid(string id)
-    {
-		foreach (var card in AvailableCards)
-			if (card.Id == id)
-				return card;
-
-		return default;
-    }
-	public Dictionary<RawBundleData, int> LoadCardReferences(string[] deckData) {
-
-		Dictionary<RawBundleData, int> newDeckData = new Dictionary<RawBundleData, int>();
-
-		foreach (var card in deckData)
-        {
-			var cardObj = FindCardByid(card);
-
-			if(cardObj.Id == "")
-            {
-				Debug.Log("Card not found: " + card);
-				continue;
-            }
-
-
-            if (!newDeckData.ContainsKey(cardObj))
-				newDeckData.Add(cardObj, 0);
-
-			newDeckData[cardObj]++;
-		}
-
-		return newDeckData;
-	}
 
 	public void OnValidate()
 	{
@@ -64,7 +26,7 @@ public class CivilizationData : ScriptableObject
 
 #if UNITY_EDITOR
 	[Button("Refresh Card References")]
-	public void RefreshCardReferences()
+	public List<RawBundleData> RefreshCardReferences()
     {
 		var path = Directory.GetParent(AssetDatabase.GetAssetPath(this));
 
@@ -85,10 +47,16 @@ public class CivilizationData : ScriptableObject
 
 			AssetReference referenceBundle = new AssetReference(address);
 
+			var parentFolder = Directory.GetParent(file);
+
+			card.Name = parentFolder.Name.Replace("_", " ");
+
+			EditorUtility.SetDirty(card);
+
 			list.Add(new RawBundleData() { Id = card.Id, Name = card.Name, Bundle = referenceBundle });
 		}
 
-		AvailableCards = list.ToArray();
+		return list;
 	}
 #endif
 }

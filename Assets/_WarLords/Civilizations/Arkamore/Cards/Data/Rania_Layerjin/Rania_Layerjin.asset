@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Rania_Layerjin
   m_EditorClassIdentifier: 
   Name: Rania Layerjin
+  Id: 7d5080ff-d461-4b21-8efc-99b24f31f131
   FrontCover: {fileID: 21300000, guid: 461b4f57a9f90fa438f5101c27f7f1f1, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: ef5d272a541191141944f254d3ff045d, type: 2}
+  ManaCost: 0
+  Attack: 3
+  Defense: 1
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: d3ef5b96b34805b4f9d5bd49a6e29f32, type: 2}
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: 309b6e277de4d6d4f9d6fafa86214108, type: 2}
+  Graphics: {fileID: 0}

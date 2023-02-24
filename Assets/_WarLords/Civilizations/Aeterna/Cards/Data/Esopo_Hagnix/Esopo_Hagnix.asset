@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Esopo_Hagnix
   m_EditorClassIdentifier: 
   Name: Esopo Hagnix
+  Id: b0c65f82-9adc-41dd-9405-8146743055ca
   FrontCover: {fileID: 21300000, guid: 874eee2388ade944b970d38f7c1df35d, type: 3}
-  Civilization: {fileID: 11400000, guid: 550ea8ae27fe22f45ad18e6fefa04dce, type: 2}
-  Data: {fileID: 11400000, guid: aeab8f24595efc647bedddf9270e61c1, type: 2}
+  ManaCost: 3
+  Attack: 4
+  Defense: 4
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: 204145aef008fa5408cec3cfd058f01e, type: 2}
+  - ManaCost: 4
+    Data: {fileID: 11400000, guid: 0c8f39949852cda46b70aaf9b94345d5, type: 2}
+  Graphics: {fileID: 0}

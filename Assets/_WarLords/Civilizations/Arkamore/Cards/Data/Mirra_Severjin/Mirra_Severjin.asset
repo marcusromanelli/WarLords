@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Mirra_Severjin
   m_EditorClassIdentifier: 
   Name: Mirra Severjin
+  Id: 3b477c83-73cb-4d7a-9059-2033fcd8b0bb
   FrontCover: {fileID: 21300000, guid: cd829f1a627be99458d46c2f541b37c0, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: 0680cee385d1f2648a9381a9d14b7908, type: 2}
+  ManaCost: 4
+  Attack: 7
+  Defense: 3
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: 6abfc928f44883c45a01a042c0fcd649, type: 2}
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: dbc3e4b375e52f743a069ae0dd4633bc, type: 2}
+  Graphics: {fileID: 0}

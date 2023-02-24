@@ -10,14 +10,19 @@ public class UICardViewer : MonoBehaviour
 
     public void Show(Card card, OnClickAddRemoveButton onClickAddButton = null, OnClickAddRemoveButton onClickRemoveButton = null)
     {
-        addButton.onClick.RemoveAllListeners();
-        removeButton.onClick.RemoveAllListeners();
+        if(onClickAddButton != null)
+        {
+            addButton.onClick.RemoveAllListeners();
+            addButton.onClick.AddListener(() => { onClickAddButton(); });
+            addButton.gameObject.SetActive(onClickAddButton != null);
+        }
 
-        addButton.onClick.AddListener(() => { onClickAddButton(); });
-        addButton.gameObject.SetActive(onClickAddButton != null);
-        
-        removeButton.onClick.AddListener(() => { onClickRemoveButton(); });
-        removeButton.gameObject.SetActive(onClickRemoveButton != null);
+        if(removeButton != null)
+        {
+            removeButton.onClick.RemoveAllListeners();
+            removeButton.onClick.AddListener(() => { onClickRemoveButton(); });
+            removeButton.gameObject.SetActive(onClickRemoveButton != null);
+        }        
 
 
         var runtimeCardData = new RuntimeCardData(card);

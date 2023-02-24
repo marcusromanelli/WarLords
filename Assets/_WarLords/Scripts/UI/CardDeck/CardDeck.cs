@@ -11,7 +11,7 @@ public class CardDeck
     [SerializeField] protected int NumberOfShuffles = 1;
     public int Count {  get {  return Cards.Count; } }
 
-    public void Setup(CivilizationData civilizationData)
+    public void Setup(CivilizationGraphicsData civilizationData)
     {
         Cards = new Stack<Card>();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public delegate void OnCivilizationClick(CivilizationData civilizationData);
+public delegate void OnCivilizationClick(CivilizationData civilizationId);
 public class CivilizationPanel : MonoBehaviour
 {
 	[SerializeField] SimpleListObject NameElementPrefab;

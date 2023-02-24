@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Minster_Stortjin
   m_EditorClassIdentifier: 
   Name: Minster Stortjin
+  Id: 442af4ed-6762-480a-9bf5-3c8d055f0a4b
   FrontCover: {fileID: 21300000, guid: 9ca5db68953b1474880d5b59fb4db0cd, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: f193e1aed66094641a57bb1bda1e21ec, type: 2}
+  ManaCost: 0
+  Attack: 1
+  Defense: 1
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: 3a82aec5094429547996732ebd53ee61, type: 2}
+  - ManaCost: 3
+    Data: {fileID: 11400000, guid: 65589321f0f4c6e4d812d3e9e2191525, type: 2}
+  Graphics: {fileID: 0}

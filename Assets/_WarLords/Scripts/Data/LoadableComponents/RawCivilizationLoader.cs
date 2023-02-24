@@ -7,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 [Serializable]
 public class RawCivilizationLoader : ILoadableComponentBaseClass
 {
-    AsyncOperationHandle<CivilizationCollection> loadHandler;
+    AsyncOperationHandle<DataReferenceLibrary> loadHandler;
 
     public override bool HasLoaded()
     {
@@ -19,7 +19,7 @@ public class RawCivilizationLoader : ILoadableComponentBaseClass
     }
     public IEnumerator LoadRawCivilizationData()
     {
-        loadHandler = Addressables.LoadAssetAsync<CivilizationCollection>("Available-Civilizations");
+        loadHandler = Addressables.LoadAssetAsync<DataReferenceLibrary>("Available-Civilizations");
 
         yield return loadHandler;
 

@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Hultaka_Tarmejin
   m_EditorClassIdentifier: 
   Name: Hultaka Tarmejin
-  FrontCover: {fileID: 21300000, guid: 27ff4754ca9c6b54eb5e31fcf9d866ce, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: db90bd515ca30b44bb88c460d0025047, type: 2}
+  Id: 8f2f70c9-4827-43c4-9445-92d79a89d40a
+  FrontCover: {fileID: 21300000, guid: 1ef3b874bc208a443a08fa76eb118d1c, type: 3}
+  ManaCost: 0
+  Attack: 1
+  Defense: 1
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: 1e64877d983fc5b43926404b4d301da3, type: 2}
+  - ManaCost: 0
+    Data: {fileID: 11400000, guid: 5caa1f2ce17706a40b63db428d3cf100, type: 2}
+  Graphics: {fileID: 0}

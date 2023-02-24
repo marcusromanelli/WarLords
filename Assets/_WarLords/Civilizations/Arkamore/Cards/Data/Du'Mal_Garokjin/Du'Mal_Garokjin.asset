@@ -9,10 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 652179d7edcc4074daf5b5a12a344204, type: 3}
+  m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Du'Mal_Garokjin
   m_EditorClassIdentifier: 
   Name: Du'Mal Garokjin
+  Id: 3486f27b-1294-4a6b-bb64-24a5adc276f1
   FrontCover: {fileID: 21300000, guid: b57aa909a0a3818419c7798a4bbf7431, type: 3}
-  Civilization: {fileID: 11400000, guid: 274500159a975ac438fe0840ced3f7c5, type: 2}
-  Data: {fileID: 11400000, guid: 3478049a70dfd684c8de5a9b135992cb, type: 2}
+  ManaCost: 2
+  Attack: 1
+  Defense: 4
+  WalkSpeed: 1
+  Skills:
+  - ManaCost: 2
+    Data: {fileID: 11400000, guid: 65589321f0f4c6e4d812d3e9e2191525, type: 2}
+  - ManaCost: 1
+    Data: {fileID: 11400000, guid: a7abbf36e5bdc574aa6dae32de722f8a, type: 2}
+  Graphics: {fileID: 0}

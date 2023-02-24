@@ -12,18 +12,263 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfab229df28ed8419b4c461396838d7, type: 3}
   m_Name: Civilization Collection
   m_EditorClassIdentifier: 
-  Civilizations:
-  - Id: 602a2caa-cadc-4c4a-8596-973058cf66df
-    Name: Aeterna
-    Bundle:
-      m_AssetGUID: 550ea8ae27fe22f45ad18e6fefa04dce
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
-  - Id: 4515a542-7e11-40df-9b48-9410b15e7741
-    Name: Arkamore
-    Bundle:
-      m_AssetGUID: 274500159a975ac438fe0840ced3f7c5
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
+  cards:
+    _elementsList:
+    - Name: Anitta Ashervind
+      Id: 592fff76-bd89-46b6-ac40-c9683f951933
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 83c51bf3242abb64ebcf73b0945321da
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Daires Nightrose
+      Id: 18b7ac8b-ddd8-41f9-9970-222995a0b4a5
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 54fd9a85f5aee154bab853ef09faf93d
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Dominic Kreshaw
+      Id: d4a1ee41-150f-4946-99ff-97815fa47635
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 08045d332ff2dd24294cbf570efecb84
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Esopo Hagnix
+      Id: b0c65f82-9adc-41dd-9405-8146743055ca
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: aeab8f24595efc647bedddf9270e61c1
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Evangeline Kunin
+      Id: bb9938fb-4fad-4254-8512-cfef0642e844
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 3eaefa36bcadcc34fad55e7cb4d07f40
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Hanek Manthis
+      Id: 39afd503-9b49-4706-95b4-9bb6a0e1a105
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: d14eb8b4f9a3bdf4e8471beab60c6c85
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Jacob Cella
+      Id: 53f9bb74-2561-45f4-9c5f-208692c2b745
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 358ec59d5590eb24f8b3b3066f701f54
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Jeremiah Moyer
+      Id: 455c058c-6668-4425-b90f-3994559c697f
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: b3cf69c49fed964438c5b0363b575207
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Kaiser Svarius
+      Id: ec8fbe18-b0a3-4a6c-88a8-f307d49984d3
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 4abf3cbc10948ed4c97a4e08a99e0f33
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Lauren Dufeu
+      Id: b6bfb829-bb71-40a7-a56d-7483dc84392d
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: fbc6c296c8af2aa48bbabb201f1ccb38
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Nataleph ORaki
+      Id: 6907ac03-bac8-4140-b573-b615c296bd72
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 730f968279fc3db4784c18fa6e1b39da
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Nikaella Halth
+      Id: 1806a70e-6fb7-49ff-8e6a-b19c387de506
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: c725929b5cb22154799517bd742abedc
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Rafiel Skyhawk
+      Id: 52502d2e-b283-4ce1-84f9-af81b1a1c8e6
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 34efdf5395337444ea469aec6e81766e
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Thea Witkind
+      Id: 1c89c7fe-9184-4b91-b593-bc67fed047d6
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 438841ff7ce7e2c45be6bd255161179d
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Zefyr Vexherd
+      Id: a78cabb3-fb5e-4d6f-bf69-9a5bc4f01e6b
+      ParentId: 602a2caa-cadc-4c4a-8596-973058cf66df
+      Bundle:
+        m_AssetGUID: 6f4527a9dbfe2424991471531b15792a
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Amber Gonerjin
+      Id: 69c09f79-b897-49e0-b7e9-c969fe12362c
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: aadffa264a03fe348b9fdcda11082f1a
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Du'Mal Garokjin
+      Id: 3486f27b-1294-4a6b-bb64-24a5adc276f1
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 3478049a70dfd684c8de5a9b135992cb
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Garulf Feltrejin
+      Id: cb0f7042-d9ba-446e-80f6-5ca21247dfa0
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 741010ea8bc59ae48b951b02b651eb05
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Gengis Karmajin
+      Id: d1cc5b7d-5de2-4b0b-a4dd-5c810cee312c
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 81e6f59fddd9e3f4392e2e73f877ee02
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Hultaka Tarmejin
+      Id: 8f2f70c9-4827-43c4-9445-92d79a89d40a
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: db90bd515ca30b44bb88c460d0025047
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Inorrom Viperjin
+      Id: a31cad70-2135-4c1c-bb76-bdb59b00961d
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: ebb5a1ef8accfbc4b8447d775b055c8b
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Lavignia Damarjin
+      Id: 48837ccb-b016-4e0c-abb9-675dad5db864
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 071b720f95ec0ac459b69889d271de35
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Minster Stortjin
+      Id: 442af4ed-6762-480a-9bf5-3c8d055f0a4b
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: f193e1aed66094641a57bb1bda1e21ec
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Mirra Severjin
+      Id: 3b477c83-73cb-4d7a-9059-2033fcd8b0bb
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 0680cee385d1f2648a9381a9d14b7908
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Rania Layerjin
+      Id: 7d5080ff-d461-4b21-8efc-99b24f31f131
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: ef5d272a541191141944f254d3ff045d
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Rashka Bullseye
+      Id: 08502e0f-16ff-4fdc-9760-b2b8ab56c5f0
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 8185744b18fc63f48929dc66e134954f
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Raziel Faerjin
+      Id: 603730bd-e485-4de6-928e-6744de23615e
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 7706560434dd6dd4d92ccac6d55240dc
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Serenity Charmjin
+      Id: 6134690f-2c1a-487f-be57-a3b336c91cb3
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 94df73036617ff04da81f12a4f5387b5
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Sonja Ayerjin
+      Id: 56f7c5b9-28cb-4696-98d7-26f82d010a34
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 367b1c813b77a224b8e4b9e93b319e7b
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Zorak Madshred
+      Id: f9d3b403-0a53-461a-a3a3-160c45c343ec
+      ParentId: 4515a542-7e11-40df-9b48-9410b15e7741
+      Bundle:
+        m_AssetGUID: 1c9fa990f8acb044fbdfcb489a07299e
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+  civilizations:
+    _elementsList:
+    - Name: Aeterna
+      Id: 602a2caa-cadc-4c4a-8596-973058cf66df
+      ParentId: 
+      Bundle:
+        m_AssetGUID: 550ea8ae27fe22f45ad18e6fefa04dce
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - Name: Arkamore
+      Id: 4515a542-7e11-40df-9b48-9410b15e7741
+      ParentId: 
+      Bundle:
+        m_AssetGUID: 274500159a975ac438fe0840ced3f7c5
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0

@@ -128,7 +128,7 @@ public class UITokenObject : MonoBehaviour
 	}
 	void CreateToken(CardObject cardObject, InputController inputController)
     {
-		var token = ((GameObject)ElementFactory.CreateObject(cardObject.Data.Civilization.GetToken(), transform)).transform;
+		var token = ((GameObject)ElementFactory.CreateObject(cardObject.Data.Graphics.GetToken(), transform)).transform;
 
 		token.localPosition = Vector3.zero;
 		token.localRotation = Quaternion.identity;

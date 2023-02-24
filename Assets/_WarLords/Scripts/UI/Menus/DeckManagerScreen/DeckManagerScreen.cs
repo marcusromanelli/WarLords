@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class DeckManagerScreen : MonoBehaviour {
+	[SerializeField] DataReferenceLibrary dataReferenceLibrary;
 	[SerializeField] UICardViewer uiCardViewer;
 	[SerializeField] CivilizationPanel CivilizationPanel;
 	[SerializeField] CardsPanel MenuCardList;
@@ -15,7 +16,7 @@ public class DeckManagerScreen : MonoBehaviour {
 	private bool isEditingDeck;
 
 	void Start () {
-		var civData = CivilizationManager.GetData();
+		var civData = CivilizationManager.GetAll();
 		deckCollection = new DeckCollection(UserManager.GetData().GetDecks());
 
 		CivilizationPanel.gameObject.SetActive(true);
@@ -37,7 +38,7 @@ public class DeckManagerScreen : MonoBehaviour {
 
 		CivilizationPanel.gameObject.SetActive(false);
 		MenuCardList.gameObject.SetActive(true);
-		MenuCardList.Setup(civilizationData, OnCardListClicked);
+		MenuCardList.Setup(dataReferenceLibrary, civilizationData.GetId(), OnCardListClicked);
 	}
 	void OnNewDeckClick()
     {
@@ -55,7 +56,7 @@ public class DeckManagerScreen : MonoBehaviour {
 		DeckList.gameObject.SetActive(false);
 		DeckCardList.gameObject.SetActive(true);
 
-		DeckCardList.Setup(currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName, OnChangedDeckCardList);
+		DeckCardList.Setup(dataReferenceLibrary, currentCivilization, (UserDeck)userDeck, OnReturnToDeckList, OnChangedDeckName, OnChangedDeckCardList);
 	}
 	void SetEditing(bool isEditing)
     {

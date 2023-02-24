@@ -8,11 +8,13 @@ using UnityEngine.AddressableAssets;
 
 public class CardVisualizerScreen : MonoBehaviour {
 
+	[SerializeField] DataReferenceLibrary dataReferenceLibrary;
 	[SerializeField] CivilizationPanel civilizationPanel;
 	[SerializeField] CardsPanel MenuCardList;
+	[SerializeField] UICardViewer uiCardViewer;
 
 	void Start () {
-		var data = CivilizationManager.GetData();
+		var data = CivilizationManager.GetAll();
 		civilizationPanel.Setup(OnCivilizationClick);
 		civilizationPanel.Load(data);
 	}
@@ -23,8 +25,13 @@ public class CardVisualizerScreen : MonoBehaviour {
 		SceneController.LoadLevel(GameScreens.Menu);
     }
 
-	public void OnCivilizationClick(CivilizationData civilizationData)
+	void OnCivilizationClick(CivilizationData civilizationData)
     {
-		MenuCardList.Setup(civilizationData);
+		MenuCardList.Setup(dataReferenceLibrary, civilizationData.GetId(), OnCardClick);
     }
+
+	void OnCardClick(Card card)
+    {
+		uiCardViewer.Show(card);
+	}
 }

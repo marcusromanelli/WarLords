@@ -19,14 +19,16 @@ public class DeckEditPanel : MonoBehaviour
 	private OnChangedDeckName onChangedDeckName;
 	private OnChangedDeckCardList onChangedDeckCardList;
 	private CivilizationData currentCivilizationData;
+	private DataReferenceLibrary dataReferenceLibrary;
 
-	public void Setup(CivilizationData civilizationData, UserDeck userDeck, OnClickReturnToDeckList onClickReturnToDeckList, OnChangedDeckName onChangedDeckName, OnChangedDeckCardList onChangedDeckCardList)
+	public void Setup(DataReferenceLibrary dataReferenceLibrary, CivilizationData civilizationData, UserDeck userDeck, OnClickReturnToDeckList onClickReturnToDeckList, OnChangedDeckName onChangedDeckName, OnChangedDeckCardList onChangedDeckCardList)
 	{
 		this.onClickReturnToDeckList = onClickReturnToDeckList;
 		this.onChangedDeckName = onChangedDeckName;
 		this.onChangedDeckCardList = onChangedDeckCardList;
 		this.currentUserDeck = userDeck;
 		this.currentCivilizationData = civilizationData;
+		this.dataReferenceLibrary = dataReferenceLibrary;
 
 		RefreshCardList();
 	}
@@ -48,8 +50,8 @@ public class DeckEditPanel : MonoBehaviour
 	{
 		DeckName.text = currentUserDeck.GetName();
 
-		RawBundleData[] cardList = ConvertDeckDataToList(currentCivilizationData.LoadCardReferences(currentUserDeck.GetCards()));
-		CardsPanel.Setup(currentCivilizationData, OnClickCard, cardList);
+		RawBundleData[] cardList = dataReferenceLibrary.GetCards(currentUserDeck.GetCards());
+		CardsPanel.Setup(dataReferenceLibrary, currentCivilizationData.GetId(), OnClickCard, cardList);
 	}
 	public bool IsEditing()
     {
