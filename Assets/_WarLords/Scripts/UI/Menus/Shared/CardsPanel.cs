@@ -12,11 +12,11 @@ public class CardsPanel : MonoBehaviour
 
     private SimpleListObject[] loadedCards;
 	private RawBundleData[] cardList;
-	private AsyncOperationHandle<Card> cardDataHandler;
 	private RuntimeCardData runtimeCardData;
 	private OnSelectedCard onSelectedCard;
 	private DataReferenceLibrary dataLibrary;
 	private string civilizationId;
+	private AssetReference currentCardReference;
 
 	public void Setup(DataReferenceLibrary dataLibrary, string civilizationId, OnSelectedCard onSelectedCard)
 	{
@@ -39,13 +39,11 @@ public class CardsPanel : MonoBehaviour
 	{
 		EraseAll();
 
-		if (cardDataHandler.IsValid())
-			Addressables.Release(cardDataHandler);
+		DeallocateLastCard();
 	}
 	public void OnClickCard(RawBundleData cardData)
 	{
-		if (cardDataHandler.IsValid())
-			Addressables.Release(cardDataHandler);
+		DeallocateLastCard();
 
 		if (runtimeCardData != null && runtimeCardData.Name == cardData.Name)
 		{
@@ -53,22 +51,20 @@ public class CardsPanel : MonoBehaviour
 			return;
 		}
 
-		StartCoroutine(LoadCardData(cardData));
+		currentCardReference = cardData.Bundle;
+
+		ResourceManager.AllocateCard(currentCardReference, OnLoadCardData);
 	}
+	void DeallocateLastCard()
+    {
+		if (currentCardReference == null)
+			return;
 
-	IEnumerator LoadCardData(RawBundleData cardData)
+		ResourceManager.DeallocateCard(currentCardReference);
+	}
+	void OnLoadCardData(Card cardData)
 	{
-		cardDataHandler = Addressables.LoadAssetAsync<Card>(cardData.Bundle);
-
-		yield return cardDataHandler;
-
-		if (cardDataHandler.Status != AsyncOperationStatus.Succeeded)
-		{
-			Debug.LogError("Error loading card data: " + cardDataHandler.OperationException.ToString());
-			yield break;
-		}
-
-		var cardDataResult = cardDataHandler.Result;
+		var cardDataResult = cardData;
 
 		runtimeCardData = new RuntimeCardData(cardDataResult);
 
