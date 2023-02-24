@@ -5,6 +5,7 @@ using NaughtyAttributes;
 
 public class GameController : Singleton<GameController>
 {
+	[BoxGroup("Components"), SerializeField] DataReferenceLibrary dataReferenceLibrary;
 	[BoxGroup("Components"), SerializeField] Battlefield battlefield;
 	[BoxGroup("Components"), SerializeField] InputController inputController;
 	[BoxGroup("Components"), SerializeField] PhaseManager phaseManager;
@@ -31,9 +32,9 @@ public class GameController : Singleton<GameController>
 
         battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonToken);
 
-		localPlayer.PreSetup(battlefield, this, inputController);
+		localPlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
 
-		remotePlayer.PreSetup(battlefield, this, inputController);
+		remotePlayer.PreSetup(battlefield, this, inputController, dataReferenceLibrary);
 	}
     void Update()
     {
@@ -48,9 +49,8 @@ public class GameController : Singleton<GameController>
 	public void SetPlayerDeck(UserDeck deckData, CivilizationData civilizationData, bool isLocalPlayer)
     {
 		var player = isLocalPlayer ? localPlayer : remotePlayer;
-		//var deck = new PlayerCardDeck(deckData, civilizationData);
 
-		//player.SetDeck(deck);
+		player.SetDeck(deckData);
     }
 
 	#region BATTLEFIELD_INTERFACE

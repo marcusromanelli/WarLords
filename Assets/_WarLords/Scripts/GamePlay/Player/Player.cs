@@ -24,11 +24,11 @@ public class Player : MonoBehaviour, IAttackable
 	[BoxGroup(playerPropertiesTag), SerializeField, Expandable] PlayerCardDeck startDeck;
 
 	private const string gameLogicTag = "Game Logic";
-	[BoxGroup(gameLogicTag), SerializeField] protected Life Life;
-	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck PlayDeck;
-	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck Graveyard;
-	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool ManaPool;
-	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand Hand;
+	[BoxGroup(gameLogicTag), SerializeField] protected Life life;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck playDeck;
+	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck graveyard;
+	[BoxGroup(gameLogicTag), SerializeField] protected ManaPool manaPool;
+	[BoxGroup(gameLogicTag), SerializeField] protected PlayerHand hand;
 	[BoxGroup(gameLogicTag), SerializeField] protected NextPhaseButton nextPhaseButton;
 	[BoxGroup(gameLogicTag), SerializeField] protected MandatoryConditionManager conditionManager;
 	[BoxGroup(gameLogicTag), SerializeField] protected HabilityManager habilityManager;
@@ -44,42 +44,44 @@ public class Player : MonoBehaviour, IAttackable
 	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
 
-	public virtual void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController)
+	public virtual void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
 		this.inputController = inputController;
 		this.battlefield = battlefield;
 		this.gameController = gameController;
 
-		Life.Setup(GameConfiguration.startLife);
+		life.Setup(GameConfiguration.startLife);
 
 		habilityManager.Setup(this);
 
-		ManaPool.Setup(this, CanPlayerSummonToken);
+		manaPool.Setup(this, CanPlayerSummonToken);
 
-		Hand.PreSetup(this, battlefield, inputController, CanSummonToken);
-		Hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
-		Hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
-		Hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
-		Hand.OnHoldCard += OnCardBeingHeld;
+		hand.PreSetup(this, battlefield, inputController, CanSummonToken);
+		hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
+		hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
+		hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
+		hand.OnHoldCard += OnCardBeingHeld;
 
 		conditionManager.Setup(this);
+
+		startDeck.Setup(dataReferenceLibrary);
 	}
     public void SetupPlayDeck()
 	{
-		PlayDeck.Setup(startDeck.Cards[0].Graphics);
+		playDeck.Setup(startDeck.Cards[0].Graphics);
 
-		PlayDeck.AddCards(startDeck.Cards);
+		playDeck.AddCards(startDeck.Cards);
 
-		PlayDeck.Shuffle();
+		playDeck.Shuffle();
 	}
     public void SetupGraveyard()
 	{
-		Graveyard.Setup(startDeck.Cards[0].Graphics);
+		graveyard.Setup(startDeck.Cards[0].Graphics);
 	}
 	
-	public void SetDeck(PlayerCardDeck deck)
+	public void SetDeck(UserDeck deck)
     {
-		startDeck = deck;
+		startDeck.SetDeck(deck);
     }
 
 
@@ -90,10 +92,10 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void DiscardCurrentHoldingCard()
 	{
-		var currentCard = Hand.GetHoldingCard();
+		var currentCard = hand.GetHoldingCard();
 		var currentCardData = currentCard.Data;
-		Hand.RemoveCard(currentCard);
-		Graveyard.AddCard(currentCardData);
+		hand.RemoveCard(currentCard);
+		graveyard.AddCard(currentCardData);
 
 
 		LogController.LogDiscard(this);
@@ -102,17 +104,17 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public bool HasManaSpace()
     {
-		return ManaPool.HasManaSpace();
+		return manaPool.HasManaSpace();
     }
 	public void TurnHoldinCardIntoMana()
     {
-		var currentCard = Hand.GetHoldingCard();
+		var currentCard = hand.GetHoldingCard();
 		var currentCardData = currentCard.Data;
-		Hand.TurnCardIntoMana(currentCard, () => {
-			Graveyard.AddCard(currentCardData);
+		hand.TurnCardIntoMana(currentCard, () => {
+			graveyard.AddCard(currentCardData);
 		});
 
-		ManaPool.IncreaseMaxMana();
+		manaPool.IncreaseMaxMana();
 
 		LogController.LogManaGeneration(this);
 
@@ -120,7 +122,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public int GetHandCardsNumber()
 	{
-		return Hand.Count;
+		return hand.Count;
 	}
 	public virtual bool CanInteract()
 	{
@@ -128,7 +130,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void OnTokenDied(CardObject cardObject, SpawnArea tile)
 	{
-		Graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
+		graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
 	}
 	#endregion INTERACTION
 
@@ -136,7 +138,7 @@ public class Player : MonoBehaviour, IAttackable
 	public void StartActionPhase()
 	{
 		OnStartActionPhase?.Invoke();
-		ManaPool.RestoreSpentMana();		
+		manaPool.RestoreSpentMana();		
 		IsReadyToEndActionPhase = false;
 		nextPhaseButton.gameObject.SetActive(true);
 	}
@@ -157,22 +159,22 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void TakeDamage(uint damage)
 	{
-		Life.TakeDamage(damage);
+		life.TakeDamage(damage);
 	}
 	public void Heal(uint health)
 	{
-		Life.Heal(health);
+		life.Heal(health);
 	}
 	#endregion ACTION_PHASE
 
 	#region SUMMON_HERO
 	public CardObject IsHoldingCard()
     {
-		return Hand.GetHoldingCard();
+		return hand.GetHoldingCard();
 	}
 	public bool CanPlayerSummonToken(CardObject cardObject, bool isSkillsOnly)
     {
-		return CanInteract() && IsOnActionPhase && ManaPool.HasAvailableMana(cardObject.CalculateSummonCost(isSkillsOnly));
+		return CanInteract() && IsOnActionPhase && manaPool.HasAvailableMana(cardObject.CalculateSummonCost(isSkillsOnly));
 	}
 	public bool CanSummonToken(CardObject cardObject, SpawnArea spawnArea, bool isSkillOnly)
     {
@@ -187,7 +189,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void SummonCostChanged(uint newCost)
     {
-		ManaPool.RefreshPreviewedMana(newCost);
+		manaPool.RefreshPreviewedMana(newCost);
     }
 	protected void TrySummonToken(CardObject cardObject, SpawnArea spawnArea)
 	{
@@ -199,9 +201,9 @@ public class Player : MonoBehaviour, IAttackable
 
 		var isSkillOnly = spawnArea.Token != null;
 
-		Hand.RemoveCard(cardObject, false);
+		hand.RemoveCard(cardObject, false);
 
-		ManaPool.SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
+		manaPool.SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
 
 		gameController.Summon(this, cardObject, spawnArea);
 	}
@@ -215,13 +217,13 @@ public class Player : MonoBehaviour, IAttackable
 
 		number = Mathf.Clamp(number, 0, int.MaxValue);
 
-		var hasCardsOndeck = PlayDeck.Count >= number;
+		var hasCardsOndeck = playDeck.Count >= number;
 
         if (!hasCardsOndeck)
         {
-			if (Graveyard.Count + PlayDeck.Count < number)
+			if (graveyard.Count + playDeck.Count < number)
 			{
-				number = Graveyard.Count + PlayDeck.Count;
+				number = graveyard.Count + playDeck.Count;
 			}
 			TurnGraveyardIntoDeck();
 			TryDrawCards(number);
@@ -234,9 +236,9 @@ public class Player : MonoBehaviour, IAttackable
 	{
 		LogController.LogCardDrawn(this, number);
 
-		Card[] cards = PlayDeck.DrawCards(number);
+		Card[] cards = playDeck.DrawCards(number);
 
-		Hand.AddCards(cards);
+		hand.AddCards(cards);
 		TriggerCardDraw(number);
 	}
 	protected void TriggerCardDraw(int number)
@@ -245,9 +247,9 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	void TurnGraveyardIntoDeck()
 	{
-		PlayDeck.AddCards(Graveyard.GetAllCards());
+		playDeck.AddCards(graveyard.GetAllCards());
 
-		Graveyard.Empty();
+		graveyard.Empty();
 	}
 	#endregion CARD_DRAW
 
@@ -306,7 +308,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
     public uint GetLife()
     {
-		return Life.Current;
+		return life.Current;
     }
     public string GetName()
     {

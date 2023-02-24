@@ -1,6 +1,20 @@
 using NaughtyAttributes;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+
+public class CardComparer : IEqualityComparer<Card>
+{
+	public bool Equals(Card x, Card y)
+	{
+		return x.GetHashCode() == y.GetHashCode();
+	}
+
+	public int GetHashCode(Card obj)
+	{
+		return obj.GetHashCode();
+	}
+}
 
 [CreateAssetMenu(fileName = "Card Data", menuName = "ScriptableObjects/Card/Data", order = 2)]
 public class Card : ScriptableObject
@@ -23,4 +37,9 @@ public class Card : ScriptableObject
 
 		Id = Guid.NewGuid().ToString();
 	}
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }

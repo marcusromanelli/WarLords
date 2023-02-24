@@ -15,9 +15,9 @@ public class AIPlayer : Player
 
 
 	private bool DoAction = false;
-	public override void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController)
+	public override void PreSetup(Battlefield battlefield, GameController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
-        base.PreSetup(battlefield, gameController, inputController);
+        base.PreSetup(battlefield, gameController, inputController, dataReferenceLibrary);
 
 		phaseManager.OnPhaseChange += HandlePhaseChange;
 	}
@@ -117,7 +117,7 @@ public class AIPlayer : Player
 	}
 	IEnumerator ResolvePreGame()
     {
-		yield return Hand.IsUIUpdating();
+		yield return hand.IsUIUpdating();
 
 		yield return ResolveConditions();
 	}
@@ -149,15 +149,15 @@ public class AIPlayer : Player
 		if (currentCard == null)
 			return;
 
-		Hand.HoldCard(currentCard);
+		hand.HoldCard(currentCard);
 
 		Action(currentCard);
 
-		Hand.CancelHandToCardInteraction();
+		hand.CancelHandToCardInteraction();
 	}
 	CardObject GetRandomCardFromHand()
 	{
-		var handCards = Hand.GetCards();
+		var handCards = hand.GetCards();
 
 		if (handCards.Count <= 0)
 			return null;
