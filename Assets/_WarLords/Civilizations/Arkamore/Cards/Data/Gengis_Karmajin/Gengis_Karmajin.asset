@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Gengis_Karmajin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Gengis Karmajin
   Id: d1cc5b7d-5de2-4b0b-a4dd-5c810cee312c
   FrontCover: {fileID: 21300000, guid: 038c1256f7049df4985f32faeb393d11, type: 3}
   ManaCost: 2

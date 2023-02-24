@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Lauren_Dufeu
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Lauren Dufeu
   Id: b6bfb829-bb71-40a7-a56d-7483dc84392d
   FrontCover: {fileID: 21300000, guid: 51998f6d892308a49be890922055b79f, type: 3}
   ManaCost: 2

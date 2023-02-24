@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Rania_Layerjin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Rania Layerjin
   Id: 7d5080ff-d461-4b21-8efc-99b24f31f131
   FrontCover: {fileID: 21300000, guid: 461b4f57a9f90fa438f5101c27f7f1f1, type: 3}
   ManaCost: 0

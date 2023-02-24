@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Jeremiah_Moyer
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Jeremiah Moyer
   Id: 455c058c-6668-4425-b90f-3994559c697f
   FrontCover: {fileID: 21300000, guid: f6375dffe39157b41b1567477c5233c1, type: 3}
   ManaCost: 0

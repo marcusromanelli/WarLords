@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Esopo_Hagnix
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Esopo Hagnix
   Id: b0c65f82-9adc-41dd-9405-8146743055ca
   FrontCover: {fileID: 21300000, guid: 874eee2388ade944b970d38f7c1df35d, type: 3}
   ManaCost: 3

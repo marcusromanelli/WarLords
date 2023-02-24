@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Raziel_Faerjin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Raziel Faerjin
   Id: 603730bd-e485-4de6-928e-6744de23615e
   FrontCover: {fileID: 21300000, guid: ca1b650e43a6240439f359e708b0e29c, type: 3}
   ManaCost: 2

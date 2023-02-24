@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Daires_Nightrose
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Daires Nightrose
   Id: 18b7ac8b-ddd8-41f9-9970-222995a0b4a5
   FrontCover: {fileID: 21300000, guid: f8a25a1293c543d418254bb6f50784ab, type: 3}
   ManaCost: 3

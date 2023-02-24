@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Minster_Stortjin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Minster Stortjin
   Id: 442af4ed-6762-480a-9bf5-3c8d055f0a4b
   FrontCover: {fileID: 21300000, guid: 9ca5db68953b1474880d5b59fb4db0cd, type: 3}
   ManaCost: 0

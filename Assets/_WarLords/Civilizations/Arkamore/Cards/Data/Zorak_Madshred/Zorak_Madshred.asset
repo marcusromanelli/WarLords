@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Zorak_Madshred
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Zorak Madshred
   Id: f9d3b403-0a53-461a-a3a3-160c45c343ec
   FrontCover: {fileID: 21300000, guid: 62cc4c618a4229e4eaaea744fe0da254, type: 3}
   ManaCost: 2

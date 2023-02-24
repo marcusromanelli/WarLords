@@ -51,6 +51,8 @@ public class CivilizationData : ScriptableObject
 
 			card.Name = parentFolder.Name.Replace("_", " ");
 
+			EditorUtility.SetDirty(card);
+
 			list.Add(new RawBundleData() { Id = card.Id, Name = card.Name, Bundle = referenceBundle });
 		}
 

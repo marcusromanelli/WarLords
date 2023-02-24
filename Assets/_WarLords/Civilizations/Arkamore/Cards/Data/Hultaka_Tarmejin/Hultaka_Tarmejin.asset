@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Hultaka_Tarmejin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Hultaka Tarmejin
   Id: 8f2f70c9-4827-43c4-9445-92d79a89d40a
   FrontCover: {fileID: 21300000, guid: 1ef3b874bc208a443a08fa76eb118d1c, type: 3}
   ManaCost: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c674916daf7493f43929b148651363c2, type: 3}
   m_Name: Mirra_Severjin
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Mirra Severjin
   Id: 3b477c83-73cb-4d7a-9059-2033fcd8b0bb
   FrontCover: {fileID: 21300000, guid: cd829f1a627be99458d46c2f541b37c0, type: 3}
   ManaCost: 4
