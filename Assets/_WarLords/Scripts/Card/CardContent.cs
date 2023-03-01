@@ -29,7 +29,7 @@ public class CardContent : MonoBehaviour
     {
 		Hide();
     }
-	public void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
+	public virtual void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
     {
 		this.runtimeCardData = runtimeCardData;
 
@@ -67,17 +67,17 @@ public class CardContent : MonoBehaviour
 		var skill1 = skills[0];
 		var skill2 = skills[1];
 
-		if (enableSkill1Button != null)
-			enableSkill1Button.Setup(skill1);
-
 		SetTextValue(skill1DescriptionText, skill1);
 		SetTextValue(skill1CostText, skill1.GetManaCost());
 
-		if (enableSkill2Button != null)
-			enableSkill2Button.Setup(skill2);
-
 		SetTextValue(skill2DescriptionText, skill2);
 		SetTextValue(skill2CostText, skill2.GetManaCost());
+
+		if (enableSkill1Button != null)
+			enableSkill1Button.Setup(skill1);
+
+		if (enableSkill2Button != null)
+			enableSkill2Button.Setup(skill2);
 	}
 	void SetTextValue(TMP_Text component, object value)
 	{

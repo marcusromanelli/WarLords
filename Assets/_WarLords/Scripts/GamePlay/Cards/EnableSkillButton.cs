@@ -17,7 +17,13 @@ public class EnableSkillButton : MonoBehaviour
     {
 		this.skillData = skillData;
 	}
-    public void Disable()
+	public void Enable()
+	{
+		Enabled = true;
+
+		UpdateVisuals();
+	}
+	public void Disable()
     {
         Enabled = false;
 
