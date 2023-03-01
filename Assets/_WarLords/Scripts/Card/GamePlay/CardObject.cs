@@ -164,10 +164,12 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	}
 	public void TakeDamage(uint damage)
     {
-        uiToken.TakeDamage(damage);
+		runtimeCardData.TakeDamage(damage);
+		uiToken.TakeDamage(damage);
     }
     public void Heal(uint health)
 	{
+		runtimeCardData.Heal(health);
 		uiToken.Heal(health);
 	}
     public uint GetLife()

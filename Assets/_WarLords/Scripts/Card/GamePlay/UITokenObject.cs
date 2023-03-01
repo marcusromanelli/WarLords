@@ -180,10 +180,13 @@ public class UITokenObject : MonoBehaviour
 		if (!isWalking)
 			return;
 
-        if (transform.position != targetPosition)
+		var targetTransform = cardObject.transform;
+
+
+		if (targetTransform.position != targetPosition)
         {
             GameRules.PlaySFX(GameRules.denyAction);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * walkSpeed);
+			targetTransform.position = Vector3.MoveTowards(targetTransform.position, targetPosition, Time.deltaTime * walkSpeed);
 
 			return;
         }

@@ -139,7 +139,7 @@ public class Player : MonoBehaviour, IAttackable
 		OnStartActionPhase?.Invoke();
 		manaPool.RestoreSpentMana();		
 		IsReadyToEndActionPhase = false;
-		nextPhaseButton.gameObject.SetActive(true);
+		nextPhaseButton?.gameObject.SetActive(true);
 	}
 	public IEnumerator IsResolvingActionPhase()
 	{
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour, IAttackable
 			return;
 
 		IsReadyToEndActionPhase = true;
-		nextPhaseButton.gameObject.SetActive(false);
+		nextPhaseButton?.gameObject.SetActive(false);
 	}
 	public void TakeDamage(uint damage)
 	{
@@ -203,6 +203,8 @@ public class Player : MonoBehaviour, IAttackable
 		hand.RemoveCard(cardObject, false);
 
 		manaPool.SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
+
+		cardObject.SetVisualizing(false);
 
 		gameController.Summon(this, cardObject, spawnArea);
 	}

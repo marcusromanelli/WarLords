@@ -15,8 +15,8 @@ public class RuntimeCardData
 	private uint attack;
 	public uint Attack => attack;
 
-	private uint defense;
-	public uint Defense => defense;
+	private uint life;
+	public uint Life => life;
 
 	private uint walkSpeed;
 	public uint WalkSpeed => walkSpeed;
@@ -38,7 +38,7 @@ public class RuntimeCardData
 		name = card.Name;
 		manaCost = card.ManaCost;
 		attack = card.Attack;
-		defense = card.Defense;
+		life = card.Defense;
 		walkSpeed = card.WalkSpeed;
 		graphics = card.Graphics;
 		frontCover = card.FrontCover;
@@ -84,7 +84,7 @@ public class RuntimeCardData
 	}
 	public uint CalculateDefense()
 	{
-		return Defense;
+		return Life;
 	}
 	public uint CalculateWalkSpeed()
 	{
@@ -102,6 +102,14 @@ public class RuntimeCardData
 
 			activeSkills.Add(skill);
 		}
-		
-    }
+
+	}
+	public void Heal(uint health)
+	{
+		life += health;
+	}
+	public void TakeDamage(uint damage)
+	{
+		life -= Math.Clamp(damage, 0, life);
+	}
 }
