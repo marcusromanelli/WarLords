@@ -25,6 +25,10 @@ public class CardContent : MonoBehaviour
 	OnClickCloseButton onClickCloseButton;
 	UICardObject uICardObject;
 
+	void Awake()
+    {
+		Hide();
+    }
 	public void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
     {
 		this.runtimeCardData = runtimeCardData;
