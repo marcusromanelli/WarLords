@@ -61,12 +61,21 @@ public class PlayerCardDeck : MonoBehaviour
         }
     }
 
-    [SerializeField] Card[] cards;
+    [SerializeField] Card[] cards = null;
 
     public Card[] Cards => cards;
 
     private HashSet<CardIdData> loadedCards;
     private DataReferenceLibrary dataReferenceLibrary;
+
+#if UNITY_EDITOR
+    public void Setup(DataReferenceLibrary dataReferenceLibrary, Card[] userCards)
+    {
+        this.dataReferenceLibrary = dataReferenceLibrary;
+
+        cards = userCards;
+    }
+#endif
 
     public void Setup(DataReferenceLibrary dataReferenceLibrary, UserDeck userDeck)
     {
@@ -76,6 +85,13 @@ public class PlayerCardDeck : MonoBehaviour
     }
     public bool IsLoading()
     {
+#if UNITY_EDITOR
+        if(loadedCards == null && cards == null)
+            return true;        
+
+        return false;
+#endif
+
         foreach (var cardData in loadedCards)
         {
             if (!cardData.CardOperation.IsValid() || cardData.CardOperation.IsValid() && cardData.CardOperation.Status != AsyncOperationStatus.Succeeded)

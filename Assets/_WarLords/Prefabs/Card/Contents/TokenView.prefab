@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5561328420907274810}
   - component: {fileID: 5877741208756370056}
   m_Layer: 0
-  m_Name: OnFieldView
+  m_Name: TokenView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

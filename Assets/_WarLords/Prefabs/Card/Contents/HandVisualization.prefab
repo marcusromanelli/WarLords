@@ -2437,7 +2437,7 @@ GameObject:
   - component: {fileID: 4166175031706287942}
   - component: {fileID: 6530397343926978055}
   m_Layer: 0
-  m_Name: DefaultVisualization
+  m_Name: HandVisualization
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

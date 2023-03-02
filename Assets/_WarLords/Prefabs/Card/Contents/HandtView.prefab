@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 6893959527806251492}
   - component: {fileID: 5152252034384389618}
   m_Layer: 0
-  m_Name: DefaultView
+  m_Name: HandtView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

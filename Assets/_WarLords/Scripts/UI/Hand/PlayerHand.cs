@@ -14,7 +14,6 @@ public class PlayerHand
     public event HandleOnCardReleased OnCardReleasedOnGraveyard;
     public event HandleOnCardReleased OnCardReleasedOnManaPool;
     public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
-    public event HandleOnHoldingCard OnHoldCard;
 
 
     [SerializeField] UIPlayerHand uiPlayerHand;
@@ -27,7 +26,7 @@ public class PlayerHand
     }
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleCanSummonToken canSummonHero)
     {
-        uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, onCardBeingHold, canSummonHero);
+        uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, canSummonHero);
     }
     public void AddCard(Card card)
     {
@@ -126,9 +125,5 @@ public class PlayerHand
     void onCardReleasedOnSpawnArea(CardObject cardObject, GameObject releasedArea)
     {
         OnCardReleasedOnSpawnArea?.Invoke(cardObject, releasedArea);
-    }
-    void onCardBeingHold(Player player, CardObject cardObject)
-    {
-        OnHoldCard?.Invoke(player, cardObject);
     }
 }

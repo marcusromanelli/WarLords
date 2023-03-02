@@ -43,6 +43,29 @@ public class Player : MonoBehaviour, IAttackable
 	protected bool IsReadyToEndActionPhase = true;
 	public bool IsOnActionPhase => !IsReadyToEndActionPhase;
 
+#if UNITY_EDITOR
+	public virtual void PreSetup(Card[] deckCards, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
+	{
+		this.inputController = inputController;
+		this.battlefield = battlefield;
+		this.gameController = gameController;
+
+		life.Setup(GameRules.startLife);
+
+		habilityManager.Setup(this);
+
+		manaPool.Setup(this, CanPlayerSummonToken);
+
+		hand.PreSetup(this, battlefield, inputController, CanSummonToken);
+		hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
+		hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
+		hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
+
+		conditionManager.Setup(this);
+
+		startDeck.Setup(dataReferenceLibrary, deckCards);
+	}
+#endif
 
 	public virtual void PreSetup(UserDeck deckData, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
@@ -60,7 +83,6 @@ public class Player : MonoBehaviour, IAttackable
 		hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
 		hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
 		hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
-		hand.OnHoldCard += OnCardBeingHeld;
 
 		conditionManager.Setup(this);
 

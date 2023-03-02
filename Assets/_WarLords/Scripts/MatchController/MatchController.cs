@@ -11,6 +11,10 @@ public class MatchController : MonoBehaviour
 	[BoxGroup("Components"), SerializeField] PhaseManager phaseManager;
 	[BoxGroup("Components"), SerializeField, ReadOnly] Player localPlayer;
 	[BoxGroup("Components"), SerializeField, ReadOnly] Player remotePlayer;
+#if UNITY_EDITOR
+	[BoxGroup("Components"), SerializeField] Card[] localPlayerBackupDeck;
+	[BoxGroup("Components"), SerializeField] Card[] remotePlayerBackupDeck;
+#endif
 
 
 	public PhaseManager PhaseManager => phaseManager;
@@ -33,13 +37,35 @@ public class MatchController : MonoBehaviour
         battlefield.PreSetup(localPlayer, remotePlayer, inputController, this, CanSummonToken);
 
 
-		var localPLayerDeck = GameController.LocalPlayerDeck;
-		localPlayer.PreSetup(localPLayerDeck, battlefield, this, inputController, dataReferenceLibrary);
-
-		var remotePLayerDeck = GameController.LocalPlayerDeck;
-		remotePlayer.PreSetup(remotePLayerDeck, battlefield, this, inputController, dataReferenceLibrary);
+		initializePlayers();
 
 		yield return IsPlayersLoading();
+	}
+	void initializePlayers()
+    {
+		UserDeck localPlayerDeck, remotePlayerDeck;
+
+		localPlayerDeck = GameController.LocalPlayerDeck;
+		remotePlayerDeck = GameController.RemotePlayerDeck;
+
+#if UNITY_EDITOR
+		if (localPlayerDeck.Id == null)
+			localPlayer.PreSetup(localPlayerBackupDeck, battlefield, this, inputController, dataReferenceLibrary);
+		else
+			localPlayer.PreSetup(localPlayerDeck, battlefield, this, inputController, dataReferenceLibrary);
+
+
+		if (remotePlayerDeck.Id == null)
+			remotePlayer.PreSetup(remotePlayerBackupDeck, battlefield, this, inputController, dataReferenceLibrary);
+		else
+			remotePlayer.PreSetup(remotePlayerDeck, battlefield, this, inputController, dataReferenceLibrary);
+
+		return;
+#endif
+
+
+		localPlayer.PreSetup(localPlayerDeck, battlefield, this, inputController, dataReferenceLibrary);		
+		remotePlayer.PreSetup(remotePlayerDeck, battlefield, this, inputController, dataReferenceLibrary);
 	}
 	IEnumerator IsPlayersLoading()
     {
@@ -61,7 +87,7 @@ public class MatchController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
-	#region BATTLEFIELD_INTERFACE
+#region BATTLEFIELD_INTERFACE
 	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
 	{
 		battlefield.Summon(player, cardObject, spawnArea);
@@ -70,14 +96,14 @@ public class MatchController : MonoBehaviour
 	{
 		return localPlayer.CanPlayerSummonToken(cardObject, isSkillOnly);
 	}
-	#endregion BATTLEFIELD_INTERFACE
+#endregion BATTLEFIELD_INTERFACE
 
 	public bool CanPlayerInteract(Player player)
 	{
 		return phaseManager.CanPlayerInteract(player);
 	}
 
-	#region HELPER_GUI
+#region HELPER_GUI
 	string GetPlayerConditionPrint(Player player)
     {
 		string final = "";
@@ -152,5 +178,5 @@ public class MatchController : MonoBehaviour
 			GUI.Box(derp, final);
 		}*/
 	}
-	#endregion HELPER_GUI
+#endregion HELPER_GUI
 }

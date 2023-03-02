@@ -17,6 +17,7 @@ public struct UserDeck
     public bool IsSaved() => isSaved;
     public string GetId() => Id;
     public string GetName() => Name;
+
     public UserDeck(UserDeck deckData)
     {
         this.Id = deckData.Id;

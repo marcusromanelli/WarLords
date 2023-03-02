@@ -19,9 +19,7 @@ public class UICardObject : MonoBehaviour
 	[BoxGroup("Components"), SerializeField] Transform coverBackgroundPivot;
 	[BoxGroup("Components"), SerializeField] CardContent defaultCardContentView;
 	[BoxGroup("Components"), SerializeField] CardContent hiddenCardContentView;
-	[BoxGroup("Components"), SerializeField] CardContent defaultVisualizationCardContentView;
 	[BoxGroup("Components"), SerializeField] CardContent onFieldCardContentView;
-	[BoxGroup("Components"), SerializeField] CardContent onFieldVisualizationCardContentView;
 
 
 	public bool IsInPosition => isInPosition;
@@ -110,14 +108,7 @@ public class UICardObject : MonoBehaviour
 			visualizationType = CardVisualizationType.Hidden;
 
 		if (parentCardObject.IsInvoked)
-        {
 			visualizationType = CardVisualizationType.OnField;
-
-			if (parentCardObject.IsVisualizing)
-				visualizationType = CardVisualizationType.OnFieldVisualization;				
-        }else if (parentCardObject.IsVisualizing)
-			visualizationType = CardVisualizationType.DefaultVisualization;
-
 
 		RefreshCardUI(visualizationType);
 	}
@@ -129,16 +120,10 @@ public class UICardObject : MonoBehaviour
 				ShowDefault();   //Default on-game card display. Aka sitting on hand field
 				break;
 			case CardVisualizationType.Hidden:
-				ShowHidden();         //The default card appearance. Showing only the cover
-				break;
-			case CardVisualizationType.DefaultVisualization:
-				ShowDefaultVisualization();  //"Default" one, but with skills button activated
+				ShowHidden();
 				break;
 			case CardVisualizationType.OnField:
 				ShowOnField();      //On field. Shownig only background image
-				break;
-			case CardVisualizationType.OnFieldVisualization:
-				ShowOnFieldVisualization();  //On field, but being visualized.
 				break;
         }
 	}
@@ -183,23 +168,11 @@ public class UICardObject : MonoBehaviour
 
 		SetNewCardContent(hiddenCardContentView);
 	}
-	void ShowDefaultVisualization()
-	{
-		DisablePreviousCardContent();
-
-		SetNewCardContent(defaultVisualizationCardContentView);
-	}
 	void ShowOnField()
 	{
 		DisablePreviousCardContent();
 
 		SetNewCardContent(onFieldCardContentView);
-	}
-	void ShowOnFieldVisualization()
-	{
-		DisablePreviousCardContent();
-
-		SetNewCardContent(onFieldVisualizationCardContentView);
 	}
 	public void DetachPhsyicalCard()
 	{

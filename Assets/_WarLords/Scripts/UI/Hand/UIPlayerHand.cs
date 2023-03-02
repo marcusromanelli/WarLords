@@ -33,7 +33,6 @@ public class UIPlayerHand : MonoBehaviour
                 return;
 
             _currentTargetCard = value;
-            onCardBeingHeld?.Invoke(player, value);
         }
     }
     private bool IsHoldingCard => currentTargetCard != null;
@@ -44,11 +43,10 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnCardReleased onCardReleasedOnGraveyard;
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
-    HandleOnHoldingCard onCardBeingHeld;
     HandleCanSummonToken canSummonToken;
 
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
-        HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea, HandleOnHoldingCard onCardBeingHeld,
+        HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea,
         HandleCanSummonToken canSummonToken
         )
     {
@@ -58,7 +56,6 @@ public class UIPlayerHand : MonoBehaviour
         this.onCardReleasedOnGraveyard = onCardReleasedOnGraveyard;
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
         this.onCardReleasedOnSpawnArea = onCardReleasedOnSpawnArea;
-        this.onCardBeingHeld = onCardBeingHeld;
         this.canSummonToken = canSummonToken;
 
         RegisterDefaultCallbacks();
@@ -219,28 +216,6 @@ public class UIPlayerHand : MonoBehaviour
             return;
 
         targetingCard = false;
-        ShowVisualizingCard(cardObject);
-    }
-    void ShowVisualizingCard(GameObject gameObject)
-    {
-        targetingCard = false;
-        var cardObject = gameObject.GetComponent<CardObject>();
-
-        if (!cardObject.IsPositioned)
-            return;
-
-        var forwardCamera = CameraController.CalculateForwardCameraPosition();
-
-        var data = CardPositionData.Create(forwardCamera.Position, forwardCamera.Rotation);
-
-        currentTargetCard = cardObject;
-        currentTargetCard.SetVisualizing(true, CloseCardVisualization);
-        currentTargetCard.SetPosition(data);
-    }
-    void CloseCardVisualization()
-    {
-        currentTargetCard.SetVisualizing(false);
-        ReturnCurrentCardToHand();
     }
     void OnDragCardStart(GameObject cardGameObject)
     {

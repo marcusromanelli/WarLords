@@ -48,8 +48,6 @@ public class UITokenObject : MonoBehaviour
 		if (tokenObject != null)
 			Destroy(tokenObject.gameObject);
 
-		inputController.UnregisterTargetCallback(MouseEventType.LeftMouseButtonUp, uiCardObject.gameObject, OnClickSummonedToken);
-
 		target = null;
 		tokenObject = null;
 		isInvoked = false;
@@ -140,37 +138,7 @@ public class UITokenObject : MonoBehaviour
 		uiCardObject.SetLocalPositionAndRotation(CardPositionData.Create(Vector3.zero, Quaternion.identity));
 
 		CardSlideIn();
-
-		inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonDown, uiCardObject.gameObject, OnClickSummonedToken);
 	}
-	void OnClickSummonedToken(GameObject gameObject)
-	{
-		if (isBeingVisualized)
-			return;
-
-
-		var forwardCameraPosition = CameraController.CalculateForwardCameraPosition();
-
-		void closeCallback()
-		{
-
-			uiCardObject.AttachPhsyicalCard(SlideCardPivot);
-			cardObject.SetVisualizing(false);
-			cardObject.SetLocalPosition(CardPositionData.Create(Vector3.zero, Quaternion.Euler(Vector3.zero)), () =>
-			{
-				inputController.Unlock();
-				isBeingVisualized = false;
-			});
-		}
-
-		isBeingVisualized = true;
-		inputController.Lock();
-
-		uiCardObject.DettachPhsyicalCard();
-		cardObject.SetVisualizing(true, closeCallback);
-		cardObject.SetPosition(forwardCameraPosition);
-	}
-
 
 	void Update() {
 		DoMovement();
