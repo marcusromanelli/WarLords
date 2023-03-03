@@ -7,6 +7,8 @@ public delegate void HandleOnCardReleased(CardObject card, GameObject releasedAr
 public delegate bool HandleCanReleaseCard();
 public delegate bool HandleCanSummonToken(CardObject cardObject, SpawnArea targetArea, bool isSkillOnly);
 public delegate bool HandleCanPlayerSummonToken(CardObject cardObject, bool isSkillOnly);
+public delegate void HandleOnCardStartHover(RuntimeCardData card);
+public delegate void HandleOnCardEndHover(RuntimeCardData card);
 
 [Serializable]
 public class PlayerHand
@@ -14,6 +16,8 @@ public class PlayerHand
     public event HandleOnCardReleased OnCardReleasedOnGraveyard;
     public event HandleOnCardReleased OnCardReleasedOnManaPool;
     public event HandleOnCardReleased OnCardReleasedOnSpawnArea;
+    public event HandleOnCardStartHover OnCardStartHover;
+    public event HandleOnCardEndHover OnCardEndHover;
 
 
     [SerializeField] UIPlayerHand uiPlayerHand;
@@ -26,7 +30,7 @@ public class PlayerHand
     }
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleCanSummonToken canSummonHero)
     {
-        uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, canSummonHero);
+        uiPlayerHand.PreSetup(player, battlefield, inputController, onCardReleasedOnGraveyard, onCardReleasedOnManaPool, onCardReleasedOnSpawnArea, canSummonHero, onCardStartHover, onCardEndHover);
     }
     public void AddCard(Card card)
     {
@@ -125,5 +129,13 @@ public class PlayerHand
     void onCardReleasedOnSpawnArea(CardObject cardObject, GameObject releasedArea)
     {
         OnCardReleasedOnSpawnArea?.Invoke(cardObject, releasedArea);
+    }
+    void onCardStartHover(RuntimeCardData card)
+    {
+        OnCardStartHover?.Invoke(card);
+    }
+    void onCardEndHover(RuntimeCardData card)
+    {
+        OnCardEndHover?.Invoke(card);
     }
 }

@@ -21,6 +21,9 @@ public class RuntimeCardData
 	private uint walkSpeed;
 	public uint WalkSpeed => walkSpeed;
 
+	private bool summoned;
+	public bool Summoned => summoned;
+
 	private CivilizationGraphicsData graphics;
 	public CivilizationGraphicsData Graphics => graphics;
 
@@ -112,4 +115,8 @@ public class RuntimeCardData
 	{
 		life -= Math.Clamp(damage, 0, life);
 	}
+	public void SetSummoned()
+    {
+		summoned = true;
+    }
 }

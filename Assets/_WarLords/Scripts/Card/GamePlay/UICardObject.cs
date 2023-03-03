@@ -138,7 +138,7 @@ public class UICardObject : MonoBehaviour
 	{
 		UpdateBackCardCover();
 
-		cardContent.SetData(parentCardObject.RuntimeCardData, OnToggleSkill);
+		cardContent.SetData(parentCardObject.RuntimeCardData);
 		cardContent.Show();
 
 		currentDisplayingContent = cardContent;

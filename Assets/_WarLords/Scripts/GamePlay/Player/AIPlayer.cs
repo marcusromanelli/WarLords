@@ -15,6 +15,16 @@ public class AIPlayer : Player
 
 
 	private bool DoAction = false;
+
+#if UNITY_EDITOR
+	public override void PreSetup(Card[] deckCards, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
+	{
+		base.PreSetup(deckCards, battlefield, gameController, inputController, dataReferenceLibrary);
+
+		phaseManager.OnPhaseChange += HandlePhaseChange;
+	}
+#endif
+
 	public override void PreSetup(UserDeck userDeck, Battlefield battlefield, MatchController gameController, InputController inputController, DataReferenceLibrary dataReferenceLibrary)
     {
         base.PreSetup(userDeck, battlefield, gameController, inputController, dataReferenceLibrary);

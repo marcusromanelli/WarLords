@@ -24,6 +24,7 @@ public class UIPlayerHand : MonoBehaviour
     private List<CardObject> cardList = new List<CardObject>();
     private InputController inputController;
     private bool targetingCard;
+    private CardObject _currentHoverCard;
     private CardObject _currentTargetCard;
     private CardObject currentTargetCard
     {
@@ -44,10 +45,12 @@ public class UIPlayerHand : MonoBehaviour
     HandleOnCardReleased onCardReleasedOnManaPool;
     HandleOnCardReleased onCardReleasedOnSpawnArea;
     HandleCanSummonToken canSummonToken;
+    HandleOnCardStartHover onCardStartHover;
+    HandleOnCardEndHover onCardEndHover;
 
     public void PreSetup(Player player, Battlefield battlefield, InputController inputController, HandleOnCardReleased onCardReleasedOnGraveyard,
         HandleOnCardReleased onCardReleasedOnManaPool, HandleOnCardReleased onCardReleasedOnSpawnArea,
-        HandleCanSummonToken canSummonToken
+        HandleCanSummonToken canSummonToken, HandleOnCardStartHover onCardStartHover, HandleOnCardEndHover onCardEndHover
         )
     {
         this.player = player;
@@ -57,6 +60,8 @@ public class UIPlayerHand : MonoBehaviour
         this.onCardReleasedOnManaPool = onCardReleasedOnManaPool;
         this.onCardReleasedOnSpawnArea = onCardReleasedOnSpawnArea;
         this.canSummonToken = canSummonToken;
+        this.onCardStartHover = onCardStartHover;
+        this.onCardEndHover = onCardEndHover;
 
         RegisterDefaultCallbacks();
     }
@@ -127,10 +132,6 @@ public class UIPlayerHand : MonoBehaviour
             yield return null;
         }
     }
-    CardObject GetCardObjectByData(Card card)
-    {
-        return cardList.Find(cardObj => cardObj.Data == card);
-    }
     void RegisterDefaultCallbacks()
     {
         if (!IsInteractable)
@@ -160,6 +161,9 @@ public class UIPlayerHand : MonoBehaviour
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseButtonUp, gameObject, OnUpCard);
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragStart, gameObject, OnDragCardStart);
             inputController.RegisterTargetCallback(MouseEventType.LeftMouseDragEnd, gameObject, OnDragCardEnd);
+
+            inputController.RegisterTargetCallback(MouseEventType.Hover, gameObject, OnHoverStart);
+            inputController.RegisterTargetCallback(MouseEventType.EndHover, gameObject, OnHoverEnd);
         }
     }
     void UnregisterCardCallback(GameObject gameObject)
@@ -179,6 +183,40 @@ public class UIPlayerHand : MonoBehaviour
         StartCoroutine(DoRefreshHandCardsPositions());
     }
 
+    void OnHoverStart(GameObject cardObject)
+    {
+        if (_currentHoverCard != null)
+            if (_currentHoverCard.gameObject == cardObject) {
+                return;
+            }
+            else
+            {
+                onCardEndHover?.Invoke(_currentHoverCard.RuntimeCardData);
+            }
+
+        _currentHoverCard = cardObject.GetComponent<CardObject>();
+
+        HoverCard(_currentHoverCard);
+    }
+    void HoverCard(CardObject card)
+    {
+        onCardStartHover?.Invoke(_currentHoverCard.RuntimeCardData);
+    }
+    void EndHoverCard()
+    {
+        if (_currentHoverCard == null)
+            return; 
+
+        onCardEndHover?.Invoke(_currentHoverCard.RuntimeCardData);
+        _currentHoverCard = null;
+    }
+    void OnHoverEnd(GameObject cardObject)
+    {
+        if (_currentHoverCard != null && _currentHoverCard.gameObject != cardObject)
+            return;
+
+        EndHoverCard();
+    }
     IEnumerator DoRefreshHandCardsPositions()
     {
         IsRearragingCards = true;
@@ -255,6 +293,10 @@ public class UIPlayerHand : MonoBehaviour
     void ReturnCurrentCardToHand()
     {
         var cardIndex = GetCardIndexByObject(currentTargetCard);
+
+        if(currentTargetCard == _currentHoverCard)
+            EndHoverCard();
+
         currentTargetCard.SetVisualizing(false);
         currentTargetCard.SetPosition(GetCardHandPosition(cardIndex));
         CancelHandToCardInteraction();
@@ -283,6 +325,7 @@ public class UIPlayerHand : MonoBehaviour
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
+        EndHoverCard();
         onCardReleasedOnGraveyard?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverGraveyard(GameObject gameObject)
@@ -309,6 +352,7 @@ public class UIPlayerHand : MonoBehaviour
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
+        EndHoverCard();
         onCardReleasedOnManaPool?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverManaPool(GameObject gameObject)
@@ -335,6 +379,7 @@ public class UIPlayerHand : MonoBehaviour
         if (IsRearragingCards || !IsCardAwaitingRelease)
             return;
 
+        EndHoverCard();
         onCardReleasedOnSpawnArea?.Invoke(currentTargetCard, releasedArea);
     }
     void OnStartHoverSpawnArea(GameObject gameObject)

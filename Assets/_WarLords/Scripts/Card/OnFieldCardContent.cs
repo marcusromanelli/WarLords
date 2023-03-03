@@ -4,9 +4,9 @@ public class OnFieldCardContent : CardContent
 {
 	[SerializeField] InGameCardContent inGameCardContent;
 
-	public override void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
+	public override void SetData(RuntimeCardData runtimeCardData)
 	{
-		base.SetData(runtimeCardData, onSkillButtonClick);
+		base.SetData(runtimeCardData);
 
 		inGameCardContent.UpdateData(runtimeCardData);
 	}

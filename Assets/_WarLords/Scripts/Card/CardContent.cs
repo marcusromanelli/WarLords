@@ -18,18 +18,15 @@ public class CardContent : MonoBehaviour
 	[SerializeField] TMP_Text skill2CostText;
 	[SerializeField] Image heroBackground;
 	[SerializeField] GameObject closeButton;
-	[SerializeField] EnableSkillButton enableSkill1Button;
-	[SerializeField] EnableSkillButton enableSkill2Button;
 
 	RuntimeCardData runtimeCardData;
 	OnClickCloseButton onClickCloseButton;
-	UICardObject uICardObject;
 
 	void Awake()
     {
 		Hide();
     }
-	public virtual void SetData(RuntimeCardData runtimeCardData, OnSkillButtonEnabledClick onSkillButtonClick)
+	public virtual void SetData(RuntimeCardData runtimeCardData)
     {
 		this.runtimeCardData = runtimeCardData;
 
@@ -39,9 +36,6 @@ public class CardContent : MonoBehaviour
 		UpdateDefense();
 		UpdateSkills();
 		UpdateFrontCardCover();
-
-		enableSkill1Button?.SetClickCallback(onSkillButtonClick);
-		enableSkill2Button?.SetClickCallback(onSkillButtonClick);
 	}
 
     void UpdateCardName()
@@ -72,12 +66,6 @@ public class CardContent : MonoBehaviour
 
 		SetTextValue(skill2DescriptionText, skill2);
 		SetTextValue(skill2CostText, skill2.GetManaCost());
-
-		if (enableSkill1Button != null)
-			enableSkill1Button.Setup(skill1);
-
-		if (enableSkill2Button != null)
-			enableSkill2Button.Setup(skill2);
 	}
 	void SetTextValue(TMP_Text component, object value)
 	{

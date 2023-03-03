@@ -28,7 +28,7 @@ public class UICardViewer : MonoBehaviour
         var runtimeCardData = new RuntimeCardData(card);
 
         cardContent.Show();
-        cardContent.SetData(runtimeCardData, null);
+        cardContent.SetData(runtimeCardData);
     }
 
     public void Hide()

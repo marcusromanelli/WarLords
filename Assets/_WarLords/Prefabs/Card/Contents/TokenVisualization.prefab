@@ -171,10 +171,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.05
+  m_fontSize: 33.95
   m_fontSizeBase: 0.05
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -345,10 +345,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.06
+  m_fontSize: 44.8
   m_fontSizeBase: 0.06
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -654,12 +654,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.05
+  m_fontSize: 12
   m_fontSizeBase: 0.05
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.03
-  m_fontSizeMax: 18
+  m_fontSizeMin: 12
+  m_fontSizeMax: 40
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.13061523, y: 0, z: 0.050842285, w: 0}
+  m_margin: {x: 100.952415, y: 12.033386, z: 9.457306, w: 6.7822266}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -790,10 +790,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.06
+  m_fontSize: 44.8
   m_fontSizeBase: 0.06
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1456,12 +1456,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.02
+  m_fontSize: 10
   m_fontSizeBase: 0.02
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 20
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -1474,7 +1474,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -1492,7 +1492,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.076171875, y: 0, z: 0, w: 0}
+  m_margin: {x: 60, y: 10, z: 10, w: 15}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1592,7 +1592,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.015
+  m_fontSize: 14.65
   m_fontSizeBase: 0.03
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1937,6 +1937,7 @@ MonoBehaviour:
   lifeText: {fileID: 7595370387633451313}
   attackText: {fileID: 2275151410094969894}
   speedText: {fileID: 8992881578898475520}
+  statusContainer: {fileID: 0}
   skillContainer: {fileID: 384790808153284849}
   activeSkillPrefab: {fileID: 962566956130741127, guid: 609669b56493ce84295bdea62657a6c3,
     type: 3}
@@ -2131,7 +2132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000000029802322, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2286200405615563868
@@ -2509,7 +2510,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.015
+  m_fontSize: 13
   m_fontSizeBase: 0.03
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2645,10 +2646,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.06
+  m_fontSize: 34.85
   m_fontSizeBase: 0.06
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2781,12 +2782,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.02
+  m_fontSize: 10
   m_fontSizeBase: 0.02
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 20
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -2799,7 +2800,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -2817,7 +2818,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.076171875, y: 0, z: 0, w: 0}
+  m_margin: {x: 60, y: 10, z: 10, w: 15}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2917,10 +2918,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.05
+  m_fontSize: 35.1
   m_fontSizeBase: 0.05
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3053,7 +3054,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.02
+  m_fontSize: 18
   m_fontSizeBase: 0.03
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3642,7 +3643,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.015
+  m_fontSize: 18
   m_fontSizeBase: 0.03
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3795,8 +3796,6 @@ MonoBehaviour:
   skill2CostText: {fileID: 7460552038624667545}
   heroBackground: {fileID: 3943883933824655985}
   closeButton: {fileID: 8507814349134449922}
-  enableSkill1Button: {fileID: 0}
-  enableSkill2Button: {fileID: 0}
   inGameCardContent: {fileID: 9134854674910453994}
 --- !u!223 &5763171819258148825
 Canvas:

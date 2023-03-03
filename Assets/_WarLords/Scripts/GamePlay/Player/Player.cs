@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IAttackable
 	[BoxGroup(playerPropertiesTag), SerializeField] PlayerCardDeck startDeck;
 
 	private const string gameLogicTag = "Game Logic";
+	[BoxGroup(gameLogicTag), SerializeField] protected CardVisualizer uiCard;
 	[BoxGroup(gameLogicTag), SerializeField] protected Life life;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck playDeck;
 	[BoxGroup(gameLogicTag), SerializeField] protected CardDeck graveyard;
@@ -60,6 +61,12 @@ public class Player : MonoBehaviour, IAttackable
 		hand.OnCardReleasedOnGraveyard += onCardReleasedOnGraveyard;
 		hand.OnCardReleasedOnManaPool += onCardReleasedOnManaPool;
 		hand.OnCardReleasedOnSpawnArea += onCardReleasedOnSpawnArea;
+
+		if (uiCard != null)
+		{
+			hand.OnCardStartHover += onCardStartHover;
+			hand.OnCardEndHover += onCardEndHover;
+		}
 
 		conditionManager.Setup(this);
 
@@ -308,6 +315,14 @@ public class Player : MonoBehaviour, IAttackable
 	#endregion MANDATORY_CONDITIONS
 
 
+	void onCardStartHover(RuntimeCardData runtimeCardData)
+    {
+		uiCard.Show(runtimeCardData);
+    }
+	void onCardEndHover(RuntimeCardData runtimeCardData)
+    {
+		uiCard.Hide(runtimeCardData);
+    }
 	protected void TriggerManaCreation()
 	{
 		OnSendManaCreation?.Invoke(1);

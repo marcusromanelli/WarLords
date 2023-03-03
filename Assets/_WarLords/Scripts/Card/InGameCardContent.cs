@@ -12,6 +12,7 @@ public class InGameCardContent : MonoBehaviour
 	[SerializeField] TMP_Text attackText;
 	[SerializeField] TMP_Text speedText;
 
+	[SerializeField] Transform statusContainer;
 	[SerializeField] Transform skillContainer;
 	[SerializeField] Transform activeSkillPrefab;
 
@@ -19,6 +20,13 @@ public class InGameCardContent : MonoBehaviour
 	Transform[] activeSkillObjects;
 	public void UpdateData(RuntimeCardData runtimeCardData)
     {
+		var willShowStatus = runtimeCardData.Summoned;
+
+		statusContainer.gameObject.SetActive(willShowStatus);
+
+		if (!willShowStatus)
+			return;
+
 		lifeText.text = runtimeCardData.CalculateDefense().ToString();
 		attackText.text = runtimeCardData.CalculateAttack().ToString();
 		speedText.text = runtimeCardData.CalculateWalkSpeed().ToString();
