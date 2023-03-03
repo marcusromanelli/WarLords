@@ -6,6 +6,8 @@ using UnityEngine;
 [Serializable]
 public class RuntimeCardData
 {
+	private string id;
+	public string Id => id;
 	private string name;
 	public string Name => name;
 
@@ -38,6 +40,7 @@ public class RuntimeCardData
 
 	public RuntimeCardData(Card card)
     {
+		id = card.Id;
 		name = card.Name;
 		manaCost = card.ManaCost;
 		attack = card.Attack;

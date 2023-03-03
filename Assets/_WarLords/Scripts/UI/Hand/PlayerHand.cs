@@ -6,7 +6,7 @@ using UnityEngine;
 public delegate void HandleOnCardReleased(CardObject card, GameObject releasedArea);
 public delegate bool HandleCanReleaseCard();
 public delegate bool HandleCanSummonToken(CardObject cardObject, SpawnArea targetArea, bool isSkillOnly);
-public delegate bool HandleCanPlayerSummonToken(CardObject cardObject, bool isSkillOnly);
+public delegate bool HandleCanPlayerSummonToken(RuntimeCardData cardObject, bool isSkillOnly);
 public delegate void HandleOnCardStartHover(RuntimeCardData card);
 public delegate void HandleOnCardEndHover(RuntimeCardData card);
 

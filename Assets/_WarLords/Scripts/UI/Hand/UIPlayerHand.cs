@@ -200,7 +200,7 @@ public class UIPlayerHand : MonoBehaviour
     }
     void HoverCard(CardObject card)
     {
-        onCardStartHover?.Invoke(_currentHoverCard.RuntimeCardData);
+        onCardStartHover?.Invoke(card.RuntimeCardData);
     }
     void EndHoverCard()
     {
@@ -274,6 +274,7 @@ public class UIPlayerHand : MonoBehaviour
             cardObject = currentTargetCard;
 
         IsDraggingCard = true;
+        HoverCard(cardObject);
         StartCardDynamicDrag(cardObject);
     }
     void CancelDrag()
@@ -286,6 +287,7 @@ public class UIPlayerHand : MonoBehaviour
         if (!IsDraggingCard || currentTargetCard == null || currentTargetCard.gameObject != cardObject)
             return;
 
+        EndHoverCard();
         CancelDrag();
         StopCardDynamicDrag();
         ReturnCurrentCardToHand();
@@ -408,6 +410,8 @@ public class UIPlayerHand : MonoBehaviour
             return;
 
         var isSkillOnly = spawnArea.Token != null;
+
+        HoverCard(currentTargetCard);
 
         if (hoverArea == spawnArea || !canSummonToken(currentTargetCard, spawnArea, isSkillOnly))
             return;

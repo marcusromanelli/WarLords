@@ -92,7 +92,7 @@ public class MatchController : MonoBehaviour
 	{
 		battlefield.Summon(player, cardObject, spawnArea);
 	}
-	bool CanSummonToken(CardObject cardObject, bool isSkillOnly)
+	bool CanSummonToken(RuntimeCardData cardObject, bool isSkillOnly)
 	{
 		return localPlayer.CanPlayerSummonToken(cardObject, isSkillOnly);
 	}

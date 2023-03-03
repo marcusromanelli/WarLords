@@ -15,7 +15,7 @@ public class ManaPool
 
 	public void Setup(Player LocalPlayer, HandleCanPlayerSummonToken CanSummonHero)
 	{
-		LocalPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+		LocalPlayer.OnVisualizeCard += OnLocalPlayerVisualizeCard;
 
 		uiManaPool.Setup(GetMaxAllowedMana, GetMaxMana, GetCurrentMana, CanSummonHero);
     }
@@ -85,9 +85,9 @@ public class ManaPool
 	}
 
 	#region UI_MANAPOOL_INTERFACE
-	void OnLocalPlayerHoldingCard(Player player, CardObject cardObject)
+	void OnLocalPlayerVisualizeCard(Player player, RuntimeCardData cardObject)
 	{
-		uiManaPool.OnLocalPlayerHoldCard(player, cardObject);
+		uiManaPool.OnLocalPlayerVisualizeCard(player, cardObject);
 	}
 	#endregion UI_MANAPOOL_INTERFACE
 }

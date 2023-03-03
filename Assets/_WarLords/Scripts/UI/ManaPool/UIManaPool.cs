@@ -104,7 +104,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 		GameRules.PlaySFX(GameRules.cardToEnergy);
 	}
 #region FIELD_INTERACTION
-	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
+	public void OnLocalPlayerVisualizeCard(Player player, RuntimeCardData cardObject)
 	{
 		if (cardObject == null || !canSummonHero(cardObject, false))
 		{

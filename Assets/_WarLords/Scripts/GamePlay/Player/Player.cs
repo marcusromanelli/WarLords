@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void HandleOnHoldingCard(Player player, CardObject cardObject);
+public delegate void HandleOnVIsualizeCard(Player player, RuntimeCardData cardObject);
 public delegate bool HandleIsHoldingCard();
 public delegate void HandleCardAction(int number);
 public delegate void HandleOnPickSpawnArea();
@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IAttackable
 	public event HandleCardAction OnDrawCard;
 	public event HandleCardAction OnDiscardCard;
 	public event HandleCardAction OnSendManaCreation;
-	public event HandleOnHoldingCard OnHoldCard;
+	public event HandleOnVIsualizeCard OnVisualizeCard;
 	public event HandleOnCardReleased OnCardReleasedOnGraveyard;
 	public event HandleOnCardReleased OnCardReleasedOnManaPool;
 	public event Action OnStartActionPhase;
@@ -114,10 +114,6 @@ public class Player : MonoBehaviour, IAttackable
 
 
     #region INTERACTION
-	void OnCardBeingHeld(Player player, CardObject cardObject)
-    {
-		OnHoldCard?.Invoke(this, cardObject);
-	}
 	public void DiscardCurrentHoldingCard()
 	{
 		var currentCard = hand.GetHoldingCard();
@@ -201,10 +197,18 @@ public class Player : MonoBehaviour, IAttackable
 		return hand.GetHoldingCard();
 	}
 	public bool CanPlayerSummonToken(CardObject cardObject, bool isSkillsOnly)
+	{
+		return CanPlayerSummonToken(cardObject.RuntimeCardData, isSkillsOnly);
+	}
+	public bool CanPlayerSummonToken(RuntimeCardData cardObject, bool isSkillsOnly)
     {
 		return CanInteract() && IsOnActionPhase && manaPool.HasAvailableMana(cardObject.CalculateSummonCost(isSkillsOnly));
 	}
 	public bool CanSummonToken(CardObject cardObject, SpawnArea spawnArea, bool isSkillOnly)
+    {
+		return CanSummonToken(cardObject.RuntimeCardData, spawnArea, isSkillOnly);
+    }
+	public bool CanSummonToken(RuntimeCardData cardObject, SpawnArea spawnArea, bool isSkillOnly)
     {
 		var playerCan = CanPlayerSummonToken(cardObject, isSkillOnly);
 		var playerCanSummonHero = !battlefield.PlayerHasTokenSummoned(this, cardObject);
@@ -317,10 +321,12 @@ public class Player : MonoBehaviour, IAttackable
 
 	void onCardStartHover(RuntimeCardData runtimeCardData)
     {
+		OnVisualizeCard?.Invoke(this, runtimeCardData);	
 		uiCard.Show(runtimeCardData);
     }
 	void onCardEndHover(RuntimeCardData runtimeCardData)
-    {
+	{
+		OnVisualizeCard?.Invoke(this, null);
 		uiCard.Hide(runtimeCardData);
     }
 	protected void TriggerManaCreation()

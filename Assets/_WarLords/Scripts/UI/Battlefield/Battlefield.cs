@@ -26,16 +26,16 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		localPlayer = LocalPlayer;
 		remotePlayer = RemotePlayer;
 
-		localPlayer.OnHoldCard += OnLocalPlayerHoldingCard;
+		localPlayer.OnVisualizeCard += OnLocalPlayerVisualizeCard;
 		gameController.PhaseManager.OnPhaseChange += OnPhaseChanged;
 
 		uiBattlefield.Setup(LocalPlayer, InputController, CanSummonToken);
 	}
 
 	#region UI_BATTLEFIELD_INTERFACE
-	void OnLocalPlayerHoldingCard(Player player, CardObject cardObject)
+	void OnLocalPlayerVisualizeCard(Player player, RuntimeCardData runtimeCardData)
 	{
-		uiBattlefield.OnLocalPlayerHoldCard(player, cardObject);
+		uiBattlefield.OnLocalPlayerHoldCard(player, runtimeCardData);
 	}
 	void OnPhaseChanged(PhaseType newPhase)
     {
@@ -118,7 +118,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		var nextField = GetFields()[(int)gridPos.x, (int)gridPos.y];
 		var targetToken = nextField.Token;
 
-		if (targetToken != null && !PlayerHasToken(currentPlayer, targetToken))
+		if (targetToken != null && !PlayerHasToken(currentPlayer, targetToken.RuntimeCardData))
 		{
 			token.SetTarget(targetToken);
 		}
@@ -127,7 +127,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 			token.ResetTarget();
 		}
 	}
-	bool PlayerHasToken(Player currentPlayer, CardObject token)
+	bool PlayerHasToken(Player currentPlayer, RuntimeCardData token)
 	{
 		return PlayerHasTokenSummoned(currentPlayer, token);
 	}
@@ -222,12 +222,12 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 
 		SetTokenTile(summonedCardObject, spawnArea);
 	}
-	public bool PlayerHasTokenSummoned(Player player, CardObject cardObject)
+	public bool PlayerHasTokenSummoned(Player player, RuntimeCardData cardObject)
 	{
 		if (!tokenList.ContainsKey(player))
 			return false;
 
-		return tokenList[player].Any(c => c.Data.Id == cardObject.Data.Id);
+		return tokenList[player].Any(c => c.Data.Id == cardObject.Id);
 	}
 	public bool CanSummonOnSelectedTile(Player player)
 	{

@@ -157,7 +157,7 @@ public class UIBattlefield : MonoBehaviour
 	{
 		return rowNumber > GetRemotePlayerEdge();
 	}
-	public void OnLocalPlayerHoldCard(Player player, CardObject cardObject)
+	public void OnLocalPlayerHoldCard(Player player, RuntimeCardData cardObject)
 	{
 		isPlayerHoldingCard = cardObject != null;
 
