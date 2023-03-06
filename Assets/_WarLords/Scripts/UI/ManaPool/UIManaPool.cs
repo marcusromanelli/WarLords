@@ -60,13 +60,6 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 	{
 		return cardReferencePosition.transform.rotation;
 	}
-	public void RefreshPreviewedMana(uint newManaCost)
-	{
-		if (!isPreviewingManaCost)
-			return;
-
-		PreviewMana(newManaCost);
-	}
 	float calculateRow(int number)
 	{
 		var maxMana = getMaxAllowedManaCallback();
@@ -116,7 +109,7 @@ public class UIManaPool : MonoBehaviour, ICardPlaceable
 
 		PreviewMana(manaCost);
 	}
-	void PreviewMana(uint number)
+	public void PreviewMana(uint number)
 	{
 		isPreviewingManaCost = true;
 		int usedMana = (int)number;

@@ -189,7 +189,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	#endregion ATTACK_PHASE
 
 	#region HERO_LOGIC
-	public void Summon(Player player, CardObject summonedCardObject, SpawnArea spawnArea)
+	public void Summon(Player player, CardObject summonedCardObject, Action<uint> OnFinishedSummon, SpawnArea spawnArea)
 	{
 		var isSkillOnly = spawnArea.Token != null;
 
@@ -210,7 +210,7 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		summonedCardObject.transform.localRotation = spawnArea.GetRotationReference();
 		summonedCardObject.transform.SetParent(transform, true);
 
-		summonedCardObject.Invoke(spawnArea.GridPosition);
+		summonedCardObject.Summon(spawnArea.GridPosition, OnFinishedSummon);
 
 		LogController.LogSummonToken(summonedCardObject, spawnArea.GridPosition, summonedCardObject.CalculateSummonCost(isSkillOnly));
 

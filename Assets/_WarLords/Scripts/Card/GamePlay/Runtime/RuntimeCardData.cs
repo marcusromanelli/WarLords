@@ -57,6 +57,20 @@ public class RuntimeCardData
     {
 		activeSkills.Clear();
     }
+	public uint UpdateSkillStatus(Dictionary<SkillData, bool> skillStatus)
+    {
+		uint totalCost = 0;
+
+		foreach(var skill in skillStatus)
+        {
+			ToggleSkill(skill.Key, skill.Value);
+
+			if (skill.Value)
+				totalCost += skill.Key.GetManaCost();
+        }
+
+		return totalCost;
+    }
 	public void ToggleSkill(SkillData skillData, bool enabled)
     {
         if (!enabled)

@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using NaughtyAttributes;
 using System.Collections;
+using System;
 
 public class MatchController : MonoBehaviour
 {
@@ -88,9 +89,9 @@ public class MatchController : MonoBehaviour
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 #region BATTLEFIELD_INTERFACE
-	public void Summon(Player player, CardObject cardObject, SpawnArea spawnArea = null)
+	public void Summon(Player player, CardObject cardObject, Action<uint>OnFinishedSummon, SpawnArea spawnArea = null)
 	{
-		battlefield.Summon(player, cardObject, spawnArea);
+		battlefield.Summon(player, cardObject, OnFinishedSummon, spawnArea);
 	}
 	bool CanSummonToken(RuntimeCardData cardObject, bool isSkillOnly)
 	{

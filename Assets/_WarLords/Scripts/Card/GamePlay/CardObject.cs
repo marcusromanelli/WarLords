@@ -11,6 +11,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 {
 	[BoxGroup("Components"), SerializeField] UICardObject uiCardObject;
 	[BoxGroup("Components"), SerializeField] UITokenObject uiToken;
+	[BoxGroup("Components"), SerializeField] UICardSkillSelection uiCardSkillSelection;
 
 
 	[BoxGroup("Game"), Expandable, SerializeField] private Card cardData;
@@ -19,7 +20,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	public Vector2 GridPosition => uiToken.GridPosition;
 	public bool IsPositioned => uiCardObject.IsInPosition;
 	public bool IsVisualizing => isVisualizing;
-	public bool IsInvoked => isInvoked;
+	public bool IsInvoked => isSummoned;
 	public Card Data => cardData;
 	public RuntimeCardData RuntimeCardData => runtimeCardData;
 
@@ -27,7 +28,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	private Player player;
 	private RuntimeCardData runtimeCardData;
 	private bool isVisualizing;
-	private bool isInvoked;
+	private bool isSummoned;
 	private InputController inputController;
 	private Stack<CardObject> buffedCards = new Stack<CardObject>();
 
@@ -46,14 +47,23 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		Setup(inputController, null, card, !hideInfo);
 	}
-	public void Invoke(Vector2 gridPosition)
+	public void Summon(Vector2 gridPosition, Action<uint> OnFinishedSummon)
     {
-		isInvoked = true;
+		uiCardSkillSelection.Show(player, runtimeCardData.OriginalCardSkills, (response) =>
+		{
+			var totalSkill = runtimeCardData.UpdateSkillStatus(response);
 
-		uiCardObject.RefreshCardUI();
-		uiToken.Setup(this, gridPosition, inputController);
+			isSummoned = true;
 
-		GameRules.PlaySFX(GameRules.Summon);
+			runtimeCardData.SetSummoned();
+			uiCardObject.RefreshCardUI();
+			uiToken.Setup(this, gridPosition, inputController);
+
+			GameRules.PlaySFX(GameRules.Summon);
+
+			OnFinishedSummon?.Invoke(totalSkill);
+		});
+
 	}
 	public void SkillBuff(CardObject cardObject)
     {
@@ -149,7 +159,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	{
 		runtimeCardData = null;
 		isVisualizing = false;
-		isInvoked = false;
+		isSummoned = false;
 		player = null;
 		interactable = true;
 		cardData = default;

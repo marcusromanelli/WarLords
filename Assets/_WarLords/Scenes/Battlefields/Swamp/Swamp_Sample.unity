@@ -620,7 +620,7 @@ MonoBehaviour:
   _depthOfFieldForegroundDistance: 0.25
   _depthOfFieldBokehThreshold: 1
   _depthOfFieldBokehIntensity: 2
-  isDirty: 0
+  isDirty: 1
   bMat: {fileID: 0}
 --- !u!1 &1050129251
 GameObject:
@@ -1011,6 +1011,101 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.size
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[15]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[16]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[17]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[18]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[19]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[20]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[21]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[22]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[23]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[24]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[25]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[26]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[27]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[28]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
+    - target: {fileID: 985721159353487178, guid: 4c6cb34e3527ec14f9208abf976980ff,
+        type: 3}
+      propertyPath: localPlayerBackupDeck.Array.data[29]
+      value: 
+      objectReference: {fileID: 11400000, guid: 54fd9a85f5aee154bab853ef09faf93d,
+        type: 2}
     - target: {fileID: 6211749223657212351, guid: 4c6cb34e3527ec14f9208abf976980ff,
         type: 3}
       propertyPath: m_AnchorMax.y

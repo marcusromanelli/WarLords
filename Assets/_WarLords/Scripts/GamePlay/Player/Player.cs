@@ -127,9 +127,17 @@ public class Player : MonoBehaviour, IAttackable
 		OnDiscardCard?.Invoke(1);
 	}
 	public bool HasManaSpace()
-    {
+	{
 		return manaPool.HasManaSpace();
-    }
+	}
+	public void PreviewMana(uint mana)
+	{
+		manaPool.PreviewMana(mana);
+	}
+	public bool HasAvailableMana(uint mana)
+	{
+		return manaPool.HasAvailableMana(mana);
+	}
 	public void TurnHoldinCardIntoMana()
     {
 		var currentCard = hand.GetHoldingCard();
@@ -155,6 +163,10 @@ public class Player : MonoBehaviour, IAttackable
 	public void OnTokenDied(CardObject cardObject, SpawnArea tile)
 	{
 		graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
+	}
+	public void SpendMana(uint value)
+    {
+		manaPool.SpendMana(value);
 	}
 	#endregion INTERACTION
 
@@ -221,7 +233,7 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void SummonCostChanged(uint newCost)
     {
-		manaPool.RefreshPreviewedMana(newCost);
+		manaPool.PreviewMana(newCost);
     }
 	protected void TrySummonToken(CardObject cardObject, SpawnArea spawnArea)
 	{
@@ -235,11 +247,14 @@ public class Player : MonoBehaviour, IAttackable
 
 		hand.RemoveCard(cardObject, false);
 
-		manaPool.SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
+		SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
 
 		cardObject.SetVisualizing(false);
 
-		gameController.Summon(this, cardObject, spawnArea);
+		gameController.Summon(this, cardObject, (totalCost) => {
+			SpendMana(totalCost);
+
+		}, spawnArea);
 	}
 	#endregion SUMMON_HERO
 

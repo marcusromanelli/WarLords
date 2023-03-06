@@ -71,9 +71,9 @@ public class ManaPool
 	{
 		return maxAllowedMana;
 	}
-	public void RefreshPreviewedMana(uint newManaCost)
+	public void PreviewMana(uint newManaCost)
     {
-		uiManaPool.RefreshPreviewedMana(newManaCost);
+		uiManaPool.PreviewMana(newManaCost);
 	}
 	void SetMaxManaValue(uint newValue)
 	{
