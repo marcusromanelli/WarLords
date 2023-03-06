@@ -11,6 +11,8 @@ public class UICardSkillSelection : MonoBehaviour
 	[BoxGroup("Components"), SerializeField] Canvas canvas;
 	[BoxGroup("Components"), SerializeField] EnableSkillButton skillButtonPrefab;
 	[BoxGroup("Components"), SerializeField] Button applyButton;
+	[BoxGroup("Components"), SerializeField] Slider timerSlider;
+	[BoxGroup("Components"), SerializeField] float awaitTime = 2;
 
 
 	private Dictionary<SkillData, bool> skills;
@@ -18,15 +20,38 @@ public class UICardSkillSelection : MonoBehaviour
 	private Dictionary<SkillData, EnableSkillButton> skillObjects;
 	private uint totalManaCost;
 	private Player player;
-
+	private float startTime;
+	private float targetTime;
 	void Awake()
     {
 		canvas.enabled = false;
     }
+	void Update(){
+		UpdateSlider();
+	}
+	void UpdateSlider()
+    {
+		var isActive = canvas.enabled == true;
+
+		if (!isActive)
+			return;
+
+		var deltaTime = Mathf.InverseLerp(targetTime, startTime, Time.time);
+
+		if(deltaTime > 0)
+        {
+			timerSlider.value = deltaTime;
+			return;
+        }
+
+		OnClickApply();
+	}
 	public void Show(Player player, SkillData[] skills, Action<Dictionary<SkillData, bool>> onApply)
     {
 		EraseAll();
 
+		this.startTime = Time.time;
+		this.targetTime = startTime + awaitTime;
 		this.player = player;
 		this.onApply = onApply;
 		this.skills = new Dictionary<SkillData, bool>();
