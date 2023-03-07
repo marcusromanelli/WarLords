@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public delegate void HandleOnVIsualizeCard(Player player, RuntimeCardData cardObject);
@@ -162,7 +163,11 @@ public class Player : MonoBehaviour, IAttackable
 	}
 	public void OnTokenDied(CardObject cardObject, SpawnArea tile)
 	{
-		graveyard.SendCardToDeckFromPosition(cardObject, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
+		var allCards = cardObject.BuffedCards.ToList();
+		allCards.Add(cardObject);
+
+		foreach(var card in allCards)
+			graveyard.SendCardToDeckFromPosition(card, CardPositionData.Create(tile.GetTopCardPosition(), tile.GetRotationReference()));
 	}
 	public void SpendMana(uint value)
     {
@@ -223,7 +228,7 @@ public class Player : MonoBehaviour, IAttackable
 	public bool CanSummonToken(RuntimeCardData cardObject, SpawnArea spawnArea, bool isSkillOnly)
     {
 		var playerCan = CanPlayerSummonToken(cardObject, isSkillOnly);
-		var playerCanSummonHero = !battlefield.PlayerHasTokenSummoned(this, cardObject);
+		var playerCanSummonHero = isSkillOnly ? true : !battlefield.PlayerHasTokenSummoned(this, cardObject);
 
 		var canSummonOnSpawnArea = battlefield.CanSummonOnTile(this, spawnArea);
 

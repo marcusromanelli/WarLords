@@ -38,7 +38,8 @@ public class InGameCardContent : MonoBehaviour
     {
 		if(activeSkillObjects != null)
 			foreach (var obj in activeSkillObjects)
-				Destroy(obj.gameObject);
+				if(obj != null)
+					Destroy(obj.gameObject);
 
 		skillContainer.gameObject.SetActive(skilldata.Count > 0);
 

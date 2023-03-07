@@ -166,8 +166,6 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 		token.Attack();
 
 		var isAlive = TargetIsAlive(target, enemyPlayer);
-				
-		Debug.Log("Target is alive? " + isAlive);
 
 		if (!isAlive)
 			token.ResetTarget();
@@ -193,18 +191,14 @@ public class Battlefield : MonoBehaviour //this should be an class with no inher
 	{
 		var isSkillOnly = spawnArea.Token != null;
 
-
 		if (isSkillOnly)
 		{
 			var targetObject = spawnArea.Token;
-
-			LogController.LogBuffToken(targetObject, summonedCardObject, summonedCardObject.GetActiveSkills(), summonedCardObject.CalculateSummonCost(true));
 
 			targetObject.SkillBuff(summonedCardObject);
 
 			return;
 		}
-
 
 		summonedCardObject.transform.position = spawnArea.transform.position;
 		summonedCardObject.transform.localRotation = spawnArea.GetRotationReference();

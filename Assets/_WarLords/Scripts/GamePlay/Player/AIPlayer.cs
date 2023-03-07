@@ -86,6 +86,24 @@ public class AIPlayer : Player
 		if (tile != null && CanPlayerSummonToken(cardObject, tile))
 			TrySummonToken(cardObject, tile);
 	}
+	new void TrySummonToken(CardObject cardObject, SpawnArea spawnArea)
+	{
+		if (!CanPlayerSummonToken(cardObject, spawnArea))
+		{
+			Debug.Log("You cannot summon this hero right now.");
+			return;
+		}
+
+		var isSkillOnly = spawnArea.Token != null;
+
+		hand.RemoveCard(cardObject, false);
+
+		SpendMana(cardObject.CalculateSummonCost(isSkillOnly));
+
+		cardObject.SetVisualizing(false);
+
+		gameController.Summon(this, cardObject, null, spawnArea);
+	}
 	SpawnArea GetRandomTile()
     {
 		List<SpawnArea> emptyTiles = uiBattlefield.GetEmptyFields(this);

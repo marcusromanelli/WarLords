@@ -178,13 +178,17 @@ public class UICardObject : MonoBehaviour
 	{
 		physicalCardObject.transform.SetParent(null, true);
 	}
-	public void AttachPhsyicalCard(Transform transform)
+	public void AttachPhsyicalCard(Transform transform, bool resetPosition)
 	{
-		physicalCardObject.transform.SetParent(transform, true);
-	}
-	public void DettachPhsyicalCard()
-	{
-		physicalCardObject.transform.SetParent(null, true);
+        if (!resetPosition)
+		{
+			physicalCardObject.transform.SetParent(transform, true);
+			return;
+		}
+
+		physicalCardObject.transform.SetParent(transform);
+		physicalCardObject.transform.localPosition = Vector3.zero;
+		physicalCardObject.transform.localRotation = Quaternion.identity;
 	}
 
 	void ToggleSkillButtonsInteraction(bool enabled)
@@ -215,7 +219,10 @@ public class UICardObject : MonoBehaviour
 		targetPositionAndRotation = null;
 		getPositionAndRotationCallback = null;
 		onManaParticleEnd = null;
+
+		AttachPhsyicalCard(transform, true);
 	}
+
 	void MoveToTargetPosition()
     {
 		if (isBecamingMana)

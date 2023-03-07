@@ -269,7 +269,7 @@ MonoBehaviour:
     type: 3}
   applyButton: {fileID: 4241758131857375733}
   timerSlider: {fileID: 6147401159729596771}
-  awaitTime: 2
+  awaitTime: 4
 --- !u!114 &4813260982310054020
 MonoBehaviour:
   m_ObjectHideFlags: 0

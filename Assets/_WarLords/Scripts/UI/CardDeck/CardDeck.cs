@@ -94,8 +94,9 @@ public class CardDeck
     }
     public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition)
     {
+        var card = cardObject.Data;
         uiCardDeck.SendCardToDeckFromPosition(cardObject, fromPosition, () => {
-            AddCard(cardObject.Data);
+            AddCard(card);
         });
     }
 }

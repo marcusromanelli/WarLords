@@ -23,6 +23,7 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 	public bool IsInvoked => isSummoned;
 	public Card Data => cardData;
 	public RuntimeCardData RuntimeCardData => runtimeCardData;
+	public Stack<CardObject> BuffedCards => buffedCards;
 
 	private bool interactable = true;
 	private Player player;
@@ -48,31 +49,59 @@ public class CardObject : MonoBehaviour, IPoolable, IAttackable
 		Setup(inputController, null, card, !hideInfo);
 	}
 	public void Summon(Vector2 gridPosition, Action<uint> OnFinishedSummon)
-    {
+	{
+		if(OnFinishedSummon == null)
+		{
+			FinishSummon(gridPosition);
+			return;
+		}
+
 		uiCardSkillSelection.Show(player, runtimeCardData.OriginalCardSkills, (response) =>
 		{
 			var totalSkill = runtimeCardData.UpdateSkillStatus(response);
 
-			isSummoned = true;
-
-			runtimeCardData.SetSummoned();
-			uiCardObject.RefreshCardUI();
-			uiToken.Setup(this, gridPosition, inputController);
-
-			GameRules.PlaySFX(GameRules.Summon);
+			FinishSummon(gridPosition);
 
 			OnFinishedSummon?.Invoke(totalSkill);
 		});
-
 	}
-	public void SkillBuff(CardObject cardObject)
-    {
-		buffedCards.Push(cardObject);
+	void FinishSummon(Vector2 gridPosition)
+	{
+		isSummoned = true;
 
-		runtimeCardData.BuffSkills(cardObject.RuntimeCardData);
+		runtimeCardData.SetSummoned();
+		uiCardObject.RefreshCardUI();
+		uiToken.Setup(this, gridPosition, inputController);
 
-		cardObject.Lock();
-		cardObject.gameObject.SetActive(false);
+		GameRules.PlaySFX(GameRules.Summon);
+	}
+	public void SummonSkillBuff(Vector3 position, Action<Dictionary<SkillData, bool>> OnFinishedSummon)
+	{
+		transform.position = position;
+		uiCardSkillSelection.Show(player, runtimeCardData.OriginalCardSkills, (response) =>
+		{
+			runtimeCardData.UpdateSkillStatus(response);
+
+			OnFinishedSummon?.Invoke(response);
+		});
+	}
+	public void SkillBuff(CardObject originCardObject)
+	{
+		originCardObject.SummonSkillBuff(transform.position, (response) => {
+
+			var summonCost = originCardObject.CalculateSummonCost(true);
+
+			if(summonCost > 0)
+				LogController.LogBuffToken(this, originCardObject, originCardObject.GetActiveSkills(), originCardObject.CalculateSummonCost(true));
+
+			buffedCards.Push(originCardObject);
+
+			runtimeCardData.BuffSkills(originCardObject.RuntimeCardData);
+
+			originCardObject.Lock();
+			originCardObject.gameObject.SetActive(false);
+			originCardObject.transform.SetParent(transform);
+		});
 	}
 	public void SetVisualizing(bool isVisualizing, OnClickCloseButton closeCallback = null)
 	{

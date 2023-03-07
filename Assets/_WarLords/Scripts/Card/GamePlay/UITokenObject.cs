@@ -78,6 +78,9 @@ public class UITokenObject : MonoBehaviour
 	}
 	public void ResetTarget()
 	{
+		if (target == null)
+			return;
+
 		LogController.LogChangeTarget(cardObject, null);
 		target = null;
 	}
@@ -133,9 +136,7 @@ public class UITokenObject : MonoBehaviour
 
 		tokenObject = token;
 
-		uiCardObject.AttachPhsyicalCard(SlideCardPivot);
-
-		uiCardObject.SetLocalPositionAndRotation(CardPositionData.Create(Vector3.zero, Quaternion.identity));
+		uiCardObject.AttachPhsyicalCard(SlideCardPivot, true);
 
 		CardSlideIn();
 	}

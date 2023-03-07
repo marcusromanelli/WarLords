@@ -59,6 +59,8 @@ public class UICardDeck : MonoBehaviour, ICardPlaceable
     }
     public void SendCardToDeckFromPosition(CardObject cardObject, CardPositionData fromPosition, Action onFinish)
     {
+        cardObject.transform.SetParent(null, true);
+        cardObject.gameObject.SetActive(true);
         cardObject.transform.position = fromPosition.Position;
         cardObject.transform.rotation = fromPosition.Rotation;
 
